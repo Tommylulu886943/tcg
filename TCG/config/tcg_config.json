@@ -1,0 +1,12 @@
+{
+    "config": {
+        "test_strategy": {
+            "positive_test": [
+                "parameter_min_max_test"
+            ],
+            "negative_test": [
+                "parameter_min_max_test"
+            ]
+        }
+    }
+}

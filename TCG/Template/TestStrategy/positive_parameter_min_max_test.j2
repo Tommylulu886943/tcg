@@ -1,0 +1,91 @@
+{
+    "summary": "Verify that the `{{ key }}` field in the request body meets the minimum and maximum length requirements.",
+    "test_strategy": "parameter_min_max_test",
+    "test_type": "positive_test",
+    "test_point": {
+        "1": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`{{ prop_type }}` parameter with limitations: minimum `{{ min_value_info }}`",
+                "prop_type": "{{ prop_type }}",
+                "value": "{{ min_value }}",
+                "testdata": "{{ min_testdata }}"
+            },
+            "action": {
+                "setup": null,
+                "teardown": {
+                    "1": {
+                        "action_type": null,
+                        "object": null,
+                        "action": null,
+                        "config": null,
+                        "id": null,
+                        "data": null
+                    }
+                },
+                "operation": {
+                    "parser": "api_parser"
+                }
+            },
+            "expected": {
+                "status_code": 200
+            }                   
+        },
+        "2": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`{{ prop_type }}` parameter with limitations: maximum `{{ max_value_info }}`",
+                "prop_type": "{{ prop_type }}",
+                "value": "{{ max_value }}",
+                "testdata": "{{ max_testdata }}"
+            },
+            "action": {
+                "setup": null,
+                "teardown": {
+                    "1": {
+                        "action_type": null,
+                        "object": null,
+                        "action": null,
+                        "config": null,
+                        "id": null,
+                        "data": null
+                    }
+                },
+                "operation": {
+                    "parser": "api_parser"
+                }
+            },
+            "expected": {
+                "status_code": 200
+            }
+        },
+        "3": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`{{ prop_type }}` parameter with limitations: median `{{ median_value_info }}`",
+                "prop_type": "{{ prop_type }}",
+                "value": "{{ median_value }}",
+                "testdata": "{{ median_testdata }}"
+            },
+            "action": {
+                "setup": null,
+                "teardown": {
+                    "1": {
+                        "action_type": null,
+                        "object": null,
+                        "action": null,
+                        "config": null,
+                        "id": null,
+                        "data": null
+                    }
+                },
+                "operation": {
+                    "parser": "api_parser"
+                }
+            },
+            "expected": {
+                "status_code": 200
+            }   
+        }
+    }
+}
