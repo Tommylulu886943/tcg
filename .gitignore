@@ -7,3 +7,4 @@ TCG/DependencyRule/*.json
 config/*.*
 TCG/PathRule/
 pyqt6-env/
+tcg/venv/

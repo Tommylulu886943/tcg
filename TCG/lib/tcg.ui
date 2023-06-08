@@ -52,7 +52,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -196,7 +196,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -535,13 +535,13 @@
         </property>
        </column>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>330</x>
          <y>10</y>
          <width>239</width>
-         <height>25</height>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -568,13 +568,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>111</x>
          <y>11</y>
          <width>207</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_17">
@@ -619,7 +619,7 @@
          <x>90</x>
          <y>70</y>
          <width>431</width>
-         <height>25</height>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_25">
@@ -651,8 +651,8 @@
         <rect>
          <x>260</x>
          <y>40</y>
-         <width>261</width>
-         <height>25</height>
+         <width>319</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout_2">
@@ -689,8 +689,8 @@
         <rect>
          <x>90</x>
          <y>10</y>
-         <width>161</width>
-         <height>25</height>
+         <width>179</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_23">
@@ -732,8 +732,8 @@
         <rect>
          <x>260</x>
          <y>10</y>
-         <width>175</width>
-         <height>25</height>
+         <width>228</width>
+         <height>30</height>
         </rect>
        </property>
        <property name="font">
@@ -770,8 +770,8 @@
         <rect>
          <x>90</x>
          <y>40</y>
-         <width>168</width>
-         <height>25</height>
+         <width>219</width>
+         <height>30</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_24">
@@ -1209,7 +1209,7 @@
            <x>300</x>
            <y>10</y>
            <width>211</width>
-           <height>25</height>
+           <height>30</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_27">
@@ -1278,7 +1278,7 @@
            <x>101</x>
            <y>11</y>
            <width>181</width>
-           <height>24</height>
+           <height>25</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_22">
@@ -1363,8 +1363,8 @@
         <rect>
          <x>100</x>
          <y>10</y>
-         <width>140</width>
-         <height>24</height>
+         <width>151</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -1396,8 +1396,8 @@
         <rect>
          <x>250</x>
          <y>10</y>
-         <width>181</width>
-         <height>24</height>
+         <width>191</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -1434,8 +1434,8 @@
         <rect>
          <x>100</x>
          <y>40</y>
-         <width>331</width>
-         <height>24</height>
+         <width>391</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1549,7 +1549,7 @@
          <x>450</x>
          <y>10</y>
          <width>431</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -1604,7 +1604,7 @@
          <x>450</x>
          <y>40</y>
          <width>431</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -1826,13 +1826,13 @@
         </property>
        </item>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>340</x>
          <y>10</y>
          <width>214</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_18">
@@ -1848,13 +1848,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>121</x>
          <y>11</y>
          <width>207</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -1940,8 +1940,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>90</x>
          <y>50</y>
-         <width>151</width>
-         <height>24</height>
+         <width>183</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -1969,7 +1969,7 @@ p, li { white-space: pre-wrap; }
          <x>90</x>
          <y>20</y>
          <width>151</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -2015,7 +2015,7 @@ p, li { white-space: pre-wrap; }
          <x>90</x>
          <y>80</y>
          <width>431</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -2036,8 +2036,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>250</x>
          <y>20</y>
-         <width>171</width>
-         <height>24</height>
+         <width>190</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -2078,7 +2078,7 @@ p, li { white-space: pre-wrap; }
          <x>250</x>
          <y>50</y>
          <width>271</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout">
@@ -2205,8 +2205,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>90</x>
          <y>20</y>
-         <width>140</width>
-         <height>24</height>
+         <width>151</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
@@ -2239,7 +2239,7 @@ p, li { white-space: pre-wrap; }
          <x>420</x>
          <y>50</y>
          <width>561</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -2261,7 +2261,7 @@ p, li { white-space: pre-wrap; }
          <x>420</x>
          <y>20</y>
          <width>561</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
@@ -2302,8 +2302,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>240</x>
          <y>20</y>
-         <width>171</width>
-         <height>24</height>
+         <width>191</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_15">
@@ -2340,8 +2340,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>90</x>
          <y>50</y>
-         <width>321</width>
-         <height>24</height>
+         <width>343</width>
+         <height>25</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_16">
@@ -2441,8 +2441,8 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>239</width>
-       <height>26</height>
+       <width>295</width>
+       <height>30</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -2670,7 +2670,7 @@ p, li { white-space: pre-wrap; }
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Settings ***&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Documentation     Test cases for post /api/v1/profiles.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/setup_teardown.robot&lt;/span&gt;&lt;/p&gt;
@@ -2891,6 +2891,44 @@ p, li { white-space: pre-wrap; }
       </widget>
      </widget>
     </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>160</y>
+       <width>195</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_19">
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>2</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="pushButton_3">
@@ -2942,8 +2980,8 @@ p, li { white-space: pre-wrap; }
     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Log&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:9pt;&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>
