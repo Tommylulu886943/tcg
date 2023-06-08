@@ -1,0 +1,9 @@
+*.pyc
+TCG/TestData/*.json
+TCG/GenerationRule/*.json
+TCG/AssertionRule/*.json
+TCG/test_plan/*.yaml
+TCG/DependencyRule/*.json
+config/*.*
+TCG/PathRule/
+pyqt6-env/
