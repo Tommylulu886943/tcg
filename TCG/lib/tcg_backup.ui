@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2132</width>
-    <height>847</height>
+    <width>1651</width>
+    <height>796</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -24,95 +24,56 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QTabWidget" name="tabWidget">
+       <widget class="QTabWidget" name="tabTCG">
+        <property name="font">
+         <font>
+          <family>JetBrains Mono</family>
+         </font>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>Tab 1</string>
+          <string>Setup</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="3,7">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QPushButton" name="btn_import_openapi_doc">
-                  <property name="font">
-                   <font>
-                    <family>JetBrains Mono</family>
-                    <pointsize>8</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Import OpenAPI Doc</string>
-                  </property>
-                  <property name="icon">
-                   <iconset theme="document-new">
-                    <normaloff>../../../Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Tommy Lu/.designer/backup</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btn_generate_test_plan">
-                  <property name="font">
-                   <font>
-                    <family>JetBrains Mono</family>
-                    <pointsize>8</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Generate Test Plan</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <item>
-                 <widget class="QPushButton" name="btn_api_table_remove">
-                  <property name="font">
-                   <font>
-                    <family>JetBrains Mono</family>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Remove</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btn_api_table_add_use_case">
-                  <property name="font">
-                   <font>
-                    <family>JetBrains Mono</family>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Add Use Case</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="checkBox">
-                <property name="font">
-                 <font>
-                  <family>JetBrains Mono</family>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Validate</string>
-                </property>
-               </widget>
-              </item>
-              <item>
+             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0" columnstretch="1,1" rowminimumheight="0,0,0,0,0,0" columnminimumwidth="0,0">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item row="5" column="0" colspan="2">
                <widget class="QTreeWidget" name="table_api_tree">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="font">
                  <font>
                   <family>JetBrains Mono</family>
@@ -126,7 +87,7 @@
                 </property>
                 <column>
                  <property name="text">
-                  <string>Schema Name</string>
+                  <string>Schema</string>
                  </property>
                 </column>
                 <column>
@@ -151,68 +112,128 @@
                 </column>
                </widget>
               </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btn_import_openapi_doc">
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                  <pointsize>9</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Import OpenAPI Doc</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-new">
+                  <normaloff>../../../Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Tommy Lu/.designer/backup</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" rowspan="5">
+               <widget class="QPushButton" name="btn_generate_test_plan">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                  <pointsize>9</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Generate Test Plan</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QPushButton" name="btn_api_table_add_use_case">
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Add Use Case</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_api_table_remove">
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="checkBox_import_api_validation">
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Validate</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
-             <widget class="QTabWidget" name="tabWidget_2">
-              <property name="font">
-               <font>
-                <family>JetBrains Mono</family>
-                <pointsize>8</pointsize>
-               </font>
-              </property>
-              <property name="currentIndex">
-               <number>1</number>
-              </property>
-              <widget class="QWidget" name="tab_3">
-               <attribute name="title">
-                <string>Generation Rule</string>
-               </attribute>
-               <layout class="QVBoxLayout" name="verticalLayout_10">
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QTabWidget" name="tabWidget_2">
+                <property name="font">
+                 <font>
+                  <family>JetBrains Mono</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="QWidget" name="tab_3">
+                 <attribute name="title">
+                  <string>Data Generation Rule</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_10">
                   <item>
-                   <widget class="QPushButton" name="btn_generation_rule_remove">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>100</width>
-                      <height>100</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <family>JetBrains Mono</family>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Remove</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QGroupBox" name="group_positive_test_2">
-                    <property name="font">
-                     <font>
-                      <family>JetBrains Mono</family>
-                      <pointsize>8</pointsize>
-                      <weight>50</weight>
-                      <bold>false</bold>
-                     </font>
-                    </property>
-                    <property name="title">
-                     <string>Constraint Rule</string>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_11">
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_9">
-                       <item>
+                   <layout class="QGridLayout" name="gridLayout_14" rowstretch="2,8">
+                    <item row="0" column="0">
+                     <widget class="QGroupBox" name="group_positive_test_11">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="title">
+                       <string>Constraint Rule</string>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_15">
+                       <item row="4" column="0">
                         <widget class="QPushButton" name="btn_constraint_rule_apply">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
                          <property name="font">
                           <font>
                            <family>JetBrains Mono</family>
@@ -223,7 +244,14 @@
                          </property>
                         </widget>
                        </item>
-                       <item>
+                       <item row="0" column="2" colspan="12">
+                        <widget class="QLineEdit" name="textbox_constraint_rule_src">
+                         <property name="toolTip">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_rule_src_action">
                          <item>
                           <property name="text">
@@ -237,15 +265,8 @@
                          </item>
                         </widget>
                        </item>
-                       <item>
-                        <widget class="QLineEdit" name="textbox_constraint_rule_src">
-                         <property name="toolTip">
-                          <string/>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QComboBox" name="comboBox_constraint_rule_condition_2">
+                       <item row="1" column="0" colspan="2">
+                        <widget class="QComboBox" name="comboBox_constraint_rule_condition">
                          <property name="layoutDirection">
                           <enum>Qt::LeftToRight</enum>
                          </property>
@@ -256,53 +277,10 @@
                          </item>
                         </widget>
                        </item>
-                       <item>
-                        <widget class="QLineEdit" name="textbox_constraint_rule_expected_value_2"/>
+                       <item row="1" column="2" colspan="12">
+                        <widget class="QLineEdit" name="textbox_constraint_rule_expected_value"/>
                        </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_10">
-                       <item>
-                        <widget class="QPushButton" name="btn_constraint_rule_clear">
-                         <property name="font">
-                          <font>
-                           <family>JetBrains Mono</family>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Clear</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QComboBox" name="comboBox_constraint_rule_dst_action">
-                         <item>
-                          <property name="text">
-                           <string>Then Remove</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Then Set</string>
-                          </property>
-                         </item>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLineEdit" name="textbox_constraint_rule_dst">
-                         <property name="inputMask">
-                          <string/>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                         <property name="placeholderText">
-                          <string/>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
+                       <item row="3" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_dst_action_type">
                          <property name="enabled">
                           <bool>false</bool>
@@ -325,72 +303,355 @@
                          </item>
                         </widget>
                        </item>
-                       <item>
+                       <item row="3" column="2" colspan="12">
                         <widget class="QLineEdit" name="textbox_constraint_rule_dst_value">
                          <property name="enabled">
                           <bool>false</bool>
                          </property>
                         </widget>
                        </item>
+                       <item row="2" column="2" colspan="12">
+                        <widget class="QLineEdit" name="textbox_constraint_rule_dst">
+                         <property name="inputMask">
+                          <string/>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="placeholderText">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="4" column="1" colspan="2">
+                        <widget class="QPushButton" name="btn_constraint_rule_clear">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>JetBrains Mono</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Clear</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="0" colspan="2">
+                        <widget class="QComboBox" name="comboBox_constraint_rule_dst_action">
+                         <item>
+                          <property name="text">
+                           <string>Then Remove</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Then Set</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item row="4" column="3">
+                        <widget class="QCheckBox" name="checkBox_constraint_rule_wildcard">
+                         <property name="font">
+                          <font>
+                           <pointsize>8</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Wildcard</string>
+                         </property>
+                        </widget>
+                       </item>
                       </layout>
-                     </item>
-                     <item>
-                      <widget class="QCheckBox" name="checkBox_constraint_rule_wildcard">
-                       <property name="font">
-                        <font>
-                         <pointsize>8</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Wildcard</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QGroupBox" name="group_positive_test_12">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="title">
+                       <string>Generation Rule</string>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_16" rowstretch="1,9">
+                       <item row="0" column="0">
+                        <widget class="QPushButton" name="btn_generation_rule_remove">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>JetBrains Mono</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Remove</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QTreeWidget" name="table_generation_rule">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>JetBrains Mono</family>
+                           <pointsize>9</pointsize>
+                          </font>
+                         </property>
+                         <column>
+                          <property name="text">
+                           <string>Field</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Value</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
-                </item>
-                <item>
-                 <widget class="QTreeWidget" name="table_generation_rule">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                   </font>
-                  </property>
-                  <column>
-                   <property name="text">
-                    <string>Field</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Value</string>
-                   </property>
-                  </column>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-              <widget class="QWidget" name="tab_4">
-               <attribute name="title">
-                <string>Path</string>
-               </attribute>
-               <layout class="QVBoxLayout" name="verticalLayout_16">
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_15">
+                </widget>
+                <widget class="QWidget" name="tab_4">
+                 <attribute name="title">
+                  <string>Path</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_16">
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_20">
-                    <item>
-                     <layout class="QVBoxLayout" name="verticalLayout_13">
+                   <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,1,8">
+                    <property name="spacing">
+                     <number>10</number>
+                    </property>
+                    <item row="0" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_44" stretch="0,0">
                       <item>
-                       <widget class="QPushButton" name="btn_remove_path">
+                       <widget class="QLabel" name="label_34">
+                        <property name="font">
+                         <font>
+                          <family>JetBrains Mono</family>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Name : </string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="btn_remove_path">
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Remove</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="btn_update_path">
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_50" stretch="0,0">
+                      <item>
+                       <widget class="QLabel" name="label_35">
+                        <property name="font">
+                         <font>
+                          <family>JetBrains Mono</family>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Value : </string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame_2">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QLineEdit" name="textbox_path_name">
+                      <property name="maximumSize">
+                       <size>
+                        <width>1000</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0" colspan="3">
+                     <widget class="QTreeWidget" name="table_path">
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <column>
+                       <property name="text">
+                        <string>Name</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Value</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QLineEdit" name="textbox_path_value">
+                      <property name="maximumSize">
+                       <size>
+                        <width>1000</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="tab_5">
+                 <attribute name="title">
+                  <string>Dependency</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout" columnstretch="4,6">
+                    <property name="spacing">
+                     <number>10</number>
+                    </property>
+                    <item row="0" column="0">
+                     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,2">
+                      <property name="spacing">
+                       <number>6</number>
+                      </property>
+                      <item row="5" column="0" colspan="3">
+                       <widget class="QListWidget" name="list_dependency_available_api_list">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>1</width>
+                          <height>1</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>500</width>
+                          <height>100</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLabel" name="label_32">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Type :</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QPushButton" name="btn_add_dependency_rule">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Add</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QPushButton" name="btn_remove_dependency_rule">
                         <property name="font">
                          <font>
                           <pointsize>8</pointsize>
@@ -401,8 +662,8 @@
                         </property>
                        </widget>
                       </item>
-                      <item>
-                       <widget class="QPushButton" name="btn_update_path">
+                      <item row="2" column="0">
+                       <widget class="QPushButton" name="btn_update_dependency_rule">
                         <property name="font">
                          <font>
                           <pointsize>8</pointsize>
@@ -413,61 +674,892 @@
                         </property>
                        </widget>
                       </item>
+                      <item row="0" column="2">
+                       <widget class="QComboBox" name="comboBox_dependency_type">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <item>
+                         <property name="text">
+                          <string>Setup</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Teardown</string>
+                         </property>
+                        </item>
+                       </widget>
+                      </item>
+                      <item row="6" column="0" colspan="3">
+                       <widget class="QTreeWidget" name="table_dependency_rule">
+                        <property name="font">
+                         <font>
+                          <family>JetBrains Mono</family>
+                          <pointsize>9</pointsize>
+                         </font>
+                        </property>
+                        <column>
+                         <property name="text">
+                          <string>Index</string>
+                         </property>
+                        </column>
+                        <column>
+                         <property name="text">
+                          <string>Value</string>
+                         </property>
+                        </column>
+                       </widget>
+                      </item>
+                      <item row="3" column="0" colspan="3">
+                       <widget class="QLabel" name="label">
+                        <property name="text">
+                         <string>Avaliable API Operation List (From API Doc)</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="2">
+                       <widget class="QLineEdit" name="textbox_dependency_return_variable_name">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLabel" name="label_33">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Response Name : </string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QLineEdit" name="line_api_search">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string>&lt;Search Bar&gt;</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QLabel" name="label_48">
+                        <property name="font">
+                         <font>
+                          <pointsize>8</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>API :</string>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
                     </item>
-                    <item>
-                     <layout class="QVBoxLayout" name="verticalLayout_14">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_17">
+                    <item row="0" column="1">
+                     <widget class="QTabWidget" name="tabWidget_5">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="currentIndex">
+                       <number>0</number>
+                      </property>
+                      <widget class="QWidget" name="tab_34">
+                       <attribute name="title">
+                        <string>Generation Rule</string>
+                       </attribute>
+                       <layout class="QHBoxLayout" name="horizontalLayout_41">
                         <item>
-                         <widget class="QLabel" name="label_10">
-                          <property name="text">
-                           <string>Name : </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLineEdit" name="textbox_path_name"/>
+                         <layout class="QGridLayout" name="gridLayout_11" rowstretch="2,8">
+                          <item row="0" column="0">
+                           <widget class="QGroupBox" name="group_positive_test_10">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>JetBrains Mono</family>
+                              <pointsize>8</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="title">
+                             <string>Constraint Rule</string>
+                            </property>
+                            <layout class="QGridLayout" name="gridLayout_13">
+                             <item row="0" column="2" colspan="7">
+                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src">
+                               <property name="toolTip">
+                                <string/>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="0" column="0" colspan="2">
+                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_src_action">
+                               <item>
+                                <property name="text">
+                                 <string>Set</string>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>If</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                             <item row="3" column="2" colspan="7">
+                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_value">
+                               <property name="enabled">
+                                <bool>false</bool>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="0" colspan="2">
+                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_condition">
+                               <property name="layoutDirection">
+                                <enum>Qt::LeftToRight</enum>
+                               </property>
+                               <item>
+                                <property name="text">
+                                 <string>WITH</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                             <item row="2" column="2" colspan="7">
+                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst">
+                               <property name="inputMask">
+                                <string/>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="placeholderText">
+                                <string/>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="3" column="0" colspan="2">
+                              <widget class="QComboBox" name="comboBox_dependency_constraint_dst_action_type">
+                               <property name="enabled">
+                                <bool>false</bool>
+                               </property>
+                               <property name="toolTip">
+                                <string/>
+                               </property>
+                               <property name="layoutDirection">
+                                <enum>Qt::LeftToRight</enum>
+                               </property>
+                               <item>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>WITH</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                             <item row="1" column="2" colspan="7">
+                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value"/>
+                             </item>
+                             <item row="4" column="0">
+                              <widget class="QPushButton" name="btn_dependency_constraint_rule_apply">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>JetBrains Mono</family>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Apply</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="2" column="0" colspan="2">
+                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_dst_action">
+                               <item>
+                                <property name="text">
+                                 <string>Then Remove</string>
+                                </property>
+                               </item>
+                               <item>
+                                <property name="text">
+                                 <string>Then Set</string>
+                                </property>
+                               </item>
+                              </widget>
+                             </item>
+                             <item row="4" column="1" colspan="2">
+                              <widget class="QPushButton" name="btn_dependency_constraint_rule_clear">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>JetBrains Mono</family>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Clear</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="4" column="4">
+                              <widget class="QCheckBox" name="checkBox_dependency_constraint_rule_wildcard">
+                               <property name="font">
+                                <font>
+                                 <pointsize>8</pointsize>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Wildcard</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item row="1" column="0">
+                           <widget class="QGroupBox" name="group_positive_test_9">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>JetBrains Mono</family>
+                              <pointsize>8</pointsize>
+                              <weight>50</weight>
+                              <bold>false</bold>
+                             </font>
+                            </property>
+                            <property name="title">
+                             <string>Dependency API Generation Rule</string>
+                            </property>
+                            <layout class="QGridLayout" name="gridLayout_12" rowstretch="1,9">
+                             <item row="0" column="0">
+                              <widget class="QPushButton" name="btn_dependency_generation_rule_remove">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>JetBrains Mono</family>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Remove</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="0">
+                              <widget class="QTreeWidget" name="table_dependency_generation_rule">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>JetBrains Mono</family>
+                                 <pointsize>9</pointsize>
+                                </font>
+                               </property>
+                               <column>
+                                <property name="text">
+                                 <string>Field</string>
+                                </property>
+                               </column>
+                               <column>
+                                <property name="text">
+                                 <string>Value</string>
+                                </property>
+                               </column>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_12">
+                      </widget>
+                      <widget class="QWidget" name="tab_35">
+                       <attribute name="title">
+                        <string>Path</string>
+                       </attribute>
+                       <layout class="QHBoxLayout" name="horizontalLayout">
                         <item>
-                         <widget class="QLabel" name="label_11">
-                          <property name="font">
-                           <font>
-                            <pointsize>8</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Value : </string>
-                          </property>
-                         </widget>
+                         <layout class="QGridLayout" name="gridLayout_10">
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="label_41">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Name : </string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QPushButton" name="btn_remove_dependency_path">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Remove</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="0">
+                           <widget class="QPushButton" name="btn_update_dependency_path">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Update</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QLineEdit" name="textbox_path_dependency_name"/>
+                          </item>
+                          <item row="1" column="2">
+                           <widget class="QLineEdit" name="textbox_path_dependency_value">
+                            <property name="font">
+                             <font>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="1">
+                           <widget class="QLabel" name="label_40">
+                            <property name="font">
+                             <font>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Value : </string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="0" colspan="3">
+                           <widget class="QTreeWidget" name="table_dependency_path">
+                            <property name="font">
+                             <font>
+                              <family>JetBrains Mono</family>
+                              <pointsize>9</pointsize>
+                             </font>
+                            </property>
+                            <column>
+                             <property name="text">
+                              <string>Name</string>
+                             </property>
+                            </column>
+                            <column>
+                             <property name="text">
+                              <string>Value</string>
+                             </property>
+                            </column>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
+                       </layout>
+                      </widget>
+                      <widget class="QWidget" name="tab_36">
+                       <attribute name="title">
+                        <string>Schema</string>
+                       </attribute>
+                       <layout class="QHBoxLayout" name="horizontalLayout_3">
                         <item>
-                         <widget class="QLineEdit" name="textbox_path_value">
+                         <widget class="QTreeWidget" name="table_dependency_schema">
                           <property name="font">
                            <font>
-                            <pointsize>10</pointsize>
+                            <family>JetBrains Mono</family>
+                            <pointsize>9</pointsize>
                            </font>
                           </property>
+                          <column>
+                           <property name="text">
+                            <string>Key</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Value</string>
+                           </property>
+                          </column>
                          </widget>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
+                      </widget>
+                     </widget>
                     </item>
                    </layout>
                   </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="tab_6">
+                 <attribute name="title">
+                  <string>Assertion</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                   <item>
-                   <widget class="QTreeWidget" name="table_path">
+                   <layout class="QGridLayout" name="gridLayout_17">
+                    <item row="3" column="0" colspan="9">
+                     <widget class="QTreeWidget" name="table_assertion_rule">
+                      <column>
+                       <property name="text">
+                        <string>Key</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Value</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item row="1" column="6">
+                     <widget class="QLineEdit" name="textbox_assertion_rule_expression"/>
+                    </item>
+                    <item row="2" column="3">
+                     <widget class="QComboBox" name="comboBox_assertion_method">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>True</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>False</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>None / Null</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>&gt;</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>&lt;</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>==</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>&gt;=</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>&lt;=</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Contain</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Not Contain</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Empty</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Not Be Empty</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Not Be True</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Equal</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Equal As Integers</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Equal As Numbers</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Should Be Equal As Strings</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="2" column="6">
+                     <widget class="QLineEdit" name="textbox_assertion_rule_expected_value"/>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QLabel" name="label_assertion_type_2">
+                      <property name="text">
+                       <string>Source :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="3">
+                     <widget class="QComboBox" name="comboBox_assertion_type">
+                      <item>
+                       <property name="text">
+                        <string>Positive</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Negative</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="btn_add_assertion_rule">
+                      <property name="text">
+                       <string>Add</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QLabel" name="label_assertion_type">
+                      <property name="text">
+                       <string>Type :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="btn_remove_assertion_rule">
+                      <property name="text">
+                       <string>Remove</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="btn_update_assertion_rule">
+                      <property name="text">
+                       <string>Update</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="5">
+                     <widget class="QLabel" name="label_6">
+                      <property name="text">
+                       <string>Expected Value : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2">
+                     <widget class="QLabel" name="label_assertion_type_3">
+                      <property name="text">
+                       <string>Assertion Method:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="5">
+                     <widget class="QLabel" name="label_7">
+                      <property name="text">
+                       <string>Filter Expression : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="3">
+                     <widget class="QComboBox" name="comboBox_assertion_source">
+                      <item>
+                       <property name="text">
+                        <string>Status Code</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Body</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Header</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="tab_7">
+                 <attribute name="title">
+                  <string>Schema</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QTreeWidget" name="table_schema">
                     <property name="font">
                      <font>
                       <family>JetBrains Mono</family>
-                      <pointsize>8</pointsize>
+                      <pointsize>9</pointsize>
                      </font>
                     </property>
+                    <column>
+                     <property name="text">
+                      <string>Key</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Value</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Test Plan</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_20" columnstretch="3,7">
+            <item row="1" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QPushButton" name="btn_add_test_case">
+                <property name="text">
+                 <string>Add</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_remove_test_case">
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_duplicate_test_case">
+                <property name="text">
+                 <string>Duplicate</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="btn_generate_test_case">
+              <property name="text">
+               <string>GenerateTest Case</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QTreeWidget" name="table_test_plan_api_list">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string>Test Plan Name</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Strategy</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Type</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Point</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="0" column="1" rowspan="3">
+             <widget class="QTabWidget" name="Dependency_3">
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <widget class="QWidget" name="tab_37">
+               <attribute name="title">
+                <string>Request Body</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_10">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_21">
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_update_text_body">
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>JetBrains Mono</family>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Update</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPlainTextEdit" name="text_body">
+                    <property name="font">
+                     <font>
+                      <family>JetBrains Mono</family>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_38">
+               <attribute name="title">
+                <string>Path</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_22">
+                  <item row="1" column="2">
+                   <layout class="QHBoxLayout" name="horizontalLayout_42">
+                    <item>
+                     <widget class="QLineEdit" name="textbox_tc_path_value"/>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_path">
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="label_42">
+                    <property name="text">
+                     <string>Value : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLineEdit" name="textbox_tc_path_name"/>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="label_43">
+                    <property name="text">
+                     <string>Name : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_path">
+                    <property name="text">
+                     <string>Update</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0" colspan="3">
+                   <widget class="QTreeWidget" name="table_tc_query">
                     <column>
                      <property name="text">
                       <string>Name</string>
@@ -478,6 +1570,865 @@
                       <string>Value</string>
                      </property>
                     </column>
+                    <item>
+                     <property name="text">
+                      <string>id</string>
+                     </property>
+                     <property name="text">
+                      <string>1</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_39">
+               <attribute name="title">
+                <string>Dependency</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_16">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_24" columnstretch="4,6">
+                  <property name="spacing">
+                   <number>10</number>
+                  </property>
+                  <item row="0" column="0">
+                   <layout class="QGridLayout" name="gridLayout_25" rowstretch="1,1,1,1,6">
+                    <property name="spacing">
+                     <number>6</number>
+                    </property>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="label_44">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Type :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="btn_tc_add_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Add</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Remove</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="btn_tc_update_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QComboBox" name="comboBox_tc_dependency_type">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>Setup</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Teardown</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="4" column="0" colspan="3">
+                     <widget class="QTreeWidget" name="table_tc_dependency">
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>9</pointsize>
+                       </font>
+                      </property>
+                      <column>
+                       <property name="text">
+                        <string>Index</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Value</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item row="3" column="0" colspan="3">
+                     <widget class="QGroupBox" name="group_positive_test_13">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>JetBrains Mono</family>
+                        <pointsize>8</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="title">
+                       <string>Avaliable API Operation (From API Doc)</string>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_26" rowstretch="3,7">
+                       <item row="0" column="0">
+                        <widget class="QTextEdit" name="text_tc_dependency_search_bar">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>10</width>
+                           <height>10</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>1500</width>
+                           <height>30</height>
+                          </size>
+                         </property>
+                         <property name="toolTip">
+                          <string/>
+                         </property>
+                         <property name="statusTip">
+                          <string/>
+                         </property>
+                         <property name="whatsThis">
+                          <string/>
+                         </property>
+                         <property name="accessibleDescription">
+                          <string/>
+                         </property>
+                         <property name="html">
+                          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;lt;Search Bar&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QTreeView" name="text_tc_dependency_avaliable_api_list">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>1500</width>
+                           <height>100</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>JetBrains Mono</family>
+                          </font>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QLabel" name="label_45">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Response Name : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2">
+                     <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QTabWidget" name="tabWidget_6">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="currentIndex">
+                     <number>0</number>
+                    </property>
+                    <widget class="QWidget" name="tab_41">
+                     <attribute name="title">
+                      <string>Data Generation Rule</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_43">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_27" rowstretch="2,8">
+                        <item row="0" column="0">
+                         <widget class="QGroupBox" name="group_positive_test_14">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>JetBrains Mono</family>
+                            <pointsize>8</pointsize>
+                            <weight>50</weight>
+                            <bold>false</bold>
+                           </font>
+                          </property>
+                          <property name="title">
+                           <string>Constraint Rule</string>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_28">
+                           <item row="0" column="0" colspan="2">
+                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
+                             <item>
+                              <property name="text">
+                               <string>Set</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>If</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="1" column="0" colspan="2">
+                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
+                             <property name="layoutDirection">
+                              <enum>Qt::LeftToRight</enum>
+                             </property>
+                             <item>
+                              <property name="text">
+                               <string>WITH</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="3" column="2" colspan="6">
+                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_value_7">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2" colspan="6">
+                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src_7">
+                             <property name="toolTip">
+                              <string/>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="0" colspan="2">
+                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_dst_action_type">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                             <property name="toolTip">
+                              <string/>
+                             </property>
+                             <property name="layoutDirection">
+                              <enum>Qt::LeftToRight</enum>
+                             </property>
+                             <item>
+                              <property name="text">
+                               <string/>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>WITH</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="2" column="2" colspan="6">
+                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_7">
+                             <property name="inputMask">
+                              <string/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="placeholderText">
+                              <string/>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="0">
+                            <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_apply">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>JetBrains Mono</family>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Apply</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="0" colspan="2">
+                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
+                             <item>
+                              <property name="text">
+                               <string>Then Remove</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Then Set</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="1" column="2" colspan="6">
+                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value_7"/>
+                           </item>
+                           <item row="4" column="1" colspan="2">
+                            <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_clear">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>JetBrains Mono</family>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Clear</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="3">
+                            <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
+                             <property name="font">
+                              <font>
+                               <pointsize>8</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Wildcard</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QGroupBox" name="group_positive_test_16">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>JetBrains Mono</family>
+                            <pointsize>8</pointsize>
+                            <weight>50</weight>
+                            <bold>false</bold>
+                           </font>
+                          </property>
+                          <property name="title">
+                           <string>Dependency API Generation Rule</string>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_33" rowstretch="1,9">
+                           <item row="0" column="1">
+                            <widget class="QPushButton" name="btn_dependency_generation_rule_remove_8">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>JetBrains Mono</family>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Remove</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QPushButton" name="btn_dependency_generation_build_data_3">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>JetBrains Mono</family>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Build</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0" colspan="2">
+                            <widget class="QTreeWidget" name="table_tc_dependency_generation_rule">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>JetBrains Mono</family>
+                               <pointsize>9</pointsize>
+                              </font>
+                             </property>
+                             <column>
+                              <property name="text">
+                               <string>Field</string>
+                              </property>
+                             </column>
+                             <column>
+                              <property name="text">
+                               <string>Value</string>
+                              </property>
+                             </column>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_10">
+                     <attribute name="title">
+                      <string>Request Body</string>
+                     </attribute>
+                     <layout class="QVBoxLayout" name="verticalLayout_5">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_31">
+                        <item row="0" column="0">
+                         <widget class="QTextEdit" name="textbox_tc_dependency_requestbody">
+                          <property name="font">
+                           <font>
+                            <family>JetBrains Mono</family>
+                            <pointsize>12</pointsize>
+                           </font>
+                          </property>
+                          <property name="html">
+                           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;{&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;password&amp;quot;: &amp;quot;123456&amp;quot;,&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;account&amp;quot;: &amp;quot;demo&amp;quot;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;}&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_42">
+                     <attribute name="title">
+                      <string>Path</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_14">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_30">
+                        <item row="0" column="1">
+                         <widget class="QLabel" name="label_46">
+                          <property name="font">
+                           <font>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Name : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QPushButton" name="btn_remove_dependency_path_7">
+                          <property name="font">
+                           <font>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Remove</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QPushButton" name="btn_update_dependency_path_7">
+                          <property name="font">
+                           <font>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Update</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="2">
+                         <widget class="QLineEdit" name="textbox_path_dependency_name_7"/>
+                        </item>
+                        <item row="1" column="2">
+                         <widget class="QLineEdit" name="textbox_path_dependency_value_7">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="1">
+                         <widget class="QLabel" name="label_47">
+                          <property name="font">
+                           <font>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Value : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="0" colspan="3">
+                         <widget class="QTreeWidget" name="table_dependency_path_7">
+                          <property name="font">
+                           <font>
+                            <family>JetBrains Mono</family>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                          <column>
+                           <property name="text">
+                            <string>Name</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Value</string>
+                           </property>
+                          </column>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_43">
+                     <attribute name="title">
+                      <string>Schema</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_15">
+                      <item>
+                       <widget class="QTreeWidget" name="table_dependency_schema_7">
+                        <property name="font">
+                         <font>
+                          <family>JetBrains Mono</family>
+                          <pointsize>9</pointsize>
+                         </font>
+                        </property>
+                        <column>
+                         <property name="text">
+                          <string>Key</string>
+                         </property>
+                        </column>
+                        <column>
+                         <property name="text">
+                          <string>Value</string>
+                         </property>
+                        </column>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_40">
+               <attribute name="title">
+                <string>Assertion</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_12">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_23">
+                  <item row="3" column="0" colspan="9">
+                   <widget class="QTreeWidget" name="table_tc_assertion_rule">
+                    <column>
+                     <property name="text">
+                      <string>Key</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Value</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                  <item row="1" column="6">
+                   <widget class="QLineEdit" name="textbo_tc_assertion_rule_expression"/>
+                  </item>
+                  <item row="2" column="3">
+                   <widget class="QComboBox" name="comboBox_tc_assertion_method">
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>True</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>False</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>None / Null</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>&gt;</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>&lt;</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>==</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>&gt;=</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>&lt;=</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Contain</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Not Contain</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Empty</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Not Be Empty</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Not Be True</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Equal</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Equal As Integers</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Equal As Numbers</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Should Be Equal As Strings</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item row="2" column="6">
+                   <widget class="QLineEdit" name="textbox_tc_assertion_rule_expected_value"/>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QLabel" name="label_assertion_type_4">
+                    <property name="text">
+                     <string>Source :</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QComboBox" name="comboBox_tc_assertion_type">
+                    <item>
+                     <property name="text">
+                      <string>Positive</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Negative</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_add_assertion_rule">
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLabel" name="label_assertion_type_5">
+                    <property name="text">
+                     <string>Type :</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_assertion_rule">
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_assertion_rule">
+                    <property name="text">
+                     <string>Update</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="5">
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Expected Value : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="2">
+                   <widget class="QLabel" name="label_assertion_type_6">
+                    <property name="text">
+                     <string>Assertion Method:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="5">
+                   <widget class="QLabel" name="label_11">
+                    <property name="text">
+                     <string>Filter Expression : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="3">
+                   <widget class="QComboBox" name="comboBox_tc_assertion_source">
+                    <item>
+                     <property name="text">
+                      <string>Status Code</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Body</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Header</string>
+                     </property>
+                    </item>
                    </widget>
                   </item>
                  </layout>
@@ -490,18 +2441,397 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_2">
+        <widget class="QWidget" name="tab_8">
          <attribute name="title">
-          <string>Tab 2</string>
+          <string>Pre-View</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_19" rowstretch="0,0" columnstretch="1,2">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushButton">
+              <property name="text">
+               <string>Export All Test Cases</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QTreeWidget" name="api_tree_table_3">
+              <property name="font">
+               <font>
+                <family>JetBrains Mono</family>
+               </font>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string>Test Plan Name</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Strategy</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Type</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Test Point</string>
+               </property>
+              </column>
+              <item>
+               <property name="text">
+                <string>createUser</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>1</string>
+                </property>
+                <property name="text">
+                 <string>Parameter Min.Max Value</string>
+                </property>
+                <property name="text">
+                 <string>Positive Test</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>2</string>
+                </property>
+                <property name="text">
+                 <string>Property Testing</string>
+                </property>
+                <property name="text">
+                 <string>Positive Test</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </item>
+              <item>
+               <property name="text">
+                <string>deleteTenant</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>3</string>
+                </property>
+                <property name="text">
+                 <string>Property Testing</string>
+                </property>
+                <property name="text">
+                 <string>Positive Test</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>4</string>
+                </property>
+                <property name="text">
+                 <string>Property Testing</string>
+                </property>
+                <property name="text">
+                 <string>Positive Test</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>5</string>
+                </property>
+                <property name="text">
+                 <string>Property Testing</string>
+                </property>
+                <property name="text">
+                 <string>Negative Test</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QTextBrowser" name="textBrowser">
+              <property name="font">
+               <font>
+                <family>JetBrains Mono</family>
+               </font>
+              </property>
+              <property name="html">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Settings ***&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Documentation     Test cases for post /api/v1/profiles.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/setup_teardown.robot&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/global_keywords.robot&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/instantiation_set.robot &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Variables ***&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;${sender}           &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Test Cases ***&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    [Tags]  RESTful  post  positive_test&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    [Documentation]  post  /api/v1/profiles  &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ...              Verify that the `name` field in the request body meets the minimum and maximum length requirements.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# Setup  1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req_1}  ${resp_1}=  Run Keyword ${sender_1}.send_restful   POST CREATETENANT  tenant  &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# `string` parameter with limitations: minimum `1`&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${ranChar}=  Generate String  1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req}  ${resp}=  Run Keyword  ${sender_2}.send_restful  POST CREATEPROFILE  tenant  config_name=Default  data={'name': '${ranChar}'}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Run Keyword If    ${resp.status_code} != ${200}  log  ${resp.content}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Should Be Equal   ${resp.status_code}    ${200}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${parsed_resp}=  ReturnParser.api_parser    ${resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Log  ${parsed_resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# Teardown 1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req_1}  ${resp_1}=  Run Keyword  ${sender}.send_restful   DELETE DELETEPROFILE  tenant  tenant=${parsed_resp['id']}  &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# `string` parameter with limitations: maximum `10`&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${ranChar}=  Generate String  10&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  POST CREATEPROFILE  tenant  config_name=Default  data={'name': '${ranChar}'}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Run Keyword If    ${resp.status_code} != ${200}  log  ${resp.content}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Should Be Equal   ${resp.status_code}    ${200}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${parsed_resp}=  ReturnParser.api_parser    ${resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Log  ${parsed_resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# Teardown 1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req_1}  ${resp_1}=  Run Keyword  ${sender}.send_restful   DELETE DELETEPROFILE  tenant  tenant=${parsed_resp['id']}  &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# `string` parameter with limitations: median `5`&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${ranChar}=  Generate String  5&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  POST CREATEPROFILE  tenant  config_name=Default  data={'name': '${ranChar}'}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Run Keyword If    ${resp.status_code} != ${200}  log  ${resp.content}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Should Be Equal   ${resp.status_code}    ${200}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${parsed_resp}=  ReturnParser.api_parser    ${resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    Log  ${parsed_resp}&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; font-style:italic; color:#000000;&quot;&gt;# Teardown 1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;    ${req_1}  ${resp_1}=  Run Keyword  ${sender}.send_restful   DELETE DELETEPROFILE  tenant  tenant=${parsed_resp['id']}  &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </widget>
-      </item>
-      <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="value">
-         <number>24</number>
-        </property>
+        <widget class="QWidget" name="tab_9">
+         <attribute name="title">
+          <string>Settings</string>
+         </attribute>
+         <widget class="QWidget" name="gridLayoutWidget_9">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>271</width>
+            <height>601</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_18">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="font">
+              <font>
+               <family>JetBrains Mono</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Select All</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="pushButton_8">
+             <property name="font">
+              <font>
+               <family>JetBrains Mono</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Un-Select All</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QGroupBox" name="group_test_strategy">
+             <property name="font">
+              <font>
+               <family>JetBrains Mono</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="title">
+              <string>Test Strategy</string>
+             </property>
+             <widget class="QWidget" name="verticalLayoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>241</width>
+                <height>521</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <widget class="QGroupBox" name="group_positive_test_2">
+                 <property name="font">
+                  <font>
+                   <family>JetBrains Mono</family>
+                   <pointsize>10</pointsize>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Positive Test</string>
+                 </property>
+                 <widget class="QCheckBox" name="ckb_parameter_min_max_3">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>182</width>
+                    <height>24</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>JetBrains Mono</family>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Parameter Min./Max.</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="group_negasitive_test_2">
+                 <property name="font">
+                  <font>
+                   <family>JetBrains Mono</family>
+                  </font>
+                 </property>
+                 <property name="title">
+                  <string>Negative Test</string>
+                 </property>
+                 <widget class="QCheckBox" name="ckb_parameter_min_max_4">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>182</width>
+                    <height>24</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>JetBrains Mono</family>
+                    <pointsize>10</pointsize>
+                    <weight>50</weight>
+                    <bold>false</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Parameter Min./Max.</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </widget>
       </item>
       <item>
@@ -521,19 +2851,36 @@
         <property name="maximumSize">
          <size>
           <width>9999</width>
-          <height>100</height>
+          <height>50</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>JetBrains Mono</family>
+         </font>
         </property>
         <property name="html">
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:9pt;&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU';&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="font">
+       <font>
+        <family>JetBrains Mono</family>
+       </font>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -542,8 +2889,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2132</width>
-     <height>26</height>
+     <width>1651</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

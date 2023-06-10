@@ -7,7 +7,7 @@ import glob
 
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget
 
 class GeneralTool:
     
@@ -123,7 +123,7 @@ class GeneralTool:
         for clean_widget in ui:
             if isinstance(clean_widget, QCheckBox):
                 clean_widget.setChecked(False)
-            elif isinstance(clean_widget, (QTreeWidget, QLineEdit)):
+            elif isinstance(clean_widget, (QTreeWidget, QLineEdit, QListWidget)):
                 clean_widget.clear()
 
     @classmethod
@@ -190,20 +190,16 @@ class GeneralTool:
     def parse_schema_to_path_rule(cls, parameters: dict) -> dict:
         """ To generate a API's path rule file that contains path rules of some fields. """
         path_rule = {}
-        serial_number = 1
         for parameter in parameters:
             if parameter['in'] == 'path':
                 fields = {
-                    'Name': parameter['name'],
-                    "Required": parameter['required'] if 'required' in parameter else False,
-                    "Default": parameter['default'] if 'default' in parameter else "",
-                    'Rule': {
-                        'Type': parameter['schema']['type'],
-                        'Format': parameter['schema']['format'] if 'format' in parameter['schema'] else "",
-                    },
+                    'Type': parameter['schema']['type'],
+                    'Format': parameter['schema']['format'] if 'format' in parameter['schema'] else "",
+                    'Required': parameter['required'] if 'required' in parameter else False,
+                    "Nullable": parameter['schema']['nullable'] if 'nullable' in parameter['schema'] else False,
+                    'Value': parameter['default'] if 'default' in parameter else "",
                 }
-                path_rule[serial_number] = fields
-                serial_number += 1
+                path_rule[parameter['name']] = fields
         return path_rule
 
     @classmethod
@@ -327,7 +323,7 @@ class GeneralTool:
                 
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
-            
+                       
             dependency_rule_table.clear()
             dependency_rule_table.addTopLevelItem(setup_item)
             dependency_rule_table.addTopLevelItem(teardown_item)
