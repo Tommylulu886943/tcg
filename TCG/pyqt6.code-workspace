@@ -5,5 +5,12 @@
 			"path": ".."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"docify.commentService.docstringFormat": "Google",
+		"docify.commentService.programmingLanguage": "python",
+		"docify.commentService.autoTranslationService": "English",
+		"docify.commentService.sidePanelReviewMode": true,
+		"docify.translateService.docstringFormat": "Google",
+		"docify.translateService.programmingLanguage": "python"
+	}
 }

@@ -701,6 +701,9 @@
                           <pointsize>9</pointsize>
                          </font>
                         </property>
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::SingleSelection</enum>
+                        </property>
                         <column>
                          <property name="text">
                           <string>Index</string>
@@ -781,7 +784,7 @@
                       </property>
                       <widget class="QWidget" name="tab_34">
                        <attribute name="title">
-                        <string>Generation Rule</string>
+                        <string>Data Generation Rule</string>
                        </attribute>
                        <layout class="QHBoxLayout" name="horizontalLayout_41">
                         <item>
@@ -1472,7 +1475,7 @@
             <item row="0" column="1" rowspan="3">
              <widget class="QTabWidget" name="Dependency_3">
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">

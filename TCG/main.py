@@ -45,6 +45,12 @@ class MyWindow(QMainWindow):
         self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
         self.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
+        self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
+        self.btn_update_dependency_path.clicked.connect(self.btn_update_dependency_path_clicked)
+        # TODO
+        self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
+        self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
+        self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
         
         # * Table's Item Click Event
         self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -54,12 +60,15 @@ class MyWindow(QMainWindow):
         self.table_path.itemClicked.connect(self.table_path_item_clicked)
         self.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
         self.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
+        self.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
         
         # * Item Changed Event
         self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
         #self.table_assertion_rule.itemChanged.connect(self.assertion_rule_item_changed)
         self.comboBox_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_constraint_rule_src_action_changed)
         self.comboBox_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_constraint_rule_dst_action_changed)
+        self.comboBox_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_dst_action_changed)
+        self.comboBox_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_src_action_changed)
         self.line_api_search.textChanged.connect(self.line_api_search_text_changed)
         
         # * Checkbox Event
@@ -69,18 +78,194 @@ class MyWindow(QMainWindow):
         self.search_completer = QCompleter()
         self.line_api_search.setCompleter(self.search_completer)
         
-    def table_dependency_rule_item_clicked(self):
-        """When the dependency rule item is clicked."""
-        selected_item = self.table_dependency_rule.selectedItems()[0]
+    def btn_dependency_generation_rule_remove_clicked(self):
+        """ Remove Generation Rule Item """
+        
+        # * If no API or Generation Rule is selected, return directly.
+        if len(self.table_dependency_generation_rule.selectedItems()) == 0:
+            return
+        
+        # * Retrieve the origin API Operation ID.
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        origin_api_operation_id = api_selected_item.text(4)
+        
+        
+        # * Retrieve the Dependency Rule Index and Data Generation Rule Field name which should be removed.
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        generation_table_selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        if generation_table_selected_item.parent() is None or generation_table_selected_item.parent().parent() is not None:
+            return
+        else:
+            generation_rule_field_name = generation_table_selected_item.text(0)
+            
+        # * Retrieve the Generation Rule List selected item to get the corresponding path
+        for item in self.table_dependency_generation_rule.selectedItems():
+            path = []
+            while item.parent() is not None:
+                path.insert(0, item.text(0))
+                item = item.parent()
+            # * If toplevel item is selected, return directly.
+            if path == []: return
+                
+        # * Update the value in the JSON file
+        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, 'r+') as f:
+            data = json.load(f)
+            result = GeneralTool.remove_key_in_json(data, [dependency_type, dependency_sequence_num, "Data Generation Rules", *path])
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', *path]}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', *path]}`.")
+        GeneralTool.remove_table_item_from_ui(self.table_dependency_generation_rule)
+        
+    def btn_dependency_constraint_rule_apply_clicked(self):
+        pass
+        
+    def btn_dependency_constraint_rule_clear_clicked(self):
+        """ Clear the Dependency Constraint Rule UI. """
+        GeneralTool.clean_ui_content([
+            self.textbox_dependency_constraint_rule_src, 
+            self.textbox_dependency_constraint_rule_expected_value, 
+            self.textbox_dependency_constraint_rule_dst, 
+            self.textbox_dependency_constraint_rule_dst_value,
+        ])
+        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)        
+        
+    def table_dependency_path_item_clicked(self):
+        
+        if len(self.table_dependency_path.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_dependency_path.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
+        
+            name = selected_item.text(0)
+            value = selected_item.child(4).text(1)
+            self.textbox_path_dependency_name.setText(name)
+            self.textbox_path_dependency_value.setText(value)
+        
+    def btn_remove_dependency_path_clicked(self):
+        
+        if len(self.table_dependency_path.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.table_dependency_path.selectedItems()[0]
+        
+        name = self.textbox_path_dependency_name.text()
+        value = self.textbox_path_dependency_value.text()
+        
+        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "Path Rules", name]
+            result = GeneralTool.remove_key_in_json(data, path)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([self.textbox_path_dependency_name, self.textbox_path_dependency_value, self.table_dependency_path])
+        root_item = QTreeWidgetItem(["Path Parameter"])
+        self.table_dependency_path.addTopLevelItem(root_item)
+        path_rule = data[dependency_type][dependency_sequence_num]["Path Rules"]
+        GeneralTool.parse_request_body(path_rule, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_path, expand=True)
+    
+    def btn_update_dependency_path_clicked(self):
+        
+        if len(self.table_dependency_path.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.table_dependency_path.selectedItems()[0]
+        
+        name = self.textbox_path_dependency_name.text()
+        value = self.textbox_path_dependency_value.text()
+        
+        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "Path Rules", name, "Value"]
+            result = GeneralTool.update_value_in_json(data, path, value)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([self.textbox_path_dependency_name, self.textbox_path_dependency_value, self.table_dependency_path])
+        root_item = QTreeWidgetItem(["Path Parameter"])
+        self.table_dependency_path.addTopLevelItem(root_item)
+        path_rule = data[dependency_type][dependency_sequence_num]["Path Rules"]
+        GeneralTool.parse_request_body(path_rule, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_path, expand=True)        
+        
+        
+    def table_dependency_rule_item_clicked(self):
+        
+        # * Render the Dependency Action's Data Generation Rule and Path Rule and Schema.
+        GeneralTool.clean_ui_content([
+            self.table_dependency_generation_rule,
+            self.table_dependency_path,
+            self.table_dependency_schema,
+            self.textbox_path_dependency_name,
+            self.textbox_path_dependency_value,
+        ])
+
+        selected_item = self.table_dependency_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+
+        if parent_item and parent_item.parent() is None:
+            # * Render the Dependency Rule Mangement UI for the update action.
             self.comboBox_dependency_type.setCurrentText(parent_item.text(0))
             self.line_api_search.setText(selected_item.child(0).text(1))
             self.textbox_dependency_return_variable_name.setText(selected_item.child(1).text(1))
             self.comboBox_dependency_type.setEnabled(False)
+            self.line_api_search.setEnabled(False)
+            
+            api_tree_selected_item = self.table_api_tree.selectedItems()[0]
+            dependency_type = parent_item.text(0)
+            sequence_num = selected_item.text(0)
+            origin_api_operation_id = api_tree_selected_item.text(4)
+            with open(f"./DependencyRule/{origin_api_operation_id}.json", "r") as f:
+                data = json.load(f)[dependency_type][sequence_num]
+                
+            # * Render the Data Generation Rule and Path Rule and Schema.
+            if "Data Generation Rules" in data:
+                root_item = QTreeWidgetItem(["Data Generation Rule"])
+                self.table_dependency_generation_rule.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["Data Generation Rules"], root_item, editabled=True)
+                GeneralTool.expand_and_resize_tree(self.table_generation_rule, expand=False)
+            else:
+                logging.info(f"Data Generation Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
+            
+            # * Render the Path Rule
+            if "Path Rules" in data:
+                root_item = QTreeWidgetItem(["Path Parameter"])
+                self.table_dependency_path.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["Path Rules"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_path, expand=True)
+            else:
+                logging.info(f"Path Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
         else:
             self.comboBox_dependency_type.setEnabled(True)
+            self.line_api_search.setEnabled(True)
         
     def btn_add_dependency_rule_clicked(self):
         """Add Dependency Rule Item"""
@@ -92,20 +277,19 @@ class MyWindow(QMainWindow):
         dependency_type = self.comboBox_dependency_type.currentText()
         api = self.line_api_search.text()
         return_name = self.textbox_dependency_return_variable_name.text()
+        if api == "" or return_name == "":
+            logging.error(f"API or Return Name is empty.")
+            return
         
         file_path = f"./DependencyRule/{operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             if data[dependency_type]:
                 sequence_num = max(int(key) for key in data[dependency_type].keys()) + 1
+                sequence_num = str(sequence_num)
             else:
-                sequence_num = 1
-            new_value = {
-                "API": api, 
-                "Response Name": return_name,
-                "Data Generation Rules": {},
-                "Path Rule": {},
-            }
+                sequence_num = '1'
+            new_value = {"API": api, "Response Name": return_name,}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
                 f.seek(0)
@@ -119,6 +303,9 @@ class MyWindow(QMainWindow):
         GeneralTool.clean_ui_content([self.line_api_search, self.textbox_dependency_return_variable_name])
         GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
         GeneralTool.expand_and_resize_tree(self.table_dependency_rule)
+        
+        # * Generate the Data Generation Rule and Path Rule and Schema.
+        self._create_dependency_generation_rule_and_path_rule(api, operation_id, dependency_type, sequence_num)
         
     def btn_remove_dependency_rule_clicked(self):
         """Remove Dependency Rule Item"""
@@ -147,6 +334,7 @@ class MyWindow(QMainWindow):
             
             self.comboBox_dependency_type.setCurrentText("Setup")
             self.comboBox_dependency_type.setEnabled(True)
+            self.line_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([self.line_api_search, self.textbox_dependency_return_variable_name])
             GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
             GeneralTool.expand_and_resize_tree(self.table_dependency_rule)
@@ -168,20 +356,31 @@ class MyWindow(QMainWindow):
             file_path = f"./DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
-                path = [dependency_type, self.table_dependency_rule.selectedItems()[0].text(0)]
-                value = {"API": api, "Response Name": return_name}
-                result = GeneralTool.update_value_in_json(data, path, value)
-                if result is not False:
-                    f.seek(0)
-                    json.dump(data, f, indent=4)
-                    f.truncate()
-                    logging.info(f"Update JSON file `{file_path}` with new value `{[dependency_type, path, value]}`.")
-                else:
-                    logging.error(f"Error updating JSON file `{file_path}` with new value `{[dependency_type, path, value]}`.")
+                sequence_num = selected_item.text(0)
+                
+                updates = {"API": api, "Response Name": return_name}
+                for key, value in updates.items():
+                    result = GeneralTool.update_value_in_json(data, [dependency_type, sequence_num, key], value)
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Successfully updating JSON file `{file_path}` to update key `{[dependency_type, sequence_num, key, value]}`.")
+                    else:
+                        logging.error(f"Error updating JSON file `{file_path}` to update key `{[dependency_type, sequence_num, key, value]}`.")
             
             self.comboBox_dependency_type.setCurrentText("Setup")
             self.comboBox_dependency_type.setEnabled(True)
-            GeneralTool.clean_ui_content([self.line_api_search, self.textbox_dependency_return_variable_name])
+            self.line_api_search.setEnabled(True)
+            GeneralTool.clean_ui_content([
+                self.line_api_search,
+                self.textbox_dependency_return_variable_name,
+                self.table_dependency_schema,
+                self.table_dependency_path,
+                self.table_dependency_generation_rule,
+                self.textbox_path_dependency_name,
+                self.textbox_path_dependency_value,  
+            ])
             GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
             GeneralTool.expand_and_resize_tree(self.table_dependency_rule)
 
@@ -274,20 +473,62 @@ class MyWindow(QMainWindow):
         elif current_text == "Set":
             self.comboBox_constraint_rule_condition.addItems(["WITH"])
             
+    def comboBox_dependency_constraint_rule_src_action_changed(self):
+        current_text = self.comboBox_dependency_constraint_rule_src_action.currentText()
+        self.comboBox_dependency_constraint_rule_condition.clear()
+        
+        if current_text == "If":
+            self.comboBox_dependency_constraint_rule_condition.addItems(["==", "!=", ">", "<", ">=", "<="])
+        elif current_text == "Set":
+            self.comboBox_dependency_constraint_rule_condition.addItems(["WITH"])
+            
     def comboBox_constraint_rule_dst_action_changed(self):
         current_text = self.comboBox_constraint_rule_dst_action.currentText()
-        self.comboBox_constraint_dst_action_type.clear()
-        self.textbox_constraint_rule_dst_value.clear()
+        GeneralTool.clean_ui_content([
+            self.comboBox_constraint_dst_action_type,
+            self.textbox_constraint_rule_dst_value
+        ])
         
         if current_text == "Then Set":
             self.comboBox_constraint_dst_action_type.setEnabled(True)
-            self.comboBox_constraint_dst_action_type.addItems(["WITH"])
+            index = self.comboBox_constraint_dst_action_type.findText("WITH")
+            if index >= 0:
+                self.comboBox_constraint_dst_action_type.setCurrentIndex(index)
+            else:
+                self.comboBox_constraint_dst_action_type.addItems(["WITH"])
+                self.comboBox_constraint_dst_action_type.setCurrentIndex(index)
             self.textbox_constraint_rule_dst_value.setEnabled(True)
             self.checkBox_constraint_rule_wildcard.setEnabled(False)
         elif current_text == "Then Remove":
+            self.comboBox_constraint_dst_action_type.setCurrentIndex(0)
             self.comboBox_constraint_dst_action_type.setEnabled(False)
             self.textbox_constraint_rule_dst_value.setEnabled(False)
             self.checkBox_constraint_rule_wildcard.setEnabled(True)
+            
+    def comboBox_dependency_constraint_rule_dst_action_changed(self):
+        current_text = self.comboBox_dependency_constraint_rule_dst_action.currentText()
+        GeneralTool.clean_ui_content([
+            self.comboBox_dependency_constraint_dst_action_type,
+            self.textbox_dependency_constraint_rule_dst_value
+        ])
+        
+        if current_text == "Then Set":
+            self.comboBox_dependency_constraint_dst_action_type.setEnabled(True)
+            index = self.comboBox_dependency_constraint_dst_action_type.findText("WITH")
+            if index >= 0:
+                self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(index)
+            else:
+                self.comboBox_dependency_constraint_dst_action_type.addItems(["WITH"])
+                self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(index)
+                
+            self.textbox_dependency_constraint_rule_dst_value.setEnabled(True)
+            self.checkBox_dependency_constraint_rule_wildcard.setEnabled(False)
+            
+        elif current_text == "Then Remove":
+            self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(0)
+            self.comboBox_dependency_constraint_dst_action_type.setEnabled(False)
+            self.textbox_dependency_constraint_rule_dst_value.setEnabled(False)
+            self.checkBox_dependency_constraint_rule_wildcard.setEnabled(True)
             
     def btn_constraint_rule_clear_clicked(self):
         """ Clear the Constraint Rule UI. """
@@ -315,6 +556,8 @@ class MyWindow(QMainWindow):
         else:
             operation_id = self.table_api_tree.selectedItems()[0].text(4)
             file_path = f"./GenerationRule/{operation_id}.json"
+            if os.path.exists(file_path) is False:
+                return
             
         # * Pre Action
         if src_action == "Set":
@@ -651,6 +894,60 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update JSON file `{file_path}` with new value `{new_value}` at path `{path}`.")
             else:
                 logging.error(f"Error updating JSON file `{file_path}` with new value `{new_value}` at path `{path}`.")
+                
+    def _create_dependency_generation_rule_and_path_rule(
+        self, 
+        api_name : str, 
+        original_operation_id : str,
+        dependency_type : str,
+        sequence_num : str,
+    ):
+        """Create Dependency's Data Generation Rule and Path Rule Files and Schema File.
+
+        Args:
+            api_name: Which API to create the G_Rule and P_Rule and Schema File.
+            original_operation_id: Which original API to create this dependency API.
+        """
+        api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
+        for schema in glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml"):
+            api_doc = GeneralTool.load_schema_file(schema)
+            for uri, path_item in api_doc['paths'].items():
+                if uri == api_uri:
+                    for method, operation in path_item.items():
+                        if method == api_method:
+                            operation_id = operation['operationId']
+                            # * Create the Data Generation Rule File
+                            if method in ["post", "put", "patch", "delete"] and 'requestBody' in operation:
+                                # * WARNING: Only support the first content type now.
+                                first_content_type = next(iter(operation['requestBody']['content']))
+                                request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
+                                request_body_schema = GeneralTool.retrive_ref_schema(api_doc, request_body_schema)
+                                generation_rule = GeneralTool.parse_schema_to_generation_rule(request_body_schema)
+                                with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+                                    data = json.load(f)
+                                    result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num],"Data Generation Rules" , generation_rule)
+                                    if result is not False:
+                                        f.seek(0)
+                                        json.dump(data, f, indent=4)
+                                        f.truncate()
+                                        logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
+                                    else:
+                                        logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
+                            
+                            # * Create the Path Rule File
+                            if "{" in uri and "}" in uri and 'parameters' in operation:
+                                path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
+                                with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+                                    data = json.load(f)
+                                    result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "Path Rules", path_rule)
+                                    if result is not False:
+                                        f.seek(0)
+                                        json.dump(data, f, indent=4)
+                                        f.truncate()
+                                        logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")
+                                    else:
+                                        logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")    
+                            break
         
     def _create_generation_rule_and_assertion_files(self):
         """ Create Generation Rule and Assertion Files """
@@ -930,9 +1227,15 @@ class MyWindow(QMainWindow):
             self.table_generation_rule, 
             self.table_assertion_rule, 
             self.table_path,
-            self.table_dependency_rule
+            self.table_dependency_rule,
+            self.table_dependency_path,
+            self.table_dependency_generation_rule,
+            self.table_dependency_schema,
+            self.line_api_search,
+            self.textbox_dependency_return_variable_name,
         ])
         self.comboBox_dependency_type.setEnabled(True)
+        self.line_api_search.setEnabled(True)
         
         # * If the column is top level, return
         if column == 0:
@@ -941,7 +1244,6 @@ class MyWindow(QMainWindow):
         # * If the use case item is clicked.
         selected_item = self.table_api_tree.selectedItems()[0]
         parent_item = selected_item.parent()
-        # * If the use case item is clicked.
         if parent_item is not None and parent_item.parent() is not None:
             
             # * Render the Generation Rule from the file.

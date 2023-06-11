@@ -13,9 +13,22 @@ class GeneralTool:
     
     @classmethod
     def collect_items_from_top_level(cls, tree, top_level_text, column_num=0):
-        """ To collect all items from a QTreeWidget's top level. """
+        """
+         Collects all items from a QTreeWidget's top level. This is a convenience method for
+         
+         Args:
+         	 cls: The class to use for collection
+         	 tree: The QTreeWidget to search for items
+         	 top_level_text: The text of the top level
+         	 column_num: The column number to start collecting from
+         
+         Returns: 
+         	 A list of items that were found in the Q
+        """
+        # Collect all items in the tree.
         for i in range(tree.topLevelItemCount()):
             top_level_item = tree.topLevelItem(i)
+            # Collect items from top level item.
             if top_level_item.text(0) == top_level_text:
                 return cls.collect_items(top_level_item, column_num)
         return []
@@ -321,9 +334,17 @@ class GeneralTool:
             with open(file_path, "r") as f:
                 dependency_rule = json.load(f)
                 
+            # Exclude fields
+            for section in ['Setup', 'Teardown']:
+                for key in dependency_rule[section]:
+                    if 'Data Generation Rules' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['Data Generation Rules']
+                    if 'Path Rules' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['Path Rules']
+                                        
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
-                       
+            
             dependency_rule_table.clear()
             dependency_rule_table.addTopLevelItem(setup_item)
             dependency_rule_table.addTopLevelItem(teardown_item)
