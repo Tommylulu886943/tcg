@@ -73,6 +73,7 @@ class MyWindow(QMainWindow):
         
         # * Checkbox Event
         self.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
+        self.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
         
         # * Completer Event
         self.search_completer = QCompleter()
@@ -121,9 +122,106 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', *path]}`.")
         GeneralTool.remove_table_item_from_ui(self.table_dependency_generation_rule)
+
+    def checkBox_dependency_constraint_rule_wildcard_changed(self):
+        if self.checkBox_dependency_constraint_rule_wildcard.isChecked():
+            dst_path = self.textbox_dependency_constraint_rule_dst.text()
+            if dst_path != "":
+                dst_path = dst_path.split(".")[0] + ".*"
+        else:
+            dst_path = self.textbox_dependency_constraint_rule_dst.text()
+            if ".*" in dst_path:
+                dst_path = dst_path.replace(".*", "")
+                
+        self.textbox_dependency_constraint_rule_dst.setText(dst_path)
         
     def btn_dependency_constraint_rule_apply_clicked(self):
-        pass
+        src_action = self.comboBox_dependency_constraint_rule_src_action.currentText()
+        src_path = self.textbox_dependency_constraint_rule_src.text()
+        src_condition = self.comboBox_dependency_constraint_rule_condition.currentText()
+        src_expected_value = self.textbox_dependency_constraint_rule_expected_value.text()
+        dst_path = self.textbox_dependency_constraint_rule_dst.text()
+        dst_action = self.comboBox_dependency_constraint_rule_dst_action.currentText()
+        dst_action_type = self.comboBox_dependency_constraint_dst_action_type.currentText()
+        dst_value = self.textbox_dependency_constraint_rule_dst_value.text()
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        
+        if len(self.table_dependency_rule.selectedItems()) == 0:
+            return
+        else:
+            operation_id = self.table_api_tree.selectedItems()[0].text(4)
+            file_path = f"./DependencyRule/{operation_id}.json"
+            
+        if src_action == "Set":
+            if src_condition == "WITH":
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    result = GeneralTool.update_value_in_json(
+                        data, 
+                        [dependency_type, dependency_sequence_num, "Data Generation Rules", src_path, "Default"],
+                        src_expected_value
+                    )
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Successfully updating JSON file `{file_path}` to update key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', src_path, 'Value', src_expected_value]}`.")
+                    else:
+                        logging.error(f"Error updating JSON file `{file_path}` to update key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', src_path, 'Value', src_expected_value]}`.")
+        elif src_action == "If":
+            pass
+        
+        # * Post Action
+        if dst_action == "Then Remove":
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                if ".*" in dst_path:
+                    result = GeneralTool.remove_key_in_json(data, [dependency_type, dependency_sequence_num, "Data Generation Rules", dst_path.split(".")[0]])
+                else:
+                    result = GeneralTool.remove_key_in_json(data, [dependency_type, dependency_sequence_num, "Data Generation Rules", dst_path])
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', dst_path]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', dst_path]}`.")
+        elif dst_action == "Then Set":
+            if dst_action_type == "WITH":
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    result = GeneralTool.update_value_in_json(
+                        data,
+                        [dependency_type, dependency_sequence_num, "Data Generation Rules", dst_path, "Default"],
+                        dst_value
+                    )
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Successfully updating JSON file `{file_path}` to update key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', dst_path, 'Value', dst_value]}`.")
+                    else:
+                        logging.error(f"Error updating JSON file `{file_path}` to update key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', dst_path, 'Value', dst_value]}`.")
+        
+        # * Refresh the Dependency Generation Rule Table
+        root_item = QTreeWidgetItem(["Data Generation Rule"])
+        self.table_dependency_generation_rule.clear()
+        self.table_dependency_generation_rule.addTopLevelItem(root_item)
+        GeneralTool.parse_request_body(data[dependency_type][dependency_sequence_num]["Data Generation Rules"], root_item, editabled=True)
+        GeneralTool.expand_and_resize_tree(self.table_dependency_generation_rule, 0)
+        # * Clear the constraint rule UI
+        GeneralTool.clean_ui_content([
+            self.textbox_dependency_constraint_rule_src,
+            self.textbox_dependency_constraint_rule_expected_value,
+            self.textbox_dependency_constraint_rule_dst,
+            self.textbox_dependency_constraint_rule_dst_value,
+        ])
+        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
+        self.comboBox_dependency_constraint_rule_dst_action.setCurrentText("Then Remove")
+        self.comboBox_dependency_constraint_dst_action_type.setCurrentText("")
+        self.comboBox_dependency_constraint_dst_action_type.setEnabled(False)
+        self.textbox_dependency_constraint_rule_dst_value.setEnabled(False)
         
     def btn_dependency_constraint_rule_clear_clicked(self):
         """ Clear the Dependency Constraint Rule UI. """
@@ -606,7 +704,7 @@ class MyWindow(QMainWindow):
                         logging.error(f"Error updating JSON file `{file_path}` to set key `{[dst_path, dst_value]}`.")
         
         # * Refresh the Generation Rule Table
-        GeneralTool.refresh_generation_rule_table(self.table_api_tree, self.table_generation_rule)
+        GeneralTool.refresh_generation_rule_table(self.table_api_tree, self.table_generation_rule, file_path)
         GeneralTool.expand_and_resize_tree(self.table_generation_rule, 0)
         # * Teardown the Constraint Rule UI
         for clean_item in [

@@ -157,15 +157,14 @@ class GeneralTool:
         return api_doc
     
     @classmethod
-    def refresh_generation_rule_table(cls, api_tree: object, generation_rule_table: object) -> None:
+    def refresh_generation_rule_table(cls, api_tree: object, generation_rule_table: object, file_path: str) -> None:
         selected_api = api_tree.selectedItems()[0]
         api_parent = selected_api.parent()
         if api_parent is not None:
-            operation_id = selected_api.text(4)
             root_item = QTreeWidgetItem(["Data Generation Rule"])
             generation_rule_table.clear()
             generation_rule_table.addTopLevelItem(root_item)
-            with open(f"./GenerationRule/{operation_id}.json", "r") as f:
+            with open(file_path, "r") as f:
                 generation_rule = json.load(f)
             cls.parse_request_body(generation_rule, root_item, editabled=True)
             
