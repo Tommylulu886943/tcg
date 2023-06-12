@@ -111,6 +111,49 @@ class GeneralTool:
         for key in list(data.keys()):
             if matched_name in key:
                 del data[key]
+                
+    @classmethod
+    def generate_tcg_config(cls, test_strategies):
+        config_file_path = "config/tcg_config.json"
+        tcg_config = {
+            "config": {
+                "test_strategy": {
+                    "positive_test": [],
+                    "negative_test": []
+                }
+            }
+        }
+        for strategy in test_strategies:
+            if strategy.isChecked():
+                test_type = strategy.parent().title()
+                name = strategy.text()
+            else:
+                continue
+
+            if test_type == "Positive Test":
+                test_type = "positive_test"
+                if name == "Parameter Min./Max.":
+                    name = "parameter_min_max_test"
+            elif test_type == "Negative Test":
+                test_type = "negative_test"
+                if name == "Parameter Min./Max.":
+                    name = "parameter_min_max_test" 
+
+            tcg_config["config"]["test_strategy"][test_type].append(name)
+
+        with open(config_file_path, "w") as f:
+            json.dump(tcg_config, f, indent=4)
+                
+    @classmethod
+    def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata):
+        for test_type in tcg_config['config']['test_strategy']:
+            for test_strategy in tcg_config['config']['test_strategy'][test_type]:
+                test_strategy_func = getattr(TestStrategy, test_strategy)
+                serial_number = test_strategy_func(
+                    test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata
+                )
+                logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
+        return serial_number
     
     @classmethod
     def expand_and_resize_tree(cls, tree, expand=True):

@@ -1,6 +1,5 @@
 import os
 import sys
-import yaml
 import logging
 import json
 import copy
@@ -16,7 +15,7 @@ class TestStrategy:
     
     @classmethod
     def init_test_plan(cls, uri: str, method: str, operationId: str) -> str:
-        """Write basic test plan information to test plan .yaml file.
+        """Write basic test plan information to test plan .json file.
 
         Args:
             uri: The uri of the test case.
@@ -24,7 +23,7 @@ class TestStrategy:
             operationId: The operationId of the test case.
 
         Returns:
-            The path of the test plan .yaml file.
+            The path of the test plan .json file.
         """        
         basic_test_plan = {
             'test_info': {
@@ -32,32 +31,17 @@ class TestStrategy:
                 'method': method,
                 'uri': uri,
                 'operationId': operationId,
-                'suit_setup': [
-                    {
-                        "1": {
-                            "uri": None,
-                            "method": None,
-                        }
-                    }
-                ],
-                'suit_teardown': [
-                    {
-                        "1": {
-                            "uri": None,
-                            "method": None,
-                        }
-                    }
-                ]
+
             },
             'test_cases': {}
         }
         
         if not os.path.exists('test_plan'):
             os.makedirs('test_plan')
-        test_plan_path = f'test_plan/{operationId}.yaml'
+        test_plan_path = f'test_plan/{operationId}.json'
         with open(test_plan_path, 'w', encoding='utf-8') as f:
-            yaml.dump(basic_test_plan, f, allow_unicode=True, sort_keys=False)
-            
+            json.dump(basic_test_plan, f, ensure_ascii=False, sort_keys=False)
+ 
         return test_plan_path
     
     @classmethod
@@ -199,11 +183,11 @@ class TestStrategy:
                 logging.debug(f'parsed_json: {parsed_json}')
                 
             with open(test_plan_path, 'r', encoding='utf-8') as f:
-                existing_test_plan = yaml.safe_load(f)
+                existing_test_plan = json.load(f)
             existing_test_plan['test_cases'][serial_number] = parsed_json
             
             with open(test_plan_path, 'w', encoding='utf-8') as f:
-                yaml.dump(existing_test_plan, f, allow_unicode=True, sort_keys=False)
+                json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
 
             serial_number += 1
             

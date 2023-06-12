@@ -11,6 +11,10 @@
 		"docify.commentService.autoTranslationService": "English",
 		"docify.commentService.sidePanelReviewMode": true,
 		"docify.translateService.docstringFormat": "Google",
-		"docify.translateService.programmingLanguage": "python"
+		"docify.translateService.programmingLanguage": "python",
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+		},
+		"python.formatting.provider": "none"
 	}
 }

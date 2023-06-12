@@ -47,7 +47,6 @@ class MyWindow(QMainWindow):
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
         self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
         self.btn_update_dependency_path.clicked.connect(self.btn_update_dependency_path_clicked)
-        # TODO
         self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
         self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
         self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
@@ -124,15 +123,13 @@ class MyWindow(QMainWindow):
         GeneralTool.remove_table_item_from_ui(self.table_dependency_generation_rule)
 
     def checkBox_dependency_constraint_rule_wildcard_changed(self):
+        dst_path = self.textbox_dependency_constraint_rule_dst.text()
         if self.checkBox_dependency_constraint_rule_wildcard.isChecked():
-            dst_path = self.textbox_dependency_constraint_rule_dst.text()
             if dst_path != "":
                 dst_path = dst_path.split(".")[0] + ".*"
         else:
-            dst_path = self.textbox_dependency_constraint_rule_dst.text()
             if ".*" in dst_path:
                 dst_path = dst_path.replace(".*", "")
-                
         self.textbox_dependency_constraint_rule_dst.setText(dst_path)
         
     def btn_dependency_constraint_rule_apply_clicked(self):
@@ -444,12 +441,16 @@ class MyWindow(QMainWindow):
             return
         
         selected_item = self.table_dependency_rule.selectedItems()[0]
+        selected_item_api_name = selected_item.child(0).text(1)
         parent_item = selected_item.parent()
 
         if parent_item and parent_item.parent() is None:
             operation_id = self.table_api_tree.selectedItems()[0].text(4)
             dependency_type = self.comboBox_dependency_type.currentText()
             api = self.line_api_search.text()
+            if api != selected_item_api_name:
+                logging.error(f"API name cannot be changed.")
+                return
             return_name = self.textbox_dependency_return_variable_name.text()
             file_path = f"./DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
@@ -554,13 +555,14 @@ class MyWindow(QMainWindow):
             GeneralTool.expand_and_resize_tree(self.table_path)
         
     def checkBox_constraint_rule_wildcard_changed(self):
+        dst_path = self.textbox_constraint_rule_dst.text()
         if self.checkBox_constraint_rule_wildcard.isChecked():
-            dst_path = self.textbox_constraint_rule_dst.text()
             if dst_path != "":
                 dst_path = dst_path.split(".")[0] + ".*"
-                self.textbox_constraint_rule_dst.setText(dst_path)
         else:
-            return
+            if ".*" in dst_path:
+                dst_path = dst_path.replace(".*", "")
+        self.textbox_constraint_rule_dst.setText(dst_path)
         
     def comboBox_constraint_rule_src_action_changed(self):
         current_text = self.comboBox_constraint_rule_src_action.currentText()
@@ -574,7 +576,7 @@ class MyWindow(QMainWindow):
     def comboBox_dependency_constraint_rule_src_action_changed(self):
         current_text = self.comboBox_dependency_constraint_rule_src_action.currentText()
         self.comboBox_dependency_constraint_rule_condition.clear()
-        
+
         if current_text == "If":
             self.comboBox_dependency_constraint_rule_condition.addItems(["==", "!=", ">", "<", ">=", "<="])
         elif current_text == "Set":
@@ -1146,74 +1148,51 @@ class MyWindow(QMainWindow):
         """ Generate Test Plan """
         
         # * Generate TCG Config
-        config_file_path = "config/tcg_config.json"
-        test_strategies = self.group_test_strategy.findChildren(QCheckBox)
-        tcg_config = {
-            "config": {
-                "test_strategy": {
-                    "positive_test": [],
-                    "negative_test": []
-                }
-            }
-        }
-        for strategy in test_strategies:
-            if strategy.isChecked():
-                test_type = strategy.parent().title()
-                name = strategy.text()
-            else:
-                continue
-            
-            if test_type == "Positive Test":
-                test_type = "positive_test"
-                if name == "Parameter Min./Max.":
-                    name = "parameter_min_max_test"
-            elif test_type == "Negative Test":
-                test_type = "negative_test"
-                if name == "Parameter Min./Max.":
-                    name = "parameter_min_max_test" 
-                    
-            tcg_config["config"]["test_strategy"][test_type].append(name)
-        
-        with open(config_file_path, "w") as f:
-            json.dump(tcg_config, f, indent=4)
+        GeneralTool.generate_tcg_config(self.group_test_strategy.findChildren(QCheckBox))
+        with open(f"config/tcg_config.json", "r") as f:
+            tcg_config = json.load(f)
             
         # * Generate Test Plan
         GeneralTool.teardown_folder_files(["./test_plan", "./TestData"])  
         serial_number = 1
-        # * To obtain the included Schema List
-        included_api_doc = [self.table_api_tree.topLevelItem(i).text(0) for i in range(self.table_api_tree.topLevelItemCount())]
-        for openapi_file in included_api_doc:
+        for i in range(self.table_api_tree.topLevelItemCount()):
+            schema_item = self.table_api_tree.topLevelItem(i)
             # * To obtain the Api Doc Path
             exts = ["json", "yaml", "yml"]
             for ext in exts:
-                files = glob.glob(f"./schemas/{openapi_file}.{ext}")
+                files = glob.glob(f"./schemas/{schema_item.text(0)}.{ext}")
                 if files:
-                    api_doc = GeneralTool.load_schema_file(files[0])
+                    schema = GeneralTool.load_schema_file(files[0])
                     break
-            # * To obtain the included api list
-            included_api = GeneralTool.collect_items_from_top_level(self.table_api_tree, openapi_file, 4)
-            included_api = list(filter(None, included_api))
-            for uri, path_item in api_doc['paths'].items():
-                for method, operation in path_item.items():
-                    operation_id = operation['operationId']
-                    # * If the operation id is not in the included api list, skip it.
-                    if operation_id not in included_api:
-                        continue
-                    test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
-                    # * Call the data builder to generate base test data.
-                    testdata = DataBuilder.init_test_data(operation_id)
-                    for test_type in tcg_config['config']['test_strategy']:
-                        for test_strategy in tcg_config['config']['test_strategy'][test_type]:
-                            test_strategy_func = getattr(TestStrategy, test_strategy)
-                            serial_number = test_strategy_func(test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata)
-                            logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
-                            self.tabTCG.setCurrentIndex(1)
+            for api_i in range(schema_item.childCount()):
+                api_item = schema_item.child(api_i)
+                target_operation_id = api_item.text(4)
+                for uri, path_item in schema['paths'].items():
+                        for method, operation in path_item.items():
+                            operation_id = operation['operationId']
+                            if operation_id == target_operation_id:                
+                                if api_item.childCount() == 0:
+                                    test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
+                                    testdata = DataBuilder.init_test_data(operation_id)        
+                                    GeneralTool.generate_test_cases(
+                                        tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata
+                                    )
+                                elif api_item.childCount() > 0:
+                                    for use_case_i in range(api_item.childCount()):
+                                        use_case_item = api_item.child(use_case_i)
+                                        use_case_operation_id = use_case_item.text(4)
+                                        test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
+                                        testdata = DataBuilder.init_test_data(use_case_operation_id)
+                                        GeneralTool.generate_test_cases(
+                                            tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata 
+                                        )
+                                self.tabTCG.setCurrentIndex(1)
         
         # * Render Test Plan to Table
         self.table_test_plan_api_list.clear()
-        for test_plan in glob.glob("test_plan/*.yaml"):
+        for test_plan in glob.glob("test_plan/*.json"):
             with open(test_plan, "r") as f:
-                test_plan = yaml.load(f, Loader=yaml.FullLoader)
+                test_plan = json.load(f)
             file_name = test_plan['test_info']['operationId']
             toplevel_length = self.table_test_plan_api_list.topLevelItemCount()
             self.table_test_plan_api_list.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
@@ -1288,9 +1267,9 @@ class MyWindow(QMainWindow):
             test_plan_name = parent.parent().text(0)
             test_id, test_strategy, test_type, test_point = item.text(1), parent.text(2), parent.text(3), item.text(4)
             logging.debug(f"Test Point Index: {test_id}")
-            with open(f"test_plan/{test_plan_name}.yaml", "r") as f:
-                test_plan = yaml.load(f, Loader=yaml.FullLoader)
-            test_case_id = int(test_id.split(".")[0])
+            with open(f"test_plan/{test_plan_name}.json", "r") as f:
+                test_plan = json.load(f)
+            test_case_id = test_id.split(".")[0]
             test_point_id = test_id.split(".")[1]
             
             setup_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['action']['setup']
