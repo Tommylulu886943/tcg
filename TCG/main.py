@@ -1272,20 +1272,21 @@ class MyWindow(QMainWindow):
             test_case_id = test_id.split(".")[0]
             test_point_id = test_id.split(".")[1]
             
-            setup_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['action']['setup']
+            setup_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']['Setup']
             if setup_set is not None:
                 for index, test_setup in setup_set.items():
+                    print(test_setup)
                     logging.debug(f"Test Setup: {test_setup}, Index: {index}")
                     self.table_tc_dependency.addTopLevelItem(
-                        QtWidgets.QTreeWidgetItem([test_setup['action_type'], test_setup['object']])
+                        QtWidgets.QTreeWidgetItem([test_setup['API'], test_setup['Response Name']])
                     )
                     
-            teardown_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['action']['teardown']
+            teardown_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']['Teardown']
             if teardown_set is not None:
                 for index, test_teardown in teardown_set.items():
                     logging.debug(f"Test Teardown: {test_teardown}, Index: {index}")
                     self.table_tc_dependency.addTopLevelItem(
-                        QtWidgets.QTreeWidgetItem([test_teardown['action_type'], test_teardown['object']])
+                        QtWidgets.QTreeWidgetItem([test_teardown['API'], test_teardown['Response Name']])
                     )
                     
             # * Render the request body in text box.

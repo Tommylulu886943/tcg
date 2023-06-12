@@ -112,6 +112,23 @@ class TestStrategy:
             # TODO : 上面的template 需要重新整理
             # TODO : 上方的數據生成器需要重新整理，需要考慮一下能否復用或簡化
             
+            # * Load assertion rule
+            with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+                assertion_rule = json.load(f)
+                if test_type == 'negative_test':
+                    assertion_rule = assertion_rule["negative"]
+                elif test_type == 'positive_test':
+                    assertion_rule = assertion_rule["positive"]
+            
+            # *　Load Dependency rule
+            with open(f"./DependencyRule/{operation_id}.json", 'r') as f:
+                dependency_rule = json.load(f)
+                
+            # * Load Path rule
+            if os.path.exists(f"./PathRule/{operation_id}.json"):
+                with open(f"./PathRule/{operation_id}.json", 'r') as f:
+                    path_rule = json.load(f)
+            
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
                 DataBuilder._create_nested_dict(min_testdata, keys, min_value)
@@ -148,6 +165,7 @@ class TestStrategy:
                     median_value_info=int((min_len + max_len) / 2),
                     median_testdata=f"{operation_id}_{serial_number}_3",
                 )
+                    
             elif test_type == 'negative_test':
                 
                 under_min_value_testdata = copy.deepcopy(baseline_data)
@@ -176,9 +194,15 @@ class TestStrategy:
                     max_value_info=int(max_len + 1),
                     max_testdata=f"{operation_id}_{serial_number}_2",
                 )
+
                 
             parsed_json = json.loads(rendered_template)
-            
+            for i in range(1, len(parsed_json['test_point']) + 1):
+                parsed_json['test_point'][str(i)]['dependency'] = dependency_rule
+                if os.path.exists(f"./PathRule/{operation_id}.json"):
+                    parsed_json['test_point'][str(i)]['path'] = path_rule
+                parsed_json['test_point'][str(i)]['assertion'] = assertion_rule
+                               
             if DEBUG:
                 logging.debug(f'parsed_json: {parsed_json}')
                 
