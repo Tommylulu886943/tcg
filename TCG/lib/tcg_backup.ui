@@ -27,7 +27,8 @@
        <widget class="QTabWidget" name="tabTCG">
         <property name="font">
          <font>
-          <family>JetBrains Mono</family>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="currentIndex">
@@ -192,14 +193,20 @@
                <widget class="QTabWidget" name="tabWidget_2">
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
-                  <pointsize>8</pointsize>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
                 <widget class="QWidget" name="tab_3">
+                 <property name="font">
+                  <font>
+                   <family>MS Shell Dlg 2</family>
+                   <pointsize>10</pointsize>
+                  </font>
+                 </property>
                  <attribute name="title">
                   <string>Data Generation Rule</string>
                  </attribute>
@@ -216,8 +223,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
@@ -236,7 +243,8 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>JetBrains Mono</family>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
                           </font>
                          </property>
                          <property name="text">
@@ -246,6 +254,12 @@
                        </item>
                        <item row="0" column="2" colspan="12">
                         <widget class="QLineEdit" name="textbox_constraint_rule_src">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <property name="toolTip">
                           <string/>
                          </property>
@@ -253,6 +267,12 @@
                        </item>
                        <item row="0" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_rule_src_action">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <item>
                           <property name="text">
                            <string>Set</string>
@@ -267,6 +287,12 @@
                        </item>
                        <item row="1" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_rule_condition">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <property name="layoutDirection">
                           <enum>Qt::LeftToRight</enum>
                          </property>
@@ -278,12 +304,25 @@
                         </widget>
                        </item>
                        <item row="1" column="2" colspan="12">
-                        <widget class="QLineEdit" name="textbox_constraint_rule_expected_value"/>
+                        <widget class="QLineEdit" name="textbox_constraint_rule_expected_value">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                        </widget>
                        </item>
                        <item row="3" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_dst_action_type">
                          <property name="enabled">
                           <bool>false</bool>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="toolTip">
                           <string/>
@@ -308,10 +347,22 @@
                          <property name="enabled">
                           <bool>false</bool>
                          </property>
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                         </widget>
                        </item>
                        <item row="2" column="2" colspan="12">
                         <widget class="QLineEdit" name="textbox_constraint_rule_dst">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <property name="inputMask">
                           <string/>
                          </property>
@@ -333,7 +384,8 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>JetBrains Mono</family>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
                           </font>
                          </property>
                          <property name="text">
@@ -343,6 +395,12 @@
                        </item>
                        <item row="2" column="0" colspan="2">
                         <widget class="QComboBox" name="comboBox_constraint_rule_dst_action">
+                         <property name="font">
+                          <font>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <item>
                           <property name="text">
                            <string>Then Remove</string>
@@ -359,7 +417,8 @@
                         <widget class="QCheckBox" name="checkBox_constraint_rule_wildcard">
                          <property name="font">
                           <font>
-                           <pointsize>8</pointsize>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
                           </font>
                          </property>
                          <property name="text">
@@ -380,10 +439,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
-                        <weight>50</weight>
-                        <bold>false</bold>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="title">
@@ -400,7 +457,8 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>JetBrains Mono</family>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
                           </font>
                          </property>
                          <property name="text">
@@ -418,8 +476,8 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>JetBrains Mono</family>
-                           <pointsize>9</pointsize>
+                           <family>MS Shell Dlg 2</family>
+                           <pointsize>10</pointsize>
                           </font>
                          </property>
                          <column>
@@ -457,7 +515,8 @@
                        <widget class="QLabel" name="label_34">
                         <property name="font">
                          <font>
-                          <family>JetBrains Mono</family>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -470,6 +529,12 @@
                       </item>
                       <item>
                        <widget class="QFrame" name="frame">
+                        <property name="font">
+                         <font>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
                         <property name="frameShape">
                          <enum>QFrame::StyledPanel</enum>
                         </property>
@@ -484,8 +549,8 @@
                      <widget class="QPushButton" name="btn_remove_path">
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -497,8 +562,8 @@
                      <widget class="QPushButton" name="btn_update_path">
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -512,8 +577,8 @@
                        <widget class="QLabel" name="label_35">
                         <property name="font">
                          <font>
-                          <family>JetBrains Mono</family>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -523,6 +588,12 @@
                       </item>
                       <item>
                        <widget class="QFrame" name="frame_2">
+                        <property name="font">
+                         <font>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
                         <property name="frameShape">
                          <enum>QFrame::StyledPanel</enum>
                         </property>
@@ -543,7 +614,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
+                        <family>MS Shell Dlg 2</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -553,8 +624,8 @@
                      <widget class="QTreeWidget" name="table_path">
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <column>
@@ -579,7 +650,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
+                        <family>MS Shell Dlg 2</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -624,13 +695,20 @@
                           <height>100</height>
                          </size>
                         </property>
+                        <property name="font">
+                         <font>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="1">
                        <widget class="QLabel" name="label_32">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -642,7 +720,8 @@
                        <widget class="QPushButton" name="btn_add_dependency_rule">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -654,7 +733,8 @@
                        <widget class="QPushButton" name="btn_remove_dependency_rule">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -666,7 +746,8 @@
                        <widget class="QPushButton" name="btn_update_dependency_rule">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -678,7 +759,8 @@
                        <widget class="QComboBox" name="comboBox_dependency_type">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <item>
@@ -697,8 +779,8 @@
                        <widget class="QTreeWidget" name="table_dependency_rule">
                         <property name="font">
                          <font>
-                          <family>JetBrains Mono</family>
-                          <pointsize>9</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="selectionMode">
@@ -718,6 +800,12 @@
                       </item>
                       <item row="3" column="0" colspan="3">
                        <widget class="QLabel" name="label">
+                        <property name="font">
+                         <font>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>Avaliable API Operation List (From API Doc)</string>
                         </property>
@@ -727,7 +815,8 @@
                        <widget class="QLineEdit" name="textbox_dependency_return_variable_name">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                        </widget>
@@ -736,7 +825,8 @@
                        <widget class="QLabel" name="label_33">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -752,6 +842,12 @@
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
+                        <property name="font">
+                         <font>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
                         <property name="text">
                          <string>&lt;Search Bar&gt;</string>
                         </property>
@@ -761,7 +857,8 @@
                        <widget class="QLabel" name="label_48">
                         <property name="font">
                          <font>
-                          <pointsize>8</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <property name="text">
@@ -799,8 +896,8 @@
                             </property>
                             <property name="font">
                              <font>
-                              <family>JetBrains Mono</family>
-                              <pointsize>8</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                               <weight>50</weight>
                               <bold>false</bold>
                              </font>
@@ -811,6 +908,12 @@
                             <layout class="QGridLayout" name="gridLayout_13">
                              <item row="0" column="2" colspan="7">
                               <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                                <property name="toolTip">
                                 <string/>
                                </property>
@@ -818,6 +921,12 @@
                              </item>
                              <item row="0" column="0" colspan="2">
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_src_action">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                                <item>
                                 <property name="text">
                                  <string>Set</string>
@@ -835,10 +944,22 @@
                                <property name="enabled">
                                 <bool>false</bool>
                                </property>
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                               </widget>
                              </item>
                              <item row="1" column="0" colspan="2">
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_condition">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                                <property name="layoutDirection">
                                 <enum>Qt::LeftToRight</enum>
                                </property>
@@ -851,6 +972,12 @@
                              </item>
                              <item row="2" column="2" colspan="7">
                               <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                                <property name="inputMask">
                                 <string/>
                                </property>
@@ -866,6 +993,12 @@
                               <widget class="QComboBox" name="comboBox_dependency_constraint_dst_action_type">
                                <property name="enabled">
                                 <bool>false</bool>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
                                </property>
                                <property name="toolTip">
                                 <string/>
@@ -886,7 +1019,14 @@
                               </widget>
                              </item>
                              <item row="1" column="2" colspan="7">
-                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value"/>
+                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
+                              </widget>
                              </item>
                              <item row="4" column="0">
                               <widget class="QPushButton" name="btn_dependency_constraint_rule_apply">
@@ -898,7 +1038,8 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>JetBrains Mono</family>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
                                 </font>
                                </property>
                                <property name="text">
@@ -908,6 +1049,12 @@
                              </item>
                              <item row="2" column="0" colspan="2">
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_dst_action">
+                               <property name="font">
+                                <font>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
                                <item>
                                 <property name="text">
                                  <string>Then Remove</string>
@@ -930,7 +1077,8 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>JetBrains Mono</family>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
                                 </font>
                                </property>
                                <property name="text">
@@ -942,7 +1090,8 @@
                               <widget class="QCheckBox" name="checkBox_dependency_constraint_rule_wildcard">
                                <property name="font">
                                 <font>
-                                 <pointsize>8</pointsize>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
                                 </font>
                                </property>
                                <property name="text">
@@ -963,8 +1112,8 @@
                             </property>
                             <property name="font">
                              <font>
-                              <family>JetBrains Mono</family>
-                              <pointsize>8</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                               <weight>50</weight>
                               <bold>false</bold>
                              </font>
@@ -983,7 +1132,8 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>JetBrains Mono</family>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
                                 </font>
                                </property>
                                <property name="text">
@@ -1001,8 +1151,8 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>JetBrains Mono</family>
-                                 <pointsize>9</pointsize>
+                                 <family>MS Shell Dlg 2</family>
+                                 <pointsize>10</pointsize>
                                 </font>
                                </property>
                                <column>
@@ -1035,7 +1185,8 @@
                            <widget class="QLabel" name="label_41">
                             <property name="font">
                              <font>
-                              <pointsize>9</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -1047,7 +1198,8 @@
                            <widget class="QPushButton" name="btn_remove_dependency_path">
                             <property name="font">
                              <font>
-                              <pointsize>9</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -1059,7 +1211,8 @@
                            <widget class="QPushButton" name="btn_update_dependency_path">
                             <property name="font">
                              <font>
-                              <pointsize>9</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -1068,12 +1221,19 @@
                            </widget>
                           </item>
                           <item row="0" column="2">
-                           <widget class="QLineEdit" name="textbox_path_dependency_name"/>
+                           <widget class="QLineEdit" name="textbox_path_dependency_name">
+                            <property name="font">
+                             <font>
+                              <family>MS Shell Dlg 2</family>
+                             </font>
+                            </property>
+                           </widget>
                           </item>
                           <item row="1" column="2">
                            <widget class="QLineEdit" name="textbox_path_dependency_value">
                             <property name="font">
                              <font>
+                              <family>MS Shell Dlg 2</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1083,7 +1243,8 @@
                            <widget class="QLabel" name="label_40">
                             <property name="font">
                              <font>
-                              <pointsize>9</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -1095,8 +1256,8 @@
                            <widget class="QTreeWidget" name="table_dependency_path">
                             <property name="font">
                              <font>
-                              <family>JetBrains Mono</family>
-                              <pointsize>9</pointsize>
+                              <family>MS Shell Dlg 2</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                             <column>
@@ -1124,8 +1285,8 @@
                          <widget class="QTreeWidget" name="table_dependency_schema">
                           <property name="font">
                            <font>
-                            <family>JetBrains Mono</family>
-                            <pointsize>9</pointsize>
+                            <family>MS Shell Dlg 2</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <column>
@@ -1157,6 +1318,12 @@
                    <layout class="QGridLayout" name="gridLayout_17">
                     <item row="3" column="0" colspan="9">
                      <widget class="QTreeWidget" name="table_assertion_rule">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <column>
                        <property name="text">
                         <string>Key</string>
@@ -1170,7 +1337,14 @@
                      </widget>
                     </item>
                     <item row="1" column="6">
-                     <widget class="QLineEdit" name="textbox_assertion_rule_expression"/>
+                     <widget class="QLineEdit" name="textbox_assertion_rule_expression">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
                     </item>
                     <item row="2" column="3">
                      <widget class="QComboBox" name="comboBox_assertion_method">
@@ -1179,6 +1353,12 @@
                         <width>16777215</width>
                         <height>16777215</height>
                        </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
                       </property>
                       <item>
                        <property name="text">
@@ -1268,10 +1448,23 @@
                      </widget>
                     </item>
                     <item row="2" column="6">
-                     <widget class="QLineEdit" name="textbox_assertion_rule_expected_value"/>
+                     <widget class="QLineEdit" name="textbox_assertion_rule_expected_value">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
                     </item>
                     <item row="1" column="2">
                      <widget class="QLabel" name="label_assertion_type_2">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Source :</string>
                       </property>
@@ -1279,6 +1472,12 @@
                     </item>
                     <item row="0" column="3">
                      <widget class="QComboBox" name="comboBox_assertion_type">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <item>
                        <property name="text">
                         <string>Positive</string>
@@ -1293,6 +1492,12 @@
                     </item>
                     <item row="0" column="0">
                      <widget class="QPushButton" name="btn_add_assertion_rule">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Add</string>
                       </property>
@@ -1300,6 +1505,12 @@
                     </item>
                     <item row="0" column="2">
                      <widget class="QLabel" name="label_assertion_type">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Type :</string>
                       </property>
@@ -1307,6 +1518,12 @@
                     </item>
                     <item row="1" column="0">
                      <widget class="QPushButton" name="btn_remove_assertion_rule">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Remove</string>
                       </property>
@@ -1314,6 +1531,12 @@
                     </item>
                     <item row="2" column="0">
                      <widget class="QPushButton" name="btn_update_assertion_rule">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Update</string>
                       </property>
@@ -1321,6 +1544,12 @@
                     </item>
                     <item row="2" column="5">
                      <widget class="QLabel" name="label_6">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Expected Value : </string>
                       </property>
@@ -1328,6 +1557,12 @@
                     </item>
                     <item row="2" column="2">
                      <widget class="QLabel" name="label_assertion_type_3">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Assertion Method:</string>
                       </property>
@@ -1335,6 +1570,12 @@
                     </item>
                     <item row="1" column="5">
                      <widget class="QLabel" name="label_7">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Filter Expression : </string>
                       </property>
@@ -1342,6 +1583,12 @@
                     </item>
                     <item row="1" column="3">
                      <widget class="QComboBox" name="comboBox_assertion_source">
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <item>
                        <property name="text">
                         <string>Status Code</string>
@@ -1372,8 +1619,8 @@
                    <widget class="QTreeWidget" name="table_schema">
                     <property name="font">
                      <font>
-                      <family>JetBrains Mono</family>
-                      <pointsize>9</pointsize>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>10</pointsize>
                      </font>
                     </property>
                     <column>
@@ -1409,6 +1656,12 @@
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
                <widget class="QPushButton" name="btn_add_test_case">
+                <property name="font">
+                 <font>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Add</string>
                 </property>
@@ -1416,6 +1669,12 @@
               </item>
               <item>
                <widget class="QPushButton" name="btn_remove_test_case">
+                <property name="font">
+                 <font>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Remove</string>
                 </property>
@@ -1423,6 +1682,12 @@
               </item>
               <item>
                <widget class="QPushButton" name="btn_duplicate_test_case">
+                <property name="font">
+                 <font>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Duplicate</string>
                 </property>
@@ -1432,6 +1697,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="btn_generate_test_case">
+              <property name="font">
+               <font>
+                <family>MS Shell Dlg 2</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>GenerateTest Case</string>
               </property>
@@ -1439,6 +1710,12 @@
             </item>
             <item row="2" column="0">
              <widget class="QTreeWidget" name="table_test_plan_api_list">
+              <property name="font">
+               <font>
+                <family>MS Shell Dlg 2</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
@@ -1474,8 +1751,14 @@
             </item>
             <item row="0" column="1" rowspan="3">
              <widget class="QTabWidget" name="Dependency_3">
+              <property name="font">
+               <font>
+                <family>MS Shell Dlg 2</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">
@@ -1494,7 +1777,8 @@
                     </property>
                     <property name="font">
                      <font>
-                      <family>JetBrains Mono</family>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>10</pointsize>
                      </font>
                     </property>
                     <property name="text">
@@ -1506,8 +1790,8 @@
                    <widget class="QPlainTextEdit" name="text_body">
                     <property name="font">
                      <font>
-                      <family>JetBrains Mono</family>
-                      <pointsize>12</pointsize>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>10</pointsize>
                      </font>
                     </property>
                    </widget>
@@ -1598,7 +1882,7 @@
                      <widget class="QLabel" name="label_44">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1610,7 +1894,7 @@
                      <widget class="QPushButton" name="btn_tc_add_dependency_rule">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1622,7 +1906,7 @@
                      <widget class="QComboBox" name="comboBox_tc_dependency_type">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <item>
@@ -1641,7 +1925,7 @@
                      <widget class="QPushButton" name="btn_tc_update_dependency_rule">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1653,7 +1937,7 @@
                      <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1666,7 +1950,7 @@
                       <property name="font">
                        <font>
                         <family>JetBrains Mono</family>
-                        <pointsize>9</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <column>
@@ -1685,7 +1969,7 @@
                      <widget class="QLabel" name="label_45">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1697,7 +1981,7 @@
                      <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                      </widget>
@@ -1706,7 +1990,7 @@
                      <widget class="QLabel" name="label_49">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1725,7 +2009,7 @@
                       <property name="font">
                        <font>
                         <family>JetBrains Mono</family>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1737,7 +2021,7 @@
                      <widget class="QLabel" name="label_2">
                       <property name="font">
                        <font>
-                        <pointsize>8</pointsize>
+                        <pointsize>10</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1765,6 +2049,11 @@
                         <height>100</height>
                        </size>
                       </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -1778,7 +2067,7 @@
                      </sizepolicy>
                     </property>
                     <property name="currentIndex">
-                     <number>2</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="tab_41">
                      <attribute name="title">
@@ -1809,6 +2098,12 @@
                           <layout class="QGridLayout" name="gridLayout_28">
                            <item row="0" column="0" colspan="2">
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                              <item>
                               <property name="text">
                                <string>Set</string>
@@ -1823,6 +2118,12 @@
                            </item>
                            <item row="1" column="0" colspan="2">
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                              <property name="layoutDirection">
                               <enum>Qt::LeftToRight</enum>
                              </property>
@@ -1838,10 +2139,22 @@
                              <property name="enabled">
                               <bool>false</bool>
                              </property>
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                             </widget>
                            </item>
                            <item row="0" column="2" colspan="6">
                             <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src_7">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                              <property name="toolTip">
                               <string/>
                              </property>
@@ -1851,6 +2164,12 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_dst_action_type">
                              <property name="enabled">
                               <bool>false</bool>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
                              </property>
                              <property name="toolTip">
                               <string/>
@@ -1872,6 +2191,12 @@
                            </item>
                            <item row="2" column="2" colspan="6">
                             <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_7">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                              <property name="inputMask">
                               <string/>
                              </property>
@@ -1893,7 +2218,8 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>JetBrains Mono</family>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <property name="text">
@@ -1903,6 +2229,12 @@
                            </item>
                            <item row="2" column="0" colspan="2">
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
                              <item>
                               <property name="text">
                                <string>Then Remove</string>
@@ -1916,7 +2248,14 @@
                             </widget>
                            </item>
                            <item row="1" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value_7"/>
+                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value_7">
+                             <property name="font">
+                              <font>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                            </widget>
                            </item>
                            <item row="4" column="1" colspan="2">
                             <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_clear">
@@ -1928,7 +2267,8 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>JetBrains Mono</family>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <property name="text">
@@ -1940,7 +2280,8 @@
                             <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
                              <property name="font">
                               <font>
-                               <pointsize>8</pointsize>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <property name="text">
@@ -1981,7 +2322,8 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>JetBrains Mono</family>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <property name="text">
@@ -1999,7 +2341,8 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>JetBrains Mono</family>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <property name="text">
@@ -2017,8 +2360,8 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>JetBrains Mono</family>
-                               <pointsize>9</pointsize>
+                               <family>MS Shell Dlg 2</family>
+                               <pointsize>10</pointsize>
                               </font>
                              </property>
                              <column>
@@ -2051,15 +2394,15 @@
                          <widget class="QTextEdit" name="textbox_tc_dependency_requestbody">
                           <property name="font">
                            <font>
-                            <family>JetBrains Mono</family>
-                            <pointsize>12</pointsize>
+                            <family>MS Shell Dlg 2</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="html">
                            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;{&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;password&amp;quot;: &amp;quot;123456&amp;quot;,&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;account&amp;quot;: &amp;quot;demo&amp;quot;&lt;/span&gt;&lt;/p&gt;
@@ -2171,8 +2514,8 @@ p, li { white-space: pre-wrap; }
                        <widget class="QTreeWidget" name="table_dependency_schema_7">
                         <property name="font">
                          <font>
-                          <family>JetBrains Mono</family>
-                          <pointsize>9</pointsize>
+                          <family>MS Shell Dlg 2</family>
+                          <pointsize>10</pointsize>
                          </font>
                         </property>
                         <column>
@@ -2206,18 +2549,33 @@ p, li { white-space: pre-wrap; }
                    <widget class="QTreeWidget" name="table_tc_assertion_rule">
                     <column>
                      <property name="text">
-                      <string>Key</string>
+                      <string>Index</string>
                      </property>
                     </column>
                     <column>
                      <property name="text">
-                      <string>Value</string>
+                      <string>Source</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Filter Expression</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Assertion Method</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Expected Value</string>
                      </property>
                     </column>
                    </widget>
                   </item>
                   <item row="1" column="6">
-                   <widget class="QLineEdit" name="textbo_tc_assertion_rule_expression"/>
+                   <widget class="QLineEdit" name="textbox_tc_assertion_rule_expression"/>
                   </item>
                   <item row="2" column="3">
                    <widget class="QComboBox" name="comboBox_tc_assertion_method">
@@ -2324,31 +2682,10 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="3">
-                   <widget class="QComboBox" name="comboBox_tc_assertion_type">
-                    <item>
-                     <property name="text">
-                      <string>Positive</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Negative</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
                   <item row="0" column="0">
                    <widget class="QPushButton" name="btn_tc_add_assertion_rule">
                     <property name="text">
                      <string>Add</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QLabel" name="label_assertion_type_5">
-                    <property name="text">
-                     <string>Type :</string>
                     </property>
                    </widget>
                   </item>
@@ -2600,7 +2937,7 @@ p, li { white-space: pre-wrap; }
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Settings ***&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Documentation     Test cases for post /api/v1/profiles.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/setup_teardown.robot&lt;/span&gt;&lt;/p&gt;
@@ -2831,15 +3168,16 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <family>JetBrains Mono</family>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="html">
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU';&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:9pt;&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -2849,7 +3187,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QProgressBar" name="progressBar">
       <property name="font">
        <font>
-        <family>JetBrains Mono</family>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="value">

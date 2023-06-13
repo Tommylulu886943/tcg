@@ -195,7 +195,6 @@ class TestStrategy:
                     max_testdata=f"{operation_id}_{serial_number}_2",
                 )
 
-                
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):
                 parsed_json['test_point'][str(i)]['dependency'] = dependency_rule

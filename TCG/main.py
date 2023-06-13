@@ -45,6 +45,7 @@ class MyWindow(QMainWindow):
         self.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
         self.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
         self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
+        self.btn_tc_add_dependency_rule.clicked.connect(self.btn_tc_add_dependency_rule_clicked)
         self.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
         self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
@@ -52,6 +53,9 @@ class MyWindow(QMainWindow):
         self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
         self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
         self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
+        self.btn_tc_add_assertion_rule.clicked.connect(self.btn_tc_add_assertion_rule_clicked)
+        self.btn_tc_update_assertion_rule.clicked.connect(self.btn_tc_update_assertion_rule_clicked)
+        self.btn_tc_remove_assertion_rule.clicked.connect(self.btn_tc_remove_assertion_rule_clicked)
         
         # * Table's Item Click Event
         self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -61,8 +65,10 @@ class MyWindow(QMainWindow):
         self.table_path.itemClicked.connect(self.table_path_item_clicked)
         self.table_tc_path.itemClicked.connect(self.table_tc_path_item_clicked)
         self.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
+        self.list_tc_dependency_available_api_list.itemClicked.connect(self.list_tc_dependency_available_api_list_item_clicked)
         self.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
         self.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
+        self.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
         
         # * Item Changed Event
         self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
@@ -72,6 +78,7 @@ class MyWindow(QMainWindow):
         self.comboBox_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_dst_action_changed)
         self.comboBox_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_src_action_changed)
         self.line_api_search.textChanged.connect(self.line_api_search_text_changed)
+        self.line_tc_api_search.textChanged.connect(self.line_tc_api_search_text_changed)
         
         # * Checkbox Event
         self.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
@@ -80,6 +87,243 @@ class MyWindow(QMainWindow):
         # * Completer Event
         self.search_completer = QCompleter()
         self.line_api_search.setCompleter(self.search_completer)
+        self.tc_search_completer = QCompleter()
+        self.line_tc_api_search.setCompleter(self.tc_search_completer)
+        
+    def btn_tc_add_dependency_rule_clicked(self):
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return 
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            dependency_type = self.comboBox_tc_dependency_type.currentText()
+            api = self.line_tc_api_search.text()
+            return_name = self.textbox_tc_dependency_return_variable_name.text()
+            if api == "" or return_name == "":
+                logging.error("API or Return Name is empty.")
+                return
+            
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                # * To get the next index of dependency rule.
+                rule_keys = data['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type].keys()
+                max_key = max(int(k) for k in rule_keys)
+                sequence_num = str(max_key + 1)
+                new_value = {"API": api, "Response Name": return_name,}
+                result = GeneralTool.add_key_in_json(
+                    data,
+                    ['test_cases', test_case_id, 'test_points', test_point_id, 'dependency', dependency_type],
+                    sequence_num,
+                    new_value,
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(result, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Add dependency rule in {file_path} successfully.")
+                else:
+                    logging.error(f"Add dependency rule in {file_path} failed.")
+                    
+            self.comboBox_tc_dependency_type.setCurrentText("Setup")
+            GeneralTool.clean_ui_content([
+                self.textbox_tc_dependency_return_variable_name,
+                self.line_tc_api_search,
+                self.textbox_tc_dependency_return_variable_name,
+                self.table_tc_dependency
+            ])
+            GeneralTool.parse_dependency_rule(
+                operation_id,
+                self.table_tc_dependency,
+            )
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)    
+        
+    def btn_tc_add_assertion_rule_clicked(self):
+        if len(self.table_test_plan_api_list.selectedItems()) == 0 or self.table_test_plan_api_list.selectedItems()[0].parent() is None:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()   
+         
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, 'r+') as f:
+                data = json.load(f)
+                # * To get the next index of assertion rule.
+                rule_keys = data["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].keys()
+                max_key = max(int(k) for k in rule_keys)
+                index = str(max_key + 1)
+                new_value = {
+                    "Source": self.comboBox_tc_assertion_source.currentText(),
+                    "Filter Expression": self.textbox_tc_assertion_rule_expression.text(),
+                    "Assertion Method": self.comboBox_tc_assertion_method.currentText(),
+                    "Expected Value": self.textbox_tc_assertion_rule_expected_value.text(),
+                }
+                result = GeneralTool.add_key_in_json(
+                    data,
+                    ["test_cases", test_case_id, "test_point", test_point_id, "assertion"],
+                    index,
+                    new_value
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Update assertion rule in {file_path} successfully")
+                else:
+                    logging.error(f"Update assertion rule in {file_path} failed")
+
+            GeneralTool.clean_ui_content([
+                self.table_tc_assertion_rule,
+                self.comboBox_tc_assertion_source,
+                self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_expression,
+                self.textbox_tc_assertion_rule_expected_value
+            ])
+            assertion_item = QTreeWidgetItem(["Assertion Rules"])
+            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            for key, item in assertion_rule.items():
+                assertion_item.addChild(
+                    QTreeWidgetItem(
+                        [
+                            key, item['Source'], 
+                            item['Filter Expression'], 
+                            item['Assertion Method'], 
+                            item['Expected Value']
+                        ]
+                    )
+                )
+            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)
+        
+    def btn_tc_remove_assertion_rule_clicked(self):
+        if len(self.table_tc_assertion_rule.selectedItems()) == 0 or self.table_tc_assertion_rule.selectedItems()[0].parent() is None:
+            return
+
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = data["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].pop(index)
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Assertion Rule {result} is removed from {operation_id}.json")
+
+            GeneralTool.clean_ui_content([
+                self.table_tc_assertion_rule,
+                self.comboBox_tc_assertion_source,
+                self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_expression,
+                self.textbox_tc_assertion_rule_expected_value
+            ])
+            assertion_item = QTreeWidgetItem(["Assertion Rules"])
+            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            for key, item in assertion_rule.items():
+                assertion_item.addChild(
+                    QTreeWidgetItem(
+                        [
+                            key, item['Source'], 
+                            item['Filter Expression'], 
+                            item['Assertion Method'], 
+                            item['Expected Value']
+                        ]
+                    )
+                )
+            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)
+       
+    def btn_tc_update_assertion_rule_clicked(self):
+        if len(self.table_tc_assertion_rule.selectedItems()) == 0 or self.table_tc_assertion_rule.selectedItems()[0].parent() is None:
+            return
+
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
+            new_value = {
+                "Source": self.comboBox_tc_assertion_source.currentText(),
+                "Filter Expression": self.textbox_tc_assertion_rule_expression.text(),
+                "Assertion Method": self.comboBox_tc_assertion_method.currentText(),
+                "Expected Value": self.textbox_tc_assertion_rule_expected_value.text(),
+            }
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, 'r+') as f:
+                data = json.load(f)
+                result = GeneralTool.update_value_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", test_point_id, "assertion", index],
+                    new_value
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Update assertion rule in {file_path} successfully")
+                else:
+                    logging.error(f"Update assertion rule in {file_path} failed")
+
+            GeneralTool.clean_ui_content([
+                self.table_tc_assertion_rule,
+                self.comboBox_tc_assertion_source,
+                self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_expression,
+                self.textbox_tc_assertion_rule_expected_value
+            ])
+            assertion_item = QTreeWidgetItem(["Assertion Rules"])
+            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            for key, item in assertion_rule.items():
+                assertion_item.addChild(
+                    QTreeWidgetItem(
+                        [
+                            key, item['Source'], 
+                            item['Filter Expression'], 
+                            item['Assertion Method'], 
+                            item['Expected Value']
+                        ]
+                    )
+                )
+            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)        
+        
+    def table_tc_assertion_rule_item_clicked(self, item):
+        GeneralTool.clean_ui_content([
+            self.comboBox_tc_assertion_source,
+            self.textbox_tc_assertion_rule_expression,
+            self.comboBox_tc_assertion_method,
+            self.textbox_tc_assertion_rule_expected_value
+        ])
+        selected_item = self.table_tc_assertion_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None:
+            self.comboBox_tc_assertion_source.setCurrentText(parent_item.text(1))
+            self.textbox_tc_assertion_rule_expression.setText(selected_item.text(2))
+            self.comboBox_tc_assertion_method.setCurrentText(selected_item.text(3))
+            self.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(4))
         
     def btn_tc_remove_path_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
@@ -572,11 +816,22 @@ class MyWindow(QMainWindow):
             if self.line_api_search.text() in self.list_dependency_available_api_list.item(api).text():
                 self.list_dependency_available_api_list.setCurrentItem(self.list_dependency_available_api_list.item(api))
                 break
+            
+    def line_tc_api_search_text_changed(self):
+        for api in range(self.list_tc_dependency_available_api_list.count()):
+            if self.line_tc_api_search.text() in self.list_tc_dependency_available_api_list.item(api).text():
+                self.list_tc_dependency_available_api_list.setCurrentItem(self.list_tc_dependency_available_api_list.item(api))
+                break
         
     def list_dependency_available_api_list_item_clicked(self):
         """ When the item in the list_dependency_available_api_list is clicked. """
         api_name = self.list_dependency_available_api_list.selectedItems()[0].text()
         self.line_api_search.setText(api_name)
+        
+    def list_tc_dependency_available_api_list_item_clicked(self):
+        """ When the item in the list_tc_dependency_available_api_list is clicked. """
+        api_name = self.list_tc_dependency_available_api_list.selectedItems()[0].text()
+        self.line_tc_api_search.setText(api_name)
     
     def table_path_item_clicked(self):
         selected_item = self.table_path.selectedItems()[0]
@@ -1272,6 +1527,16 @@ class MyWindow(QMainWindow):
                                 self.tabTCG.setCurrentIndex(1)
         
         # * Render Test Plan to Table
+        GeneralTool.clean_ui_content([
+            self.table_test_plan_api_list,
+            self.table_tc_assertion_rule,
+            self.table_tc_dependency,
+            self.table_tc_dependency_path,
+            self.table_tc_dependency_generation_rule,
+            self.textbox_tc_dependency_requestbody,
+            self.table_tc_path,
+            self.text_body,
+        ])
         self.table_test_plan_api_list.clear()
         for test_plan in glob.glob("test_plan/*.json"):
             with open(test_plan, "r") as f:
@@ -1295,7 +1560,14 @@ class MyWindow(QMainWindow):
         
         # * Clean Environment
         GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule"])
-        GeneralTool.clean_ui_content([self.table_api_tree, self.table_schema, self.table_generation_rule, self.table_assertion_rule, self.list_dependency_available_api_list])
+        GeneralTool.clean_ui_content([
+            self.table_api_tree, 
+            self.table_schema, 
+            self.table_generation_rule, 
+            self.table_assertion_rule, 
+            self.list_dependency_available_api_list,
+            self.list_tc_dependency_available_api_list,
+        ])
         
         self.schema_list = response[0]
         index = 1
@@ -1310,10 +1582,17 @@ class MyWindow(QMainWindow):
         # * Update Search Completion List
         all_api_list = []
         for i in range(self.list_dependency_available_api_list.count()):
-            all_api_list.append(self.list_dependency_available_api_list.item(i).text()) 
+            all_api_list.append(self.list_dependency_available_api_list.item(i).text())
         model = QStringListModel()
         model.setStringList(all_api_list)
-        self.search_completer.setModel(model)       
+        self.search_completer.setModel(model)
+        
+        all_tc_api_list = []
+        for i in range(self.list_tc_dependency_available_api_list.count()):
+            all_tc_api_list.append(self.list_tc_dependency_available_api_list.item(i).text())
+        tc_model = QStringListModel()
+        tc_model.setStringList(all_tc_api_list)
+        self.tc_search_completer.setModel(tc_model)     
                      
     def _render_api_tree(self, api_doc, index, file_name):
         """ Render API Tree """
@@ -1326,6 +1605,7 @@ class MyWindow(QMainWindow):
                 )
                 # * Render the Available API List
                 self.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                self.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
                 index += 1
         return index
     
@@ -1375,12 +1655,29 @@ class MyWindow(QMainWindow):
             GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
             
             # * Render the Path Rule.
-            path_item = QTreeWidgetItem(["Path Parameter"])
+            path_item = QTreeWidgetItem(["Path Parameters"])
             self.table_tc_path.addTopLevelItem(path_item)
             path_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['path']
             for key, value in path_rule.items():
                 path_item.addChild(QTreeWidgetItem([key, value]))
             GeneralTool.expand_and_resize_tree(self.table_tc_path)
+            
+            # * Render the Assertion Rule.
+            assertion_item = QTreeWidgetItem(["Assertion Rules"])
+            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            for key, item in assertion_rule.items():
+                assertion_item.addChild(
+                    QTreeWidgetItem(
+                        [
+                            key, item['Source'], 
+                            item['Filter Expression'], 
+                            item['Assertion Method'], 
+                            item['Expected Value']
+                        ]
+                    )
+                )
+            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)
                     
             # * Render the request body in text box.
             serial_num = test_id.split(".")[0]

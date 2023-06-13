@@ -7,7 +7,7 @@ import glob
 
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit
 
 class GeneralTool:
     
@@ -163,12 +163,14 @@ class GeneralTool:
         column_count = tree.columnCount()
         for column in range(column_count):
             tree.resizeColumnToContents(column)
-    
+            
     @classmethod
     def teardown_folder_files(cls, folder_path: list):
         """ To clean all files in a folder. """
         for folder in folder_path:
             schema_folder = os.path.join(os.getcwd(), folder)
+            if not os.path.exists(schema_folder):
+                os.makedirs(schema_folder)
             for file in os.listdir(schema_folder):
                 file_path = os.path.join(schema_folder, file)
                 if os.path.isfile(file_path):
@@ -179,7 +181,7 @@ class GeneralTool:
         for clean_widget in ui:
             if isinstance(clean_widget, QCheckBox):
                 clean_widget.setChecked(False)
-            elif isinstance(clean_widget, (QTreeWidget, QLineEdit, QListWidget)):
+            elif isinstance(clean_widget, (QTreeWidget, QLineEdit, QListWidget, QPlainTextEdit)):
                 clean_widget.clear()
 
     @classmethod
