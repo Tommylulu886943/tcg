@@ -199,8 +199,10 @@ class TestStrategy:
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):
                 parsed_json['test_point'][str(i)]['dependency'] = dependency_rule
+                # * Add path rule value to test plan.
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
-                    parsed_json['test_point'][str(i)]['path'] = path_rule
+                    for key, path_item in path_rule.items():
+                        parsed_json['test_point'][str(i)]['path'][key] = path_item['Value']
                 parsed_json['test_point'][str(i)]['assertion'] = assertion_rule
                                
             if DEBUG:

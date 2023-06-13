@@ -42,6 +42,8 @@ class MyWindow(QMainWindow):
         self.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
         self.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
         self.btn_update_path.clicked.connect(self.btn_update_path_clicked)
+        self.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
+        self.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
         self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
         self.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
@@ -57,6 +59,7 @@ class MyWindow(QMainWindow):
         self.table_assertion_rule.itemClicked.connect(self.table_assertion_rule_item_clicked)
         self.table_generation_rule.itemClicked.connect(self.table_generation_rule_item_clicked)
         self.table_path.itemClicked.connect(self.table_path_item_clicked)
+        self.table_tc_path.itemClicked.connect(self.table_tc_path_item_clicked)
         self.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
         self.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
         self.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
@@ -77,6 +80,86 @@ class MyWindow(QMainWindow):
         # * Completer Event
         self.search_completer = QCompleter()
         self.line_api_search.setCompleter(self.search_completer)
+        
+    def btn_tc_remove_path_clicked(self):
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+    
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id = test_id.split(".")[0]
+            use_case_id = test_id.split(".")[1]
+            name = self.textbox_tc_path_name.text()
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.remove_key_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "path", name]
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name]}`.")
+            GeneralTool.clean_ui_content([self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_path])
+            root_item = QTreeWidgetItem(["Path Parameter"])
+            self.table_tc_path.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["path"], root_item)
+            GeneralTool.expand_and_resize_tree(self.table_tc_path, expand=True)            
+    
+    def btn_tc_update_path_clicked(self):
+        
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
+            name = self.textbox_tc_path_name.text()
+            new_value = self.textbox_tc_path_value.text()
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.update_value_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "path", name],
+                    new_value
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name, new_value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name, new_value]}`.") 
+            
+            GeneralTool.clean_ui_content([self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_path])
+            root_item = QTreeWidgetItem(["Path Parameter"])
+            self.table_tc_path.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["path"], root_item)
+            GeneralTool.expand_and_resize_tree(self.table_tc_path, expand=True)
+        
+        
+    def table_tc_path_item_clicked(self):
+
+        selected_item = self.table_tc_path.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None:
+            self.textbox_tc_path_name.setText(selected_item.text(0))
+            self.textbox_tc_path_value.setText(selected_item.text(1))
+
         
     def btn_dependency_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
@@ -1250,9 +1333,10 @@ class MyWindow(QMainWindow):
         """When the test plan api list item is clicked."""
         
         # * Clear the table
-        tables = [self.table_tc_dependency, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody]
-        for table in tables:
-            table.clear()
+        GeneralTool.clean_ui_content([
+            self.table_tc_dependency, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
+            self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency, self.table_tc_dependency_generation_rule
+        ])
         
         # * Determine the column is top level or not
         parent = item.parent()
@@ -1272,22 +1356,31 @@ class MyWindow(QMainWindow):
             test_case_id = test_id.split(".")[0]
             test_point_id = test_id.split(".")[1]
             
-            setup_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']['Setup']
-            if setup_set is not None:
-                for index, test_setup in setup_set.items():
-                    print(test_setup)
-                    logging.debug(f"Test Setup: {test_setup}, Index: {index}")
-                    self.table_tc_dependency.addTopLevelItem(
-                        QtWidgets.QTreeWidgetItem([test_setup['API'], test_setup['Response Name']])
-                    )
-                    
-            teardown_set = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']['Teardown']
-            if teardown_set is not None:
-                for index, test_teardown in teardown_set.items():
-                    logging.debug(f"Test Teardown: {test_teardown}, Index: {index}")
-                    self.table_tc_dependency.addTopLevelItem(
-                        QtWidgets.QTreeWidgetItem([test_teardown['API'], test_teardown['Response Name']])
-                    )
+            # * Render the Test Case Dependency Rule.
+            dependency_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']
+            for section in ['Setup', 'Teardown']:
+                for key in dependency_rule[section]:
+                    if 'Data Generation Rules' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['Data Generation Rules']
+                    if 'Path Rules' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['Path Rules']
+                                        
+            setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
+            setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
+            self.table_tc_dependency.clear()
+            self.table_tc_dependency.addTopLevelItem(setup_item)
+            self.table_tc_dependency.addTopLevelItem(teardown_item)            
+            GeneralTool.parse_request_body(setup_list, setup_item, editabled=True)
+            GeneralTool.parse_request_body(teardown_list, teardown_item, editabled=True)
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
+            
+            # * Render the Path Rule.
+            path_item = QTreeWidgetItem(["Path Parameter"])
+            self.table_tc_path.addTopLevelItem(path_item)
+            path_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['path']
+            for key, value in path_rule.items():
+                path_item.addChild(QTreeWidgetItem([key, value]))
+            GeneralTool.expand_and_resize_tree(self.table_tc_path)
                     
             # * Render the request body in text box.
             serial_num = test_id.split(".")[0]

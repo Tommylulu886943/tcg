@@ -376,7 +376,7 @@ class GeneralTool:
             with open(file_path, "r") as f:
                 dependency_rule = json.load(f)
                 
-            # Exclude fields
+            # * Exclude the Data Generation Rules and Path Rules from the Dependency Rule Table.
             for section in ['Setup', 'Teardown']:
                 for key in dependency_rule[section]:
                     if 'Data Generation Rules' in dependency_rule[section][key]:
