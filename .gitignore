@@ -8,3 +8,4 @@ config/*.*
 TCG/PathRule/
 pyqt6-env/
 tcg/venv/
+venv/
