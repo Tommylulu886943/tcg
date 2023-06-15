@@ -45,7 +45,7 @@ class TestStrategy:
         return test_plan_path
     
     @classmethod
-    def parameter_min_max_test(cls, test_type, operation_id, uri, method, operation, test_plan_path, serial_number, baseline_data):
+    def parameter_min_max_test(cls, test_type, operation_id, uri, method, operation, test_plan_path, serial_number, baseline_data, dependency_testdata):
  
         try:
             with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
@@ -120,10 +120,6 @@ class TestStrategy:
                 elif test_type == 'positive_test':
                     assertion_rule = assertion_rule["positive"]
             
-            # *　Load Dependency rule
-            with open(f"./DependencyRule/{operation_id}.json", 'r') as f:
-                dependency_rule = json.load(f)
-                
             # * Load Path rule
             if os.path.exists(f"./PathRule/{operation_id}.json"):
                 with open(f"./PathRule/{operation_id}.json", 'r') as f:
@@ -197,12 +193,15 @@ class TestStrategy:
 
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):
-                parsed_json['test_point'][str(i)]['dependency'] = dependency_rule
+                i = str(i)
+                # * Add dependency rule to test plan.
+                d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                parsed_json['test_point'][i]['dependency'] = d_rule
                 # * Add path rule value to test plan.
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
-                        parsed_json['test_point'][str(i)]['path'][key] = path_item['Value']
-                parsed_json['test_point'][str(i)]['assertion'] = assertion_rule
+                        parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                parsed_json['test_point'][i]['assertion'] = assertion_rule
                                
             if DEBUG:
                 logging.debug(f'parsed_json: {parsed_json}')

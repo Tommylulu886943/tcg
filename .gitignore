@@ -1,5 +1,6 @@
 *.pyc
 TCG/TestData/*.json
+TCG/TestData/Dependency_TestData/*.json
 TCG/GenerationRule/*.json
 TCG/AssertionRule/*.json
 TCG/test_plan/*.yaml

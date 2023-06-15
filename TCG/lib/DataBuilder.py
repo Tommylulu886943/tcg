@@ -24,8 +24,33 @@ class DataBuilder:
             # * if generation rule not found, because this operation no request body, ex: GET, DELETE.
             logging.warning(f"Generation rule for {operation_id} not found. This operation no request body, so no test data is generated.")
             return None
+        result = cls.data_builder(generation_rules)
+        return result
+    
+    @classmethod
+    def init_dependency_test_data(cls, operation_id):
+        try:
+            with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+                dependency_data = json.load(f)
+        except FileNotFoundError:
+            logging.warning(f"Dependency data for {operation_id} not found. This operation no request body, so no dependency data is generated.")
+            return None
+        
+        result = {"Setup": {}, "Teardown": {}}
+        for action_type in ['Setup', 'Teardown']:
+            for index, action in dependency_data[action_type].items():
+                if 'Data Generation Rules' in action:
+                    result[action_type][index] = cls.data_builder(action['Data Generation Rules'])
+                else:
+                    logging.info(f"Data Generation Rules not found in {action_type} action {index}.")
+        return result
+                
+    @classmethod
+    def data_builder(cls, generation_rules):
         
         result = {}
+        if generation_rules is None:
+            return result
         for key in generation_rules:
             keys = key.split('.')
             rule = generation_rules[key]['rule']

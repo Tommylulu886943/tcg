@@ -13,7 +13,7 @@
 		"docify.translateService.docstringFormat": "Google",
 		"docify.translateService.programmingLanguage": "python",
 		"[python]": {
-			"editor.defaultFormatter": "ms-python.black-formatter"
+			"editor.defaultFormatter": "ms-python.python"
 		},
 		"python.formatting.provider": "none"
 	}

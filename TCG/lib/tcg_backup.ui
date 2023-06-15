@@ -27,7 +27,7 @@
        <widget class="QTabWidget" name="tabTCG">
         <property name="font">
          <font>
-          <family>MS Shell Dlg 2</family>
+          <family>Microsoft JhengHei</family>
           <pointsize>10</pointsize>
          </font>
         </property>
@@ -193,7 +193,7 @@
                <widget class="QTabWidget" name="tabWidget_2">
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
+                  <family>Microsoft YaHei UI</family>
                   <pointsize>10</pointsize>
                  </font>
                 </property>
@@ -223,7 +223,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
@@ -1767,7 +1767,17 @@
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
                  <layout class="QGridLayout" name="gridLayout_21">
-                  <item row="0" column="0">
+                  <item row="2" column="0">
+                   <widget class="QPlainTextEdit" name="text_body">
+                    <property name="font">
+                     <font>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
                    <widget class="QPushButton" name="btn_update_text_body">
                     <property name="maximumSize">
                      <size>
@@ -1786,13 +1796,22 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
-                   <widget class="QPlainTextEdit" name="text_body">
+                  <item row="1" column="1">
+                   <widget class="QPushButton" name="btn_update_text_body_2">
+                    <property name="maximumSize">
+                     <size>
+                      <width>150</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="font">
                      <font>
                       <family>MS Shell Dlg 2</family>
                       <pointsize>10</pointsize>
                      </font>
+                    </property>
+                    <property name="text">
+                     <string>Update</string>
                     </property>
                    </widget>
                   </item>
@@ -1882,6 +1901,7 @@
                      <widget class="QLabel" name="label_44">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1894,6 +1914,7 @@
                      <widget class="QPushButton" name="btn_tc_add_dependency_rule">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1906,6 +1927,7 @@
                      <widget class="QComboBox" name="comboBox_tc_dependency_type">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1925,6 +1947,7 @@
                      <widget class="QPushButton" name="btn_tc_update_dependency_rule">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1937,6 +1960,7 @@
                      <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1949,7 +1973,7 @@
                      <widget class="QTreeWidget" name="table_tc_dependency">
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1969,6 +1993,7 @@
                      <widget class="QLabel" name="label_45">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1981,6 +2006,7 @@
                      <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1990,6 +2016,7 @@
                      <widget class="QLabel" name="label_49">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2008,7 +2035,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>JetBrains Mono</family>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2021,6 +2048,7 @@
                      <widget class="QLabel" name="label_2">
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2051,6 +2079,7 @@
                       </property>
                       <property name="font">
                        <font>
+                        <family>Microsoft YaHei UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2059,7 +2088,7 @@
                    </layout>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QTabWidget" name="tabWidget_6">
+                   <widget class="QTabWidget" name="table_tc_dependency_schema">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                       <horstretch>0</horstretch>
@@ -2100,7 +2129,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2120,7 +2149,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2135,23 +2164,23 @@
                             </widget>
                            </item>
                            <item row="3" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_value_7">
+                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst_value">
                              <property name="enabled">
                               <bool>false</bool>
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
                             </widget>
                            </item>
                            <item row="0" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src_7">
+                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_src">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2167,7 +2196,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2190,10 +2219,10 @@
                             </widget>
                            </item>
                            <item row="2" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_7">
+                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2218,7 +2247,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2231,7 +2260,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2248,10 +2277,10 @@
                             </widget>
                            </item>
                            <item row="1" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value_7">
+                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_expected_value">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2267,7 +2296,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2280,7 +2309,7 @@
                             <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Microsoft YaHei UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2332,7 +2361,7 @@
                             </widget>
                            </item>
                            <item row="0" column="0">
-                            <widget class="QPushButton" name="btn_dependency_generation_build_data_3">
+                            <widget class="QPushButton" name="btn_tc_dependency_generation_rule_build">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                                <horstretch>0</horstretch>
@@ -2389,6 +2418,13 @@
                      </attribute>
                      <layout class="QVBoxLayout" name="verticalLayout_5">
                       <item>
+                       <widget class="QPushButton" name="btn_tc_dependency_update_text_body">
+                        <property name="text">
+                         <string>Update</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
                        <layout class="QGridLayout" name="gridLayout_31">
                         <item row="0" column="0">
                          <widget class="QTextEdit" name="textbox_tc_dependency_requestbody">
@@ -2403,10 +2439,7 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;{&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;password&amp;quot;: &amp;quot;123456&amp;quot;,&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;  &amp;quot;account&amp;quot;: &amp;quot;demo&amp;quot;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:16pt;&quot;&gt;}&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -2458,10 +2491,10 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item row="0" column="2">
-                         <widget class="QLineEdit" name="textbox_path_dependency_name_7"/>
+                         <widget class="QLineEdit" name="textbox_tc_path_dependency_name"/>
                         </item>
                         <item row="1" column="2">
-                         <widget class="QLineEdit" name="textbox_path_dependency_value_7">
+                         <widget class="QLineEdit" name="textbox_tc_path_dependency_value">
                           <property name="font">
                            <font>
                             <pointsize>10</pointsize>
@@ -3010,12 +3043,17 @@ p, li { white-space: pre-wrap; }
             <height>601</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <family>Microsoft JhengHei</family>
+           </font>
+          </property>
           <layout class="QGridLayout" name="gridLayout_18">
            <item row="1" column="0">
             <widget class="QPushButton" name="pushButton_3">
              <property name="font">
               <font>
-               <family>JetBrains Mono</family>
+               <family>Microsoft JhengHei</family>
                <pointsize>10</pointsize>
                <weight>50</weight>
                <bold>false</bold>
@@ -3030,7 +3068,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pushButton_8">
              <property name="font">
               <font>
-               <family>JetBrains Mono</family>
+               <family>Microsoft JhengHei</family>
                <pointsize>10</pointsize>
                <weight>50</weight>
                <bold>false</bold>
@@ -3045,7 +3083,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QGroupBox" name="group_test_strategy">
              <property name="font">
               <font>
-               <family>JetBrains Mono</family>
+               <family>Microsoft JhengHei</family>
                <pointsize>10</pointsize>
                <weight>50</weight>
                <bold>false</bold>
@@ -3063,12 +3101,17 @@ p, li { white-space: pre-wrap; }
                 <height>521</height>
                </rect>
               </property>
+              <property name="font">
+               <font>
+                <family>Microsoft JhengHei</family>
+               </font>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
                <item>
                 <widget class="QGroupBox" name="group_positive_test_2">
                  <property name="font">
                   <font>
-                   <family>JetBrains Mono</family>
+                   <family>Microsoft JhengHei</family>
                    <pointsize>10</pointsize>
                    <weight>50</weight>
                    <bold>false</bold>
@@ -3088,7 +3131,7 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <family>JetBrains Mono</family>
+                    <family>Microsoft JhengHei</family>
                     <pointsize>10</pointsize>
                    </font>
                   </property>
@@ -3105,7 +3148,7 @@ p, li { white-space: pre-wrap; }
                 <widget class="QGroupBox" name="group_negasitive_test_2">
                  <property name="font">
                   <font>
-                   <family>JetBrains Mono</family>
+                   <family>Microsoft JhengHei</family>
                   </font>
                  </property>
                  <property name="title">
@@ -3122,7 +3165,7 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <family>JetBrains Mono</family>
+                    <family>Microsoft JhengHei</family>
                     <pointsize>10</pointsize>
                     <weight>50</weight>
                     <bold>false</bold>
@@ -3168,7 +3211,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
-          <family>MS Shell Dlg 2</family>
+          <family>Microsoft JhengHei</family>
           <pointsize>10</pointsize>
          </font>
         </property>
@@ -3176,7 +3219,7 @@ p, li { white-space: pre-wrap; }
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft JhengHei'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:9pt;&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
@@ -3187,7 +3230,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QProgressBar" name="progressBar">
       <property name="font">
        <font>
-        <family>MS Shell Dlg 2</family>
+        <family>Microsoft JhengHei</family>
         <pointsize>10</pointsize>
        </font>
       </property>

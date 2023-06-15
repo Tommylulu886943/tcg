@@ -46,6 +46,8 @@ class MyWindow(QMainWindow):
         self.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
         self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
         self.btn_tc_add_dependency_rule.clicked.connect(self.btn_tc_add_dependency_rule_clicked)
+        self.btn_tc_remove_dependency_rule.clicked.connect(self.btn_tc_remove_dependency_rule_clicked)
+        self.btn_tc_update_dependency_rule.clicked.connect(self.btn_tc_update_dependency_rule_clicked)
         self.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
         self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
@@ -53,6 +55,10 @@ class MyWindow(QMainWindow):
         self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
         self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
         self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
+        self.btn_tc_dependency_constraint_rule_clear.clicked.connect(self.btn_tc_dependency_constraint_rule_clear_clicked)
+        self.btn_tc_dependency_constraint_rule_apply.clicked.connect(self.btn_tc_dependency_constraint_rule_apply_clicked)
+        self.btn_tc_dependency_generation_rule_remove.clicked.connect(self.btn_tc_dependency_generation_rule_remove_clicked)
+        self.btn_tc_dependency_generation_rule_build.clicked.connect(self.btn_tc_dependency_generation_rule_build_clicked)
         self.btn_tc_add_assertion_rule.clicked.connect(self.btn_tc_add_assertion_rule_clicked)
         self.btn_tc_update_assertion_rule.clicked.connect(self.btn_tc_update_assertion_rule_clicked)
         self.btn_tc_remove_assertion_rule.clicked.connect(self.btn_tc_remove_assertion_rule_clicked)
@@ -62,33 +68,121 @@ class MyWindow(QMainWindow):
         self.table_test_plan_api_list.itemClicked.connect(self.test_plan_api_list_item_clicked)
         self.table_assertion_rule.itemClicked.connect(self.table_assertion_rule_item_clicked)
         self.table_generation_rule.itemClicked.connect(self.table_generation_rule_item_clicked)
+        self.table_dependency_generation_rule.itemClicked.connect(self.table_dependency_generation_rule_item_clicked)
         self.table_path.itemClicked.connect(self.table_path_item_clicked)
         self.table_tc_path.itemClicked.connect(self.table_tc_path_item_clicked)
         self.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
         self.list_tc_dependency_available_api_list.itemClicked.connect(self.list_tc_dependency_available_api_list_item_clicked)
         self.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
         self.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
+        self.table_tc_dependency.itemClicked.connect(self.table_tc_dependency_item_clicked)
         self.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
+        self.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
         
         # * Item Changed Event
         self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
-        #self.table_assertion_rule.itemChanged.connect(self.assertion_rule_item_changed)
         self.comboBox_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_constraint_rule_src_action_changed)
         self.comboBox_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_constraint_rule_dst_action_changed)
         self.comboBox_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_dst_action_changed)
         self.comboBox_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_src_action_changed)
+        self.comboBox_tc_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_src_action_changed)
+        self.comboBox_tc_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_dst_action_changed)
         self.line_api_search.textChanged.connect(self.line_api_search_text_changed)
         self.line_tc_api_search.textChanged.connect(self.line_tc_api_search_text_changed)
         
         # * Checkbox Event
         self.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
         self.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
+        self.checkBox_tc_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_dependency_constraint_rule_wildcard_changed)
         
         # * Completer Event
         self.search_completer = QCompleter()
         self.line_api_search.setCompleter(self.search_completer)
         self.tc_search_completer = QCompleter()
         self.line_tc_api_search.setCompleter(self.tc_search_completer)
+        
+    def btn_tc_remove_dependency_rule_clicked(self):
+        if len(self.table_tc_dependency.selectedItems()) == 0 or self.table_tc_dependency.selectedItems()[0].parent() is None:
+            return
+
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            dependency_type = self.table_tc_dependency.selectedItems()[0].parent().text(0)
+            dependency_sequence_num = self.table_tc_dependency.selectedItems()[0].text(0)
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                test_plan = json.load(f)
+                result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type].pop(dependency_sequence_num)
+                f.seek(0)
+                json.dump(test_plan, f, indent=4)
+                f.truncate()
+                logging.info(f"Dependency Rule {result} is removed from {operation_id}.json")
+
+            self.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.comboBox_tc_dependency_type.setEnabled(True)
+            self.line_tc_api_search.setEnabled(True)
+            GeneralTool.clean_ui_content([
+                self.table_tc_dependency,
+                self.comboBox_tc_dependency_type,
+                self.line_tc_api_search,
+                self.textbox_tc_dependency_return_variable_name
+            ])
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency)
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
+            
+        # * Remove the dependency test data file
+        file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
+        if os.path.exists(f"./TestData/Dependency_TestData/{file_name}"):
+            os.remove(f"./TestData/Dependency_TestData/{file_name}")
+    
+    def btn_tc_update_dependency_rule_clicked(self):
+        if len(self.table_tc_dependency.selectedItems()) == 0 or self.table_tc_dependency.selectedItems()[0].parent() is None:
+            return
+
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            
+            dependency_type = self.table_tc_dependency.selectedItems()[0].parent().text(0)
+            dependency_sequence_num = self.table_tc_dependency.selectedItems()[0].text(0)
+
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, 'r+') as f:
+                test_plan = json.load(f)
+                result = GeneralTool.update_value_in_json(
+                    test_plan, 
+                    ["test_cases", test_case_id ,"test_point", test_point_id, "dependency", dependency_type, dependency_sequence_num, "Response Name"],
+                    self.textbox_tc_dependency_return_variable_name.text()
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(test_plan, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Update dependency rule in {file_path} successfully")
+                else:
+                    logging.error(f"Update dependency rule in {file_path} failed")
+
+            self.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.comboBox_tc_dependency_type.setEnabled(True)
+            self.line_tc_api_search.setEnabled(True)
+            GeneralTool.clean_ui_content([
+                self.table_tc_dependency,
+                self.comboBox_tc_dependency_type,
+                self.line_tc_api_search,
+                self.textbox_tc_dependency_return_variable_name
+            ])
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency)
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
         
     def btn_tc_add_dependency_rule_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
@@ -111,38 +205,54 @@ class MyWindow(QMainWindow):
             
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
-                data = json.load(f)
-                # * To get the next index of dependency rule.
-                rule_keys = data['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type].keys()
-                max_key = max(int(k) for k in rule_keys)
-                sequence_num = str(max_key + 1)
-                new_value = {"API": api, "Response Name": return_name,}
+                test_plan = json.load(f)
+                
+                # * Generate the sequence number for the next rule
+                # * If 'dependency_rules' is empty, the 'max' function will return the value of the 'default' parameter, i.e., 0. We then add 1 to get "1".
+                # * If 'dependency_rules' is not empty, it will give us the maximum key value plus one.
+                dependency_rules = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type]
+                sequence_num = str(max((int(k) for k in dependency_rules.keys()), default=0) + 1)
+                generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api)
+                test_data = DataBuilder.data_builder(generation_rule)
+                file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
+                path = f"./TestData/Dependency_TestData/{file_name}"
+                if not os.path.exists(path):
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w") as test_data_file:
+                    json.dump(test_data, test_data_file, indent=4)
+                    logging.info(f"Generate dependency test data file: {path}")
+                    
+                new_value = {
+                    "API": api, 
+                    "Response Name": return_name, 
+                    "Data Generation Rules": generation_rule if generation_rule is not None else {},
+                    "Path Rules": path_rule if path_rule is not None else {},
+                }
                 result = GeneralTool.add_key_in_json(
-                    data,
-                    ['test_cases', test_case_id, 'test_points', test_point_id, 'dependency', dependency_type],
+                    test_plan,
+                    ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type],
                     sequence_num,
                     new_value,
                 )
                 if result is not False:
                     f.seek(0)
-                    json.dump(result, f, indent=4)
+                    json.dump(test_plan, f, indent=4)
                     f.truncate()
-                    logging.info(f"Add dependency rule in {file_path} successfully.")
+                    logging.info(f"Successfully updating JSON file `{file_path}` to add key `{['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type, sequence_num, new_value]}`.")
                 else:
-                    logging.error(f"Add dependency rule in {file_path} failed.")
+                    logging.error(f"Error updating JSON file `{file_path}` to add key `{['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type, sequence_num, new_value]}`.")
                     
             self.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.comboBox_tc_dependency_type.setEnabled(True)
+            self.line_tc_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([
                 self.textbox_tc_dependency_return_variable_name,
                 self.line_tc_api_search,
                 self.textbox_tc_dependency_return_variable_name,
                 self.table_tc_dependency
             ])
-            GeneralTool.parse_dependency_rule(
-                operation_id,
-                self.table_tc_dependency,
-            )
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)    
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency)
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
         
     def btn_tc_add_assertion_rule_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0 or self.table_test_plan_api_list.selectedItems()[0].parent() is None:
@@ -158,11 +268,12 @@ class MyWindow(QMainWindow):
             
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, 'r+') as f:
-                data = json.load(f)
-                # * To get the next index of assertion rule.
-                rule_keys = data["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].keys()
-                max_key = max(int(k) for k in rule_keys)
-                index = str(max_key + 1)
+                test_plan = json.load(f)
+                # * Generate the sequence number for the next rule
+                # * If 'assertion_rules' is empty, the 'max' function will return the value of the 'default' parameter, i.e., 0. We then add 1 to get "1".
+                # * If 'assertion_rules' is not empty, it will give us the maximum key value plus one.
+                assertion_rules = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+                sequence_num = str(max((int(k) for k in assertion_rules.keys()), default=0) + 1)
                 new_value = {
                     "Source": self.comboBox_tc_assertion_source.currentText(),
                     "Filter Expression": self.textbox_tc_assertion_rule_expression.text(),
@@ -170,14 +281,14 @@ class MyWindow(QMainWindow):
                     "Expected Value": self.textbox_tc_assertion_rule_expected_value.text(),
                 }
                 result = GeneralTool.add_key_in_json(
-                    data,
+                    test_plan,
                     ["test_cases", test_case_id, "test_point", test_point_id, "assertion"],
-                    index,
+                    sequence_num,
                     new_value
                 )
                 if result is not False:
                     f.seek(0)
-                    json.dump(data, f, indent=4)
+                    json.dump(test_plan, f, indent=4)
                     f.truncate()
                     logging.info(f"Update assertion rule in {file_path} successfully")
                 else:
@@ -192,7 +303,7 @@ class MyWindow(QMainWindow):
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
             self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
-            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
                     QTreeWidgetItem(
@@ -221,10 +332,10 @@ class MyWindow(QMainWindow):
             index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
-                data = json.load(f)
-                result = data["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].pop(index)
+                test_plan = json.load(f)
+                result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].pop(index)
                 f.seek(0)
-                json.dump(data, f, indent=4)
+                json.dump(test_plan, f, indent=4)
                 f.truncate()
                 logging.info(f"Assertion Rule {result} is removed from {operation_id}.json")
 
@@ -237,7 +348,7 @@ class MyWindow(QMainWindow):
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
             self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
-            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
                     QTreeWidgetItem(
@@ -272,15 +383,15 @@ class MyWindow(QMainWindow):
             }
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, 'r+') as f:
-                data = json.load(f)
+                test_plan = json.load(f)
                 result = GeneralTool.update_value_in_json(
-                    data, 
+                    test_plan, 
                     ["test_cases", test_case_id ,"test_point", test_point_id, "assertion", index],
                     new_value
                 )
                 if result is not False:
                     f.seek(0)
-                    json.dump(data, f, indent=4)
+                    json.dump(test_plan, f, indent=4)
                     f.truncate()
                     logging.info(f"Update assertion rule in {file_path} successfully")
                 else:
@@ -295,7 +406,7 @@ class MyWindow(QMainWindow):
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
             self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
-            assertion_rule = data['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
+            assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
                     QTreeWidgetItem(
@@ -416,7 +527,6 @@ class MyWindow(QMainWindow):
         api_selected_item = self.table_api_tree.selectedItems()[0]
         origin_api_operation_id = api_selected_item.text(4)
         
-        
         # * Retrieve the Dependency Rule Index and Data Generation Rule Field name which should be removed.
         dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
         dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
@@ -448,16 +558,6 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_sequence_num, 'Data Generation Rules', *path]}`.")
         GeneralTool.remove_table_item_from_ui(self.table_dependency_generation_rule)
-
-    def checkBox_dependency_constraint_rule_wildcard_changed(self):
-        dst_path = self.textbox_dependency_constraint_rule_dst.text()
-        if self.checkBox_dependency_constraint_rule_wildcard.isChecked():
-            if dst_path != "":
-                dst_path = dst_path.split(".")[0] + ".*"
-        else:
-            if ".*" in dst_path:
-                dst_path = dst_path.replace(".*", "")
-        self.textbox_dependency_constraint_rule_dst.setText(dst_path)
         
     def btn_dependency_constraint_rule_apply_clicked(self):
         src_action = self.comboBox_dependency_constraint_rule_src_action.currentText()
@@ -555,7 +655,19 @@ class MyWindow(QMainWindow):
             self.textbox_dependency_constraint_rule_dst, 
             self.textbox_dependency_constraint_rule_dst_value,
         ])
-        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)        
+        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
+        
+    def btn_tc_dependency_constraint_rule_clear_clicked(self):
+        pass
+    
+    def btn_tc_dependency_constraint_rule_apply_clicked(self):
+        pass
+    
+    def btn_tc_dependency_constraint_rule_remove_clicked(self):
+        pass
+    
+    def btn_tc_dependency_generation_rule_build_clicked(self):
+        pass   
         
     def table_dependency_path_item_clicked(self):
         
@@ -636,8 +748,63 @@ class MyWindow(QMainWindow):
         self.table_dependency_path.addTopLevelItem(root_item)
         path_rule = data[dependency_type][dependency_sequence_num]["Path Rules"]
         GeneralTool.parse_request_body(path_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_path, expand=True)        
+        GeneralTool.expand_and_resize_tree(self.table_path, expand=True)
         
+    def table_tc_dependency_item_clicked(self):
+        
+        # * Render the Dependency Action's Data Generation Rule and Path Rule and Schema.
+        GeneralTool.clean_ui_content([
+            self.table_tc_dependency_generation_rule,
+            self.textbox_tc_dependency_requestbody,
+            self.table_tc_dependency_path,
+            self.table_tc_dependency_schema,
+            self.textbox_tc_path_dependency_name,
+            self.textbox_tc_path_dependency_value,
+        ])
+        
+        selected_item = self.table_tc_dependency.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item and parent_item.parent() is None:
+            # * Render the Dependency Rule Mangement UI for the update action.
+            self.comboBox_tc_dependency_type.setCurrentText(parent_item.text(0))
+            self.line_tc_api_search.setText(selected_item.child(0).text(1))
+            self.textbox_tc_dependency_return_variable_name.setText(selected_item.child(1).text(1))
+            self.comboBox_tc_dependency_type.setEnabled(False)
+            self.line_tc_api_search.setEnabled(False)
+            
+            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_parent_item = test_plan_selected_item.parent()
+            operation_id = test_plan_parent_item.parent().text(0)
+            test_id = test_plan_selected_item.text(1)
+            test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
+            dependency_type = parent_item.text(0)
+            api = selected_item.child(0).text(1)
+            index = selected_item.text(0)
+            
+            with open(f"./test_plan/{operation_id}.json", "r") as f:
+                data = json.load(f)["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][index]
+                
+            # * Render the Data Generation Rule and Path Rule and Schema.
+            if "Data Generation Rules" in data:
+                root_item = QTreeWidgetItem(["Data Generation Rule"])
+                self.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["Data Generation Rules"], root_item, editabled=True)
+                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_generation_rule, expand=False)
+            else:
+                logging.info(f"Data Generation Rule is not exist in the dependency rule `{operation_id}`.")
+                
+            # * Render the Path Rule
+            if "Path Rules" in data:
+                root_item = QTreeWidgetItem(["Path Parameter"])
+                self.table_tc_dependency_path.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["Path Rules"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_path, expand=True)
+            else:
+                logging.info(f"Path Rule is not exist in the dependency rule `{operation_id}`.")
+        else:
+            self.comboBox_tc_dependency_type.setEnabled(True)
+            self.line_tc_api_search.setEnabled(True)
         
     def table_dependency_rule_item_clicked(self):
         
@@ -893,81 +1060,53 @@ class MyWindow(QMainWindow):
             GeneralTool.expand_and_resize_tree(self.table_path)
         
     def checkBox_constraint_rule_wildcard_changed(self):
-        dst_path = self.textbox_constraint_rule_dst.text()
-        if self.checkBox_constraint_rule_wildcard.isChecked():
-            if dst_path != "":
-                dst_path = dst_path.split(".")[0] + ".*"
-        else:
-            if ".*" in dst_path:
-                dst_path = dst_path.replace(".*", "")
-        self.textbox_constraint_rule_dst.setText(dst_path)
+        GeneralTool.update_dependency_wildcard(
+            self.textbox_constraint_rule_dst, self.checkBox_constraint_rule_wildcard, self.textbox_constraint_rule_dst)
+        
+    def checkBox_dependency_constraint_rule_wildcard_changed(self):
+        GeneralTool.update_dependency_wildcard(
+            self.textbox_dependency_constraint_rule_dst, self.checkBox_dependency_constraint_rule_wildcard, self.textbox_dependency_constraint_rule_dst)
+
+    def checkBox_tc_dependency_constraint_rule_wildcard_changed(self):
+        GeneralTool.update_dependency_wildcard(
+            self.textbox_tc_dependency_constraint_rule_dst, self.checkBox_tc_dependency_constraint_rule_wildcard, self.textbox_tc_dependency_constraint_rule_dst)
         
     def comboBox_constraint_rule_src_action_changed(self):
-        current_text = self.comboBox_constraint_rule_src_action.currentText()
-        self.comboBox_constraint_rule_condition.clear()
-        
-        if current_text == "If":
-            self.comboBox_constraint_rule_condition.addItems(["==", "!=", ">", "<", ">=", "<="])
-        elif current_text == "Set":
-            self.comboBox_constraint_rule_condition.addItems(["WITH"])
+        GeneralTool.update_constraint_actions_src(
+            self.comboBox_constraint_rule_src_action, self.comboBox_constraint_rule_condition)
             
     def comboBox_dependency_constraint_rule_src_action_changed(self):
-        current_text = self.comboBox_dependency_constraint_rule_src_action.currentText()
-        self.comboBox_dependency_constraint_rule_condition.clear()
-
-        if current_text == "If":
-            self.comboBox_dependency_constraint_rule_condition.addItems(["==", "!=", ">", "<", ">=", "<="])
-        elif current_text == "Set":
-            self.comboBox_dependency_constraint_rule_condition.addItems(["WITH"])
+        GeneralTool.update_constraint_actions_src(
+            self.comboBox_dependency_constraint_rule_src_action, self.comboBox_dependency_constraint_rule_condition)
+            
+    def comboBox_tc_dependency_constraint_rule_src_action_changed(self):
+        GeneralTool.update_constraint_actions_src(
+            self.comboBox_tc_dependency_constraint_rule_src_action, self.comboBox_tc_dependency_constraint_rule_condition)
             
     def comboBox_constraint_rule_dst_action_changed(self):
-        current_text = self.comboBox_constraint_rule_dst_action.currentText()
-        GeneralTool.clean_ui_content([
+        GeneralTool.update_constraint_actions_dst(
+            self.comboBox_constraint_rule_dst_action,
             self.comboBox_constraint_dst_action_type,
-            self.textbox_constraint_rule_dst_value
-        ])
-        
-        if current_text == "Then Set":
-            self.comboBox_constraint_dst_action_type.setEnabled(True)
-            index = self.comboBox_constraint_dst_action_type.findText("WITH")
-            if index >= 0:
-                self.comboBox_constraint_dst_action_type.setCurrentIndex(index)
-            else:
-                self.comboBox_constraint_dst_action_type.addItems(["WITH"])
-                self.comboBox_constraint_dst_action_type.setCurrentIndex(index)
-            self.textbox_constraint_rule_dst_value.setEnabled(True)
-            self.checkBox_constraint_rule_wildcard.setEnabled(False)
-        elif current_text == "Then Remove":
-            self.comboBox_constraint_dst_action_type.setCurrentIndex(0)
-            self.comboBox_constraint_dst_action_type.setEnabled(False)
-            self.textbox_constraint_rule_dst_value.setEnabled(False)
-            self.checkBox_constraint_rule_wildcard.setEnabled(True)
+            self.textbox_constraint_rule_dst_value,
+            self.checkBox_constraint_rule_wildcard
+        )
             
     def comboBox_dependency_constraint_rule_dst_action_changed(self):
-        current_text = self.comboBox_dependency_constraint_rule_dst_action.currentText()
-        GeneralTool.clean_ui_content([
+        GeneralTool.update_constraint_actions_dst(
+            self.comboBox_dependency_constraint_rule_dst_action,
             self.comboBox_dependency_constraint_dst_action_type,
-            self.textbox_dependency_constraint_rule_dst_value
-        ])
-        
-        if current_text == "Then Set":
-            self.comboBox_dependency_constraint_dst_action_type.setEnabled(True)
-            index = self.comboBox_dependency_constraint_dst_action_type.findText("WITH")
-            if index >= 0:
-                self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(index)
-            else:
-                self.comboBox_dependency_constraint_dst_action_type.addItems(["WITH"])
-                self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(index)
-                
-            self.textbox_dependency_constraint_rule_dst_value.setEnabled(True)
-            self.checkBox_dependency_constraint_rule_wildcard.setEnabled(False)
+            self.textbox_dependency_constraint_rule_dst_value,
+            self.checkBox_dependency_constraint_rule_wildcard
+        )
             
-        elif current_text == "Then Remove":
-            self.comboBox_dependency_constraint_dst_action_type.setCurrentIndex(0)
-            self.comboBox_dependency_constraint_dst_action_type.setEnabled(False)
-            self.textbox_dependency_constraint_rule_dst_value.setEnabled(False)
-            self.checkBox_dependency_constraint_rule_wildcard.setEnabled(True)
-            
+    def comboBox_tc_dependency_constraint_rule_dst_action_changed(self):
+        GeneralTool.update_constraint_actions_dst(
+            self.comboBox_tc_dependency_constraint_rule_dst_action,
+            self.comboBox_tc_dependency_constraint_dst_action_type,
+            self.textbox_tc_dependency_constraint_rule_dst_value,
+            self.checkBox_tc_dependency_constraint_rule_wildcard
+        )
+      
     def btn_constraint_rule_clear_clicked(self):
         """ Clear the Constraint Rule UI. """
         for clean_item in [
@@ -1057,26 +1196,61 @@ class MyWindow(QMainWindow):
         self.checkBox_constraint_rule_wildcard.setChecked(False)
             
     def table_generation_rule_item_clicked(self):
+        """ 
+        When the user click the item in the table_generation_rule.
+        It will render the constraint rule UI for quick setup the constraint rule.
+        """
         selected_item = self.table_generation_rule.selectedItems()[0]
-        parent_item = selected_item.parent()
+        GeneralTool.render_constraint_rule(
+            selected_item,
+            self.textbox_constraint_rule_src, 
+            self.textbox_constraint_rule_expected_value, 
+            self.textbox_constraint_rule_dst,
+            self.textbox_constraint_rule_dst_value, 
+            self.checkBox_constraint_rule_wildcard,
+        )
+                 
+    def table_dependency_generation_rule_item_clicked(self):
+        """ 
+        When the user click the item in the table_dependency_generation_rule.
+        It will render the constraint rule UI for quick setup the constraint rule.
+        """
+        selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        GeneralTool.render_constraint_rule(
+            selected_item, 
+            self.textbox_dependency_constraint_rule_src, 
+            self.textbox_dependency_constraint_rule_expected_value, 
+            self.textbox_dependency_constraint_rule_dst,
+            self.textbox_dependency_constraint_rule_dst_value, 
+            self.checkBox_dependency_constraint_rule_wildcard
+        )
         
-        if parent_item is not None and parent_item.parent() is None:
-            src_path = self.textbox_constraint_rule_src.text()
-            dst_path = self.textbox_constraint_rule_dst.text()
-            field = selected_item.text(0)
-            src_value = selected_item.child(2).text(1)
-            
-            if src_path == "" or (src_path != "" and dst_path != ""):
-                self.textbox_constraint_rule_src.setText(field)
-                self.textbox_constraint_rule_expected_value.setText(src_value)
-                self.textbox_constraint_rule_dst.clear()
-                self.textbox_constraint_rule_dst_value.clear()
-                self.checkBox_constraint_rule_wildcard.setChecked(False)
-            elif dst_path == "":
-                self.textbox_constraint_rule_dst.setText(field)
-        else:
-            return
-        
+    def table_tc_dependency_generation_rule_item_clicked(self):
+        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        GeneralTool.render_constraint_rule(
+            selected_item,
+            self.textbox_tc_dependency_constraint_rule_src,
+            self.textbox_tc_dependency_constraint_rule_expected_value,
+            self.textbox_tc_dependency_constraint_rule_dst,
+            self.textbox_tc_dependency_constraint_rule_dst_value,
+            self.checkBox_tc_dependency_constraint_rule_wildcard,
+        )
+                
+    def table_tc_dependency_generation_rule_item_clicked(self):
+        """
+        When the user click the item in the table_tc_dependency_generation_rule.
+        It will render the constraint rule UI for quick setup the constraint rule.
+        """
+        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        GeneralTool.render_constraint_rule(
+            selected_item,
+            self.textbox_tc_dependency_constraint_rule_src,
+            self.textbox_tc_dependency_constraint_rule_expected_value,
+            self.textbox_tc_dependency_constraint_rule_dst,
+            self.textbox_tc_dependency_constraint_rule_dst_value,
+            self.checkBox_tc_dependency_constraint_rule_wildcard,
+        )
+
     def btn_api_table_add_use_case_clicked(self):
         """ 這個 Add Button 是用來複製已有的第一層 API 的, 並且要把 Generation Rule 和 Assertion Rule 和 Dependency Request Body 也複製過去. """
         # * To get the selected api item, and copy it.
@@ -1279,35 +1453,7 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update test data file `{testdata_path}` with new value `{new_value}`.")
             else:
                 return   
-    
-    # def assertion_rule_item_changed(self, item, column):
-    #     # * Retrieve the dictionary path of the new value item changed in the table.
-    #     source, json_path, method, expected_value = item.text(1), item.text(2), item.text(3), item.text(4)
-    #     new_value = [source, json_path, method, expected_value]
-    #     key_list = ["Source", "Filter Expression", "Assertion Method", "Expected Value"]
-        
-    #     # * Retrieve the parent item of the item changed
-    #     parent_item_name = item.parent().text(0).replace(" ", "_").lower()
-    #     index = item.parent().indexOfChild(item)
-        
-    #     # * Retrieve the API List selected item to get the corresponding operation id
-    #     api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
-    #     operation_id = api_selected_item[0]
-        
-    #     # * Update the value in the JSON file
-    #     file_path = "./AssertionRule/" + operation_id + ".json"
-    #     with open(file_path, 'r+') as f:
-    #         data = json.load(f)
-    #         for key, value in zip(key_list, new_value):
-    #             result = GeneralTool.update_value_in_json(data, [parent_item_name, index, key], value)
-    #             if result is not False:
-    #                 f.seek(0)
-    #                 json.dump(data, f, indent=4)
-    #                 f.truncate()
-    #                 logging.info(f"Update JSON file `{file_path}` with new value `{new_value}` at path `{[parent_item_name, index]}`.")
-    #             else:
-    #                 logging.error(f"Error updating JSON file `{file_path}` with new value `{new_value}` at path `{[parent_item_name, index]}`.")
-            
+
     def generation_rule_item_changed(self, item, column):
         # * Retrieve the dictionary path of the new value item changed in the table.
         new_value = item.text(1)
@@ -1346,46 +1492,31 @@ class MyWindow(QMainWindow):
             api_name: Which API to create the G_Rule and P_Rule and Schema File.
             original_operation_id: Which original API to create this dependency API.
         """
-        api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
-        for schema in glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml"):
-            api_doc = GeneralTool.load_schema_file(schema)
-            for uri, path_item in api_doc['paths'].items():
-                if uri == api_uri:
-                    for method, operation in path_item.items():
-                        if method == api_method:
-                            operation_id = operation['operationId']
-                            # * Create the Data Generation Rule File
-                            if method in ["post", "put", "patch", "delete"] and 'requestBody' in operation:
-                                # * WARNING: Only support the first content type now.
-                                first_content_type = next(iter(operation['requestBody']['content']))
-                                request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                                request_body_schema = GeneralTool.retrive_ref_schema(api_doc, request_body_schema)
-                                generation_rule = GeneralTool.parse_schema_to_generation_rule(request_body_schema)
-                                with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
-                                    data = json.load(f)
-                                    result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num],"Data Generation Rules" , generation_rule)
-                                    if result is not False:
-                                        f.seek(0)
-                                        json.dump(data, f, indent=4)
-                                        f.truncate()
-                                        logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
-                                    else:
-                                        logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
-                            
-                            # * Create the Path Rule File
-                            if "{" in uri and "}" in uri and 'parameters' in operation:
-                                path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
-                                with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
-                                    data = json.load(f)
-                                    result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "Path Rules", path_rule)
-                                    if result is not False:
-                                        f.seek(0)
-                                        json.dump(data, f, indent=4)
-                                        f.truncate()
-                                        logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")
-                                    else:
-                                        logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")    
-                            break
+        generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api_name)
+        
+        if generation_rule != None:
+            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num],"Data Generation Rules" , generation_rule)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
+                else:
+                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Data Generation Rules']}`.")
+                
+        if path_rule != None:
+            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "Path Rules", path_rule)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")
+                else:
+                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'Path Rules']}`.")    
         
     def _create_generation_rule_and_assertion_files(self):
         """ Create Generation Rule and Assertion Files """
@@ -1511,9 +1642,10 @@ class MyWindow(QMainWindow):
                             if operation_id == target_operation_id:                
                                 if api_item.childCount() == 0:
                                     test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
-                                    testdata = DataBuilder.init_test_data(operation_id)        
+                                    testdata = DataBuilder.init_test_data(operation_id)
+                                    dependency_testdata = DataBuilder.init_dependency_test_data(operation_id)
                                     GeneralTool.generate_test_cases(
-                                        tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata
+                                        tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                                     )
                                 elif api_item.childCount() > 0:
                                     for use_case_i in range(api_item.childCount()):
@@ -1521,8 +1653,9 @@ class MyWindow(QMainWindow):
                                         use_case_operation_id = use_case_item.text(4)
                                         test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
                                         testdata = DataBuilder.init_test_data(use_case_operation_id)
+                                        dependency_testdata = DataBuilder.init_dependency_test_data(use_case_operation_id)
                                         GeneralTool.generate_test_cases(
-                                            tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata 
+                                            tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                                         )
                                 self.tabTCG.setCurrentIndex(1)
         
@@ -1637,22 +1770,7 @@ class MyWindow(QMainWindow):
             test_point_id = test_id.split(".")[1]
             
             # * Render the Test Case Dependency Rule.
-            dependency_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']
-            for section in ['Setup', 'Teardown']:
-                for key in dependency_rule[section]:
-                    if 'Data Generation Rules' in dependency_rule[section][key]:
-                        del dependency_rule[section][key]['Data Generation Rules']
-                    if 'Path Rules' in dependency_rule[section][key]:
-                        del dependency_rule[section][key]['Path Rules']
-                                        
-            setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
-            setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
-            self.table_tc_dependency.clear()
-            self.table_tc_dependency.addTopLevelItem(setup_item)
-            self.table_tc_dependency.addTopLevelItem(teardown_item)            
-            GeneralTool.parse_request_body(setup_list, setup_item, editabled=True)
-            GeneralTool.parse_request_body(teardown_list, teardown_item, editabled=True)
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency)
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency)
             
             # * Render the Path Rule.
             path_item = QTreeWidgetItem(["Path Parameters"])

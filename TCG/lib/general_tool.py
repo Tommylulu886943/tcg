@@ -10,6 +10,120 @@ from PyQt6 import QtWidgets, uic
 from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit
 
 class GeneralTool:
+    @classmethod
+    def update_dependency_wildcard(
+        cls,
+        constraint_rule_dst: object,
+        checkbox_wildcard: object,
+        textbox_dst_rule: object,
+    ) -> None:
+        dst_path = constraint_rule_dst.text()
+        if checkbox_wildcard.isChecked():
+            if dst_path != "":
+                dst_path = dst_path.split(".")[0] + ".*"
+        else:
+            if ".*" in dst_path:
+                dst_path = dst_path.replace(".*", "")
+        textbox_dst_rule.setText(dst_path)
+        
+    @classmethod
+    def update_constraint_actions_src(
+        cls,
+        src_action: object,
+        constraint_rule_condition: object,
+    ) -> None:
+        
+        current_text = src_action.currentText()
+        constraint_rule_condition.clear()
+        if current_text == "If":
+            constraint_rule_condition.addItems(["==", "!=", ">", "<", ">=", "<="])
+        elif current_text == "Set":
+            constraint_rule_condition.addItems(["WITH"])        
+    
+    @classmethod
+    def update_constraint_actions_dst(
+        cls,
+        dst_action: object,
+        dst_action_type: object,
+        dst_value: object,
+        wildcard: object, 
+    ) -> None:
+        
+        current_text = dst_action.currentText()
+        cls.clean_ui_content([dst_action_type, dst_value, wildcard])
+        if current_text == "Then Set":
+            dst_action_type.setEnabled(True)
+            index = dst_action_type.findText("WITH")
+            if index >= 0:
+                dst_action_type.setCurrentIndex(index)
+            else:
+                dst_action_type.addItems(["WITH"])
+                dst_action_type.setCurrentIndex(index)
+            dst_value.setEnabled(True)
+            wildcard.setEnabled(False)
+            
+        elif current_text == "Then Remove":
+            dst_action_type.setCurrentIndex(0)
+            dst_action_type.setEnabled(False)
+            dst_value.setEnabled(False)
+            wildcard.setEnabled(True)
+            
+    @classmethod
+    def generate_dependency_data_generation_rule_and_path_rule(cls, api_name: str) -> dict | None:
+        api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
+        for schema in glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml"):
+            api_doc = cls.load_schema_file(schema)
+            for uri, path_item in api_doc['paths'].items():
+                if uri == api_uri:
+                    for method, operation in path_item.items():
+                        if method == api_method:
+                            operation_id = operation['operationId']
+                            
+                            # * Create the Data Generation Rule File
+                            generation_rule = None
+                            if method in ["post", "put", "patch", "delete"] and 'requestBody' in operation:
+                                # * WARNING: Only support the first content type now.
+                                first_content_type = next(iter(operation['requestBody']['content']))
+                                request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
+                                request_body_schema = cls.retrive_ref_schema(api_doc, request_body_schema)
+                                generation_rule = cls.parse_schema_to_generation_rule(request_body_schema)
+                                
+                            # * Create the Path Rule File
+                            path_rule = None
+                            if "{" in uri and "}" in uri and 'parameters' in operation:
+                                path_rule = cls.parse_schema_to_path_rule(operation['parameters'])
+                            
+                            return generation_rule, path_rule
+    
+    @classmethod
+    def render_constraint_rule(cls, selected_item, textbox_src, textbox_expected_value, textbox_dst, textbox_dst_value, checkbox_wildcard):
+        """When the user clicks on a field in the Data Generation Rule table, the field will be rendered in the corresponding text box.
+           For quick editing, the user can click on the text box to edit the field directly.
+
+        Args:
+            selected_item: The selected item in the Data Generation Rule table.
+            textbox_src: The text box for the source field.
+            textbox_expected_value: The text box for the expected value field.
+            textbox_dst: The text box for the destination field.
+            textbox_dst_value: The text box for the destination value field.
+            checkbox_wildcard: The checkbox for the wildcard field.
+        """
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is None:
+            src_path = textbox_src.text()
+            dst_path = textbox_dst.text()
+            field = selected_item.text(0)
+            src_value = selected_item.child(2).text(1)
+            
+            if src_path == "" or (src_path != "" and dst_path != ""):
+                textbox_src.setText(field)
+                textbox_expected_value.setText(src_value)
+                textbox_dst.clear()
+                textbox_dst_value.clear()
+                checkbox_wildcard.setChecked(False)
+            elif dst_path == "":
+                textbox_dst.setText(field)        
     
     @classmethod
     def collect_items_from_top_level(cls, tree, top_level_text, column_num=0):
@@ -145,16 +259,47 @@ class GeneralTool:
             json.dump(tcg_config, f, indent=4)
                 
     @classmethod
-    def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata):
+    def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata):
         for test_type in tcg_config['config']['test_strategy']:
             for test_strategy in tcg_config['config']['test_strategy'][test_type]:
                 test_strategy_func = getattr(TestStrategy, test_strategy)
                 serial_number = test_strategy_func(
-                    test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata
+                    test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                 )
                 logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
         return serial_number
     
+    @classmethod
+    def generate_dependency_test_data_file(cls, dependency_testdata: dict, operation_id: str, serial_number: str, test_point_num: str) -> dict:
+        """ Generate dependency base test data files according to the sequence of setup/teardown in the test plan.
+
+        Args:
+            dependency_testdata: The dependency test data
+            operation_id: The API operation id.
+            serial_number: The test case serial number.
+            test_point_num: The test strategy serial number.
+
+        Returns:
+            A dict containing the dependency information and the test data file name.
+        """        
+        
+        # Get the general dependency rule.
+        with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+            dependency_rule = json.load(f)
+
+        # Generate dependency test data file for all the dependencies.
+        for action_type in ['Setup', 'Teardown']:
+            for index, data in dependency_testdata[action_type].items():
+                file_name = f"{operation_id}_{serial_number}_{test_point_num}_{action_type}_{index}.json"
+                path = f"./TestData/Dependency_TestData/{file_name}"
+                dependency_rule[action_type][index]['Config Name'] = file_name
+                if not os.path.exists(path):
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w") as f:
+                    json.dump(data, f, indent=4)
+                    logging.info(f"Generate dependency test data file: {path}")
+        return dependency_rule
+     
     @classmethod
     def expand_and_resize_tree(cls, tree, expand=True):
         """ To expand or collapse all items in a QTreeWidget. """
@@ -385,6 +530,8 @@ class GeneralTool:
                         del dependency_rule[section][key]['Data Generation Rules']
                     if 'Path Rules' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['Path Rules']
+                    if 'Config Name' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['Config Name']
                                         
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
@@ -394,6 +541,30 @@ class GeneralTool:
             dependency_rule_table.addTopLevelItem(teardown_item)
             cls.parse_request_body(setup_list, setup_item, editabled=True)
             cls.parse_request_body(teardown_list, teardown_item, editabled=True)
+            
+    @classmethod
+    def render_dependency_rule(cls, test_plan, test_case_id, test_point_id, table):
+        """ To render dependency rule to the Test Plan Table. """
+        
+        # * Render the Test Case Dependency Rule.
+        dependency_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']
+        for section in ['Setup', 'Teardown']:
+            for key in dependency_rule[section]:
+                if 'Data Generation Rules' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['Data Generation Rules']
+                if 'Path Rules' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['Path Rules']
+                if 'Config Name' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['Config Name']
+                                                             
+        setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
+        setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
+        table.clear()
+        table.addTopLevelItem(setup_item)
+        table.addTopLevelItem(teardown_item)            
+        cls.parse_request_body(setup_list, setup_item, editabled=True)
+        cls.parse_request_body(teardown_list, teardown_item, editabled=True)
+        cls.expand_and_resize_tree(table)
     
     @classmethod
     def parse_path_rule(cls, operation_id: str, path_rule_table: object) -> None:
