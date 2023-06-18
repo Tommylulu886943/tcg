@@ -7,9 +7,123 @@ import glob
 
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit, QMessageBox
 
 class GeneralTool:
+    
+    @classmethod
+    def show_error_dialog(cls, error_message: str, detailed_message: str) -> None:
+        """ Pop up an error dialog. """
+        app = QApplication.instance()
+        
+        error_box = QMessageBox()
+        error_box.setIcon(QMessageBox.Icon.Critical)
+        error_box.setWindowTitle("Error")
+        error_box.setText(error_message)
+        error_box.setDetailedText(detailed_message)
+        error_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+        error_box.exec()
+        
+    @classmethod
+    def apply_constraint_rule(
+        cls,
+        operation_id: str,
+        src_action: str,
+        src_path: str,
+        src_condition: str,
+        src_expected_value: str,
+        dst_action: str,
+        dst_path: str,
+        dst_action_type: str,
+        dst_value: str,
+        dependency_type: str = None,
+        dependency_sequence_num: str = None,
+        is_dependency: bool = False,
+        test_case_id: str = None,
+        test_point_id: str = None,
+        is_general_dependency: bool = False,
+    ) -> None:
+        
+        if is_general_dependency:
+            file_path = f"./DependencyRule/{operation_id}.json"
+        elif is_dependency:
+            file_path = f"./test_plan/{operation_id}.json"
+        else:
+            file_path = f"./GenerationRule/{operation_id}.json"
+        
+        if src_action == "Set":
+            if src_condition == "WITH":
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    if is_general_dependency:
+                        path = [dependency_type, dependency_sequence_num, "data_generation_rules", src_path, "Default"]
+                    elif is_dependency:
+                        path = ["test_cases", test_case_id, "test_point", test_point_id, "dependency", 
+                                    dependency_type, dependency_sequence_num, "data_generation_rules", src_path, "Default"]
+                    else:
+                        path = [src_path, "Default"]
+                    result = cls.update_value_in_json(data, path, src_expected_value)
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Update constraint rule: {path} = {src_expected_value}")
+                    else:
+                        logging.error(f"Update constraint rule failed: {path} = {src_expected_value}")
+
+        if dst_action == "Then Remove":
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                if is_general_dependency:
+                    if ".*" in dst_path:
+                        path = [dependency_type, dependency_sequence_num, "data_generation_rules", dst_path.split('.*')[0]]
+                    else:
+                        path = [dependency_type, dependency_sequence_num, "data_generation_rules", dst_path]
+                elif is_dependency:
+                    if ".*" in dst_path:
+                        path = ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', 
+                                    dependency_type, dependency_sequence_num, 'data_generation_rules', dst_path.split('.*')[0]]
+                    else:
+                        path = ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', 
+                                    dependency_type, dependency_sequence_num, 'data_generation_rules', dst_path]
+
+                else:
+                    path = [dst_path]
+                if ".*" in dst_path:
+                    if is_general_dependency or is_dependency:
+                        result = cls.remove_key_in_json(data, path)
+                    else:
+                        result = cls.remove_wildcard_field_in_generation_rule(data, path)
+                else:
+                    result = cls.remove_key_in_json(data, path)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Remove constraint rule: {path}")
+                else:
+                    logging.error(f"Remove constraint rule failed: {path}")
+
+        elif dst_action == "Then Set":
+            if dst_action_type == "WITH":
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    if is_general_dependency:
+                        path = [dependency_type, dependency_sequence_num, "data_generation_rules", dst_path, "Default"]
+                    elif is_dependency:
+                        path = ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency',
+                                    dependency_type, dependency_sequence_num, 'data_generation_rules', dst_path, 'Default']
+                    else:
+                        path = [dst_path, "Default"]
+                    result = cls.update_value_in_json(data, path, dst_value)
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Update constraint rule: {path} = {dst_value}")
+                    else:
+                        logging.error(f"Update constraint rule failed: {path} = {dst_value}")
+
     @classmethod
     def update_dependency_wildcard(
         cls,
@@ -70,7 +184,11 @@ class GeneralTool:
             
     @classmethod
     def generate_dependency_data_generation_rule_and_path_rule(cls, api_name: str) -> dict | None:
-        api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
+        try:
+            api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
+        except Exception as e:
+            logging.error(f"API name format error: {api_name}")
+            return None
         for schema in glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml"):
             api_doc = cls.load_schema_file(schema)
             for uri, path_item in api_doc['paths'].items():
@@ -292,7 +410,7 @@ class GeneralTool:
             for index, data in dependency_testdata[action_type].items():
                 file_name = f"{operation_id}_{serial_number}_{test_point_num}_{action_type}_{index}.json"
                 path = f"./TestData/Dependency_TestData/{file_name}"
-                dependency_rule[action_type][index]['Config Name'] = file_name
+                dependency_rule[action_type][index]['config_name'] = file_name
                 if not os.path.exists(path):
                     os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w") as f:
@@ -382,8 +500,8 @@ class GeneralTool:
                 continue
 
             fields[test_type][str(counter[test_type])] = {
-                'Source': 'Status Code', 'Filter Expression': '',
-                'Assertion Method': '==', 'Expected Value': status_code,   
+                'source': 'Status Code', 'filter_expression': '',
+                'assertion_method': '==', 'expected_value': status_code,   
             }
             counter[test_type] += 1
         return fields
@@ -526,12 +644,12 @@ class GeneralTool:
             # * Exclude the Data Generation Rules and Path Rules from the Dependency Rule Table.
             for section in ['Setup', 'Teardown']:
                 for key in dependency_rule[section]:
-                    if 'Data Generation Rules' in dependency_rule[section][key]:
-                        del dependency_rule[section][key]['Data Generation Rules']
-                    if 'Path Rules' in dependency_rule[section][key]:
-                        del dependency_rule[section][key]['Path Rules']
-                    if 'Config Name' in dependency_rule[section][key]:
-                        del dependency_rule[section][key]['Config Name']
+                    if 'data_generation_rules' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['data_generation_rules']
+                    if 'path' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['path']
+                    if 'config_name' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['config_name']
                                         
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
@@ -550,12 +668,12 @@ class GeneralTool:
         dependency_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency']
         for section in ['Setup', 'Teardown']:
             for key in dependency_rule[section]:
-                if 'Data Generation Rules' in dependency_rule[section][key]:
-                    del dependency_rule[section][key]['Data Generation Rules']
-                if 'Path Rules' in dependency_rule[section][key]:
-                    del dependency_rule[section][key]['Path Rules']
-                if 'Config Name' in dependency_rule[section][key]:
-                    del dependency_rule[section][key]['Config Name']
+                if 'data_generation_rules' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['data_generation_rules']
+                if 'path' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['path']
+                if 'config_name' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['config_name']
                                                              
         setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
         setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
@@ -593,8 +711,8 @@ class GeneralTool:
 
         def _create_child_item(item):
             child_item = QTreeWidgetItem([
-                "", item['Source'], item['Filter Expression'], 
-                item['Assertion Method'], item['Expected Value']
+                "", item['source'], item['filter_expression'], 
+                item['assertion_method'], item['expected_value']
             ])
             child_item.setFlags(child_item.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
             return child_item

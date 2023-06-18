@@ -27,9 +27,16 @@
        <widget class="QTabWidget" name="tabTCG">
         <property name="font">
          <font>
-          <family>Microsoft JhengHei</family>
+          <family>Segoe UI</family>
           <pointsize>10</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
         </property>
         <property name="currentIndex">
          <number>0</number>
@@ -77,7 +84,8 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="editTriggers">
@@ -117,8 +125,8 @@
                <widget class="QPushButton" name="btn_import_openapi_doc">
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
-                  <pointsize>9</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -140,8 +148,8 @@
                 </property>
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
-                  <pointsize>9</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -153,7 +161,8 @@
                <widget class="QPushButton" name="btn_api_table_add_use_case">
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -165,7 +174,8 @@
                <widget class="QPushButton" name="btn_api_table_remove">
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -177,7 +187,8 @@
                <widget class="QCheckBox" name="checkBox_import_api_validation">
                 <property name="font">
                  <font>
-                  <family>JetBrains Mono</family>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -191,9 +202,12 @@
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
                <widget class="QTabWidget" name="tabWidget_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
                 <property name="font">
                  <font>
-                  <family>Microsoft YaHei UI</family>
+                  <family>Segoe UI</family>
                   <pointsize>10</pointsize>
                  </font>
                 </property>
@@ -203,7 +217,7 @@
                 <widget class="QWidget" name="tab_3">
                  <property name="font">
                   <font>
-                   <family>MS Shell Dlg 2</family>
+                   <family>Segoe UI</family>
                    <pointsize>10</pointsize>
                   </font>
                  </property>
@@ -223,10 +237,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
-                        <weight>50</weight>
-                        <bold>false</bold>
                        </font>
                       </property>
                       <property name="title">
@@ -243,7 +255,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -256,7 +268,7 @@
                         <widget class="QLineEdit" name="textbox_constraint_rule_src">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -269,7 +281,7 @@
                         <widget class="QComboBox" name="comboBox_constraint_rule_src_action">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -289,7 +301,7 @@
                         <widget class="QComboBox" name="comboBox_constraint_rule_condition">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -307,7 +319,7 @@
                         <widget class="QLineEdit" name="textbox_constraint_rule_expected_value">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -320,7 +332,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -349,7 +361,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -359,7 +371,7 @@
                         <widget class="QLineEdit" name="textbox_constraint_rule_dst">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -384,7 +396,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -397,7 +409,7 @@
                         <widget class="QComboBox" name="comboBox_constraint_rule_dst_action">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -417,7 +429,7 @@
                         <widget class="QCheckBox" name="checkBox_constraint_rule_wildcard">
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -439,7 +451,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -457,7 +469,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -476,7 +488,7 @@
                          </property>
                          <property name="font">
                           <font>
-                           <family>MS Shell Dlg 2</family>
+                           <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
                          </property>
@@ -515,7 +527,7 @@
                        <widget class="QLabel" name="label_34">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -531,7 +543,7 @@
                        <widget class="QFrame" name="frame">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -549,7 +561,7 @@
                      <widget class="QPushButton" name="btn_remove_path">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -562,7 +574,7 @@
                      <widget class="QPushButton" name="btn_update_path">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -577,7 +589,7 @@
                        <widget class="QLabel" name="label_35">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -590,7 +602,7 @@
                        <widget class="QFrame" name="frame_2">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -614,7 +626,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -624,7 +636,7 @@
                      <widget class="QTreeWidget" name="table_path">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -650,7 +662,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -697,7 +709,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -707,7 +719,7 @@
                        <widget class="QLabel" name="label_32">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -720,7 +732,7 @@
                        <widget class="QPushButton" name="btn_add_dependency_rule">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -733,7 +745,7 @@
                        <widget class="QPushButton" name="btn_remove_dependency_rule">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -746,7 +758,7 @@
                        <widget class="QPushButton" name="btn_update_dependency_rule">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -759,7 +771,7 @@
                        <widget class="QComboBox" name="comboBox_dependency_type">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -779,7 +791,7 @@
                        <widget class="QTreeWidget" name="table_dependency_rule">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -802,7 +814,7 @@
                        <widget class="QLabel" name="label">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -815,7 +827,7 @@
                        <widget class="QLineEdit" name="textbox_dependency_return_variable_name">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -825,7 +837,7 @@
                        <widget class="QLabel" name="label_33">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -844,7 +856,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -857,7 +869,7 @@
                        <widget class="QLabel" name="label_48">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -896,10 +908,8 @@
                             </property>
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
-                              <weight>50</weight>
-                              <bold>false</bold>
                              </font>
                             </property>
                             <property name="title">
@@ -910,7 +920,7 @@
                               <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -923,7 +933,7 @@
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_src_action">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -946,7 +956,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -956,7 +966,7 @@
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_condition">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -974,7 +984,7 @@
                               <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -996,7 +1006,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1022,7 +1032,7 @@
                               <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1038,7 +1048,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1051,7 +1061,7 @@
                               <widget class="QComboBox" name="comboBox_dependency_constraint_rule_dst_action">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1077,7 +1087,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1090,7 +1100,7 @@
                               <widget class="QCheckBox" name="checkBox_dependency_constraint_rule_wildcard">
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1112,10 +1122,8 @@
                             </property>
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
-                              <weight>50</weight>
-                              <bold>false</bold>
                              </font>
                             </property>
                             <property name="title">
@@ -1132,7 +1140,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1151,7 +1159,7 @@
                                </property>
                                <property name="font">
                                 <font>
-                                 <family>MS Shell Dlg 2</family>
+                                 <family>Segoe UI</family>
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
@@ -1185,7 +1193,7 @@
                            <widget class="QLabel" name="label_41">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1198,7 +1206,7 @@
                            <widget class="QPushButton" name="btn_remove_dependency_path">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1211,7 +1219,7 @@
                            <widget class="QPushButton" name="btn_update_dependency_path">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1224,7 +1232,8 @@
                            <widget class="QLineEdit" name="textbox_path_dependency_name">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
                              </font>
                             </property>
                            </widget>
@@ -1233,7 +1242,7 @@
                            <widget class="QLineEdit" name="textbox_path_dependency_value">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1243,7 +1252,7 @@
                            <widget class="QLabel" name="label_40">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1256,7 +1265,7 @@
                            <widget class="QTreeWidget" name="table_dependency_path">
                             <property name="font">
                              <font>
-                              <family>MS Shell Dlg 2</family>
+                              <family>Segoe UI</family>
                               <pointsize>10</pointsize>
                              </font>
                             </property>
@@ -1285,7 +1294,7 @@
                          <widget class="QTreeWidget" name="table_dependency_schema">
                           <property name="font">
                            <font>
-                            <family>MS Shell Dlg 2</family>
+                            <family>Segoe UI</family>
                             <pointsize>10</pointsize>
                            </font>
                           </property>
@@ -1320,7 +1329,7 @@
                      <widget class="QTreeWidget" name="table_assertion_rule">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1340,7 +1349,7 @@
                      <widget class="QLineEdit" name="textbox_assertion_rule_expression">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1356,7 +1365,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1451,7 +1460,7 @@
                      <widget class="QLineEdit" name="textbox_assertion_rule_expected_value">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1461,7 +1470,7 @@
                      <widget class="QLabel" name="label_assertion_type_2">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1474,7 +1483,7 @@
                      <widget class="QComboBox" name="comboBox_assertion_type">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1494,7 +1503,7 @@
                      <widget class="QPushButton" name="btn_add_assertion_rule">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1507,7 +1516,7 @@
                      <widget class="QLabel" name="label_assertion_type">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1520,7 +1529,7 @@
                      <widget class="QPushButton" name="btn_remove_assertion_rule">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1533,7 +1542,7 @@
                      <widget class="QPushButton" name="btn_update_assertion_rule">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1546,7 +1555,7 @@
                      <widget class="QLabel" name="label_6">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1559,7 +1568,7 @@
                      <widget class="QLabel" name="label_assertion_type_3">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1572,7 +1581,7 @@
                      <widget class="QLabel" name="label_7">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1585,7 +1594,7 @@
                      <widget class="QComboBox" name="comboBox_assertion_source">
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1619,7 +1628,7 @@
                    <widget class="QTreeWidget" name="table_schema">
                     <property name="font">
                      <font>
-                      <family>MS Shell Dlg 2</family>
+                      <family>Segoe UI</family>
                       <pointsize>10</pointsize>
                      </font>
                     </property>
@@ -1656,11 +1665,21 @@
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
                <widget class="QPushButton" name="btn_add_test_case">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
+                  <family>Segoe UI</family>
                   <pointsize>10</pointsize>
                  </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
                 </property>
                 <property name="text">
                  <string>Add</string>
@@ -1669,11 +1688,21 @@
               </item>
               <item>
                <widget class="QPushButton" name="btn_remove_test_case">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
+                  <family>Segoe UI</family>
                   <pointsize>10</pointsize>
                  </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
                 </property>
                 <property name="text">
                  <string>Remove</string>
@@ -1682,11 +1711,21 @@
               </item>
               <item>
                <widget class="QPushButton" name="btn_duplicate_test_case">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="font">
                  <font>
-                  <family>MS Shell Dlg 2</family>
+                  <family>Segoe UI</family>
                   <pointsize>10</pointsize>
                  </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
                 </property>
                 <property name="text">
                  <string>Duplicate</string>
@@ -1699,9 +1738,16 @@
              <widget class="QPushButton" name="btn_generate_test_case">
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
               </property>
               <property name="text">
                <string>GenerateTest Case</string>
@@ -1712,9 +1758,16 @@
              <widget class="QTreeWidget" name="table_test_plan_api_list">
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
@@ -1753,12 +1806,19 @@
              <widget class="QTabWidget" name="Dependency_3">
               <property name="font">
                <font>
-                <family>MS Shell Dlg 2</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+              </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">
@@ -1771,7 +1831,7 @@
                    <widget class="QPlainTextEdit" name="text_body">
                     <property name="font">
                      <font>
-                      <family>MS Shell Dlg 2</family>
+                      <family>Segoe UI</family>
                       <pointsize>10</pointsize>
                      </font>
                     </property>
@@ -1787,26 +1847,7 @@
                     </property>
                     <property name="font">
                      <font>
-                      <family>MS Shell Dlg 2</family>
-                      <pointsize>10</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Update</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QPushButton" name="btn_update_text_body_2">
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <family>MS Shell Dlg 2</family>
+                      <family>Segoe UI</family>
                       <pointsize>10</pointsize>
                      </font>
                     </property>
@@ -1829,12 +1870,27 @@
                   <item row="1" column="2">
                    <layout class="QHBoxLayout" name="horizontalLayout_42">
                     <item>
-                     <widget class="QLineEdit" name="textbox_tc_path_value"/>
+                     <widget class="QLineEdit" name="textbox_tc_path_value">
+                      <property name="styleSheet">
+                       <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </item>
                   <item row="0" column="0">
                    <widget class="QPushButton" name="btn_tc_remove_path">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
                     <property name="text">
                      <string>Remove</string>
                     </property>
@@ -1842,16 +1898,38 @@
                   </item>
                   <item row="1" column="1">
                    <widget class="QLabel" name="label_42">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
                     <property name="text">
                      <string>Value : </string>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="2">
-                   <widget class="QLineEdit" name="textbox_tc_path_name"/>
+                   <widget class="QLineEdit" name="textbox_tc_path_name">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
+                   </widget>
                   </item>
                   <item row="0" column="1">
                    <widget class="QLabel" name="label_43">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
                     <property name="text">
                      <string>Name : </string>
                     </property>
@@ -1859,6 +1937,13 @@
                   </item>
                   <item row="1" column="0">
                    <widget class="QPushButton" name="btn_tc_update_path">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
                     <property name="text">
                      <string>Update</string>
                     </property>
@@ -1866,6 +1951,13 @@
                   </item>
                   <item row="2" column="0" colspan="3">
                    <widget class="QTreeWidget" name="table_tc_path">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
                     <column>
                      <property name="text">
                       <string>Name</string>
@@ -1901,7 +1993,7 @@
                      <widget class="QLabel" name="label_44">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1914,7 +2006,7 @@
                      <widget class="QPushButton" name="btn_tc_add_dependency_rule">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1927,7 +2019,7 @@
                      <widget class="QComboBox" name="comboBox_tc_dependency_type">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1947,7 +2039,7 @@
                      <widget class="QPushButton" name="btn_tc_update_dependency_rule">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1960,7 +2052,7 @@
                      <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1970,10 +2062,10 @@
                      </widget>
                     </item>
                     <item row="5" column="0" colspan="3">
-                     <widget class="QTreeWidget" name="table_tc_dependency">
+                     <widget class="QTreeWidget" name="table_tc_dependency_rule">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -1993,7 +2085,7 @@
                      <widget class="QLabel" name="label_45">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2006,7 +2098,7 @@
                      <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2016,7 +2108,7 @@
                      <widget class="QLabel" name="label_49">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2035,7 +2127,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2048,7 +2140,7 @@
                      <widget class="QLabel" name="label_2">
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2079,7 +2171,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>Microsoft YaHei UI</family>
+                        <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
                       </property>
@@ -2088,7 +2180,7 @@
                    </layout>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QTabWidget" name="table_tc_dependency_schema">
+                   <widget class="QTabWidget" name="tabTCD">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                       <horstretch>0</horstretch>
@@ -2115,10 +2207,8 @@
                           </property>
                           <property name="font">
                            <font>
-                            <family>JetBrains Mono</family>
-                            <pointsize>8</pointsize>
-                            <weight>50</weight>
-                            <bold>false</bold>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="title">
@@ -2129,7 +2219,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2149,7 +2239,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2170,7 +2260,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2180,7 +2270,7 @@
                             <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_src">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2196,7 +2286,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2222,7 +2312,7 @@
                             <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2247,7 +2337,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2260,7 +2350,7 @@
                             <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2280,7 +2370,7 @@
                             <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_expected_value">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2296,7 +2386,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2309,7 +2399,7 @@
                             <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
                              <property name="font">
                               <font>
-                               <family>Microsoft YaHei UI</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2331,10 +2421,8 @@
                           </property>
                           <property name="font">
                            <font>
-                            <family>JetBrains Mono</family>
-                            <pointsize>8</pointsize>
-                            <weight>50</weight>
-                            <bold>false</bold>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="title">
@@ -2342,7 +2430,7 @@
                           </property>
                           <layout class="QGridLayout" name="gridLayout_33" rowstretch="1,9">
                            <item row="0" column="1">
-                            <widget class="QPushButton" name="btn_dependency_generation_rule_remove_8">
+                            <widget class="QPushButton" name="btn_tc_dependency_generation_rule_remove">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                                <horstretch>0</horstretch>
@@ -2351,7 +2439,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2370,7 +2458,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2389,7 +2477,7 @@
                              </property>
                              <property name="font">
                               <font>
-                               <family>MS Shell Dlg 2</family>
+                               <family>Segoe UI</family>
                                <pointsize>10</pointsize>
                               </font>
                              </property>
@@ -2427,19 +2515,12 @@
                       <item>
                        <layout class="QGridLayout" name="gridLayout_31">
                         <item row="0" column="0">
-                         <widget class="QTextEdit" name="textbox_tc_dependency_requestbody">
+                         <widget class="QPlainTextEdit" name="textbox_tc_dependency_requestbody">
                           <property name="font">
                            <font>
-                            <family>MS Shell Dlg 2</family>
+                            <family>Segoe UI</family>
                             <pointsize>10</pointsize>
                            </font>
-                          </property>
-                          <property name="html">
-                           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -2458,7 +2539,8 @@ p, li { white-space: pre-wrap; }
                          <widget class="QLabel" name="label_46">
                           <property name="font">
                            <font>
-                            <pointsize>9</pointsize>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="text">
@@ -2467,10 +2549,11 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item row="0" column="0">
-                         <widget class="QPushButton" name="btn_remove_dependency_path_7">
+                         <widget class="QPushButton" name="btn_tc_remove_dependency_path">
                           <property name="font">
                            <font>
-                            <pointsize>9</pointsize>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="text">
@@ -2479,10 +2562,11 @@ p, li { white-space: pre-wrap; }
                          </widget>
                         </item>
                         <item row="1" column="0">
-                         <widget class="QPushButton" name="btn_update_dependency_path_7">
+                         <widget class="QPushButton" name="btn_tc_update_dependency_path">
                           <property name="font">
                            <font>
-                            <pointsize>9</pointsize>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="text">
@@ -2497,6 +2581,7 @@ p, li { white-space: pre-wrap; }
                          <widget class="QLineEdit" name="textbox_tc_path_dependency_value">
                           <property name="font">
                            <font>
+                            <family>Segoe UI</family>
                             <pointsize>10</pointsize>
                            </font>
                           </property>
@@ -2506,7 +2591,8 @@ p, li { white-space: pre-wrap; }
                          <widget class="QLabel" name="label_47">
                           <property name="font">
                            <font>
-                            <pointsize>9</pointsize>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <property name="text">
@@ -2518,8 +2604,8 @@ p, li { white-space: pre-wrap; }
                          <widget class="QTreeWidget" name="table_tc_dependency_path">
                           <property name="font">
                            <font>
-                            <family>JetBrains Mono</family>
-                            <pointsize>9</pointsize>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
                            </font>
                           </property>
                           <column>
@@ -2544,10 +2630,10 @@ p, li { white-space: pre-wrap; }
                      </attribute>
                      <layout class="QHBoxLayout" name="horizontalLayout_15">
                       <item>
-                       <widget class="QTreeWidget" name="table_dependency_schema_7">
+                       <widget class="QTreeWidget" name="table_tc_dependency_schema">
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
+                          <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
@@ -2804,7 +2890,8 @@ p, li { white-space: pre-wrap; }
              <widget class="QTreeWidget" name="api_tree_table_3">
               <property name="font">
                <font>
-                <family>JetBrains Mono</family>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
                </font>
               </property>
               <property name="editTriggers">
@@ -2963,14 +3050,15 @@ p, li { white-space: pre-wrap; }
              <widget class="QTextBrowser" name="textBrowser">
               <property name="font">
                <font>
-                <family>JetBrains Mono</family>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
                </font>
               </property>
               <property name="html">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'JetBrains Mono'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;*** Settings ***&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Documentation     Test cases for post /api/v1/profiles.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'JetBrains Mono,Consolas,Courier New,monospace'; font-size:11pt; color:#000000;&quot;&gt;Resource          ../../_Resources/setup_teardown.robot&lt;/span&gt;&lt;/p&gt;
@@ -3045,7 +3133,8 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="font">
            <font>
-            <family>Microsoft JhengHei</family>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <layout class="QGridLayout" name="gridLayout_18">
@@ -3053,10 +3142,8 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pushButton_3">
              <property name="font">
               <font>
-               <family>Microsoft JhengHei</family>
+               <family>Segoe UI</family>
                <pointsize>10</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -3068,10 +3155,8 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="pushButton_8">
              <property name="font">
               <font>
-               <family>Microsoft JhengHei</family>
+               <family>Segoe UI</family>
                <pointsize>10</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -3083,10 +3168,8 @@ p, li { white-space: pre-wrap; }
             <widget class="QGroupBox" name="group_test_strategy">
              <property name="font">
               <font>
-               <family>Microsoft JhengHei</family>
+               <family>Segoe UI</family>
                <pointsize>10</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
               </font>
              </property>
              <property name="title">
@@ -3103,7 +3186,8 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="font">
                <font>
-                <family>Microsoft JhengHei</family>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
                </font>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -3111,10 +3195,8 @@ p, li { white-space: pre-wrap; }
                 <widget class="QGroupBox" name="group_positive_test_2">
                  <property name="font">
                   <font>
-                   <family>Microsoft JhengHei</family>
+                   <family>Segoe UI</family>
                    <pointsize>10</pointsize>
-                   <weight>50</weight>
-                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="title">
@@ -3131,7 +3213,7 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <family>Microsoft JhengHei</family>
+                    <family>Segoe UI</family>
                     <pointsize>10</pointsize>
                    </font>
                   </property>
@@ -3148,7 +3230,8 @@ p, li { white-space: pre-wrap; }
                 <widget class="QGroupBox" name="group_negasitive_test_2">
                  <property name="font">
                   <font>
-                   <family>Microsoft JhengHei</family>
+                   <family>Segoe UI</family>
+                   <pointsize>10</pointsize>
                   </font>
                  </property>
                  <property name="title">
@@ -3165,10 +3248,8 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <family>Microsoft JhengHei</family>
+                    <family>Segoe UI</family>
                     <pointsize>10</pointsize>
-                    <weight>50</weight>
-                    <bold>false</bold>
                    </font>
                   </property>
                   <property name="text">
@@ -3189,50 +3270,22 @@ p, li { white-space: pre-wrap; }
         </widget>
        </widget>
       </item>
-      <item>
-       <widget class="QTextBrowser" name="textBrowser_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>10</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>9999</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Microsoft JhengHei</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft JhengHei'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'PMingLiU'; font-size:9pt;&quot;&gt;Log&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
      <widget class="QProgressBar" name="progressBar">
       <property name="font">
        <font>
-        <family>Microsoft JhengHei</family>
+        <family>Segoe UI</family>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
       </property>
       <property name="value">
        <number>24</number>

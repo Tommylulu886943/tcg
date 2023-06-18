@@ -1,0 +1,198 @@
+{
+    "agent-GET AGENTGETTOKEN": {
+      "accept": "application/json"
+    },
+    "agent-DELETE AGENTDELETETOKEN": {
+      "accept": "application/json"
+    },
+    "agent-POST AGENTGENERATETOKEN": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "agent-GET AGENTLIST": {
+      "accept": "application/json"
+    },
+    "agent-GET AGENTGET": {
+      "accept": "application/json"
+    },
+    "agent-DELETE AGENTDELETE": {
+      "accept": "application/json"
+    },
+    "agent-PUT AGENTUPDATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "agent-POST AGENTSSHCLOSE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "agent-POST AGENTSSHCONNECT": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "agent-POST AGENTUPGRADE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "alert-GET ALERTLIST": {
+      "accept": "application/json"
+    },
+    "alert-POST ALERTCREATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "alert-GET ALERTGET": {
+      "accept": "application/json"
+    },
+    "alert-DELETE ALERTDELETE": {
+      "accept": "application/json"
+    },
+    "alert-PUT ALERTUPDATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "agent_instl_file-GET AGENTINSTLFILELIST": {
+      "accept": "application/json"
+    },
+    "agent_instl_file-GET AGENTINSTLFILEGET": {
+      "accept": "application/json"
+    },
+    "agent_instl_file-PUT AGENTINSTLFILEUPDATEANNOTATIONS": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "ipgeo-GET IPGEOLISTCONTINENTS": {
+      "accept": "application/json"
+    },
+    "ipgeo-GET IPGEOLISTCOUNTRIES": {
+      "accept": "application/json"
+    },
+    "ipgeo-GET IPGEOSEARCHLOCATIONS": {
+      "accept": "application/json"
+    },
+    "ipgeo-GET IPGEOGETLOCATION": {
+      "accept": "application/json"
+    },
+    "ipgeo-POST IPGEOQUERYCITIES": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "ipgeo-POST IPGEOQUERYCOUNTRIES": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "ipgeo-GET IPGEOLISTREGIONS": {
+      "accept": "application/json"
+    },
+    "user-GET GETCURRENTUSERINTENANT": {
+      "accept": "application/json"
+    },
+    "user-GET GETCURRENTUSER": {
+      "accept": "application/json"
+    },
+    "user-POST CHANGEPASSWORD": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "user-GET GETCURRENTUSERTENANT": {
+      "accept": "application/json"
+    },
+    "user-GET GETALLUSERS": {
+      "accept": "application/json"
+    },
+    "user-POST CREATEUSER": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "user-GET GETUSERINTENANT": {
+      "accept": "application/json"
+    },
+    "user-DELETE DELETEUSER": {
+      "accept": "application/json"
+    },
+    "user-PUT UPDATEUSER": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "user-GET GETUSER": {
+      "accept": "application/json"
+    },
+    "credential-GET CREDENTIALLIST": {
+      "accept": "application/json"
+    },
+    "credential-POST CREDENTIALCREATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "credential-GET CREDENTIALGET": {
+      "accept": "application/json"
+    },
+    "credential-DELETE CREDENTIALDELETE": {
+      "accept": "application/json"
+    },
+    "credential-PUT CREDENTIALUPDATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "monitor-GET MONITORLIST": {
+      "accept": "application/json"
+    },
+    "monitor-POST MONITORCREATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "monitor-GET MONITORGET": {
+      "accept": "application/json"
+    },
+    "monitor-DELETE MONITORDELETE": {
+      "accept": "application/json"
+    },
+    "monitor-PUT MONITORUPDATE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "tenant-GET GETALLPROFILE": {
+      "accept": "application/json"
+    },
+    "tenant-POST CREATEPROFILE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "tenant-GET GETPROFILE": {
+      "accept": "application/json"
+    },
+    "tenant-DELETE DELETEPROFILE": {
+      "accept": "application/json"
+    },
+    "tenant-PUT UPDATEPROFILE": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "tenant-GET TESTSLA": {
+      "accept": "application/json"
+    },
+    "tenant-GET GETCURRENTTENANT": {
+      "accept": "application/json"
+    },
+    "tenant-GET GETUSERSINCURRENTTENANT": {
+      "accept": "application/json"
+    },
+    "tenant-GET GETALLTENANT": {
+      "accept": "application/json"
+    },
+    "tenant-POST CREATETENANT": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "tenant-GET GETTENANT": {
+      "accept": "application/json"
+    },
+    "tenant-DELETE DELETETENANT": {
+      "accept": "application/json"
+    },
+    "tenant-PUT UPDATETENANT": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    }
+  }
+  

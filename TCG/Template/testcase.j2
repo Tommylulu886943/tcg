@@ -1,0 +1,43 @@
+{%- if outside.basic_selection %}
+*** Settings ***
+Documentation     Test cases for {{ test_info.summary }}.
+
+Resource          ../../_Resources/setup_teardown.robot
+Resource          ../../_Resources/global_keywords.robot
+Resource          ../../_Resources/instantiation_set.robot 
+
+*** Variables ***
+${sender}=    
+
+*** Test Cases ***
+{%- endif %}
+{% for case_id, case in test_cases.items() %}
+{{ case_id }}
+    [Tags]  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
+    [Documentation]  {{ case.summary }}
+    {% for point_id, point in case.test_point.items() %}
+    # Setup - {{ case_id }}.{{ point_id }}
+        {% if point.dependency.Setup != None %}
+            {% for setup_id, setup in point.dependency.Setup.items() %}
+                ${req}  ${ {{ setup.action.response_name }} }=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.obj }}
+                ...  file_name={{ setup.parameter.testdata }}
+        {% endif %}
+    # Test - {{ case_id }}.{{ point_id }}
+        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ outside.action }}  {{ outside.obj }}  
+        {%- if point.parameter.testdata != None %}
+        ...  file_name={{ point.parameter.testdata }}
+        {%- endif %}
+        {%- if point.path != None %}
+        ...  {% for path_id, path in point.path.items() %}{{ path_id }}={{ path }}  {% endfor %}
+        {%- endif %}
+
+        Run Keyword If  ${resp.status_code} != 200
+        {% for assertion_id, assertion in point.assertion.items() -%}
+            {{ assertion.source }}  {{ assertion.assertion_method }}  {{ assertion.expected_value }}
+        {% endfor %}
+        ${parsed_resp}=  ReturnParser.api_parser  ${resp}
+        Log ${parsed_resp}
+
+    # Teardown - {{ case_id }}.{{ point_id }}
+    {% endfor %}
+{% endfor %}

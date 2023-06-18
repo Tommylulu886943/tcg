@@ -39,8 +39,8 @@ class DataBuilder:
         result = {"Setup": {}, "Teardown": {}}
         for action_type in ['Setup', 'Teardown']:
             for index, action in dependency_data[action_type].items():
-                if 'Data Generation Rules' in action:
-                    result[action_type][index] = cls.data_builder(action['Data Generation Rules'])
+                if 'data_generation_rules' in action:
+                    result[action_type][index] = cls.data_builder(action['data_generation_rules'])
                 else:
                     logging.info(f"Data Generation Rules not found in {action_type} action {index}.")
         return result

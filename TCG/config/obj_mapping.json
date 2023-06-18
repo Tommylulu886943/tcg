@@ -1,0 +1,77 @@
+{
+    "agent": {
+      "GET AGENTGETTOKEN": "/api/v1/agent-token",
+      "DELETE AGENTDELETETOKEN": "/api/v1/agent-token",
+      "POST AGENTGENERATETOKEN": "/api/v1/agent-token",
+      "GET AGENTLIST": "/api/v1/agents",
+      "GET AGENTGET": "/api/v1/agents/${id}",
+      "DELETE AGENTDELETE": "/api/v1/agents/${id}",
+      "PUT AGENTUPDATE": "/api/v1/agents/${id}",
+      "POST AGENTSSHCLOSE": "/api/v1/agents/${id}/debug/sshtunnel/close",
+      "POST AGENTSSHCONNECT": "/api/v1/agents/${id}/debug/sshtunnel/connect",
+      "POST AGENTUPGRADE": "/api/v1/agents/${id}/upgrade/${instlFileId}"
+    },
+    "alert": {
+      "GET ALERTLIST": "/api/v1/alerts",
+      "POST ALERTCREATE": "/api/v1/alerts",
+      "GET ALERTGET": "/api/v1/alerts/${id}",
+      "DELETE ALERTDELETE": "/api/v1/alerts/${id}",
+      "PUT ALERTUPDATE": "/api/v1/alerts/${id}"
+    },
+    "agent_instl_file": {
+      "GET AGENTINSTLFILELIST": "/api/v1/agent-instl-files-info",
+      "GET AGENTINSTLFILEGET": "/api/v1/agent-instl-files-info/${id}",
+      "PUT AGENTINSTLFILEUPDATEANNOTATIONS": "/api/v1/agent-instl-files-info/${id}/annotations"
+    },
+    "ipgeo": {
+      "GET IPGEOLISTCONTINENTS": "/api/v1/ipgeo/continents",
+      "GET IPGEOLISTCOUNTRIES": "/api/v1/ipgeo/countries",
+      "GET IPGEOSEARCHLOCATIONS": "/api/v1/ipgeo/geolocations",
+      "GET IPGEOGETLOCATION": "/api/v1/ipgeo/geolocations/${id}",
+      "POST IPGEOQUERYCITIES": "/api/v1/ipgeo/query-cities",
+      "POST IPGEOQUERYCOUNTRIES": "/api/v1/ipgeo/query-countries",
+      "GET IPGEOLISTREGIONS": "/api/v1/ipgeo/regions"
+    },
+    "user": {
+      "GET GETCURRENTUSERINTENANT": "/api/v1/user",
+      "GET GETCURRENTUSER": "/api/v1/user/all",
+      "POST CHANGEPASSWORD": "/api/v1/user/change-password",
+      "GET GETCURRENTUSERTENANT": "/api/v1/user/tenants",
+      "GET GETALLUSERS": "/api/v1/users",
+      "POST CREATEUSER": "/api/v1/users",
+      "GET GETUSERINTENANT": "/api/v1/users/${id}",
+      "DELETE DELETEUSER": "/api/v1/users/${id}",
+      "PUT UPDATEUSER": "/api/v1/users/${id}",
+      "GET GETUSER": "/api/v1/users/${id}/all"
+    },
+    "credential": {
+      "GET CREDENTIALLIST": "/api/v1/credentials",
+      "POST CREDENTIALCREATE": "/api/v1/credentials",
+      "GET CREDENTIALGET": "/api/v1/credentials/${id}",
+      "DELETE CREDENTIALDELETE": "/api/v1/credentials/${id}",
+      "PUT CREDENTIALUPDATE": "/api/v1/credentials/${id}"
+    },
+    "monitor": {
+      "GET MONITORLIST": "/api/v1/monitors",
+      "POST MONITORCREATE": "/api/v1/monitors",
+      "GET MONITORGET": "/api/v1/monitors/${id}",
+      "DELETE MONITORDELETE": "/api/v1/monitors/${id}",
+      "PUT MONITORUPDATE": "/api/v1/monitors/${id}"
+    },
+    "tenant": {
+      "GET GETALLPROFILE": "/api/v1/profiles",
+      "POST CREATEPROFILE": "/api/v1/profiles",
+      "GET GETPROFILE": "/api/v1/profiles/${id}",
+      "DELETE DELETEPROFILE": "/api/v1/profiles/${id}",
+      "PUT UPDATEPROFILE": "/api/v1/profiles/${id}",
+      "GET TESTSLA": "/api/v1/sla",
+      "GET GETCURRENTTENANT": "/api/v1/tenant",
+      "GET GETUSERSINCURRENTTENANT": "/api/v1/tenant/users",
+      "GET GETALLTENANT": "/api/v1/tenants",
+      "POST CREATETENANT": "/api/v1/tenants",
+      "GET GETTENANT": "/api/v1/tenants/${id}",
+      "DELETE DELETETENANT": "/api/v1/tenants/${id}",
+      "PUT UPDATETENANT": "/api/v1/tenants/${id}"
+    }
+  }
+  
