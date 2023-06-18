@@ -12,6 +12,26 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTr
 class GeneralTool:
     
     @classmethod
+    def _retrieve_obj_and_action(cls, api: str) -> str:
+        """ Use the OpenAPI notation to retrieve the object name and action name from obj_mapping. """
+        
+        with open('./config/obj_mapping.json', 'r') as f:
+            obj_mapping = json.load(f)
+            
+        expected_method = api.split(" ")[0].lower()
+        expected_uri = api.split(" ")[1]
+        
+        # If the uri included the path variable. Should add the $ before the path variable.
+        if "{" in expected_uri and "}" in expected_uri:
+            expected_uri = expected_uri.replace("{", "${")
+
+        for obj_name, action_set in obj_mapping.items():
+            for action, uri in action_set.items():
+                method = action.split(' ')[0].lower()
+                if uri == expected_uri and method == expected_method:
+                    return obj_name, action
+    
+    @classmethod
     def show_error_dialog(cls, error_message: str, detailed_message: str) -> None:
         """ Pop up an error dialog. """
         app = QApplication.instance()
@@ -650,7 +670,11 @@ class GeneralTool:
                         del dependency_rule[section][key]['path']
                     if 'config_name' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['config_name']
-                                        
+                    if 'object' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['object']
+                    if 'action' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['action']
+                        
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
             
@@ -674,7 +698,11 @@ class GeneralTool:
                     del dependency_rule[section][key]['path']
                 if 'config_name' in dependency_rule[section][key]:
                     del dependency_rule[section][key]['config_name']
-                                                             
+                if 'object' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['object']
+                if 'action' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['action']
+                                                            
         setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
         setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
         table.clear()

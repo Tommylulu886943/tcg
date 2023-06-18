@@ -109,9 +109,10 @@ class MyWindow(QMainWindow):
         
     def btn_generate_test_case_clicked(self):
         
-        with open('./test_plan/Tenant_CreateProfile.json', 'r') as f:
-            test_plan = json.load(f)
-        Render.generate_robot_test_case(test_plan)
+        for test_plan in glob.glob(f"./test_plan/*.json"):
+            with open(test_plan, "r") as f:
+                test_plan = json.load(f)
+            Render.generate_robot_test_case(test_plan)
         
     def btn_tc_remove_dependency_path_clicked(self):
         if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
@@ -337,6 +338,7 @@ class MyWindow(QMainWindow):
                 sequence_num = str(max((int(k) for k in dependency_rules.keys()), default=0) + 1)
                 generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api)
                 test_data = DataBuilder.data_builder(generation_rule)
+                obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
                 path = f"./TestData/Dependency_TestData/{file_name}"
                 if not os.path.exists(path):
@@ -346,7 +348,9 @@ class MyWindow(QMainWindow):
                     logging.info(f"Generate dependency test data file: {path}")
                     
                 new_value = {
-                    "api": api, 
+                    "api": api,
+                    "object": obj_name,
+                    "action": uri_name,
                     "response_name": return_name, 
                     "data_generation_rules": generation_rule if generation_rule is not None else {},
                     "path": path_rule if path_rule is not None else {},
@@ -1087,7 +1091,9 @@ class MyWindow(QMainWindow):
                 sequence_num = str(sequence_num)
             else:
                 sequence_num = '1'
-            new_value = {"api": api, "response_name": return_name,}
+            
+            obj_name, action = GeneralTool._retrieve_obj_and_action(api)
+            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name,}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
                 f.seek(0)

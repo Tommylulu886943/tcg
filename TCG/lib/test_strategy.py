@@ -24,12 +24,15 @@ class TestStrategy:
 
         Returns:
             The path of the test plan .json file.
-        """        
+        """
+        obj_name , action_name = GeneralTool._retrieve_obj_and_action(method + " " + uri)
         basic_test_plan = {
             'test_info': {
                 'summary': method + ' ' + uri,
                 'method': method,
                 'uri': uri,
+                'object': obj_name,
+                'action': action_name,
                 'operationId': operationId,
 
             },
