@@ -48,7 +48,103 @@ class TestStrategy:
         return test_plan_path
     
     @classmethod
-    def parameter_min_max_test(cls, test_type, operation_id, uri, method, operation, test_plan_path, serial_number, baseline_data, dependency_testdata):
+    def required_parameter_test(
+        cls,
+        test_type,
+        operation_id,
+        uri, 
+        method, 
+        operation, 
+        test_plan_path, 
+        serial_number, 
+        baseline_data, 
+        dependency_testdata
+    ):
+        
+        try:
+            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+                generation_rules = json.load(f)
+        except FileNotFoundError:
+            logging.warning(f'This API does not have a generation rule: {operation_id}, so the required_parameter_test case cannot be generated.')
+            return
+        
+        # * Load assertion rule
+        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+            assertion_rule = json.load(f)
+            if test_type == 'negative_test':
+                assertion_rule = assertion_rule["negative"]
+            elif test_type == 'positive_test':
+                assertion_rule = assertion_rule["positive"]
+        
+        # * Load Path rule
+        if os.path.exists(f"./PathRule/{operation_id}.json"):
+            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+                path_rule = json.load(f)
+                
+        test_point_number = 1
+        for key in generation_rules:
+            keys = key.split('.')
+            info = generation_rules[key]
+            rule = generation_rules[key]['rule']
+            
+            required = rule['Required']
+            if required == False:
+                continue
+            else:
+                if test_type == 'negative_test':
+                    testdata = copy.deepcopy(baseline_data)
+                    GeneralTool.remove_key_in_json(testdata, keys)
+                    testdata_file = f'{operation_id}_{serial_number}_{test_point_number}.json'
+                    testdata_path = f'./TestData/{testdata_file}'
+                    with open(testdata_path, 'w') as f:
+                        json.dump(testdata, f, indent=4)
+                    
+                    with open(f"./Template/TestStrategy/negative_parameter_required_test.j2", 'r') as f:
+                        test_temp = f.read()
+                    test_temp = Template(test_temp)
+                    rendered_template = test_temp.render(
+                        key=key,
+                        prop_type=generation_rules[key]['Type'],
+                        config_name=testdata_file
+                    )
+                    
+                    parsed_json = json.loads(rendered_template)
+                    for i in range(1, len(parsed_json['test_point']) + 1):
+                        i = str(i)
+                        # * Add dependency rule to test plan.
+                        d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                        parsed_json['test_point'][i]['dependency'] = d_rule
+                        # * Add path rule value to test plan.
+                        if os.path.exists(f"./PathRule/{operation_id}.json"):
+                            for key, path_item in path_rule.items():
+                                parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                        parsed_json['test_point'][i]['assertion'] = assertion_rule
+                        
+                    with open(test_plan_path, 'r', encoding='utf-8') as f:
+                        existing_test_plan = json.load(f)
+                    existing_test_plan['test_cases'][serial_number] = parsed_json
+                    
+                    with open(test_plan_path, 'w', encoding='utf-8') as f:
+                        json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
+                    
+                    test_point_number += 1
+                    serial_number += 1
+                    
+                return serial_number
+    
+    @classmethod
+    def parameter_min_max_test(
+        cls, 
+        test_type, 
+        operation_id, 
+        uri, 
+        method, 
+        operation, 
+        test_plan_path, 
+        serial_number, 
+        baseline_data, 
+        dependency_testdata
+    ):
  
         try:
             with open(f"./GenerationRule/{operation_id}.json", 'r') as f:

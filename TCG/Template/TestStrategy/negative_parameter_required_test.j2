@@ -1,0 +1,19 @@
+{
+    "summary": "{{ key }} request body parameter required test",
+    "test_strategy": "required_field_test",
+    "test_type": "negative_test",
+    "test_point": {
+        "1": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`Remove required {{ key }} from request body`",
+                "prop_type": "{{ prop_type }}",
+                "value": "",
+                "testdata": "{{ config_name }}"
+            },
+            "dependency": {},
+            "path": {},
+            "assertion": {}
+        }
+    }
+}

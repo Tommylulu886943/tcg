@@ -389,7 +389,9 @@ class GeneralTool:
             elif test_type == "Negative Test":
                 test_type = "negative_test"
                 if name == "Parameter Min./Max.":
-                    name = "parameter_min_max_test" 
+                    name = "parameter_min_max_test"
+                elif name == "Required Field Test":
+                    name = "required_parameter_test"
 
             tcg_config["config"]["test_strategy"][test_type].append(name)
 
@@ -428,8 +430,8 @@ class GeneralTool:
         # Generate dependency test data file for all the dependencies.
         for action_type in ['Setup', 'Teardown']:
             for index, data in dependency_testdata[action_type].items():
-                file_name = f"{operation_id}_{serial_number}_{test_point_num}_{action_type}_{index}.json"
-                path = f"./TestData/Dependency_TestData/{file_name}"
+                file_name = f"{operation_id}_{serial_number}_{test_point_num}_{action_type}_{index}"
+                path = f"./TestData/Dependency_TestData/{file_name}.json"
                 dependency_rule[action_type][index]['config_name'] = file_name
                 if not os.path.exists(path):
                     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -521,7 +523,7 @@ class GeneralTool:
 
             fields[test_type][str(counter[test_type])] = {
                 'source': 'Status Code', 'filter_expression': '',
-                'assertion_method': '==', 'expected_value': status_code,   
+                'assertion_method': 'Should Be Equal', 'expected_value': status_code,   
             }
             counter[test_type] += 1
         return fields
@@ -617,6 +619,12 @@ class GeneralTool:
                                    
             nullable = False
             if "nullable" in schema: nullable = schema["nullable"]
+            
+            required = False
+            if "required" in schema: required = schema["required"]
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print(schema)
+            print(required)
                         
             default = ""
             if "default" in schema: default = schema["default"]
@@ -633,6 +641,7 @@ class GeneralTool:
                     "Data Generator": genType,
                     "Data Length": str(data_length),
                     "Nullable": nullable,
+                    "Required": required,
                 }
             }
             

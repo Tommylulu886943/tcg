@@ -1,40 +1,76 @@
-{% set rendered_summary = false -%}
-{% if not rendered_summary -%}
-*** Settings ***
-Documentation     Test cases for {{ test_info.summary }}.
-
-Resource          ../../_Resources/setup_teardown.robot
-Resource          ../../_Resources/global_keywords.robot
-Resource          ../../_Resources/instantiation_set.robot 
-
-*** Variables ***
-${sender}=    
-
-*** Test Cases ***
-{% set rendered_summary = true %}
-{%- endif %}
+{% if test_cases != None -%}
 {% for case_id, case in test_cases.items() %}
 {{ case_id }}
     [Tags]  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
     [Documentation]  {{ case.summary }}
-    {% for point_id, point in case.test_point.items() %}
-    # Setup - {{ case_id }}.{{ point_id }}
+    {% for point_id, point in case.test_point.items() -%}
+        {% for id, setup in point.dependency.Setup.items() %}
+    # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
+        ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
+        {% if 'path' in setup -%}
+        {% if setup.path != None -%}
+        {% for path_id, path in setup.path.items() -%}
+        {% if 'Value' in path -%}
+            {% set value = path.Value -%}
+        {% else -%}
+            {% set value = path -%}
+        {% endif -%}
+        ...  {{ path_id }}={{ value }}
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
+        {%- if setup.config_name != None -%}
+        ...  file_name={{ setup.config_name }}
+        {%- endif %}
+        {% endfor %}
     # Test - {{ case_id }}.{{ point_id }}
+        # {{ case.summary }}
         ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}  
+        {% if point.path != None -%}
+        {% for path_id, path in point.path.items() -%}...  {{ path_id }}={{ path }}  {% endfor -%}
+        {% endif -%}
         {%- if point.parameter.testdata != None %}
         ...  file_name={{ point.parameter.testdata }}
         {%- endif %}
-        {%- if point.path != None %}
-        {% for path_id, path in point.path.items() %}...  {{ path_id }}={{ path }}  {% endfor %}
-        {%- endif %}
 
-        Run Keyword If  ${resp.status_code} != 200
-        {% for assertion_id, assertion in point.assertion.items() -%}
-            {{ assertion.source }}  {{ assertion.assertion_method }}  {{ assertion.expected_value }}
-        {% endfor %}
         ${parsed_resp}=  ReturnParser.api_parser  ${resp}
-        Log ${parsed_resp}
-
-    # Teardown - {{ case_id }}.{{ point_id }}
-    {% endfor %}
-{% endfor %}
+        Log  ${parsed_resp}
+        {% for assertion_id, assertion in point.assertion.items() %}
+        {% if assertion.source == 'Status Code' -%}
+        Run Keyword If  ${resp.status_code} != {{ assertion.expected_value }}  Log  ${resp.content}
+        {{ assertion.assertion_method }}  ${resp.status_code}  {{ assertion.expected_value }}
+        {% elif assertion.source == 'Body' -%}
+            {% if assertion.filter_expression != '' -%}
+            ${filterd_result}=  ReturnParser.api_parser  ${resp}  {{ assertion.filter_expression }}
+            Log  ${filterd_result}
+            {{ assertion.assertion_method }}  ${filterd_result}  {{ assertion.expected_value }}
+            {% else -%}
+            {{ assertion.assertion_method }}  ${parsed_resp}  {{ assertion.expected_value }}
+            {% endif -%}
+        {{ assertion.assertion_method }}  ${parsed_resp}  {{ assertion.expected_value }}
+        {% elif assertion.source == 'Header' -%}
+        {{ assertion.assertion_method }}  ${resp.headers}  {{ assertion.expected_value }}
+        {% endif -%}
+        {% endfor -%}
+        {% for id, teardown in point.dependency.Teardown.items() %}
+    # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
+        ${req}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
+        {% if 'path' in teardown -%}
+        {% if teardown.path != None -%}
+        {% for path_id, path in teardown.path.items() -%}
+        {% if 'Value' in path -%}
+            {% set value = path.Value -%}
+        {% else -%}
+            {% set value = path -%}
+        {% endif -%}
+        ...  {{ path_id }}={{ value }}  
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
+        {%- if teardown.config_name != None -%}
+        ...  file_name={{ teardown.config_name }}
+        {%- endif %}
+        {% endfor -%}
+    {% endfor -%}
+{% endfor -%}
+{% endif %}

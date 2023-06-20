@@ -109,10 +109,8 @@ class MyWindow(QMainWindow):
         
     def btn_generate_test_case_clicked(self):
         
-        for test_plan in glob.glob(f"./test_plan/*.json"):
-            with open(test_plan, "r") as f:
-                test_plan = json.load(f)
-            Render.generate_robot_test_case(test_plan)
+        GeneralTool.teardown_folder_files(["./TestCases/RESTful_API"])  
+        Render.generate_robot_test_case()
         
     def btn_tc_remove_dependency_path_clicked(self):
         if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
@@ -1792,7 +1790,7 @@ class MyWindow(QMainWindow):
             tcg_config = json.load(f)
             
         # * Generate Test Plan
-        GeneralTool.teardown_folder_files(["./test_plan", "./TestData"])  
+        GeneralTool.teardown_folder_files(["./test_plan", "./TestData", "./TestData/Dependency_TestData"])  
         serial_number = 1
         for i in range(self.table_api_tree.topLevelItemCount()):
             schema_item = self.table_api_tree.topLevelItem(i)
