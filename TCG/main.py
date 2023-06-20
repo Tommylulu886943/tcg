@@ -8,7 +8,7 @@ import copy
 from json.decoder import JSONDecodeError
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtCore import QStringListModel
+from PyQt6.QtCore import QStringListModel, QBasicTimer
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter
 from lib.test_strategy import TestStrategy
@@ -67,6 +67,12 @@ class MyWindow(QMainWindow):
         self.btn_tc_remove_dependency_path.clicked.connect(self.btn_tc_remove_dependency_path_clicked)
         self.btn_tc_update_dependency_path.clicked.connect(self.btn_tc_update_dependency_path_clicked)
         self.btn_generate_test_case.clicked.connect(self.btn_generate_test_case_clicked)
+        self.btn_clear_dependency_rule.clicked.connect(self.btn_clear_dependency_rule_clicked)
+        self.btn_up_dependency_rule.clicked.connect(self.btn_up_dependency_rule_clicked)
+        self.btn_down_dependency_rule.clicked.connect(self.btn_down_dependency_rule_clicked)
+        self.btn_tc_clear_dependency_rule.clicked.connect(self.btn_tc_clear_dependency_rule_clicked)
+        self.btn_tc_up_dependency_rule.clicked.connect(self.btn_tc_up_dependency_rule_clicked)
+        self.btn_tc_down_dependency_rule.clicked.connect(self.btn_tc_down_dependency_rule_clicked)
         
         # * Table's Item Click Event
         self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -106,6 +112,94 @@ class MyWindow(QMainWindow):
         self.line_api_search.setCompleter(self.search_completer)
         self.tc_search_completer = QCompleter()
         self.line_tc_api_search.setCompleter(self.tc_search_completer)
+        
+    def btn_tc_clear_dependency_rule_clicked(self):
+        """ Clear selected dependency rule and table. """
+        GeneralTool.clean_ui_content([
+            self.line_tc_api_search,
+            self.textbox_tc_dependency_return_variable_name,
+            self.table_tc_dependency_generation_rule,
+            self.textbox_tc_dependency_requestbody,
+            self.table_tc_dependency_path,
+            self.table_tc_dependency_schema,
+        ])
+        self.comboBox_tc_dependency_type.setEnabled(True)
+        self.line_tc_api_search.setEnabled(True)
+        self.list_tc_dependency_available_api_list.clearSelection()
+        self.table_tc_dependency_rule.clearSelection()
+          
+    def btn_clear_dependency_rule_clicked(self):
+        """ Clear selected dependency rule and table. """
+        GeneralTool.clean_ui_content([
+            self.line_api_search,
+            self.textbox_dependency_return_variable_name,
+            self.table_dependency_generation_rule,
+            self.table_dependency_path,
+            self.table_dependency_schema,
+        ])
+        self.comboBox_dependency_type.setEnabled(True)
+        self.list_dependency_available_api_list.clearSelection()
+        self.table_dependency_rule.clearSelection()
+            
+    def btn_up_dependency_rule_clicked(self):
+        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+            return
+
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+
+        GeneralTool.update_dependency_rule_index(self, operation_id, dependency_type, dependency_index, "up")
+        
+    def btn_tc_up_dependency_rule_clicked(self):
+        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        elif self.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        
+        GeneralTool.update_tc_dependency_rule_index(
+            self, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "up")
+    
+    def btn_tc_down_dependency_rule_clicked(self):
+        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        elif self.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        
+        GeneralTool.update_tc_dependency_rule_index(
+            self, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "down")
+         
+    def btn_down_dependency_rule_clicked(self):
+        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+                return
+        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+            return
+
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+
+        GeneralTool.update_dependency_rule_index(self, operation_id, dependency_type, dependency_index, "down")
         
     def btn_generate_test_case_clicked(self):
         

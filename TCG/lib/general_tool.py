@@ -12,6 +12,85 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTr
 class GeneralTool:
     
     @classmethod
+    def update_tc_dependency_rule_index(
+        cls, ui, operation_id, test_case_id, test_point_id, dependency_type, src_key, swap_type
+    ):
+        with open(f"./test_plan/{operation_id}.json", "r") as f:
+            d_rule = json.load(f)
+        
+        dependency_keys = list(d_rule['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type].keys())
+        key1_index = dependency_keys.index(src_key)
+        if swap_type == "up":
+            replace_key = dependency_keys[key1_index - 1] if key1_index - 1 >= 0 else None
+        elif swap_type == "down":
+            replace_key = dependency_keys[key1_index + 1] if key1_index < len(dependency_keys) - 1 else None
+
+        if replace_key is None:
+            logging.warning(f"The dependency rule index can't be swapped.")
+            return
+             
+        d_type_rule = d_rule['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type]
+        d_type_rule = cls.swap_dict_keys(d_type_rule, src_key, replace_key)
+        
+        with open(f"./test_plan/{operation_id}.json", "w") as f:
+            json.dump(d_rule, f, indent=4)
+
+        cls.clean_ui_content([
+            ui.line_tc_api_search,
+            ui.textbox_tc_dependency_return_variable_name,
+            ui.table_tc_dependency_generation_rule,
+            ui.textbox_tc_dependency_requestbody,
+            ui.table_tc_dependency_path,
+            ui.table_tc_dependency_schema,
+        ])
+        ui.comboBox_tc_dependency_type.setEnabled(True)
+        ui.line_tc_api_search.setEnabled(True)
+        ui.list_tc_dependency_available_api_list.clearSelection()
+        ui.table_tc_dependency_rule.clearSelection()
+        cls.render_dependency_rule(d_rule, test_case_id, test_point_id, ui.table_tc_dependency_rule)
+        cls.expand_and_resize_tree(ui.table_tc_dependency_rule)
+                
+    @classmethod
+    def update_dependency_rule_index(cls, ui, operation_id, dependency_type, src_key, swap_type):
+        with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+            d_rule = json.load(f)
+
+        dependency_keys = list(d_rule[dependency_type].keys())
+        key1_index = dependency_keys.index(src_key)
+        if swap_type == "up":
+            replace_key = dependency_keys[key1_index - 1] if key1_index - 1 >= 0 else None
+        elif swap_type == "down":
+            replace_key = dependency_keys[key1_index + 1] if key1_index < len(dependency_keys) - 1 else None
+
+        if replace_key is None:
+            logging.warning(f"The dependency rule index can't be swapped.")
+            return
+
+        d_rule[dependency_type] = cls.swap_dict_keys(d_rule[dependency_type], src_key, replace_key)
+
+        with open(f"./DependencyRule/{operation_id}.json", "w") as f:
+            json.dump(d_rule, f, indent=4)
+
+        cls.clean_ui_content([
+            ui.line_api_search,
+            ui.textbox_dependency_return_variable_name,
+            ui.table_dependency_generation_rule,
+            ui.table_dependency_path,
+            ui.table_dependency_schema,
+            ui.table_dependency_rule
+        ])
+        ui.comboBox_dependency_type.setEnabled(True)
+        ui.list_dependency_available_api_list.clearSelection()
+        cls.parse_dependency_rule(operation_id, ui.table_dependency_rule)
+        cls.expand_and_resize_tree(ui.table_dependency_rule)
+        
+    @classmethod
+    def swap_dict_keys(cls, dict_data, key1, key2):
+        if key1 in dict_data and key2 in dict_data:
+            dict_data[key1], dict_data[key2] = dict_data[key2], dict_data[key1]
+        return dict_data
+        
+    @classmethod
     def _retrieve_obj_and_action(cls, api: str) -> str:
         """ Use the OpenAPI notation to retrieve the object name and action name from obj_mapping. """
         
@@ -44,6 +123,17 @@ class GeneralTool:
         error_box.setStandardButtons(QMessageBox.StandardButton.Ok)
         error_box.exec()
         
+    @classmethod
+    def show_info_dialog(cls, info_message: str) -> None:
+        """ Pop up an information dialog. """
+        
+        info = QMessageBox()
+        info.setIcon(QMessageBox.Icon.Information)
+        info.setWindowTitle("Information")
+        info.setText(info_message)
+        info.setStandardButtons(QMessageBox.StandardButton.Ok)
+        info.exec()
+
     @classmethod
     def apply_constraint_rule(
         cls,
@@ -622,9 +712,6 @@ class GeneralTool:
             
             required = False
             if "required" in schema: required = schema["required"]
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print(schema)
-            print(required)
                         
             default = ""
             if "default" in schema: default = schema["default"]
