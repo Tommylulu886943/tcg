@@ -5,7 +5,8 @@
                 "parameter_min_max_test"
             ],
             "negative_test": [
-                "parameter_min_max_test"
+                "parameter_min_max_test",
+                "required_parameter_test"
             ]
         }
     }

@@ -53,8 +53,9 @@ class DataBuilder:
             return result
         for key in generation_rules:
             keys = key.split('.')
+            info = generation_rules[key]
             rule = generation_rules[key]['rule']
-            if 'readOnly' in rule and rule['readOnly'] == True:
+            if 'ReadOnly' in info and info['ReadOnly'] == True:
                 continue
             elif generation_rules[key]['Default'] != "":
                 value = generation_rules[key]['Default']

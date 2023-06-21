@@ -7,9 +7,21 @@ import glob
 
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit, QMessageBox, QTextBrowser, QTableWidget, QTableWidgetItem, QComboBox, QHeaderView, QAbstractItemView, QFileDialog
 
 class GeneralTool:
+    
+    @classmethod
+    def rander_robot_file_list(
+        cls, 
+        robot_file_list: object,
+    ) -> None:
+        """ To render the all robot files in the Robot File List. """
+        
+        for robot_file in glob.glob("./TestCases/RESTful_API/*.robot"):
+            file_name = os.path.basename(robot_file)
+            root_item = QTreeWidgetItem([file_name])
+            robot_file_list.addTopLevelItem(root_item)    
     
     @classmethod
     def update_tc_dependency_rule_index(
@@ -322,11 +334,59 @@ class GeneralTool:
                                 path_rule = cls.parse_schema_to_path_rule(operation['parameters'])
                             
                             return generation_rule, path_rule
-    
+                        
     @classmethod
-    def render_constraint_rule(cls, selected_item, textbox_src, textbox_expected_value, textbox_dst, textbox_dst_value, checkbox_wildcard):
-        """When the user clicks on a field in the Data Generation Rule table, the field will be rendered in the corresponding text box.
-           For quick editing, the user can click on the text box to edit the field directly.
+    def render_data_rule(
+        cls, 
+        selected_item: object,
+        textbox_type: object, 
+        textbox_format: object, 
+        combobox_readonly: object, 
+        textbox_default: object,
+        combobox_data_generator: object, 
+        textbox_range: object, 
+        combobox_required: object, 
+        combobox_nullable: object,
+    ) -> None:
+        """ When the user clicks on a field in the Data Generation Rule Table,
+            the field properties will be rendered in the corresponding text box.
+            For quick editing, the user can click on the text box to edit the field directly.
+
+        Args:
+            selected_item: The selected item in the Data Generation Rule table.
+            textbox_type: The text box for the type field.
+            textbox_format: The text box for the format field.
+            combobox_readonly: The combobox for the readonly field.
+            textbox_default: The text box for the default field.
+            combobox_data_generator: The combobox for the data generator field.
+            textbox_range: The text box for the range field.
+            combobox_required: The combobox for the required field.
+            combobox_nullable: The combobox for the nullable field.
+        """        
+        parent_item = selected_item.parent()
+        if parent_item is not None and parent_item.parent() is None: 
+            textbox_type.setText(selected_item.child(0).text(1))
+            textbox_format.setText(selected_item.child(1).text(1))
+            combobox_readonly.setCurrentText(selected_item.child(2).text(1))
+            textbox_default.setText(selected_item.child(3).text(1))
+            combobox_data_generator.setCurrentText(selected_item.child(4).child(0).text(1))
+            textbox_range.setText(selected_item.child(4).child(1).text(1))
+            combobox_required.setCurrentText(selected_item.child(4).child(2).text(1))
+            combobox_nullable.setCurrentText(selected_item.child(4).child(3).text(1)) 
+            
+    @classmethod
+    def render_constraint_rule(
+        cls,
+        selected_item: object,
+        textbox_src: object,
+        textbox_expected_value: object,
+        textbox_dst: object,
+        textbox_dst_value: object,
+        checkbox_wildcard: object,
+    ) -> None:
+        """ When the user clicks on a field in the Data Generation Rule table, 
+            the field will be rendered in the corresponding text box.
+            For quick editing, the user can click on the text box to edit the field directly.
 
         Args:
             selected_item: The selected item in the Data Generation Rule table.
@@ -337,12 +397,11 @@ class GeneralTool:
             checkbox_wildcard: The checkbox for the wildcard field.
         """
         parent_item = selected_item.parent()
-        
         if parent_item is not None and parent_item.parent() is None:
             src_path = textbox_src.text()
             dst_path = textbox_dst.text()
             field = selected_item.text(0)
-            src_value = selected_item.child(2).text(1)
+            src_value = selected_item.child(3).text(1)
             
             if src_path == "" or (src_path != "" and dst_path != ""):
                 textbox_src.setText(field)
@@ -556,7 +615,7 @@ class GeneralTool:
         for clean_widget in ui:
             if isinstance(clean_widget, QCheckBox):
                 clean_widget.setChecked(False)
-            elif isinstance(clean_widget, (QTreeWidget, QLineEdit, QListWidget, QPlainTextEdit)):
+            elif isinstance(clean_widget, (QTreeWidget, QLineEdit, QListWidget, QPlainTextEdit, QTextBrowser)):
                 clean_widget.clear()
 
     @classmethod
@@ -712,6 +771,9 @@ class GeneralTool:
             
             required = False
             if "required" in schema: required = schema["required"]
+            
+            readonly = False
+            if "readOnly" in schema: readonly = schema["readOnly"]
                         
             default = ""
             if "default" in schema: default = schema["default"]
@@ -723,18 +785,19 @@ class GeneralTool:
             fields[path] = {
                 "Type": schema["type"],
                 "Format": data_format,
+                "ReadOnly": readonly,
                 "Default": default,
                 "rule": {
                     "Data Generator": genType,
                     "Data Length": str(data_length),
-                    "Nullable": nullable,
                     "Required": required,
+                    "Nullable": nullable,
                 }
             }
             
             included_field = [
-                "minLength","maxLength", "minItems", "maxItems", "readOnly", "minimum", "maximum",
-                "required", "uniqueItems", "nullable", "exclusiveMinimum", "exclusiveMaximum", "pattern",
+                "minLength","maxLength", "minItems", "maxItems", "minimum", "maximum",
+                "uniqueItems", "exclusiveMinimum", "exclusiveMaximum", "pattern",
             ]
             for key in included_field:
                 if key in schema:
@@ -825,6 +888,25 @@ class GeneralTool:
             cls.parse_request_body(path_rule, root_item, editabled=True)
         else:
             logging.warning(f"Path rule file not found: {file_path}")
+            
+    @classmethod
+    def parse_generation_rule(cls, operation_id: str, generation_rule_table: object) -> None:
+        """
+        To parse generation rule files to TreeWidget.
+        Ex: (./GenerationRule/{operation_id}.json)
+        """
+        
+        file_path = f"./GenerationRule/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                generation_rule = json.load(f)
+            generation_rule_table.clear()
+            root_item = QTreeWidgetItem(["Data Generation Rule"])
+            generation_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(generation_rule, root_item, editabled=True)
+            cls.expand_and_resize_tree(generation_rule_table, expand=False)
+        else:
+            logging.warning(f"Generation rule file not found: {file_path}")
   
     @classmethod
     def parse_assertion_rule(cls, operation_id: str, assertion_rule_table: object) -> None:

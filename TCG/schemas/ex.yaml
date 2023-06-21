@@ -1,0 +1,16 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: 示例 API
+paths:
+  /users:
+    get:
+      summary: 获取用户列表
+      description: 获取所有用户的列表
+      responses:
+        200:
+          description: 成功获取用户列表
+          schema:
+            type: array
+            items:
+              type: string

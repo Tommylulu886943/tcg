@@ -16,6 +16,11 @@ class Render:
         for test_plan_file in glob.glob('./test_plan/*.json'):
             with open(test_plan_file, 'r') as f:
                 test_plan = json.load(f)
+            
+            # * If the test plan is not included any test case, skip it.
+            if len(test_plan['test_cases']) == 0:
+                continue
+            
             robot_file = test_plan['test_info']['operationId'] + ".robot"
             robot_path = os.path.join('TestCases', 'RESTful_API', robot_file)
             os.makedirs(os.path.dirname(robot_path), exist_ok=True)

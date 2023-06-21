@@ -1,6 +1,6 @@
 {% if test_cases != None -%}
 {% for case_id, case in test_cases.items() %}
-{{ case_id }}
+{{ test_info.operationId }}_{{ case_id }}
     [Tags]  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
     [Documentation]  {{ case.summary }}
     {% for point_id, point in case.test_point.items() -%}

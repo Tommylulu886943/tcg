@@ -9,4 +9,6 @@ config/*.*
 TCG/PathRule/
 pyqt6-env/
 tcg/venv/
+TCG/test_plan/*.json
+TCG/TestCases/RESTful_API/*.robot
 venv/

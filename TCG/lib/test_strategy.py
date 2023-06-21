@@ -158,7 +158,7 @@ class TestStrategy:
             info = generation_rules[key]
             rule = generation_rules[key]['rule']
 
-            if 'readOnly' in rule and rule['readOnly'] == True:
+            if 'ReadOnly' in info and info['ReadOnly'] == True:
                 continue
             elif rule['Data Length'] == "":
                 logging.warning(f'{operation_id} field {key} does not have a Data Length rule, so the parameter_min_max_test case cannot be generated.')

@@ -5,12 +5,13 @@ import yaml
 import glob
 import logging
 import copy
+import shutil
 from json.decoder import JSONDecodeError
 from PyQt6 import QtCore
-from PyQt6 import QtWidgets, uic
+from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
 from PyQt6.QtCore import QStringListModel, QBasicTimer
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.DataBuilder import DataBuilder
@@ -73,6 +74,7 @@ class MyWindow(QMainWindow):
         self.btn_tc_clear_dependency_rule.clicked.connect(self.btn_tc_clear_dependency_rule_clicked)
         self.btn_tc_up_dependency_rule.clicked.connect(self.btn_tc_up_dependency_rule_clicked)
         self.btn_tc_down_dependency_rule.clicked.connect(self.btn_tc_down_dependency_rule_clicked)
+        self.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
         
         # * Table's Item Click Event
         self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -90,6 +92,8 @@ class MyWindow(QMainWindow):
         self.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
         self.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
         self.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
+        self.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
+        self.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
         
         # * Item Changed Event
         self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
@@ -112,6 +116,94 @@ class MyWindow(QMainWindow):
         self.line_api_search.setCompleter(self.search_completer)
         self.tc_search_completer = QCompleter()
         self.line_tc_api_search.setCompleter(self.tc_search_completer)
+        
+        # * Convert
+        # 新建一個 QWidget 並設定 QVBoxLayout
+        self.web_page = QtWidgets.QWidget()
+        self.web_page_layout = QtWidgets.QVBoxLayout(self.web_page)
+
+        # 在新的 QWidget 中加入 QtWebEngineView
+        self.web_view = QtWebEngineWidgets.QWebEngineView(self.web_page)
+        self.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
+
+        self.web_page_layout.addWidget(self.web_view)
+
+        # 在 index 5 的位置插入新的 tab
+        self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
+        self.setCentralWidget(self.tabTCG)
+        
+    def btn_export_test_cases_clicked(self):
+        """ To export the test cases to the local folder. """
+        
+        export_folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Export", os.path.expanduser("~"))  
+        if export_folder_path:
+            file_list = glob.glob("./TestCases/RESTful_API/*.robot")
+            for file in file_list:
+                src_path = os.path.join(os.getcwd(), file)
+                dst_path = os.path.join(export_folder_path, os.path.basename(file))
+                shutil.copyfile(src_path, dst_path)
+            logging.info(f"Export test cases to {export_folder_path} successfully")
+            GeneralTool.show_info_dialog(f"Export test cases to {export_folder_path} successfully")
+            
+    def table_robot_file_list_item_clicked(self):
+        """ Render the robot file content when the item is clicked. """
+        if len(self.table_robot_file_list.selectedItems()) == 0:
+            return
+        
+        file_name = self.table_robot_file_list.selectedItems()[0].text(0)
+        with open(f"./TestCases/RESTful_API/{file_name}", "r") as f:
+            content = f.read()
+        self.text_robot_file.setText(content)
+        
+    def btn_update_data_rule_clicked(self):
+        """ Update the new data rule to the generation rule. """
+        if len(self.table_generation_rule.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_generation_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+        field_name = selected_item.text(0)
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+
+        if parent_item is not None and parent_item.parent() is None:
+            default_value = self.textbox_data_rule_value.text()
+            data_generator = self.comboBox_data_rule_data_generator.currentText()
+            data_length = self.textbox_data_rule_data_length.text()
+            required_value = self.comboBox_data_rule_required.currentText()
+            nullalbe_value = self.comboBox_data_rule_nullable.currentText()
+        
+            with open(f"./GenerationRule/{operation_id}.json", "r+") as f:
+                g_rule = json.load(f)
+                g_rule[field_name]["Default"] = default_value
+                g_rule[field_name]['rule']["Data Generator"] = data_generator
+                g_rule[field_name]['rule']["Data Length"] = data_length
+                if required_value == "True":
+                    g_rule[field_name]['rule']["Required"] = True
+                elif required_value == "False":
+                    g_rule[field_name]['rule']["Required"] = False
+                if nullalbe_value == "True":
+                    g_rule[field_name]['rule']["Nullable"] = True
+                elif nullalbe_value == "False":
+                    g_rule[field_name]['rule']["Nullable"] = False
+                f.seek(0)
+                f.truncate()
+                f.write(json.dumps(g_rule, indent=4))
+                logging.info(f"Update {field_name} in {operation_id}.json successfully")
+                
+            GeneralTool.clean_ui_content([
+                self.table_generation_rule,
+                self.textbox_data_rule_type,
+                self.textbox_data_rule_format,
+                self.comboBox_data_rule_read_only,
+                self.textbox_data_rule_value,
+                self.comboBox_data_rule_data_generator,
+                self.textbox_data_rule_data_length,
+                self.comboBox_data_rule_required,
+                self.comboBox_data_rule_nullable,
+            ])
+            GeneralTool.parse_generation_rule(operation_id, self.table_generation_rule)
+            GeneralTool.expand_and_resize_tree(self.table_generation_rule)
         
     def btn_tc_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
@@ -205,6 +297,9 @@ class MyWindow(QMainWindow):
         
         GeneralTool.teardown_folder_files(["./TestCases/RESTful_API"])  
         Render.generate_robot_test_case()
+        self.tabTCG.setCurrentIndex(2)
+        GeneralTool.clean_ui_content([self.table_robot_file_list, self.text_robot_file])
+        GeneralTool.rander_robot_file_list(self.table_robot_file_list)
         
     def btn_tc_remove_dependency_path_clicked(self):
         if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
@@ -1416,13 +1511,12 @@ class MyWindow(QMainWindow):
       
     def btn_constraint_rule_clear_clicked(self):
         """ Clear the Constraint Rule UI. """
-        for clean_item in [
+        GeneralTool.clean_ui_content([
             self.textbox_constraint_rule_src, 
             self.textbox_constraint_rule_expected_value, 
             self.textbox_constraint_rule_dst, 
             self.textbox_constraint_rule_dst_value,
-        ]:
-            clean_item.clear()
+        ])
         self.checkBox_constraint_rule_wildcard.setChecked(False)
 
     def btn_constraint_rule_apply_clicked(self):
@@ -1466,6 +1560,17 @@ class MyWindow(QMainWindow):
             self.textbox_constraint_rule_dst,
             self.textbox_constraint_rule_dst_value, 
             self.checkBox_constraint_rule_wildcard,
+        )
+        GeneralTool.render_data_rule(
+            selected_item,
+            self.textbox_data_rule_type,
+            self.textbox_data_rule_format,
+            self.comboBox_data_rule_read_only,
+            self.textbox_data_rule_value,
+            self.comboBox_data_rule_data_generator,
+            self.textbox_data_rule_data_length,
+            self.comboBox_data_rule_required,
+            self.comboBox_data_rule_nullable
         )
                  
     def table_dependency_generation_rule_item_clicked(self):
@@ -1858,14 +1963,14 @@ class MyWindow(QMainWindow):
         selected_items = self.table_api_tree.selectedItems()
         for item in selected_items:
             if item.parent() is None:
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule"]
                 for folder in teardown_folder:  
                     for child_file in glob.glob(f"./{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
                 self.table_api_tree.takeTopLevelItem(self.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule"]
                 for folder in teardown_folder:
                     file_path = f"./{folder}/" + file_name + ".json"
                     if os.path.exists(file_path):
@@ -2083,6 +2188,14 @@ class MyWindow(QMainWindow):
             self.table_dependency_schema,
             self.line_api_search,
             self.textbox_dependency_return_variable_name,
+            self.textbox_data_rule_type,
+            self.textbox_data_rule_format,
+            self.comboBox_data_rule_read_only,
+            self.textbox_data_rule_value,
+            self.comboBox_data_rule_data_generator,
+            self.textbox_data_rule_data_length,
+            self.comboBox_data_rule_required,
+            self.comboBox_data_rule_nullable,
         ])
         self.comboBox_dependency_type.setEnabled(True)
         self.line_api_search.setEnabled(True)
@@ -2095,21 +2208,12 @@ class MyWindow(QMainWindow):
         selected_item = self.table_api_tree.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is not None:
+            operation_id = selected_item.text(4)
             
             # * Render the Generation Rule from the file.
             # * Some API does not have requestBody, so the generation rule file does not exist.
             # * Ex : GET, DELETE, etc.
-            operation_id = selected_item.text(4)
-            generation_rule_file = f"./GenerationRule/{operation_id}.json"
-            if os.path.exists(generation_rule_file):
-                root_item_2 = QTreeWidgetItem(["Data Generation Rule"])
-                self.table_generation_rule.addTopLevelItem(root_item_2)
-                with open(generation_rule_file, "r") as f:
-                    generation_rule = json.load(f)
-                GeneralTool.parse_request_body(generation_rule, root_item_2, editabled=True)
-                GeneralTool.expand_and_resize_tree(self.table_generation_rule, expand=False)
-            else:
-                logging.warning(f"Generation Rule file `{generation_rule_file}` does not exist or not supported.")
+            GeneralTool.parse_generation_rule(operation_id, self.table_generation_rule)
             
             # * Render the Assertion Rule from the file.
             GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
@@ -2180,7 +2284,7 @@ class MyWindow(QMainWindow):
                         GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
                         GeneralTool.expand_and_resize_tree(self.table_dependency_rule)
                         
-app = QtWidgets.QApplication([])
+app = QtWidgets.QApplication(sys.argv)
 window = MyWindow()
 window.show()
 app.exec()
