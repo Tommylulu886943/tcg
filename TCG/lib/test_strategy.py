@@ -93,7 +93,8 @@ class TestStrategy:
             else:
                 if test_type == 'negative_test':
                     testdata = copy.deepcopy(baseline_data)
-                    GeneralTool.remove_key_in_json(testdata, keys)
+                    replace_key = keys.copy()
+                    GeneralTool.remove_key_in_json(testdata, replace_key)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}.json'
                     testdata_path = f'./TestData/{testdata_file}'
                     with open(testdata_path, 'w') as f:
@@ -229,19 +230,22 @@ class TestStrategy:
             
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
-                DataBuilder._create_nested_dict(min_testdata, keys, min_value)
+                replace_key = keys.copy()
+                DataBuilder._create_nested_dict(min_testdata, replace_key, min_value)
                 min_testdata_path = f"./TestData/{operation_id}_{serial_number}_1.json"
                 with open(min_testdata_path, 'w') as f:
                     json.dump(min_testdata, f, indent=4)
                     
                 max_testdata = copy.deepcopy(baseline_data)
-                DataBuilder._create_nested_dict(max_testdata, keys, max_value)
+                replace_key = keys.copy()
+                DataBuilder._create_nested_dict(max_testdata, replace_key, max_value)
                 max_testdata_path = f"./TestData/{operation_id}_{serial_number}_2.json"
                 with open(max_testdata_path, 'w') as f:
                     json.dump(max_testdata, f, indent=4)
                     
                 median_testdata = copy.deepcopy(baseline_data)
-                DataBuilder._create_nested_dict(median_testdata, keys, mid_value)
+                replace_key = keys.copy()
+                DataBuilder._create_nested_dict(median_testdata, replace_key, mid_value)
                 median_testdata_path = f"./TestData/{operation_id}_{serial_number}_3.json"
                 with open(median_testdata_path, 'w') as f:
                     json.dump(median_testdata, f, indent=4)
@@ -267,13 +271,15 @@ class TestStrategy:
             elif test_type == 'negative_test':
                 
                 under_min_value_testdata = copy.deepcopy(baseline_data)
-                DataBuilder._create_nested_dict(under_min_value_testdata, keys, under_min_value)
+                replace_key = keys.copy()
+                DataBuilder._create_nested_dict(under_min_value_testdata, replace_key, under_min_value)
                 under_min_value_testdata_path = f"./TestData/{operation_id}_{serial_number}_1.json"
                 with open(under_min_value_testdata_path, 'w') as f:
                     json.dump(under_min_value_testdata, f, indent=4)
                     
                 over_max_value_testdata = copy.deepcopy(baseline_data)
-                DataBuilder._create_nested_dict(over_max_value_testdata, keys, over_max_value)
+                replace_key = keys.copy()
+                DataBuilder._create_nested_dict(over_max_value_testdata, replace_key, over_max_value)
                 over_max_value_testdata_path = f"./TestData/{operation_id}_{serial_number}_2.json"
                 with open(over_max_value_testdata_path, 'w') as f:
                     json.dump(over_max_value_testdata, f, indent=4)
