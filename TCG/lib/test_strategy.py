@@ -169,6 +169,9 @@ class TestStrategy:
             elif info['Type'] not in ['string', 'integer', 'number', 'float']:
                 logging.warning(f'{operation_id} field {key} has an invalid Type rule, so the parameter_min_max_test case cannot be generated.')
                 continue
+            elif info['Default'] != "":
+                logging.warning(f'{operation_id} field {key} has a Default value, so the parameter_min_max_test case cannot be generated.')
+                continue
             else:
                 genType = rule['Data Generator']
                 min_len, max_len = map(int, rule['Data Length'].strip('[]').split(','))

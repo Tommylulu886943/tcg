@@ -117,18 +117,12 @@ class MyWindow(QMainWindow):
         self.tc_search_completer = QCompleter()
         self.line_tc_api_search.setCompleter(self.tc_search_completer)
         
-        # * Convert
-        # 新建一個 QWidget 並設定 QVBoxLayout
+        # * Convert / Validate Tab
         self.web_page = QtWidgets.QWidget()
         self.web_page_layout = QtWidgets.QVBoxLayout(self.web_page)
-
-        # 在新的 QWidget 中加入 QtWebEngineView
         self.web_view = QtWebEngineWidgets.QWebEngineView(self.web_page)
         self.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
-
         self.web_page_layout.addWidget(self.web_view)
-
-        # 在 index 5 的位置插入新的 tab
         self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
         self.setCentralWidget(self.tabTCG)
         

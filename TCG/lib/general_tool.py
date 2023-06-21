@@ -624,7 +624,7 @@ class GeneralTool:
         file_extension = os.path.splitext(file_path)[1]
         
         if file_extension == ".yaml" or file_extension == ".yml":
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding='utf-8') as f:
                 api_doc = yaml.load(f, Loader=yaml.FullLoader)
         elif file_extension == ".json":
             with open(file_path, "r") as f:

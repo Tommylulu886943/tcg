@@ -29,14 +29,15 @@
         {% if point.path != None -%}
         {% for path_id, path in point.path.items() -%}...  {{ path_id }}={{ path }}  {% endfor -%}
         {% endif -%}
-        {%- if point.parameter.testdata != None %}
+        {%- if point.parameter.testdata != None -%}
         ...  file_name={{ point.parameter.testdata }}
-        {%- endif %}
+        {%- endif -%}
 
-        ${parsed_resp}=  ReturnParser.api_parser  ${resp}
+        ${parsed_resp}=  Parser.api_parser  ${resp}
         Log  ${parsed_resp}
         {% for assertion_id, assertion in point.assertion.items() %}
         {% if assertion.source == 'Status Code' -%}
+        ${resp.status_code}=  Convert To String  ${resp.status_code}
         Run Keyword If  ${resp.status_code} != {{ assertion.expected_value }}  Log  ${resp.content}
         {{ assertion.assertion_method }}  ${resp.status_code}  {{ assertion.expected_value }}
         {% elif assertion.source == 'Body' -%}
@@ -54,7 +55,7 @@
         {% endfor -%}
         {% for id, teardown in point.dependency.Teardown.items() %}
     # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
-        ${req}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
+        {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
         {% if 'path' in teardown -%}
         {% if teardown.path != None -%}
         {% for path_id, path in teardown.path.items() -%}
@@ -70,6 +71,10 @@
         {%- if teardown.config_name != None -%}
         ...  file_name={{ teardown.config_name }}
         {%- endif %}
+        
+        {{ '${' }}{{ teardown.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ teardown.response_name }}.status_code}
+        Run Keyword If  {{ '${' }}{{ teardown.response_name }}.status_code} != ${200}  Log  {{ '${' }}{{ teardown.response_name }}.content}
+        Should Be Equal  {{ '${' }}{{ teardown.response_name }}.status_code}  ${200}
         {% endfor -%}
     {% endfor -%}
 {% endfor -%}
