@@ -2,7 +2,8 @@
     "config": {
         "test_strategy": {
             "positive_test": [
-                "parameter_min_max_test"
+                "parameter_min_max_test",
+                "enum_value_test"
             ],
             "negative_test": [
                 "parameter_min_max_test",

@@ -99,8 +99,10 @@
         "properties": {
           "name": {
             "type": "string",
-            "minLength": 1,
-            "required": true
+            "enum": [
+              "authoritative_dns",
+              "public_dns"
+            ]
           },
           "comment": {
             "type": "string"
@@ -108,7 +110,11 @@
           "accessIds": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "authoritative_dns",
+                "public_dns"
+              ]
             }
           }
         }

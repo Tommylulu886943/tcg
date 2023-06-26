@@ -535,6 +535,8 @@ class GeneralTool:
                 test_type = "positive_test"
                 if name == "Parameter Min./Max.":
                     name = "parameter_min_max_test"
+                elif name == "Enum Value Test":
+                    name = "enum_value_test"
             elif test_type == "Negative Test":
                 test_type = "negative_test"
                 if name == "Parameter Min./Max.":
@@ -781,6 +783,9 @@ class GeneralTool:
             data_format = ""
             if "format" in schema: data_format = schema["format"]
             
+            enum = []
+            if "enum" in schema: enum = schema["enum"]
+            
             logging.debug(f"Type: {schema}")
             fields[path] = {
                 "Type": schema["type"],
@@ -792,6 +797,7 @@ class GeneralTool:
                     "Data Length": str(data_length),
                     "Required": required,
                     "Nullable": nullable,
+                    "Enum": enum,
                 }
             }
             
