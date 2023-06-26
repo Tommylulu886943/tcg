@@ -1,0 +1,21 @@
+{
+    "summary": "{{ test_point_list['1'].key }} request body parameter with invalid value {{ test_point_list['1'].enum_value }}",
+    "test_strategy": "enum_value_test",
+    "test_type": "negative_test",
+    "test_point": {
+        {% for test_point_number, test_point in test_point_list.items() %}
+        "{{ test_point_number }}": {
+            "parameter": {
+                "name": "{{ test_point.key }}",
+                "description": "`Set {{ test_point.key }} to invalid value {{ test_point.enum_value }}`",
+                "prop_type": "{{ test_point.prop_type }}",
+                "value": "{{ test_point.enum_value }}",
+                "testdata": "{{ test_point.config_name }}"
+            },
+            "dependency": {},
+            "path": {},
+            "assertion": {}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    }
+}

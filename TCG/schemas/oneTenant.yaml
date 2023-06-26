@@ -48,8 +48,56 @@
         "tags": [
           "Tenant"
         ]
-      }
-    },
+      },
+    "delete": {
+      "operationId": "MonitorOpenApi_Delete",
+      "responses": {
+        "200": {
+          "description": "A successful response.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/fortihawkeyecommonResponse"
+              }
+            }
+          }
+        },
+        "default": {
+          "description": "An unexpected error response.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rpcStatus"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "required": true
+      },
+      "tags": [
+        "MonitorOpenApi"
+      ]
+    }
+    }
   },
   "components": {
     "schemas": {
@@ -103,19 +151,6 @@
               "authoritative_dns",
               "public_dns"
             ]
-          },
-          "comment": {
-            "type": "string"
-          },
-          "accessIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "authoritative_dns",
-                "public_dns"
-              ]
-            }
           }
         }
       },

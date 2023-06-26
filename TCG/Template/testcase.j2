@@ -25,14 +25,13 @@
         {% endfor %}
     # Test - {{ case_id }}.{{ point_id }}
         # {{ case.summary }}
-        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}  
-        {% if point.path != None -%}
-        {% for path_id, path in point.path.items() -%}...  {{ path_id }}={{ path }}  {% endfor -%}
-        {% endif -%}
-        {%- if point.parameter.testdata != None -%}
+        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}
+        {%- if point.parameter.testdata != None %}
         ...  file_name={{ point.parameter.testdata }}
-        {%- endif -%}
-
+        {% endif -%}
+        {%- if point.path != None -%}
+        ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}
+        {% endif %}
         ${parsed_resp}=  Parser.api_parser  ${resp}
         Log  ${parsed_resp}
         {% for assertion_id, assertion in point.assertion.items() %}
@@ -73,8 +72,8 @@
         {%- endif %}
         
         {{ '${' }}{{ teardown.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ teardown.response_name }}.status_code}
-        Run Keyword If  {{ '${' }}{{ teardown.response_name }}.status_code} != ${200}  Log  {{ '${' }}{{ teardown.response_name }}.content}
-        Should Be Equal  {{ '${' }}{{ teardown.response_name }}.status_code}  ${200}
+        Run Keyword If  {{ '${' }}{{ teardown.response_name }}.status_code} != 200  Log  {{ '${' }}{{ teardown.response_name }}.content}
+        Should Be Equal  {{ '${' }}{{ teardown.response_name }}.status_code}  200
         {% endfor -%}
     {% endfor -%}
 {% endfor -%}

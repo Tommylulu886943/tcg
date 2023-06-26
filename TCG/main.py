@@ -519,6 +519,11 @@ class MyWindow(QMainWindow):
                 sequence_num = str(max((int(k) for k in dependency_rules.keys()), default=0) + 1)
                 generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api)
                 test_data = DataBuilder.data_builder(generation_rule)
+                print("TDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD!!!")
+                print(generation_rule)
+                print(test_data)
+                if generation_rule == {}:
+                    return
                 obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
                 path = f"./TestData/Dependency_TestData/{file_name}"
@@ -1054,7 +1059,7 @@ class MyWindow(QMainWindow):
             testdata = json.load(f)
         testdata_str = json.dumps(testdata, indent=4)
         self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
-        self.tabTCD.setCurrentIndex(1)
+        self.tabTCG.setCurrentIndex(1)
         
     def table_dependency_path_item_clicked(self):
         
@@ -1173,7 +1178,7 @@ class MyWindow(QMainWindow):
                 data = json.load(f)["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][index]
                 
             # * Render the Data Generation Rule and Path Rule and Schema.
-            if "data_generation_rules" in data:
+            if "data_generation_rules" in data and data["data_generation_rules"] != {}:
                 root_item = QTreeWidgetItem(["Data Generation Rule"])
                 self.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["data_generation_rules"], root_item, editabled=True)
@@ -1230,7 +1235,7 @@ class MyWindow(QMainWindow):
                 data = json.load(f)[dependency_type][sequence_num]
                 
             # * Render the Data Generation Rule and Path Rule and Schema.
-            if "data_generation_rules" in data:
+            if "data_generation_rules" in data and data["data_generation_rules"] != {}:
                 root_item = QTreeWidgetItem(["Data Generation Rule"])
                 self.table_dependency_generation_rule.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["data_generation_rules"], root_item, editabled=True)
@@ -1855,7 +1860,7 @@ class MyWindow(QMainWindow):
         """
         generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api_name)
         
-        if generation_rule != None:
+        if generation_rule != None or generation_rule != {}:
             with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num],"data_generation_rules" , generation_rule)

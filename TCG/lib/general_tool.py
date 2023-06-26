@@ -543,6 +543,8 @@ class GeneralTool:
                     name = "parameter_min_max_test"
                 elif name == "Required Field Test":
                     name = "required_parameter_test"
+                elif name == "Enum Value Test":
+                    name = "enum_value_test"
 
             tcg_config["config"]["test_strategy"][test_type].append(name)
 
@@ -747,8 +749,8 @@ class GeneralTool:
                 genType = "Random Boolean"
                 data_length = ""
             elif schema["type"] == "object":
-                genType = "Random Object"
-                data_length = ""
+                logging.warning(f"This field is an empty object: {path}")
+                return {}
             
             length_condition = ["minLength", "maxLength", "minimum", "maximum"]
             if any(key in schema for key in length_condition):

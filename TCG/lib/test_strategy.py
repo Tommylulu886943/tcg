@@ -97,8 +97,8 @@ class TestStrategy:
                         testdata = copy.deepcopy(baseline_data)
                         replace_key = keys.copy()
                         DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
-                        testdata_file = f'{operation_id}_{serial_number}_{test_point_number}.json'
-                        testdata_path = f'./TestData/{testdata_file}'    
+                        testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
+                        testdata_path = f'./TestData/{testdata_file}.json'    
                         with open(testdata_path, 'w') as f:
                             json.dump(testdata, f, indent=4)        
                                             
@@ -116,27 +116,54 @@ class TestStrategy:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
                     rendered_template = test_temp.render(test_point_list=test_point_list)
+
+                elif test_type == 'negative_test':
+                    test_point_list = {}
+                    testdata = copy.deepcopy(baseline_data)
+                    replace_key = keys.copy()
+                    enum_value = DataBuilder.generate_random_string()
+                    DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
+                    testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
+                    testdata_path = f'./TestData/{testdata_file}.json'
                     
-                    parsed_json = json.loads(rendered_template)
-                    for i in range(1, len(parsed_json['test_point']) + 1):
-                        i = str(i)
-                        # * Add dependency rule to test plan.
-                        d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
-                        parsed_json['test_point'][i]['dependency'] = d_rule
-                        # * Add path rule value to test plan.
-                        if os.path.exists(f"./PathRule/{operation_id}.json"):
-                            for key, path_item in path_rule.items():
-                                parsed_json['test_point'][i]['path'][key] = path_item['Value']
-                        parsed_json['test_point'][i]['assertion'] = assertion_rule
+                    with open(testdata_path, 'w') as f:
+                        json.dump(testdata, f, indent=4)
                         
-                    with open(test_plan_path, 'r', encoding='utf-8') as f:
-                        existing_test_plan = json.load(f)
-                    existing_test_plan['test_cases'][serial_number] = parsed_json
-                    
-                    with open(test_plan_path, 'w', encoding='utf-8') as f:
-                        json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
-                    
+                    test_point_list[str(test_point_number)] = {
+                        'testdata': testdata,
+                        'replace_key': replace_key,
+                        'key': key,
+                        'config_name': testdata_file,
+                        'enum_value': enum_value,
+                        'prop_type': generation_rules[key]['Type'],
+                    }
                     test_point_number += 1
+                    
+                    with open(f"./Template/TestStrategy/negative_parameter_enum_test.j2", 'r') as f:
+                        test_temp = f.read()
+                    test_temp = Template(test_temp)
+                    rendered_template = test_temp.render(test_point_list=test_point_list)
+                
+                parsed_json = json.loads(rendered_template)
+                for i in range(1, len(parsed_json['test_point']) + 1):
+                    i = str(i)
+                    # * Add dependency rule to test plan.
+                    d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                    parsed_json['test_point'][i]['dependency'] = d_rule
+                    # * Add path rule value to test plan.
+                    if os.path.exists(f"./PathRule/{operation_id}.json"):
+                        for key, path_item in path_rule.items():
+                            parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                    parsed_json['test_point'][i]['assertion'] = assertion_rule
+                    
+                with open(test_plan_path, 'r', encoding='utf-8') as f:
+                    existing_test_plan = json.load(f)
+                existing_test_plan['test_cases'][serial_number] = parsed_json
+                
+                with open(test_plan_path, 'w', encoding='utf-8') as f:
+                    json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
+                
+                test_point_number += 1
             serial_number += 1
         return serial_number
     
@@ -222,9 +249,8 @@ class TestStrategy:
                         json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
                     
                     test_point_number += 1
-                    serial_number += 1
-                    
-                return serial_number
+            serial_number += 1          
+        return serial_number
     
     @classmethod
     def parameter_min_max_test(
