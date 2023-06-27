@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1652</width>
-    <height>875</height>
+    <width>1650</width>
+    <height>868</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -1589,6 +1589,9 @@
                                  <pointsize>10</pointsize>
                                 </font>
                                </property>
+                               <property name="selectionMode">
+                                <enum>QAbstractItemView::ContiguousSelection</enum>
+                               </property>
                                <column>
                                 <property name="text">
                                  <string>Field</string>
@@ -2060,32 +2063,9 @@
             <item row="1" column="0">
              <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
-               <widget class="QPushButton" name="btn_add_test_case">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-                </property>
-                <property name="text">
-                 <string>Add</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="btn_remove_test_case">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="font">
                  <font>
@@ -2102,29 +2082,6 @@
                 </property>
                 <property name="text">
                  <string>Remove</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btn_duplicate_test_case">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-                </property>
-                <property name="text">
-                 <string>Duplicate</string>
                 </property>
                </widget>
               </item>
@@ -2171,6 +2128,9 @@
               <property name="dragEnabled">
                <bool>false</bool>
               </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ContiguousSelection</enum>
+              </property>
               <column>
                <property name="text">
                 <string>Test Plan Name</string>
@@ -2214,7 +2174,7 @@
 }</string>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">
@@ -2916,6 +2876,9 @@
                                <pointsize>10</pointsize>
                               </font>
                              </property>
+                             <property name="selectionMode">
+                              <enum>QAbstractItemView::ContiguousSelection</enum>
+                             </property>
                              <column>
                               <property name="text">
                                <string>Field</string>
@@ -3582,8 +3545,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1652</width>
-     <height>21</height>
+     <width>1650</width>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

@@ -136,7 +136,7 @@ class TestStrategy:
                         
                     test_point_number += 1
                 serial_number += 1
-            return serial_number 
+        return serial_number
     
     @classmethod
     def enum_value_test(

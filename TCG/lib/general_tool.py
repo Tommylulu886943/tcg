@@ -11,6 +11,24 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTr
 
 class GeneralTool:
     
+    
+    @classmethod
+    def render_test_plan_files(cls, table_test_plan_api_list: object) -> None:
+        cls.clean_ui_content([table_test_plan_api_list])
+        for test_plan in glob.glob("test_plan/*.json"):
+            with open(test_plan, "r") as f:
+                test_plan = json.load(f)
+            file_name = test_plan['test_info']['operationId']
+            toplevel_length = table_test_plan_api_list.topLevelItemCount()
+            table_test_plan_api_list.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
+            for index, test_case in test_plan['test_cases'].items():
+                testcase_child = QtWidgets.QTreeWidgetItem(["", str(index), test_case['test_strategy'], test_case['test_type']])
+                table_test_plan_api_list.topLevelItem(toplevel_length).addChild(testcase_child)
+                for tp_index, test_point in test_case['test_point'].items():
+                    tp_index = str(index) + "." + str(tp_index)
+                    testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
+        cls.expand_and_resize_tree(table_test_plan_api_list, level=2)
+    
     @classmethod
     def rander_robot_file_list(
         cls, 
@@ -60,7 +78,7 @@ class GeneralTool:
         ui.list_tc_dependency_available_api_list.clearSelection()
         ui.table_tc_dependency_rule.clearSelection()
         cls.render_dependency_rule(d_rule, test_case_id, test_point_id, ui.table_tc_dependency_rule)
-        cls.expand_and_resize_tree(ui.table_tc_dependency_rule)
+        cls.expand_and_resize_tree(ui.table_tc_dependency_rule, level=3)
                 
     @classmethod
     def update_dependency_rule_index(cls, ui, operation_id, dependency_type, src_key, swap_type):
@@ -94,7 +112,7 @@ class GeneralTool:
         ui.comboBox_dependency_type.setEnabled(True)
         ui.list_dependency_available_api_list.clearSelection()
         cls.parse_dependency_rule(operation_id, ui.table_dependency_rule)
-        cls.expand_and_resize_tree(ui.table_dependency_rule)
+        cls.expand_and_resize_tree(ui.table_dependency_rule, level=3)
         
     @classmethod
     def swap_dict_keys(cls, dict_data, key1, key2):
@@ -596,10 +614,15 @@ class GeneralTool:
         return dependency_rule
      
     @classmethod
-    def expand_and_resize_tree(cls, tree, expand=True):
-        """ To expand or collapse all items in a QTreeWidget. """
-        if expand:
-            tree.expandAll()
+    def expand_and_resize_tree(cls, tree, level=2):
+        """ To expand or collapse all items in a QTreeWidget up to a certain level. """
+        def expand_items(item, level):
+            if level > 0:
+                item.setExpanded(True)
+                for i in range(item.childCount()):
+                    expand_items(item.child(i), level - 1)
+        
+        expand_items(tree.invisibleRootItem(), level)
         column_count = tree.columnCount()
         for column in range(column_count):
             tree.resizeColumnToContents(column)
@@ -914,7 +937,7 @@ class GeneralTool:
             root_item = QTreeWidgetItem(["Data Generation Rule"])
             generation_rule_table.addTopLevelItem(root_item)
             cls.parse_request_body(generation_rule, root_item, editabled=True)
-            cls.expand_and_resize_tree(generation_rule_table, expand=False)
+            cls.expand_and_resize_tree(generation_rule_table, level=2)
         else:
             logging.warning(f"Generation rule file not found: {file_path}")
   
@@ -946,6 +969,9 @@ class GeneralTool:
             
     @classmethod
     def parse_request_body(cls, body, parent_item, editabled=False):
+        if body is None:
+            parent_item.setText(1, 'This API does not have a request body.')
+            return
         for key, value in body.items():
             if isinstance(value, dict):
                 child_item = QTreeWidgetItem([key])

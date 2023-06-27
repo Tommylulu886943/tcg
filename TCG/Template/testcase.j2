@@ -43,14 +43,14 @@
         Run Keyword If  ${resp.status_code} != {{ assertion.expected_value }}  Log  ${resp.content}
         {{ assertion.assertion_method }}  ${resp.status_code}  {{ assertion.expected_value }}
         {% elif assertion.source == 'Body' -%}
-            {% if assertion.filter_expression != '' -%}
-            ${filterd_result}=  ReturnParser.api_parser  ${resp}  {{ assertion.filter_expression }}
-            Log  ${filterd_result}
-            {{ assertion.assertion_method }}  ${filterd_result}  {{ assertion.expected_value }}
-            {% else -%}
-            {{ assertion.assertion_method }}  ${parsed_resp}  {{ assertion.expected_value }}
-            {% endif -%}
+        {% if assertion.filter_expression != '' -%}
+        ${filterd_result}=  Analyzer.data_analyzer  data=${parsed_resp}
+        ...  filter={{ assertion.filter_expression }}
+        Log  ${filterd_result}
+        {{ assertion.assertion_method }}  ${filterd_result}  {{ assertion.expected_value }}
+        {% else -%}
         {{ assertion.assertion_method }}  ${parsed_resp}  {{ assertion.expected_value }}
+        {% endif -%}
         {% elif assertion.source == 'Header' -%}
         {{ assertion.assertion_method }}  ${resp.headers}  {{ assertion.expected_value }}
         {% endif -%}
