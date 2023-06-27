@@ -8,7 +8,7 @@
     # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
         ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
         {% if 'path' in setup -%}
-        {% if setup.path != None -%}
+        {% if setup.path != {} -%}
         {% for path_id, path in setup.path.items() -%}
         {% if 'Value' in path -%}
             {% set value = path.Value -%}
@@ -19,9 +19,12 @@
         {% endfor -%}
         {%- endif %}
         {%- endif %}
-        {%- if setup.config_name != None -%}
+        {%- if setup.data_generation_rules != {} -%}
         ...  file_name={{ setup.config_name }}
         {%- endif %}
+        {{ '${' }}{{ setup.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ setup.response_name }}.status_code}
+        Run Keyword If  {{ '${' }}{{ setup.response_name }}.status_code} != 200  Log  {{ '${' }}{{ setup.response_name }}.content}
+        Should Be Equal  {{ '${' }}{{ setup.response_name }}.status_code}  200
         {% endfor %}
     # Test - {{ case_id }}.{{ point_id }}
         # {{ case.summary }}
@@ -29,7 +32,7 @@
         {%- if point.parameter.testdata != None %}
         ...  file_name={{ point.parameter.testdata }}
         {% endif -%}
-        {%- if point.path != None -%}
+        {%- if point.path != {} -%}
         ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}
         {% endif %}
         ${parsed_resp}=  Parser.api_parser  ${resp}
@@ -56,7 +59,7 @@
     # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
         {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
         {% if 'path' in teardown -%}
-        {% if teardown.path != None -%}
+        {% if teardown.path != {} -%}
         {% for path_id, path in teardown.path.items() -%}
         {% if 'Value' in path -%}
             {% set value = path.Value -%}
@@ -67,10 +70,9 @@
         {% endfor -%}
         {%- endif %}
         {%- endif %}
-        {%- if teardown.config_name != None -%}
+        {%- if teardown.data_generation_rules != {} -%}
         ...  file_name={{ teardown.config_name }}
         {%- endif %}
-        
         {{ '${' }}{{ teardown.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ teardown.response_name }}.status_code}
         Run Keyword If  {{ '${' }}{{ teardown.response_name }}.status_code} != 200  Log  {{ '${' }}{{ teardown.response_name }}.content}
         Should Be Equal  {{ '${' }}{{ teardown.response_name }}.status_code}  200

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1650</width>
-    <height>868</height>
+    <width>1652</width>
+    <height>875</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -267,6 +267,9 @@
                            <family>Segoe UI</family>
                            <pointsize>10</pointsize>
                           </font>
+                         </property>
+                         <property name="selectionMode">
+                          <enum>QAbstractItemView::ContiguousSelection</enum>
                          </property>
                          <column>
                           <property name="text">
@@ -3458,6 +3461,28 @@ p, li { white-space: pre-wrap; }
                    <bool>true</bool>
                   </property>
                  </widget>
+                 <widget class="QCheckBox" name="ckb_parameter_min_max_8">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>80</y>
+                    <width>182</width>
+                    <height>24</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Null Value Test</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
                 </widget>
                </item>
                <item>
@@ -3557,8 +3582,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1650</width>
-     <height>18</height>
+     <width>1652</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

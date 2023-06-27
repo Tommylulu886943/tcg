@@ -48,6 +48,97 @@ class TestStrategy:
         return test_plan_path
     
     @classmethod
+    def null_value_test(
+        cls,
+        test_type,
+        operation_id,
+        uri,
+        method,
+        operation,
+        test_plan_path,
+        serial_number,
+        baseline_data,
+        dependency_testdata
+    ):
+        try:
+            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+                generation_rules = json.load(f)
+        except FileNotFoundError:
+            logging.warning(f'This API does not have a generation rule: {operation_id}, so the nullable_value_test case cannot be generated.')
+            return
+        
+        # * Load assertion rule
+        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+            assertion_rule = json.load(f)
+            if test_type == 'negative_test':
+                assertion_rule = assertion_rule["negative"]
+            elif test_type == 'positive_test':
+                assertion_rule = assertion_rule["positive"]
+        
+        # * Load Path rule
+        if os.path.exists(f"./PathRule/{operation_id}.json"):
+            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+                path_rule = json.load(f)
+                
+        for key in generation_rules:
+            test_point_number = 1
+            keys = key.split('.')
+            info = generation_rules[key]
+            rule = generation_rules[key]['rule']
+            nullable = rule['Nullable']
+            
+            if nullable == False:
+                continue
+            else:
+                if test_type == "positive_test":
+                    testdata = copy.deepcopy(baseline_data)
+                    replace_key = keys.copy()
+                    DataBuilder._create_nested_dict(testdata, replace_key, None)
+                    testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
+                    testdata_path = f'./TestData/{testdata_file}.json'
+                    with open(testdata_path, 'w') as f:
+                        json.dump(testdata, f, indent=4)
+                        
+                    test_point_list = {}
+                    test_point_list[str(test_point_number)] = {
+                        'key': key,
+                        'null_value': None,
+                        'config_name': testdata_file,
+                        'prop_type': generation_rules[key]['Type'],
+                    }
+                    
+                    with open(f"./Template/TestStrategy/positive_parameter_nullable_test.j2", 'r') as f:
+                        test_temp = f.read()
+                    test_temp = Template(test_temp)
+                    rendered_template = test_temp.render(test_point_list=test_point_list)
+                    
+                    parsed_json = json.loads(rendered_template)
+                    for i in range(1, len(parsed_json['test_point']) + 1):
+                        i = str(i)
+                        # * Add dependency rule to test plan.
+                        d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                        parsed_json['test_point'][i]['dependency'] = d_rule
+                        # * Add path rule value to test plan.
+                        if os.path.exists(f"./PathRule/{operation_id}.json"):
+                            for key, path_item in path_rule.items():
+                                parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                        parsed_json['test_point'][i]['assertion'] = assertion_rule
+                                    
+                    if DEBUG:
+                        logging.debug(f'parsed_json: {parsed_json}')
+                        
+                    with open(test_plan_path, 'r', encoding='utf-8') as f:
+                        existing_test_plan = json.load(f)
+                    existing_test_plan['test_cases'][serial_number] = parsed_json
+                    
+                    with open(test_plan_path, 'w', encoding='utf-8') as f:
+                        json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
+                        
+                    test_point_number += 1
+                serial_number += 1
+            return serial_number 
+    
+    @classmethod
     def enum_value_test(
         cls,
         test_type,
@@ -440,6 +531,5 @@ class TestStrategy:
             with open(test_plan_path, 'w', encoding='utf-8') as f:
                 json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
 
-            serial_number += 1
-            
+            serial_number += 1  
         return serial_number

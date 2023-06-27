@@ -1,0 +1,19 @@
+{
+    "summary": "{{ key }} request body parameter null value test",
+    "test_strategy": "null_value_test",
+    "test_type": "positive_test",
+    "test_point": {
+        "1": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`{{ prop_type }}` parameter with null value",
+                "prop_type": "{{ prop_type }}",
+                "value": "{{ null_value }}",
+                "testdata": "{{ config_name }}"
+            },
+            "dependency": {},
+            "path": {},
+            "assertion": {}
+        }
+    }
+}

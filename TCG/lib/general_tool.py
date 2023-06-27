@@ -537,6 +537,8 @@ class GeneralTool:
                     name = "parameter_min_max_test"
                 elif name == "Enum Value Test":
                     name = "enum_value_test"
+                elif name == "Null Value Test":
+                    name = "null_value_test"
             elif test_type == "Negative Test":
                 test_type = "negative_test"
                 if name == "Parameter Min./Max.":
