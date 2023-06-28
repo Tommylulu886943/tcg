@@ -74,8 +74,10 @@ class MyWindow(QMainWindow):
         self.btn_tc_clear_dependency_rule.clicked.connect(self.btn_tc_clear_dependency_rule_clicked)
         self.btn_tc_up_dependency_rule.clicked.connect(self.btn_tc_up_dependency_rule_clicked)
         self.btn_tc_down_dependency_rule.clicked.connect(self.btn_tc_down_dependency_rule_clicked)
-        self.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
         self.btn_remove_test_case.clicked.connect(self.btn_remove_test_case_clicked)
+        self.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
+        self.btn_dependency_update_data_rule.clicked.connect(self.btn_dependency_update_data_rule_clicked)
+        self.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
         
         # * Table's Item Click Event
         self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -223,6 +225,124 @@ class MyWindow(QMainWindow):
         with open(f"./TestCases/RESTful_API/{file_name}", "r") as f:
             content = f.read()
         self.text_robot_file.setText(content)
+        
+    def btn_tc_dependency_update_data_rule_clicked(self):
+        if len(self.table_tc_dependency_generation_rule.selectedItems()) == 0:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+                
+        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+        field_name = selected_item.text(0)
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        
+        if parent_item is not None and parent_item.parent() is None:
+            default_value = self.textbox_tc_dependency_data_rule_value.text()
+            data_generator = self.comboBox_tc_dependency_data_rule_data_generator.currentText()
+            data_length = self.textbox_tc_dependency_data_rule_data_length.text()
+            required_value = self.comboBox_tc_dependency_data_rule_required.currentText()
+            nullalbe_value = self.comboBox_tc_dependency_data_rule_nullable.currentText()
+            
+            with open(f"./test_plan/{operation_id}.json", "r+") as f:
+                g_rule = json.load(f)
+                g_rule_field = g_rule["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_index]['data_generation_rules'][field_name]
+                g_rule_field["Default"] = default_value
+                g_rule_field['rule']["Data Generator"] = data_generator
+                g_rule_field['rule']["Data Length"] = data_length
+                if required_value == "True":
+                    g_rule_field['rule']["Required"] = True
+                elif required_value == "False":
+                    g_rule_field['rule']["Required"] = False
+                if nullalbe_value == "True":
+                    g_rule_field['rule']["Nullable"] = True
+                elif nullalbe_value == "False":
+                    g_rule_field['rule']["Nullable"] = False
+                f.seek(0)
+                f.truncate()
+                f.write(json.dumps(g_rule, indent=4))
+                logging.info(f"Update {field_name} in {operation_id}.json successfully")
+                
+            GeneralTool.clean_ui_content([
+                self.table_tc_dependency_generation_rule,
+                self.textbox_tc_dependency_data_rule_type,
+                self.textbox_tc_dependency_data_rule_format,
+                self.comboBox_tc_dependency_data_rule_read_only,
+                self.textbox_tc_dependency_data_rule_value,
+                self.comboBox_tc_dependency_data_rule_data_generator,
+                self.textbox_tc_dependency_data_rule_data_length,
+                self.comboBox_tc_dependency_data_rule_required,
+                self.comboBox_tc_dependency_data_rule_nullable,
+            ])
+            GeneralTool.parse_tc_dependency_generation_rule(
+                operation_id, 
+                self.table_tc_dependency_generation_rule,
+                test_case_id,
+                test_point_id,
+                dependency_type,
+                dependency_index
+            )
+            GeneralTool.expand_and_resize_tree(self.table_tc_dependency_generation_rule)
+        
+    def btn_dependency_update_data_rule_clicked(self):
+        if len(self.table_dependency_generation_rule.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+        field_name = selected_item.text(0)
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+
+        if parent_item is not None and parent_item.parent() is None:
+            default_value = self.textbox_dependency_data_rule_value.text()
+            data_generator = self.comboBox_dependency_data_rule_data_generator.currentText()
+            data_length = self.textbox_dependency_data_rule_data_length.text()
+            required_value = self.comboBox_dependency_data_rule_required.currentText()
+            nullalbe_value = self.comboBox_dependency_data_rule_nullable.currentText()
+            
+            with open(f"./DependencyRule/{operation_id}.json", "r+") as f:
+                g_rule = json.load(f)
+                g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]["Default"] = default_value
+                g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Data Generator"] = data_generator
+                g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Data Length"] = data_length
+                if required_value == "True":
+                    g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Required"] = True
+                elif required_value == "False":
+                    g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Required"] = False
+                if nullalbe_value == "True":
+                    g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Nullable"] = True
+                elif nullalbe_value == "False":
+                    g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Nullable"] = False
+                f.seek(0)
+                f.truncate()
+                f.write(json.dumps(g_rule, indent=4))
+                logging.info(f"Update {field_name} in {operation_id}.json successfully")
+                
+            GeneralTool.clean_ui_content([
+                self.table_dependency_generation_rule,
+                self.textbox_dependency_data_rule_type,
+                self.textbox_dependency_data_rule_format,
+                self.comboBox_dependency_data_rule_read_only,
+                self.textbox_dependency_data_rule_value,
+                self.comboBox_dependency_data_rule_data_generator,
+                self.textbox_dependency_data_rule_data_length,
+                self.comboBox_dependency_data_rule_required,
+                self.comboBox_dependency_data_rule_nullable,
+            ])
+            GeneralTool.parse_dependency_generation_rule(
+                operation_id,
+                self.table_dependency_generation_rule,
+                dependency_type,
+                dependency_index
+            )
         
     def btn_update_data_rule_clicked(self):
         """ Update the new data rule to the generation rule. """
@@ -1135,7 +1255,7 @@ class MyWindow(QMainWindow):
             testdata = json.load(f)
         testdata_str = json.dumps(testdata, indent=4)
         self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
-        self.tabTCG.setCurrentIndex(1)
+        self.table_tc_dependency_schema_2.setCurrentIndex(1)
         
     def table_dependency_path_item_clicked(self):
         
@@ -1666,18 +1786,18 @@ class MyWindow(QMainWindow):
             self.textbox_dependency_constraint_rule_dst_value, 
             self.checkBox_dependency_constraint_rule_wildcard
         )
-        
-    def table_tc_dependency_generation_rule_item_clicked(self):
-        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
-        GeneralTool.render_constraint_rule(
+        GeneralTool.render_data_rule(
             selected_item,
-            self.textbox_tc_dependency_constraint_rule_src,
-            self.textbox_tc_dependency_constraint_rule_expected_value,
-            self.textbox_tc_dependency_constraint_rule_dst,
-            self.textbox_tc_dependency_constraint_rule_dst_value,
-            self.checkBox_tc_dependency_constraint_rule_wildcard,
-        )
-                
+            self.textbox_dependency_data_rule_type,
+            self.textbox_dependency_data_rule_format,
+            self.comboBox_dependency_data_rule_read_only,
+            self.textbox_dependency_data_rule_value,
+            self.comboBox_dependency_data_rule_data_generator,
+            self.textbox_dependency_data_rule_data_length,
+            self.comboBox_dependency_data_rule_required,
+            self.comboBox_dependency_data_rule_nullable
+        )        
+        
     def table_tc_dependency_generation_rule_item_clicked(self):
         """
         When the user click the item in the table_tc_dependency_generation_rule.
@@ -1692,9 +1812,21 @@ class MyWindow(QMainWindow):
             self.textbox_tc_dependency_constraint_rule_dst_value,
             self.checkBox_tc_dependency_constraint_rule_wildcard,
         )
+        GeneralTool.render_data_rule(
+            selected_item,
+            self.textbox_tc_dependency_data_rule_type,
+            self.textbox_tc_dependency_data_rule_format,
+            self.comboBox_tc_dependency_data_rule_read_only,
+            self.textbox_tc_dependency_data_rule_value,
+            self.comboBox_tc_dependency_data_rule_data_generator,
+            self.textbox_tc_dependency_data_rule_data_length,
+            self.comboBox_tc_dependency_data_rule_required,
+            self.comboBox_tc_dependency_data_rule_nullable
+        )  
+
         
     def btn_api_table_add_use_case_clicked(self):
-        """ 這個 Add Button 是用來複製已有的第一層 API 的, 並且要把 Generation Rule 和 Assertion Rule 和 Dependency Request Body 也複製過去. """
+        """ This Add Button is used to duplicate an existing first-level API, and also copy over the Generation Rule, Assertion Rule, and Dependency Request Body. """
         # * To get the selected api item, and copy it.
         if len(self.table_api_tree.selectedItems()) == 0:
             return

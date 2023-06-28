@@ -940,6 +940,60 @@ class GeneralTool:
             cls.expand_and_resize_tree(generation_rule_table, level=2)
         else:
             logging.warning(f"Generation rule file not found: {file_path}")
+            
+    @classmethod
+    def parse_dependency_generation_rule(
+        cls, 
+        operation_id: str, 
+        generation_rule_table: object,
+        dependency_type: str,
+        dependency_index: str,
+    ) -> None:
+        """
+        To parse dependency generation rule files to TreeWidget.
+        Ex: (./GenerationRule/{operation_id}.json)
+        """
+        
+        file_path = f"./DependencyRule/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                generation_rule = json.load(f)
+            generation_rule = generation_rule[dependency_type][dependency_index]['data_generation_rules']
+            generation_rule_table.clear()
+            root_item = QTreeWidgetItem(["Data Generation Rule"])
+            generation_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(generation_rule, root_item, editabled=True)
+            cls.expand_and_resize_tree(generation_rule_table, level=2)
+        else:
+            logging.warning(f"Generation rule file not found: {file_path}")
+            
+    @classmethod
+    def parse_tc_dependency_generation_rule(
+        cls, 
+        operation_id: str, 
+        generation_rule_table: object,
+        test_case_id: str,
+        test_point_id: str,
+        dependency_type: str,
+        dependency_index: str,
+    ) -> None:
+        """
+        To parse dependency generation rule files to TreeWidget.
+        Ex: (./GenerationRule/{operation_id}.json)
+        """
+        
+        file_path = f"./test_plan/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                generation_rule = json.load(f)
+            generation_rule = generation_rule['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type][dependency_index]['data_generation_rules']
+            generation_rule_table.clear()
+            root_item = QTreeWidgetItem(["Data Generation Rule"])
+            generation_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(generation_rule, root_item, editabled=True)
+            cls.expand_and_resize_tree(generation_rule_table, level=2)
+        else:
+            logging.warning(f"Generation rule file not found: {file_path}")
   
     @classmethod
     def parse_assertion_rule(cls, operation_id: str, assertion_rule_table: object) -> None:

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1650</width>
+    <width>1802</width>
     <height>868</height>
    </rect>
   </property>
@@ -202,7 +202,7 @@
                  </font>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <widget class="QWidget" name="tab_3">
                  <property name="font">
@@ -1323,221 +1323,7 @@
                        </attribute>
                        <layout class="QHBoxLayout" name="horizontalLayout_41">
                         <item>
-                         <layout class="QGridLayout" name="gridLayout_11" rowstretch="2,8">
-                          <item row="0" column="0">
-                           <widget class="QGroupBox" name="group_positive_test_10">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="font">
-                             <font>
-                              <family>Segoe UI</family>
-                              <pointsize>10</pointsize>
-                             </font>
-                            </property>
-                            <property name="title">
-                             <string>Constraint Rule</string>
-                            </property>
-                            <layout class="QGridLayout" name="gridLayout_13">
-                             <item row="0" column="2" colspan="7">
-                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="toolTip">
-                                <string/>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="0" column="0" colspan="2">
-                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_src_action">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <item>
-                                <property name="text">
-                                 <string>Set</string>
-                                </property>
-                               </item>
-                               <item>
-                                <property name="text">
-                                 <string>If</string>
-                                </property>
-                               </item>
-                              </widget>
-                             </item>
-                             <item row="3" column="2" colspan="7">
-                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_value">
-                               <property name="enabled">
-                                <bool>false</bool>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="1" column="0" colspan="2">
-                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_condition">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="layoutDirection">
-                                <enum>Qt::LeftToRight</enum>
-                               </property>
-                               <item>
-                                <property name="text">
-                                 <string>WITH</string>
-                                </property>
-                               </item>
-                              </widget>
-                             </item>
-                             <item row="2" column="2" colspan="7">
-                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="inputMask">
-                                <string/>
-                               </property>
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="placeholderText">
-                                <string/>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="3" column="0" colspan="2">
-                              <widget class="QComboBox" name="comboBox_dependency_constraint_dst_action_type">
-                               <property name="enabled">
-                                <bool>false</bool>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="toolTip">
-                                <string/>
-                               </property>
-                               <property name="layoutDirection">
-                                <enum>Qt::LeftToRight</enum>
-                               </property>
-                               <item>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                               </item>
-                               <item>
-                                <property name="text">
-                                 <string>WITH</string>
-                                </property>
-                               </item>
-                              </widget>
-                             </item>
-                             <item row="1" column="2" colspan="7">
-                              <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="4" column="0">
-                              <widget class="QPushButton" name="btn_dependency_constraint_rule_apply">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Apply</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="2" column="0" colspan="2">
-                              <widget class="QComboBox" name="comboBox_dependency_constraint_rule_dst_action">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <item>
-                                <property name="text">
-                                 <string>Then Remove</string>
-                                </property>
-                               </item>
-                               <item>
-                                <property name="text">
-                                 <string>Then Set</string>
-                                </property>
-                               </item>
-                              </widget>
-                             </item>
-                             <item row="4" column="1" colspan="2">
-                              <widget class="QPushButton" name="btn_dependency_constraint_rule_clear">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Clear</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="4" column="4">
-                              <widget class="QCheckBox" name="checkBox_dependency_constraint_rule_wildcard">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Wildcard</string>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
+                         <layout class="QGridLayout" name="gridLayout_11" rowstretch="1,9">
                           <item row="1" column="0">
                            <widget class="QGroupBox" name="group_positive_test_9">
                             <property name="sizePolicy">
@@ -1605,6 +1391,614 @@
                               </widget>
                              </item>
                             </layout>
+                           </widget>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QTabWidget" name="tabWidget_3">
+                            <property name="currentIndex">
+                             <number>0</number>
+                            </property>
+                            <widget class="QWidget" name="tab_13">
+                             <attribute name="title">
+                              <string>Data Rule</string>
+                             </attribute>
+                             <layout class="QHBoxLayout" name="horizontalLayout_18">
+                              <item>
+                               <layout class="QGridLayout" name="gridLayout_7" columnstretch="4,6">
+                                <item row="1" column="0" rowspan="2">
+                                 <widget class="QGroupBox" name="group_positive_test_15">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="title">
+                                   <string>Field Information</string>
+                                  </property>
+                                  <layout class="QGridLayout" name="gridLayout_29">
+                                   <item row="3" column="0">
+                                    <widget class="QLabel" name="label_53">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Default / Fixed Value :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="0">
+                                    <widget class="QLabel" name="label_54">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Type :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="1" column="0">
+                                    <widget class="QLabel" name="label_55">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Format :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="3" column="1">
+                                    <widget class="QLineEdit" name="textbox_dependency_data_rule_value">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="1">
+                                    <widget class="QLineEdit" name="textbox_dependency_data_rule_type">
+                                     <property name="enabled">
+                                      <bool>false</bool>
+                                     </property>
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="1" column="1">
+                                    <widget class="QLineEdit" name="textbox_dependency_data_rule_format">
+                                     <property name="enabled">
+                                      <bool>false</bool>
+                                     </property>
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="2" column="0">
+                                    <widget class="QLabel" name="label_58">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Read Only :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="2" column="1">
+                                    <widget class="QComboBox" name="comboBox_dependency_data_rule_read_only">
+                                     <property name="enabled">
+                                      <bool>false</bool>
+                                     </property>
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="layoutDirection">
+                                      <enum>Qt::LeftToRight</enum>
+                                     </property>
+                                     <item>
+                                      <property name="text">
+                                       <string/>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>True</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>False</string>
+                                      </property>
+                                     </item>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </item>
+                                <item row="1" column="1" rowspan="2">
+                                 <widget class="QGroupBox" name="group_positive_test_17">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="title">
+                                   <string>Rule</string>
+                                  </property>
+                                  <layout class="QGridLayout" name="gridLayout_32">
+                                   <item row="1" column="0">
+                                    <widget class="QLabel" name="label_56">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Data Length / Range :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="3" column="0">
+                                    <widget class="QLabel" name="label_59">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Nullable :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="0">
+                                    <widget class="QLabel" name="label_60">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Data Generator :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="2" column="0">
+                                    <widget class="QLabel" name="label_61">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Required :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="1" column="2">
+                                    <widget class="QLineEdit" name="textbox_dependency_data_rule_data_length">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string/>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="2">
+                                    <widget class="QComboBox" name="comboBox_dependency_data_rule_data_generator">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="layoutDirection">
+                                      <enum>Qt::LeftToRight</enum>
+                                     </property>
+                                     <item>
+                                      <property name="text">
+                                       <string/>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random String</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random String (Without Special Characters)</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random Boolean</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random Integer</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random Number (Float)</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random DATE-TIME</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random EMAIL</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random IPV4</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random IPV6</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random HOSTNAME</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>Random UUID</string>
+                                      </property>
+                                     </item>
+                                    </widget>
+                                   </item>
+                                   <item row="2" column="2">
+                                    <widget class="QComboBox" name="comboBox_dependency_data_rule_required">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="layoutDirection">
+                                      <enum>Qt::LeftToRight</enum>
+                                     </property>
+                                     <item>
+                                      <property name="text">
+                                       <string/>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>True</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>False</string>
+                                      </property>
+                                     </item>
+                                    </widget>
+                                   </item>
+                                   <item row="3" column="2">
+                                    <widget class="QComboBox" name="comboBox_dependency_data_rule_nullable">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="layoutDirection">
+                                      <enum>Qt::LeftToRight</enum>
+                                     </property>
+                                     <item>
+                                      <property name="text">
+                                       <string/>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>True</string>
+                                      </property>
+                                     </item>
+                                     <item>
+                                      <property name="text">
+                                       <string>False</string>
+                                      </property>
+                                     </item>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </widget>
+                                </item>
+                                <item row="3" column="0">
+                                 <widget class="QPushButton" name="btn_dependency_update_data_rule">
+                                  <property name="text">
+                                   <string>Update</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="tab_14">
+                             <attribute name="title">
+                              <string>Constraint Rule</string>
+                             </attribute>
+                             <layout class="QHBoxLayout" name="horizontalLayout_19">
+                              <item>
+                               <layout class="QGridLayout" name="gridLayout_8" columnstretch="2,8,0,0,0">
+                                <item row="3" column="2" colspan="3">
+                                 <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst_value">
+                                  <property name="enabled">
+                                   <bool>false</bool>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="0" column="2" colspan="3">
+                                 <widget class="QLineEdit" name="textbox_dependency_constraint_rule_src">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="toolTip">
+                                   <string/>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="1" column="2" colspan="3">
+                                 <widget class="QLineEdit" name="textbox_dependency_constraint_rule_expected_value">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="2" column="2" colspan="3">
+                                 <widget class="QLineEdit" name="textbox_dependency_constraint_rule_dst">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="inputMask">
+                                   <string/>
+                                  </property>
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="placeholderText">
+                                   <string/>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="4" column="0">
+                                 <widget class="QPushButton" name="btn_dependency_constraint_rule_apply">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="text">
+                                   <string>Apply</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="4" column="1">
+                                 <widget class="QPushButton" name="btn_dependency_constraint_rule_clear">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="text">
+                                   <string>Clear</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="0" column="0" colspan="2">
+                                 <widget class="QComboBox" name="comboBox_dependency_constraint_rule_src_action">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <item>
+                                   <property name="text">
+                                    <string>Set</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>If</string>
+                                   </property>
+                                  </item>
+                                 </widget>
+                                </item>
+                                <item row="1" column="0" colspan="2">
+                                 <widget class="QComboBox" name="comboBox_dependency_constraint_rule_condition">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="layoutDirection">
+                                   <enum>Qt::LeftToRight</enum>
+                                  </property>
+                                  <item>
+                                   <property name="text">
+                                    <string>WITH</string>
+                                   </property>
+                                  </item>
+                                 </widget>
+                                </item>
+                                <item row="2" column="0" colspan="2">
+                                 <widget class="QComboBox" name="comboBox_dependency_constraint_rule_dst_action">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <item>
+                                   <property name="text">
+                                    <string>Then Remove</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Then Set</string>
+                                   </property>
+                                  </item>
+                                 </widget>
+                                </item>
+                                <item row="3" column="0" colspan="2">
+                                 <widget class="QComboBox" name="comboBox_dependency_constraint_dst_action_type">
+                                  <property name="enabled">
+                                   <bool>false</bool>
+                                  </property>
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="toolTip">
+                                   <string/>
+                                  </property>
+                                  <property name="layoutDirection">
+                                   <enum>Qt::LeftToRight</enum>
+                                  </property>
+                                  <item>
+                                   <property name="text">
+                                    <string/>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>WITH</string>
+                                   </property>
+                                  </item>
+                                 </widget>
+                                </item>
+                                <item row="4" column="2" colspan="3">
+                                 <widget class="QCheckBox" name="checkBox_dependency_constraint_rule_wildcard">
+                                  <property name="font">
+                                   <font>
+                                    <family>Segoe UI</family>
+                                    <pointsize>10</pointsize>
+                                   </font>
+                                  </property>
+                                  <property name="text">
+                                   <string>Wildcard</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </item>
+                             </layout>
+                            </widget>
                            </widget>
                           </item>
                          </layout>
@@ -2592,220 +2986,6 @@
                      <layout class="QHBoxLayout" name="horizontalLayout_43">
                       <item>
                        <layout class="QGridLayout" name="gridLayout_27" rowstretch="2,8">
-                        <item row="0" column="0">
-                         <widget class="QGroupBox" name="group_positive_test_14">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="title">
-                           <string>Constraint Rule</string>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_28">
-                           <item row="0" column="0" colspan="2">
-                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <item>
-                              <property name="text">
-                               <string>Set</string>
-                              </property>
-                             </item>
-                             <item>
-                              <property name="text">
-                               <string>If</string>
-                              </property>
-                             </item>
-                            </widget>
-                           </item>
-                           <item row="1" column="0" colspan="2">
-                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::LeftToRight</enum>
-                             </property>
-                             <item>
-                              <property name="text">
-                               <string>WITH</string>
-                              </property>
-                             </item>
-                            </widget>
-                           </item>
-                           <item row="3" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst_value">
-                             <property name="enabled">
-                              <bool>false</bool>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_src">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="toolTip">
-                              <string/>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0" colspan="2">
-                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_dst_action_type">
-                             <property name="enabled">
-                              <bool>false</bool>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="toolTip">
-                              <string/>
-                             </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::LeftToRight</enum>
-                             </property>
-                             <item>
-                              <property name="text">
-                               <string/>
-                              </property>
-                             </item>
-                             <item>
-                              <property name="text">
-                               <string>WITH</string>
-                              </property>
-                             </item>
-                            </widget>
-                           </item>
-                           <item row="2" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="inputMask">
-                              <string/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="placeholderText">
-                              <string/>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="0">
-                            <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_apply">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Apply</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0" colspan="2">
-                            <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <item>
-                              <property name="text">
-                               <string>Then Remove</string>
-                              </property>
-                             </item>
-                             <item>
-                              <property name="text">
-                               <string>Then Set</string>
-                              </property>
-                             </item>
-                            </widget>
-                           </item>
-                           <item row="1" column="2" colspan="6">
-                            <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_expected_value">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1" colspan="2">
-                            <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_clear">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Clear</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="3">
-                            <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string>Wildcard</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
                         <item row="1" column="0">
                          <widget class="QGroupBox" name="group_positive_test_16">
                           <property name="sizePolicy">
@@ -2892,6 +3072,614 @@
                             </widget>
                            </item>
                           </layout>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QTabWidget" name="tabWidget_4">
+                          <property name="currentIndex">
+                           <number>0</number>
+                          </property>
+                          <widget class="QWidget" name="tab_15">
+                           <attribute name="title">
+                            <string>Data Rule</string>
+                           </attribute>
+                           <layout class="QHBoxLayout" name="horizontalLayout_20">
+                            <item>
+                             <layout class="QGridLayout" name="gridLayout_9" columnstretch="4,6">
+                              <item row="1" column="0" rowspan="2">
+                               <widget class="QGroupBox" name="group_positive_test_18">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="title">
+                                 <string>Field Information</string>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout_34">
+                                 <item row="3" column="0">
+                                  <widget class="QLabel" name="label_62">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Default / Fixed Value :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="0">
+                                  <widget class="QLabel" name="label_63">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Type :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="0">
+                                  <widget class="QLabel" name="label_64">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Format :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="1">
+                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_value">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="1">
+                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_type">
+                                   <property name="enabled">
+                                    <bool>false</bool>
+                                   </property>
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="1">
+                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_format">
+                                   <property name="enabled">
+                                    <bool>false</bool>
+                                   </property>
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="0">
+                                  <widget class="QLabel" name="label_65">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Read Only :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="1">
+                                  <widget class="QComboBox" name="comboBox_tc_dependency_data_rule_read_only">
+                                   <property name="enabled">
+                                    <bool>false</bool>
+                                   </property>
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="layoutDirection">
+                                    <enum>Qt::LeftToRight</enum>
+                                   </property>
+                                   <item>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>True</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>False</string>
+                                    </property>
+                                   </item>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </widget>
+                              </item>
+                              <item row="1" column="1" rowspan="2">
+                               <widget class="QGroupBox" name="group_positive_test_19">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="title">
+                                 <string>Rule</string>
+                                </property>
+                                <layout class="QGridLayout" name="gridLayout_35">
+                                 <item row="1" column="0">
+                                  <widget class="QLabel" name="label_66">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Data Length / Range :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="0">
+                                  <widget class="QLabel" name="label_67">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Nullable :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="0">
+                                  <widget class="QLabel" name="label_68">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Data Generator :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="0">
+                                  <widget class="QLabel" name="label_69">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Required :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="2">
+                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_data_length">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string/>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="2">
+                                  <widget class="QComboBox" name="comboBox_tc_dependency_data_rule_data_generator">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="layoutDirection">
+                                    <enum>Qt::LeftToRight</enum>
+                                   </property>
+                                   <item>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random String</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random String (Without Special Characters)</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random Boolean</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random Integer</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random Number (Float)</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random DATE-TIME</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random EMAIL</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random IPV4</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random IPV6</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random HOSTNAME</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random UUID</string>
+                                    </property>
+                                   </item>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="2">
+                                  <widget class="QComboBox" name="comboBox_tc_dependency_data_rule_required">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="layoutDirection">
+                                    <enum>Qt::LeftToRight</enum>
+                                   </property>
+                                   <item>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>True</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>False</string>
+                                    </property>
+                                   </item>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="2">
+                                  <widget class="QComboBox" name="comboBox_tc_dependency_data_rule_nullable">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="layoutDirection">
+                                    <enum>Qt::LeftToRight</enum>
+                                   </property>
+                                   <item>
+                                    <property name="text">
+                                     <string/>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>True</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>False</string>
+                                    </property>
+                                   </item>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </widget>
+                              </item>
+                              <item row="3" column="0">
+                               <widget class="QPushButton" name="btn_tc_dependency_update_data_rule">
+                                <property name="text">
+                                 <string>Update</string>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </item>
+                           </layout>
+                          </widget>
+                          <widget class="QWidget" name="tab_16">
+                           <attribute name="title">
+                            <string>Constraint Rule</string>
+                           </attribute>
+                           <layout class="QHBoxLayout" name="horizontalLayout_21">
+                            <item>
+                             <layout class="QGridLayout" name="gridLayout_13" columnstretch="2,8,0,0,0">
+                              <item row="3" column="2" colspan="3">
+                               <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst_value">
+                                <property name="enabled">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="0" column="2" colspan="3">
+                               <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_src">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="toolTip">
+                                 <string/>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="2" colspan="3">
+                               <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_expected_value">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="2" column="2" colspan="3">
+                               <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="inputMask">
+                                 <string/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="placeholderText">
+                                 <string/>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="4" column="0">
+                               <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_apply">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Apply</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="4" column="1">
+                               <widget class="QPushButton" name="btn_tc_dependency_constraint_rule_clear">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Clear</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="0" column="0" colspan="2">
+                               <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_src_action">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <item>
+                                 <property name="text">
+                                  <string>Set</string>
+                                 </property>
+                                </item>
+                                <item>
+                                 <property name="text">
+                                  <string>If</string>
+                                 </property>
+                                </item>
+                               </widget>
+                              </item>
+                              <item row="1" column="0" colspan="2">
+                               <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_condition">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="layoutDirection">
+                                 <enum>Qt::LeftToRight</enum>
+                                </property>
+                                <item>
+                                 <property name="text">
+                                  <string>WITH</string>
+                                 </property>
+                                </item>
+                               </widget>
+                              </item>
+                              <item row="2" column="0" colspan="2">
+                               <widget class="QComboBox" name="comboBox_tc_dependency_constraint_rule_dst_action">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <item>
+                                 <property name="text">
+                                  <string>Then Remove</string>
+                                 </property>
+                                </item>
+                                <item>
+                                 <property name="text">
+                                  <string>Then Set</string>
+                                 </property>
+                                </item>
+                               </widget>
+                              </item>
+                              <item row="3" column="0" colspan="2">
+                               <widget class="QComboBox" name="comboBox_tc_dependency_constraint_dst_action_type">
+                                <property name="enabled">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="toolTip">
+                                 <string/>
+                                </property>
+                                <property name="layoutDirection">
+                                 <enum>Qt::LeftToRight</enum>
+                                </property>
+                                <item>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                </item>
+                                <item>
+                                 <property name="text">
+                                  <string>WITH</string>
+                                 </property>
+                                </item>
+                               </widget>
+                              </item>
+                              <item row="4" column="2" colspan="3">
+                               <widget class="QCheckBox" name="checkBox_tc_dependency_constraint_rule_wildcard">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Wildcard</string>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </item>
+                           </layout>
+                          </widget>
                          </widget>
                         </item>
                        </layout>
@@ -3545,8 +4333,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1650</width>
-     <height>18</height>
+     <width>1802</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">
