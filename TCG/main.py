@@ -2011,26 +2011,28 @@ class MyWindow(QMainWindow):
                 testdata_path = f"./TestData/{operation_id}_{serial_num}_{test_point}.json"
                 
                 # * Prepare the copy of the test data file for recovering.
-                with open(testdata_path, "r") as file:
-                    testdata = json.load(file)
-                copy_testdata = copy.deepcopy(testdata)
-
                 try:
-                    with open(testdata_path, "w") as file:
-                        json.dump(json.loads(new_value), file, indent=4)
-                except JSONDecodeError as e:
-                    with open(testdata_path, "w") as file:
-                        json.dump(copy_testdata, file, indent=4)
-                    error_message = f"Error updating test data with wrong JSON format."
-                    detailed_message = str(e)
-                    GeneralTool.show_error_dialog(error_message, detailed_message)
-                    logging.warning(f"Error updating test data file `{testdata_path}` with new value `{new_value}`. Error: {e.msg}")
-                    logging.warning(f"Recover the test data file `{testdata_path}` with old value `{copy_testdata}`.")
-                    self.text_body.setPlainText(json.dumps(copy_testdata, indent=4))
+                    with open(testdata_path, "r") as file:
+                        testdata = json.load(file)
+                    copy_testdata = copy.deepcopy(testdata)
+
+                    try:
+                        with open(testdata_path, "w") as file:
+                            json.dump(json.loads(new_value), file, indent=4)
+                    except JSONDecodeError as e:
+                        with open(testdata_path, "w") as file:
+                            json.dump(copy_testdata, file, indent=4)
+                        error_message = f"Error updating test data with wrong JSON format."
+                        detailed_message = str(e)
+                        GeneralTool.show_error_dialog(error_message, detailed_message)
+                        logging.warning(f"Error updating test data file `{testdata_path}` with new value `{new_value}`. Error: {e.msg}")
+                        logging.warning(f"Recover the test data file `{testdata_path}` with old value `{copy_testdata}`.")
+                        self.text_body.setPlainText(json.dumps(copy_testdata, indent=4))
+                        return
+                    logging.info(f"Update test data file `{testdata_path}` with new value `{new_value}`.")
+                except FileNotFoundError:
+                    logging.warning(f"Test data file `{testdata_path}` not found.")
                     return
-                logging.info(f"Update test data file `{testdata_path}` with new value `{new_value}`.")
-            else:
-                return   
 
     def generation_rule_item_changed(self, item, column):
         # * Retrieve the dictionary path of the new value item changed in the table.
@@ -2383,11 +2385,14 @@ class MyWindow(QMainWindow):
             # * Render the request body in text box.
             serial_num = test_id.split(".")[0]
             test_point = test_id.split(".")[1]
-            with open(f"./TestData/{test_plan_name}_{serial_num}_{test_point}.json") as file:
-                testdata = json.load(file)
-            testdata_str = json.dumps(testdata, indent=4)
-            self.text_body.setPlainText(testdata_str)
-    
+            try:
+                with open(f"./TestData/{test_plan_name}_{serial_num}_{test_point}.json") as file:
+                    testdata = json.load(file)
+                testdata_str = json.dumps(testdata, indent=4)
+                self.text_body.setPlainText(testdata_str)
+            except FileNotFoundError:
+                logging.info(f"Test data file `./TestData/{test_plan_name}_{serial_num}_{test_point}.json` does not exist.")
+
     def api_tree_item_clicked(self, item, column):
         """When the api tree item is clicked."""
         # * Clear the table

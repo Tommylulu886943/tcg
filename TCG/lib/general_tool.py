@@ -542,43 +542,55 @@ class GeneralTool:
                 }
             }
         }
+
+        TEST_TYPE_MAP = {
+            "Positive Test": "positive_test",
+            "Negative Test": "negative_test",
+        }
+
+        NAME_MAP = {
+            "Parameter Min./Max.": "parameter_min_max_test",
+            "Enum Value Test": "enum_value_test",
+            "Null Value Test": "null_value_test",
+            "Functional Test": "functional_test",
+            "Required Field Test": "required_parameter_test",
+        }
+        
+        def map_test_type(test_type):
+            return TEST_TYPE_MAP.get(test_type)
+
+        def map_test_name(test_name):
+            return NAME_MAP.get(test_name)
+
         for strategy in test_strategies:
             if strategy.isChecked():
                 test_type = strategy.parent().title()
                 name = strategy.text()
+                if test_type in TEST_TYPE_MAP:
+                    test_type = map_test_type(test_type)
+                    name = map_test_name(name)
+                    tcg_config["config"]["test_strategy"][test_type].append(name)
             else:
                 continue
-
-            if test_type == "Positive Test":
-                test_type = "positive_test"
-                if name == "Parameter Min./Max.":
-                    name = "parameter_min_max_test"
-                elif name == "Enum Value Test":
-                    name = "enum_value_test"
-                elif name == "Null Value Test":
-                    name = "null_value_test"
-            elif test_type == "Negative Test":
-                test_type = "negative_test"
-                if name == "Parameter Min./Max.":
-                    name = "parameter_min_max_test"
-                elif name == "Required Field Test":
-                    name = "required_parameter_test"
-                elif name == "Enum Value Test":
-                    name = "enum_value_test"
-
-            tcg_config["config"]["test_strategy"][test_type].append(name)
-
-        with open(config_file_path, "w") as f:
-            json.dump(tcg_config, f, indent=4)
+            
+        try:
+            with open(config_file_path, "w") as f:
+                json.dump(tcg_config, f, indent=4)
+        except FileNotFoundError:
+            logging.error(f"Config file not found: {config_file_path}")
+            raise FileNotFoundError
                 
     @classmethod
     def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata):
+        print("ORSNUM: ", serial_number)
         for test_type in tcg_config['config']['test_strategy']:
             for test_strategy in tcg_config['config']['test_strategy'][test_type]:
                 test_strategy_func = getattr(TestStrategy, test_strategy)
+                print(test_strategy_func.__name__)
                 serial_number = test_strategy_func(
                     test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                 )
+                print(serial_number)
                 logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
         return serial_number
     

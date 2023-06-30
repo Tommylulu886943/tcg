@@ -4172,7 +4172,7 @@ p, li { white-space: pre-wrap; }
                   <property name="geometry">
                    <rect>
                     <x>10</x>
-                    <y>20</y>
+                    <y>50</y>
                     <width>182</width>
                     <height>24</height>
                    </rect>
@@ -4194,7 +4194,7 @@ p, li { white-space: pre-wrap; }
                   <property name="geometry">
                    <rect>
                     <x>10</x>
-                    <y>50</y>
+                    <y>80</y>
                     <width>182</width>
                     <height>24</height>
                    </rect>
@@ -4216,7 +4216,7 @@ p, li { white-space: pre-wrap; }
                   <property name="geometry">
                    <rect>
                     <x>10</x>
-                    <y>80</y>
+                    <y>110</y>
                     <width>182</width>
                     <height>24</height>
                    </rect>
@@ -4229,6 +4229,28 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="text">
                    <string>Null Value Test</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                 <widget class="QCheckBox" name="ckb_parameter_min_max_9">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>182</width>
+                    <height>24</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Functional Test</string>
                   </property>
                   <property name="checked">
                    <bool>true</bool>
@@ -4334,7 +4356,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1802</width>
-     <height>21</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

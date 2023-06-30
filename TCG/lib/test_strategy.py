@@ -48,6 +48,83 @@ class TestStrategy:
         return test_plan_path
     
     @classmethod
+    def functional_test(
+        cls,
+        test_type,
+        operation_id,
+        uri,
+        method,
+        operation,
+        test_plan_path,
+        serial_number,
+        baseline_data,
+        dependency_testdata
+    ):
+        print("SNUM", serial_number)
+        try:
+            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+                generation_rules = json.load(f)
+                is_exist_g_rule = True
+        except FileNotFoundError:
+            logging.info(f"This api does not have a generation rule: {operation_id}")
+            is_exist_g_rule = False
+        
+        # * Load assertion rule
+        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+            assertion_rule = json.load(f)
+            if test_type == 'positive_test':
+                assertion_rule = assertion_rule["positive"]
+        
+        # * Load Path rule
+        if os.path.exists(f"./PathRule/{operation_id}.json"):
+            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+                path_rule = json.load(f)
+        
+        test_point_number = 1
+        if test_type == 'positive_test':
+            testdata = copy.deepcopy(baseline_data)
+            test_point_list = {}
+            if is_exist_g_rule:
+                testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
+                testdata_path = f'./TestData/{testdata_file}.json'
+                with open(testdata_path, 'w') as f:
+                    json.dump(testdata, f, indent=4) 
+                test_point_list[str(test_point_number)] = {'config_name': testdata_file}
+            else:
+                test_point_list[str(test_point_number)] = {'config_name': None}    
+                
+            with open(f"./Template/TestStrategy/positive_functional_test.j2", 'r') as f:
+                test_temp = f.read()
+            test_temp = Template(test_temp)
+            rendered_template = test_temp.render(tp=test_point_list)
+              
+            parsed_json = json.loads(rendered_template)
+            for i in range(1, len(parsed_json['test_point']) + 1):
+                i = str(i)
+                # * Add dependency rule to test plan.
+                d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                parsed_json['test_point'][i]['dependency'] = d_rule
+                # * Add path rule value to test plan.
+                if os.path.exists(f"./PathRule/{operation_id}.json"):
+                    for key, path_item in path_rule.items():
+                        parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                parsed_json['test_point'][i]['assertion'] = assertion_rule
+                                    
+                if DEBUG:
+                    logging.debug(f'parsed_json: {parsed_json}')
+                        
+                with open(test_plan_path, 'r', encoding='utf-8') as f:
+                    existing_test_plan = json.load(f)
+                existing_test_plan['test_cases'][serial_number] = parsed_json
+                
+                with open(test_plan_path, 'w', encoding='utf-8') as f:
+                    json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
+                    
+                test_point_number += 1
+            serial_number += 1
+        return serial_number
+        
+    @classmethod
     def null_value_test(
         cls,
         test_type,
@@ -65,7 +142,7 @@ class TestStrategy:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the nullable_value_test case cannot be generated.')
-            return
+            return serial_number
         
         # * Load assertion rule
         with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
@@ -157,7 +234,7 @@ class TestStrategy:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the enum_parameter_test case cannot be generated.')
-            return
+            return serial_number
         
         # * Load assertion rule
         with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
@@ -277,7 +354,7 @@ class TestStrategy:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the required_parameter_test case cannot be generated.')
-            return
+            return serial_number
         
         # * Load assertion rule
         with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
@@ -362,7 +439,7 @@ class TestStrategy:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the parameter_min_max_test case cannot be generated.')
-            return
+            return serial_number
         
         for key in generation_rules:
             keys = key.split('.')

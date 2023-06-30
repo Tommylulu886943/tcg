@@ -28,13 +28,10 @@
         {% endfor %}
     # Test - {{ case_id }}.{{ point_id }}
         # {{ case.summary }}
-        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}
-        {%- if point.parameter.testdata != None %}
-        ...  file_name={{ point.parameter.testdata }}
-        {% endif -%}
-        {%- if point.path != {} -%}
-        ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}
-        {% endif %}
+        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "" %}
+        ...  file_name={{ point.parameter.testdata }}{% endif -%}{% if point.path != {} %}
+        ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}{% endif %}
+        
         ${parsed_resp}=  Parser.api_parser  ${resp}
         Log  ${parsed_resp}
         {% for assertion_id, assertion in point.assertion.items() %}
