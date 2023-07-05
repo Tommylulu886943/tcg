@@ -1,11 +1,11 @@
 {% if test_cases != None -%}
-{% for case_id, case in test_cases.items() %}
-{{ test_info.operationId }}_{{ case_id }}
+{%- for case_id, case in test_cases.items() -%}
+{% for point_id, point in case.test_point.items() %}
+{{ test_info.operationId }}_{{ case_id }}_{{ point_id }}
     [Tags]  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
     [Documentation]  {{ case.summary }}
-    {% for point_id, point in case.test_point.items() -%}
-        {% for id, setup in point.dependency.Setup.items() %}
-    # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
+    {% for id, setup in point.dependency.Setup.items() %}
+        # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
         ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
         {% if 'path' in setup -%}
         {% if setup.path != {} -%}
@@ -25,16 +25,15 @@
         {{ '${' }}{{ setup.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ setup.response_name }}.status_code}
         Run Keyword If  {{ '${' }}{{ setup.response_name }}.status_code} != 200  Log  {{ '${' }}{{ setup.response_name }}.content}
         Should Be Equal  {{ '${' }}{{ setup.response_name }}.status_code}  200
-        {% endfor %}
-    # Test - {{ case_id }}.{{ point_id }}
-        # {{ case.summary }}
+    {% endfor %}
+        # Test - {{ case_id }}.{{ point_id }}
         ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "" %}
         ...  file_name={{ point.parameter.testdata }}{% endif -%}{% if point.path != {} %}
         ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}{% endif %}
         
         ${parsed_resp}=  Parser.api_parser  ${resp}
         Log  ${parsed_resp}
-        {% for assertion_id, assertion in point.assertion.items() %}
+    {% for assertion_id, assertion in point.assertion.items() %}
         {% if assertion.source == 'Status Code' -%}
         ${resp.status_code}=  Convert To String  ${resp.status_code}
         Run Keyword If  ${resp.status_code} != {{ assertion.expected_value }}  Log  ${resp.content}
@@ -51,9 +50,9 @@
         {% elif assertion.source == 'Header' -%}
         {{ assertion.assertion_method }}  ${resp.headers}  {{ assertion.expected_value }}
         {% endif -%}
-        {% endfor -%}
-        {% for id, teardown in point.dependency.Teardown.items() %}
-    # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
+    {% endfor -%}
+    {% for id, teardown in point.dependency.Teardown.items() %}
+        # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
         {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
         {% if 'path' in teardown -%}
         {% if teardown.path != {} -%}
@@ -73,7 +72,7 @@
         {{ '${' }}{{ teardown.response_name }}.status_code}=  Convert To String  {{ '${' }}{{ teardown.response_name }}.status_code}
         Run Keyword If  {{ '${' }}{{ teardown.response_name }}.status_code} != 200  Log  {{ '${' }}{{ teardown.response_name }}.content}
         Should Be Equal  {{ '${' }}{{ teardown.response_name }}.status_code}  200
-        {% endfor -%}
     {% endfor -%}
+{% endfor -%}
 {% endfor -%}
 {% endif %}
