@@ -60,7 +60,6 @@ class TestStrategy:
         baseline_data,
         dependency_testdata
     ):
-        print("SNUM", serial_number)
         try:
             with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
@@ -96,7 +95,7 @@ class TestStrategy:
             with open(f"./Template/TestStrategy/positive_functional_test.j2", 'r') as f:
                 test_temp = f.read()
             test_temp = Template(test_temp)
-            rendered_template = test_temp.render(tp=test_point_list)
+            rendered_template = test_temp.render(tp=test_point_list[str(test_point_number)])
               
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):

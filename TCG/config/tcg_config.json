@@ -2,16 +2,9 @@
     "config": {
         "test_strategy": {
             "positive_test": [
-                "parameter_min_max_test",
-                "enum_value_test",
-                "null_value_test",
                 "functional_test"
             ],
-            "negative_test": [
-                "parameter_min_max_test",
-                "required_parameter_test",
-                "enum_value_test"
-            ]
+            "negative_test": []
         }
     }
 }

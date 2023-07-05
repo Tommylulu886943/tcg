@@ -1394,10 +1394,13 @@ class MyWindow(QMainWindow):
                 logging.info(f"Path Rule is not exist in the dependency rule `{operation_id}`.")
                 
             testdata_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{index}.json"
-            with open(testdata_path, "r+") as f:
-                testdata = json.load(f)
-            testdata_str = json.dumps(testdata, indent=4)
-            self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
+            try:
+                with open(testdata_path, "r+") as f:
+                    testdata = json.load(f)
+                testdata_str = json.dumps(testdata, indent=4)
+                self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
+            except FileNotFoundError:
+                logging.info(f"Test Data `{testdata_path}` is not exist.")
                 
         else:
             self.comboBox_tc_dependency_type.setEnabled(True)
