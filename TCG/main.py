@@ -97,6 +97,7 @@ class MyWindow(QMainWindow):
         self.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
         self.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
         self.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
+        self.btn_update_info.clicked.connect(self.btn_update_info_clicked)
         
         # * Item Changed Event
         self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
@@ -129,6 +130,32 @@ class MyWindow(QMainWindow):
         self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
         self.setCentralWidget(self.tabTCG)
         
+    def btn_update_info_clicked(self):
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+                return
+                
+        description = self.textbox_tc_description.text()
+        request_name = self.textbox_tc_request_name.text()
+        response_name = self.textbox_tc_response_name.text()
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_parent_item = test_plan_selected_item.parent()
+        operation_id = test_plan_parent_item.parent().text(0)
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+
+        file_path = f"./test_plan/{operation_id}.json"
+        
+        with open(file_path, "r+") as f:
+            test_data = json.load(f)
+        test_data['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['description'] = description
+        test_data['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['request_name'] = request_name
+        test_data['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['response_name'] = response_name
+        
+        with open(file_path, "w") as f:
+            json.dump(test_data, f, indent=4)
+            logging.info(f"Update {file_path} successfully.")
+    
     def btn_remove_test_case_clicked(self):
         selected_items = self.table_test_plan_api_list.selectedItems()
         if not selected_items:
@@ -2335,7 +2362,8 @@ class MyWindow(QMainWindow):
         GeneralTool.clean_ui_content([
             self.table_tc_dependency_rule, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
             self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency_rule, self.table_tc_dependency_generation_rule,
-            self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name,])
+            self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name, self.textbox_tc_description,
+            self.textbox_tc_request_name, self.textbox_tc_response_name])
         self.comboBox_tc_dependency_type.setEnabled(True)
         self.line_tc_api_search.setEnabled(True)
         
@@ -2356,6 +2384,14 @@ class MyWindow(QMainWindow):
                 test_plan = json.load(f)
             test_case_id = test_id.split(".")[0]
             test_point_id = test_id.split(".")[1]
+            
+            # * Render the Description and Request/Response Name
+            description = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['description']
+            request_name = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['request_name']
+            response_name = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['response_name']
+            self.textbox_tc_description.setText(description)
+            self.textbox_tc_request_name.setText(request_name)
+            self.textbox_tc_response_name.setText(response_name)
             
             # * Render the Test Case Dependency Rule.
             GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency_rule)

@@ -7,6 +7,8 @@
             "parameter": {
                 "name": "{{ key }}",
                 "description": "`{{ prop_type }}` parameter with limitations `minimum - 1 = {{ min_value_info }}`",
+                "request_name": "req",
+                "response_name": "resp",                
                 "prop_type": "{{ prop_type }}",
                 "value": "{{ negative_min_value }}",
                 "testdata": "{{ min_testdata }}"
@@ -19,6 +21,8 @@
             "parameter": {
                 "name": "{{ key }}",
                 "description": "`{{ prop_type }}` parameter with limitations `maximum + 1 = {{ max_value_info }}`",
+                "request_name": "req",
+                "response_name": "resp",                
                 "prop_type": "{{ prop_type }}",
                 "value": "{{ negative_max_value }}",
                 "testdata": "{{ max_testdata }}"

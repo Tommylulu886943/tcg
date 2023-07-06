@@ -7,6 +7,8 @@
             "parameter": {
                 "name": "{{ key }}",
                 "description": "`{{ prop_type }}` parameter with limitations: minimum `{{ min_value_info }}`",
+                "request_name": "req",
+                "response_name": "resp",
                 "prop_type": "{{ prop_type }}",
                 "value": "{{ min_value }}",
                 "testdata": "{{ min_testdata }}"
@@ -19,6 +21,8 @@
             "parameter": {
                 "name": "{{ key }}",
                 "description": "`{{ prop_type }}` parameter with limitations: maximum `{{ max_value_info }}`",
+                "request_name": "req",
+                "response_name": "resp",                
                 "prop_type": "{{ prop_type }}",
                 "value": "{{ max_value }}",
                 "testdata": "{{ max_testdata }}"
@@ -31,6 +35,8 @@
             "parameter": {
                 "name": "{{ key }}",
                 "description": "`{{ prop_type }}` parameter with limitations: median `{{ median_value_info }}`",
+                "request_name": "req",
+                "response_name": "resp",                
                 "prop_type": "{{ prop_type }}",
                 "value": "{{ median_value }}",
                 "testdata": "{{ median_testdata }}"

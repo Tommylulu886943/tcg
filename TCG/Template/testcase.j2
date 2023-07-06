@@ -6,7 +6,7 @@
     [Documentation]  {{ case.summary }}
     {% for id, setup in point.dependency.Setup.items() %}
         # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
-        ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
+        [Setup]  ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
         {% if 'path' in setup -%}
         {% if setup.path != {} -%}
         {% for path_id, path in setup.path.items() -%}
@@ -27,7 +27,8 @@
         Should Be Equal  {{ '${' }}{{ setup.response_name }}.status_code}  200
     {% endfor %}
         # Test - {{ case_id }}.{{ point_id }}
-        ${req}  ${resp}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "" %}
+        # {{ point.parameter.description }}
+        {{ '${' }}{{ point.parameter.request_name }}}  {{ '${' }}{{ point.parameter.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "" %}
         ...  file_name={{ point.parameter.testdata }}{% endif -%}{% if point.path != {} %}
         ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}{% endif %}
         
@@ -53,7 +54,7 @@
     {% endfor -%}
     {% for id, teardown in point.dependency.Teardown.items() %}
         # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
-        {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
+        [Teardown]  {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
         {% if 'path' in teardown -%}
         {% if teardown.path != {} -%}
         {% for path_id, path in teardown.path.items() -%}

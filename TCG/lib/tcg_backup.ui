@@ -202,7 +202,7 @@
                  </font>
                 </property>
                 <property name="currentIndex">
-                 <number>2</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="tab_3">
                  <property name="font">
@@ -2453,54 +2453,7 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <layout class="QGridLayout" name="gridLayout_20" columnstretch="3,7">
-            <item row="1" column="0">
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
-              <item>
-               <widget class="QPushButton" name="btn_remove_test_case">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-                </property>
-                <property name="text">
-                 <string>Remove</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="btn_generate_test_case">
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-              </property>
-              <property name="text">
-               <string>GenerateTest Case</string>
-              </property>
-             </widget>
-            </item>
+           <layout class="QGridLayout" name="gridLayout_20" columnstretch="3,0">
             <item row="2" column="0">
              <widget class="QTreeWidget" name="table_test_plan_api_list">
               <property name="font">
@@ -2552,6 +2505,53 @@
               </column>
              </widget>
             </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="btn_generate_test_case">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+              </property>
+              <property name="text">
+               <string>GenerateTest Case</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QPushButton" name="btn_remove_test_case">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                </property>
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
             <item row="0" column="1" rowspan="3">
              <widget class="QTabWidget" name="Dependency_3">
               <property name="font">
@@ -2568,7 +2568,7 @@
 }</string>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">
@@ -2576,34 +2576,150 @@
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
-                 <layout class="QGridLayout" name="gridLayout_21">
-                  <item row="2" column="0">
-                   <widget class="QPlainTextEdit" name="text_body">
-                    <property name="font">
-                     <font>
-                      <family>Segoe UI</family>
-                      <pointsize>10</pointsize>
-                     </font>
+                 <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0,2,8" columnstretch="2,8" columnminimumwidth="2,8">
+                  <item row="5" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox_2">
+                    <property name="title">
+                     <string>Case Info.</string>
                     </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_22">
+                     <item>
+                      <layout class="QFormLayout" name="formLayout">
+                       <item row="0" column="0">
+                        <widget class="QPushButton" name="btn_update_info">
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Update</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="label_71">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Description :</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="0">
+                        <widget class="QLabel" name="label_72">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Request Name :</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="0">
+                        <widget class="QLabel" name="label_73">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Response Name :</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="1">
+                        <widget class="QLineEdit" name="textbox_tc_response_name">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="QLineEdit" name="textbox_tc_request_name">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QLineEdit" name="textbox_tc_description">
+                         <property name="styleSheet">
+                          <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
-                  <item row="1" column="0">
-                   <widget class="QPushButton" name="btn_update_text_body">
-                    <property name="maximumSize">
-                     <size>
-                      <width>150</width>
-                      <height>16777215</height>
-                     </size>
+                  <item row="6" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox">
+                    <property name="title">
+                     <string>Request Body</string>
                     </property>
-                    <property name="font">
-                     <font>
-                      <family>Segoe UI</family>
-                      <pointsize>10</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Update</string>
-                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                     <item>
+                      <widget class="QPushButton" name="btn_update_text_body">
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Update</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPlainTextEdit" name="text_body">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -4356,7 +4472,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1802</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

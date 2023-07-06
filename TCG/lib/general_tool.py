@@ -586,11 +586,9 @@ class GeneralTool:
         for test_type in tcg_config['config']['test_strategy']:
             for test_strategy in tcg_config['config']['test_strategy'][test_type]:
                 test_strategy_func = getattr(TestStrategy, test_strategy)
-                print(test_strategy_func.__name__)
                 serial_number = test_strategy_func(
                     test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                 )
-                print(serial_number)
                 logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
         return serial_number
     
