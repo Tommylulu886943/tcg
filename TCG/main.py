@@ -11,11 +11,12 @@ from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
 from PyQt6.QtCore import QStringListModel, QBasicTimer
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.DataBuilder import DataBuilder
 from lib.render import Render
+from lib.UI import CustomForm
 
 DEBUG = False
 logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=logging.DEBUG)
@@ -30,6 +31,41 @@ class MyWindow(QMainWindow):
         # * Set Icon
         self.btn_import_openapi_doc.setIcon(QIcon("./source/new.png"))
         
+        # * Dynamic UI
+        self.specialActions = {
+            "Parser - API Parser": ["Variable Name", "Response Name", "Field", "Return Type"],
+            "Assertion": ["Assertion Type", "Actual Result", "Expected Value"],
+            "Analyzer - Data Analyzer": ["Data", "Field", "Response Name", "Return Type"],
+            "Analyzer - Config Analyzer": ["Action", "Src. Data", "Dest. Data", "Verbose", "Return Type", "Response Name", "Compare Log Name"],
+        }        
+        self.tab_22 = QtWidgets.QWidget()
+        self.tab_22.setObjectName("tab_22")
+        self.tabWidget_2.addTab(self.tab_22, "Additional Action")
+        
+        self.additional_action = QComboBox(self.tab_22)
+        self.additional_action.addItems(self.specialActions.keys())
+        self.additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+
+        self.form = CustomForm(self.tab_22)
+        self.form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.additional_action.currentTextChanged.connect(self.additional_action_changed)
+
+        self.add_additional_action = QPushButton("Add Action", self.tab_22)
+        self.add_additional_action.setGeometry(QtCore.QRect(10, 260, 120, 30))
+        self.add_additional_action.clicked.connect(self.add_special_action)
+        self.additional_action_changed()
+        
+        self.remove_additional_action = QPushButton("Remove Action", self.tab_22)
+        self.remove_additional_action.setGeometry(QtCore.QRect(140, 260, 120, 30))
+        self.remove_additional_action.clicked.connect(self.remove_special_action)
+        self.additional_action_changed()
+        
+        self.table_additional_action = QtWidgets.QTreeWidget(parent=self.tab_22)
+        self.table_additional_action.setGeometry(QtCore.QRect(10, 300, 400, 200))
+        self.table_additional_action.setObjectName("table_additional_action")
+        self.table_additional_action.headerItem().setText(0, "Index")
+        self.table_additional_action.headerItem().setText(1, "Action Name")
+            
         # * Define the Button Event
         self.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
         self.btn_generate_test_plan.clicked.connect(self.generate_test_plan)
@@ -129,6 +165,22 @@ class MyWindow(QMainWindow):
         self.web_page_layout.addWidget(self.web_view)
         self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
         self.setCentralWidget(self.tabTCG)
+        
+    def additional_action_changed(self):
+        """ When the additional action is changed by the user, the form will be reloaded. """
+        current_action = self.additional_action.currentText()
+        fields = self.specialActions[current_action]
+        self.form.load_form(current_action, fields)
+        
+    def add_special_action(self):
+        """ Add the additional action to a test case. """
+        values = self.form.get_values(self.additional_action.currentText())
+        print(values)
+        
+    def remove_special_action(self):
+        """ Remove the additional action from a test case. """
+        selected_action_name = self.additional_action.currentText()
+        print(selected_action_name)
         
     def btn_update_info_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
