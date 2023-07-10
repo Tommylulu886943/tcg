@@ -12,6 +12,7 @@ from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
 from PyQt6.QtCore import QStringListModel, QBasicTimer
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton
+
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.DataBuilder import DataBuilder
@@ -33,6 +34,7 @@ class MyWindow(QMainWindow):
         
         # * Dynamic UI
         self.specialActions = {
+            "None": [],
             "Parser - API Parser": ["Variable Name", "Response Name", "Field", "Return Type"],
             "Assertion": ["Assertion Type", "Actual Result", "Expected Value"],
             "Analyzer - Data Analyzer": ["Data", "Field", "Response Name", "Return Type"],
@@ -40,31 +42,85 @@ class MyWindow(QMainWindow):
         }        
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
-        self.tabWidget_2.addTab(self.tab_22, "Additional Action")
+        self.tabWidget_2.insertTab(4, self.tab_22, "Additional Action")
         
+        self.label_additional_action = QtWidgets.QLabel(self.tab_22)
+        self.label_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_additional_action.setText("Action Item :")
         self.additional_action = QComboBox(self.tab_22)
         self.additional_action.addItems(self.specialActions.keys())
-        self.additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
 
         self.form = CustomForm(self.tab_22)
         self.form.setGeometry(QtCore.QRect(10, 50, 400, 200))
         self.additional_action.currentTextChanged.connect(self.additional_action_changed)
 
         self.add_additional_action = QPushButton("Add Action", self.tab_22)
-        self.add_additional_action.setGeometry(QtCore.QRect(10, 260, 120, 30))
-        self.add_additional_action.clicked.connect(self.add_special_action)
+        self.add_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_additional_action.clicked.connect(self.btn_add_special_action)
         self.additional_action_changed()
         
         self.remove_additional_action = QPushButton("Remove Action", self.tab_22)
-        self.remove_additional_action.setGeometry(QtCore.QRect(140, 260, 120, 30))
-        self.remove_additional_action.clicked.connect(self.remove_special_action)
+        self.remove_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_additional_action.clicked.connect(self.btn_remove_special_action)
         self.additional_action_changed()
         
         self.table_additional_action = QtWidgets.QTreeWidget(parent=self.tab_22)
-        self.table_additional_action.setGeometry(QtCore.QRect(10, 300, 400, 200))
+        self.table_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
         self.table_additional_action.setObjectName("table_additional_action")
         self.table_additional_action.headerItem().setText(0, "Index")
         self.table_additional_action.headerItem().setText(1, "Action Name")
+        
+        # *　Dependency Additonal Action
+        self.tab_50 = QtWidgets.QWidget()
+        self.tab_50.setObjectName("tab_50")
+        self.tabWidget_5.insertTab(2, self.tab_50, "Additional Action")
+        self.label_additional_action_2 = QtWidgets.QLabel(self.tab_50)
+        self.label_additional_action_2.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_additional_action_2.setText("Action Item :")
+        self.dependency_additional_action = QComboBox(self.tab_50)
+        self.dependency_additional_action.addItems(self.specialActions.keys())
+        self.dependency_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.dependency_form = CustomForm(self.tab_50)
+        self.dependency_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.dependency_additional_action.currentTextChanged.connect(self.dependency_additional_action_changed)
+        
+        self.add_dependency_additional_action = QPushButton("Add Action", self.tab_50)
+        self.add_dependency_additional_action.setGeometry(QtCore.QRect(390, 10, 100, 30))
+        self.add_dependency_additional_action.clicked.connect(self.btn_add_dependency_special_action)
+        self.remove_dependency_additional_action = QPushButton("Remove Action", self.tab_50)
+        self.remove_dependency_additional_action.setGeometry(QtCore.QRect(510, 10, 100, 30))
+        self.remove_dependency_additional_action.clicked.connect(self.btn_remove_dependency_special_action)
+        self.table_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_50)
+        self.table_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
+        self.table_dependency_additional_action.setObjectName("table_dependency_additional_action")
+        self.table_dependency_additional_action.headerItem().setText(0, "Index")
+        self.table_dependency_additional_action.headerItem().setText(1, "Action Name")
+        
+        # * Test Plan Additional Action
+        self.tab_51 = QtWidgets.QWidget()
+        self.tab_51.setObjectName("tab_51")
+        self.tabWidget_testPlan.insertTab(4, self.tab_51, "Additional Action")
+        self.label_tc_additional_action = QtWidgets.QLabel(self.tab_51)
+        self.label_tc_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_tc_additional_action.setText("Action Item :")
+        self.tc_additional_action = QComboBox(self.tab_51)
+        self.tc_additional_action.addItems(self.specialActions.keys())
+        self.tc_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.test_plan_form = CustomForm(self.tab_51)
+        self.test_plan_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
+        self.add_tc_additional_action = QPushButton("Add Action", self.tab_51)
+        self.add_tc_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_tc_additional_action.clicked.connect(self.btn_tc_add_special_action)
+        self.remove_tc_additional_action = QPushButton("Remove Action", self.tab_51)
+        self.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_tc_additional_action.clicked.connect(self.btn_tc_remove_special_action)
+        self.table_tc_additional_action = QtWidgets.QTreeWidget(parent=self.tab_51)
+        self.table_tc_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
+        self.table_tc_additional_action.setObjectName("table_tc_additional_action")
+        self.table_tc_additional_action.headerItem().setText(0, "Index")
+        self.table_tc_additional_action.headerItem().setText(1, "Action Name")       
             
         # * Define the Button Event
         self.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
@@ -172,15 +228,181 @@ class MyWindow(QMainWindow):
         fields = self.specialActions[current_action]
         self.form.load_form(current_action, fields)
         
-    def add_special_action(self):
-        """ Add the additional action to a test case. """
-        values = self.form.get_values(self.additional_action.currentText())
-        print(values)
+    def dependency_additional_action_changed(self):
+        """ When the additional action is changed by the user, the form will be reloaded. """
+        current_dependency_action = self.dependency_additional_action.currentText()
+        fields = self.specialActions[current_dependency_action]
+        self.dependency_form.load_form(current_dependency_action, fields)
         
-    def remove_special_action(self):
+    def tc_additional_action_changed(self):
+        """ When the additional action is changed by the user, the form will be reloaded. """
+        current_tc_action = self.tc_additional_action.currentText()
+        fields = self.specialActions[current_tc_action]
+        self.tc_form.load_form(current_tc_action, fields)
+        
+    def btn_tc_add_special_action(self):
+        """ Add the additional action to a test case. """
+        if len(table_test_plan_api_list.selectedItems()) == 0:
+            return
+        elif table_test_plan_api_list.selectedItems()[0].parent() is None:
+            return
+        elif table_test_plan_api_list.selectedItems()[0].parent().parent() is not None:
+            return
+        
+        
+    
+    def btn_tc_remove_special_action(self):
         """ Remove the additional action from a test case. """
-        selected_action_name = self.additional_action.currentText()
-        print(selected_action_name)
+        pass    
+    
+    def btn_add_dependency_special_action(self):
+        """ Add the additional action to a dependency. """
+        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+            return
+        
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        
+        values = self.dependency_form.get_values(self.dependency_additional_action.currentText())
+
+        add_action = {}
+        file_path = "./DependencyRule/" + operation_id + ".json"
+        if os.path.exists(file_path):
+            with open(file_path, "r+") as f:
+                add_action = json.load(f)
+                if "additional_action" not in add_action[dependency_type][dependency_sequence_num]:
+                    add_action[dependency_type][dependency_sequence_num]["additional_action"] = {}
+                if len(add_action[dependency_type][dependency_sequence_num]["additional_action"]) == 0:
+                    next_key = str(1)
+                else:
+                    key_length = len(add_action[dependency_type][dependency_sequence_num]["additional_action"])
+                    last_key = int(list(add_action[dependency_type][dependency_sequence_num]["additional_action"].keys())[-1])
+                    next_key = str(last_key + 1)
+                    
+                result = GeneralTool.add_key_in_json(
+                    add_action,
+                    [dependency_type, dependency_sequence_num, 'additional_action'],
+                    next_key, 
+                    values
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(add_action, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully add the additional action to the dependency rule of {operation_id}.")
+                else:
+                    logging.error(f"Failed to add the additional action to the dependency rule of {operation_id}.")
+      
+            with open(file_path, "r") as f:
+                add_action = json.load(f)
+                GeneralTool.parse_dependency_additional_action_rule(
+                    operation_id,
+                    dependency_type,
+                    dependency_sequence_num,
+                    self.table_dependency_additional_action
+                )    
+            
+    def btn_remove_dependency_special_action(self):
+        """ Remove the additional action from a dependency. """
+        if len(self.table_dependency_additional_action.selectedItems()) == 0:
+            return
+        elif self.table_dependency_additional_action.selectedItems()[0].parent() is None:
+            return
+        elif self.table_dependency_additional_action.selectedItems()[0].parent().parent() is not None:
+            return
+        
+        api_selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = api_selected_item.text(4)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        additional_action_sequence_num = self.table_dependency_additional_action.selectedItems()[0].text(0)
+        
+        file_path = "./DependencyRule/" + operation_id + ".json"
+        if os.path.exists(file_path):
+            with open(file_path, "r+") as f:
+                add_action = json.load(f)
+                result = GeneralTool.remove_key_in_json(
+                    add_action,
+                    [dependency_type, dependency_sequence_num, 'additional_action', additional_action_sequence_num]
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(add_action, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully remove the additional action from the dependency rule of {operation_id}.")
+                else:
+                    logging.error(f"Failed to remove the additional action from the dependency rule of {operation_id}.")
+                f.seek(0)
+                add_action = json.load(f)
+                GeneralTool.parse_dependency_additional_action_rule(
+                    operation_id,
+                    dependency_type,
+                    dependency_sequence_num,
+                    self.table_dependency_additional_action
+                )                                  
+        
+    def btn_add_special_action(self):
+        """ Add the additional action to a test case. """
+        if len(self.table_api_tree.selectedItems()) == 0 or self.table_api_tree.selectedItems()[0].parent() == None:
+            return
+
+        selected_item = self.table_api_tree.selectedItems()[0]
+        operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        values = self.form.get_values(self.additional_action.currentText())
+        
+        add_action = {}
+        file_path = "./AdditionalAction/" + operation_id + ".json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as file:
+                add_action = json.load(file)
+                if len(add_action) == 0:
+                    next_key = str(1)
+                else:
+                    key_length = len(add_action)
+                    last_key = int(list(add_action.keys())[-1])
+                    next_key = str(last_key + 1)
+        
+            add_action[next_key] = values
+            with open(file_path, "w") as file:
+                json.dump(add_action, file, indent=4)
+                
+            with open(file_path, "r") as file:
+                add_action = json.load(file)
+                GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
+
+    def btn_remove_special_action(self):
+        """ Remove the additional action from a test case. """
+        if len(self.table_additional_action.selectedItems()) == 0 or self.table_api_tree.selectedItems()[0] == None:
+            return
+        elif self.table_additional_action.selectedItems()[0].parent() == None:
+            return
+        elif self.table_additional_action.selectedItems()[0].parent().parent() != None:
+            return
+
+        selected_item = self.table_additional_action.selectedItems()[0]
+        parent_item = selected_item.parent()
+        operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        action_sequence_num = selected_item.text(0)
+        
+        file_path = "./AdditionalAction/" + operation_id + ".json"
+        with open(file_path, "r+") as f:
+            add_action = json.load(f)
+            result = GeneralTool.remove_key_in_json(
+                add_action, 
+                [action_sequence_num]
+            )
+            if result is not False:
+                f.seek(0)
+                json.dump(add_action, f, indent=4)
+                f.truncate()
+                logging.info("Remove additional action rule successfully.")
+            else:
+                logging.error("Remove additional action rule failed.")
+        GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action) 
         
     def btn_update_info_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
@@ -1494,6 +1716,7 @@ class MyWindow(QMainWindow):
             self.table_dependency_schema,
             self.textbox_path_dependency_name,
             self.textbox_path_dependency_value,
+            self.table_dependency_additional_action,
         ])
 
         selected_item = self.table_dependency_rule.selectedItems()[0]
@@ -1533,6 +1756,14 @@ class MyWindow(QMainWindow):
                 GeneralTool.expand_and_resize_tree(self.table_dependency_path, level=2)
             else:
                 logging.info(f"Path Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
+                
+            # * Render the additional action rule
+            if 'additional_action' in data:
+                root_item = QTreeWidgetItem(["Additional Action"])
+                self.table_dependency_additional_action.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["additional_action"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_dependency_additional_action, level=2)
+                
         else:
             self.comboBox_dependency_type.setEnabled(True)
             self.line_api_search.setEnabled(True)
@@ -1561,7 +1792,7 @@ class MyWindow(QMainWindow):
                 sequence_num = '1'
             
             obj_name, action = GeneralTool._retrieve_obj_and_action(api)
-            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name,}
+            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {},}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
                 f.seek(0)
@@ -1934,7 +2165,7 @@ class MyWindow(QMainWindow):
             
             # * Copy the Generation Rule and Assertion Rule and Dependency Request Body and Path Rule
             operation_id = selected_item.text(4)
-            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule"]:
+            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]:
                 file_path = f"./{folder}/{operation_id}.json"
                 if os.path.exists(file_path):
                     new_file_path = f"./{folder}/{new_operation_id}.json"
@@ -2159,7 +2390,7 @@ class MyWindow(QMainWindow):
         if generation_rule != None or generation_rule != {}:
             with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
                 data = json.load(f)
-                result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num],"data_generation_rules" , generation_rule)
+                result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "data_generation_rules" , generation_rule)
                 if result is not False:
                     f.seek(0)
                     json.dump(data, f, indent=4)
@@ -2217,7 +2448,10 @@ class MyWindow(QMainWindow):
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
                         
                     # * Create the Dependency Rule File
-                    dependency_rule = GeneralTool.init_dependency_rule(operation_id)       
+                    dependency_rule = GeneralTool.init_dependency_rule(operation_id)
+                    
+                    # * Create the Additional Action Rule File
+                    additional_action_rule = GeneralTool.init_additional_action_rule(operation_id)    
          
     def btn_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
@@ -2261,14 +2495,14 @@ class MyWindow(QMainWindow):
         selected_items = self.table_api_tree.selectedItems()
         for item in selected_items:
             if item.parent() is None:
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]
                 for folder in teardown_folder:  
                     for child_file in glob.glob(f"./{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
                 self.table_api_tree.takeTopLevelItem(self.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]
                 for folder in teardown_folder:
                     file_path = f"./{folder}/" + file_name + ".json"
                     if os.path.exists(file_path):
@@ -2357,7 +2591,7 @@ class MyWindow(QMainWindow):
         )
         
         # * Clean Environment
-        GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule"])
+        GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction"])
         GeneralTool.clean_ui_content([
             self.table_api_tree, 
             self.table_schema, 
@@ -2506,6 +2740,7 @@ class MyWindow(QMainWindow):
             self.textbox_data_rule_data_length,
             self.comboBox_data_rule_required,
             self.comboBox_data_rule_nullable,
+            self.table_additional_action,
         ])
         self.comboBox_dependency_type.setEnabled(True)
         self.line_api_search.setEnabled(True)
@@ -2536,6 +2771,10 @@ class MyWindow(QMainWindow):
             # * Render the Dependency Rule from the file.
             GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
             GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+            
+            # * Render the Additional Action from the file.
+            GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
+            GeneralTool.expand_and_resize_tree(self.table_additional_action, level=3)
             return
             
         table_path, table_method = item.text(2), item.text(3)
@@ -2593,6 +2832,10 @@ class MyWindow(QMainWindow):
                         # * Render the Dependency Rule from the file.
                         GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
                         GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+                        
+                        # * Render the Additional Action from the file.
+                        GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
+                        GeneralTool.expand_and_resize_tree(self.table_additional_action, level=3)
                         
 app = QtWidgets.QApplication(sys.argv)
 window = MyWindow()

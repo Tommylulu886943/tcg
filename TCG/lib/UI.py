@@ -1,8 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QFormLayout, QComboBox
 
-
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QFormLayout, QComboBox
-
 class CustomForm(QWidget):
     def __init__(self, parent=None):
         super(CustomForm, self).__init__(parent)

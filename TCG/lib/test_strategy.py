@@ -78,6 +78,11 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
+                
+        # * Load Additional Action
+        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
+            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+                additional_action = json.load(f)
         
         test_point_number = 1
         if test_type == 'positive_test':
@@ -103,11 +108,15 @@ class TestStrategy:
                 # * Add dependency rule to test plan.
                 d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                 parsed_json['test_point'][i]['dependency'] = d_rule
+                
                 # * Add path rule value to test plan.
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
                 parsed_json['test_point'][i]['assertion'] = assertion_rule
+                
+                # * Add additional action to test plan.
+                parsed_json['test_point'][i]['additional_action'] = additional_action
                                     
                 if DEBUG:
                     logging.debug(f'parsed_json: {parsed_json}')
@@ -156,6 +165,11 @@ class TestStrategy:
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
                 
+        # * Load Additional Action
+        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
+            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+                additional_action = json.load(f)
+                
         for key in generation_rules:
             test_point_number = 1
             keys = key.split('.')
@@ -194,11 +208,15 @@ class TestStrategy:
                         # * Add dependency rule to test plan.
                         d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                         parsed_json['test_point'][i]['dependency'] = d_rule
+                        
                         # * Add path rule value to test plan.
                         if os.path.exists(f"./PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
+                        
+                        # * Add additional action to test plan.
+                        parsed_json['test_point'][i]['additional_action'] = additional_action                        
                                     
                     if DEBUG:
                         logging.debug(f'parsed_json: {parsed_json}')
@@ -247,6 +265,11 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
+                
+        # * Load Additional Action
+        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
+            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+                additional_action = json.load(f)
                 
         for key in generation_rules:
             test_point_number = 1
@@ -317,12 +340,16 @@ class TestStrategy:
                     # * Add dependency rule to test plan.
                     d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                     parsed_json['test_point'][i]['dependency'] = d_rule
+                    
                     # * Add path rule value to test plan.
                     if os.path.exists(f"./PathRule/{operation_id}.json"):
                         for key, path_item in path_rule.items():
                             parsed_json['test_point'][i]['path'][key] = path_item['Value']
                     parsed_json['test_point'][i]['assertion'] = assertion_rule
                     
+                    # * Add additional action to test plan.
+                    parsed_json['test_point'][i]['additional_action'] = additional_action
+                                    
                 with open(test_plan_path, 'r', encoding='utf-8') as f:
                     existing_test_plan = json.load(f)
                 existing_test_plan['test_cases'][serial_number] = parsed_json
@@ -367,6 +394,11 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
+                
+        # * Load Additional Action
+        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
+            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+                additional_action = json.load(f)
                    
         test_point_number = 1
         for key in generation_rules:
@@ -402,11 +434,15 @@ class TestStrategy:
                         # * Add dependency rule to test plan.
                         d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                         parsed_json['test_point'][i]['dependency'] = d_rule
+                        
                         # * Add path rule value to test plan.
                         if os.path.exists(f"./PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
+                        
+                        # * Add additional action to test plan.
+                        parsed_json['test_point'][i]['additional_action'] = additional_action                        
                         
                     with open(test_plan_path, 'r', encoding='utf-8') as f:
                         existing_test_plan = json.load(f)
@@ -513,6 +549,11 @@ class TestStrategy:
             if os.path.exists(f"./PathRule/{operation_id}.json"):
                 with open(f"./PathRule/{operation_id}.json", 'r') as f:
                     path_rule = json.load(f)
+                    
+            # * Load Additional Action
+            if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
+                with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+                    additional_action = json.load(f)
             
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
@@ -591,11 +632,15 @@ class TestStrategy:
                 # * Add dependency rule to test plan.
                 d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                 parsed_json['test_point'][i]['dependency'] = d_rule
+                
                 # * Add path rule value to test plan.
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
                 parsed_json['test_point'][i]['assertion'] = assertion_rule
+
+                # * Add additional action to test plan.
+                parsed_json['test_point'][i]['additional_action'] = additional_action
                                
             if DEBUG:
                 logging.debug(f'parsed_json: {parsed_json}')

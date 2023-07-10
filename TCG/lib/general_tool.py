@@ -692,6 +692,13 @@ class GeneralTool:
         dependency_rule = {"Setup": {}, "Teardown": {}}
         with open(f"./DependencyRule/{operation_id}.json", "w") as f:
             json.dump(dependency_rule, f, indent=4)
+            
+    @classmethod
+    def init_additional_action_rule(cls, operation_id: str):
+        """ To initialize additional action rule file. """
+        additional_action_rule = {}
+        with open(f"./AdditionalAction/{operation_id}.json", "w") as f:
+            json.dump(additional_action_rule, f, indent=4)
         
     @classmethod
     def parse_schema_to_assertion_rule(cls, responses: dict) -> dict:
@@ -848,6 +855,49 @@ class GeneralTool:
         return fields
     
     @classmethod
+    def parse_additional_action_rule(cls, operation_id: str, additional_action_rule_table: object) -> None:
+        """To parse additional action rule files to TreeWidget.
+        
+        Args:
+            operation_id: The API operation id.
+            additional_action_rule_table: QTreeWidget instance to be parsed.
+            
+        Returns:
+            None
+        """
+        file_path = f"./AdditionalAction/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                data = json.load(f)
+
+            additional_action_rule_table.clear()
+            root_item = QTreeWidgetItem(["Action Rule"])
+            additional_action_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(data, root_item)
+            cls.expand_and_resize_tree(additional_action_rule_table, level=2)
+        else:
+            logging.warning(f"Additional Action File Not Found: {file_path}")
+            
+    @classmethod
+    def parse_dependency_additional_action_rule(
+        cls, operation_id: str, dependecy_type: str, sequence_num: str , dependency_aditional_action_table: object) -> None:  
+        
+        file_path = f"./DependencyRule/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                data = data[dependecy_type][sequence_num]["additional_action"]
+                
+            dependency_aditional_action_table.clear()
+            root_item = QTreeWidgetItem(["Additional Action"])
+            dependency_aditional_action_table.addTopLevelItem(root_item)
+            cls.parse_request_body(data, root_item)
+            cls.expand_and_resize_tree(dependency_aditional_action_table, level=2)
+        else:
+            logging.warning(f"Dependency Action File Not Found: {file_path}")
+             
+    
+    @classmethod
     def parse_dependency_rule(cls, operation_id: str, dependency_rule_table: object) -> None:
         """To parse dependency rule files to TreeWidget.
 
@@ -876,6 +926,8 @@ class GeneralTool:
                         del dependency_rule[section][key]['object']
                     if 'action' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['action']
+                    if 'additional_action' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['additional_action']
                         
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
