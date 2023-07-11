@@ -136,13 +136,13 @@ class MyWindow(QMainWindow):
         self.tc_dependency_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
         self.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
         self.add_tc_dependency_additional_action = QPushButton("Add Action", self.tab_52)
-        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(390, 10, 100, 30))
         self.add_tc_dependency_additional_action.clicked.connect(self.btn_tc_add_dependency_special_action)
         self.remove_tc_dependency_additional_action = QPushButton("Remove Action", self.tab_52)
-        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(510, 10, 100, 30))
         self.remove_tc_dependency_additional_action.clicked.connect(self.btn_tc_remove_dependency_special_action)
         self.table_tc_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_52)
-        self.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
+        self.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
         self.table_tc_dependency_additional_action.setObjectName("table_tc_dependency_additional_action")
         self.table_tc_dependency_additional_action.headerItem().setText(0, "Index")
         self.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")               
@@ -2863,7 +2863,7 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_rule, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
             self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency_rule, self.table_tc_dependency_generation_rule,
             self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name, self.textbox_tc_description,
-            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action])
+            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action, self.table_tc_dependency_additional_action,])
         self.comboBox_tc_dependency_type.setEnabled(True)
         self.line_tc_api_search.setEnabled(True)
         

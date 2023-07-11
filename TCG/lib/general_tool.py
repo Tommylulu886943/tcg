@@ -999,9 +999,11 @@ class GeneralTool:
                 if 'config_name' in dependency_rule[section][key]:
                     del dependency_rule[section][key]['config_name']
                 if 'object' in dependency_rule[section][key]:
-                    del dependency_rule[section][key]['object']
+                    dependency_rule[section][key]['object']
                 if 'action' in dependency_rule[section][key]:
                     del dependency_rule[section][key]['action']
+                if 'additional_action' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['additional_action']
                                                             
         setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
         setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
