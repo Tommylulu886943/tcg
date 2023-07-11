@@ -382,7 +382,6 @@ class TestDataBuilder:
         assert start_datetime <= random_start_datetime <= end_datetime
 
         random_end_datetime = DataBuilder.generate_random_datetime(start_year=2001, end_year=2002)
-        print(random_end_datetime)
         assert isinstance(random_end_datetime, str)
         assert re.match(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}', random_end_datetime)
         assert start_datetime <= random_end_datetime <= end_datetime

@@ -582,7 +582,6 @@ class GeneralTool:
                 
     @classmethod
     def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata):
-        print("ORSNUM: ", serial_number)
         for test_type in tcg_config['config']['test_strategy']:
             for test_strategy in tcg_config['config']['test_strategy'][test_type]:
                 test_strategy_func = getattr(TestStrategy, test_strategy)

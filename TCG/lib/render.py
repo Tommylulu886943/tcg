@@ -33,8 +33,15 @@ class Render:
                 template = Template(f.read())
                 rendered_script = template.render(test_plan)
                 
+            with open('./Template/keyword.j2', 'r') as f:
+                local_keyword = Template(f.read())
+                rendered_keyword = local_keyword.render(test_plan)
+                
             with open(robot_path, "w", encoding="utf-8") as r:
                 r.write(rendered_base)
                 
             with open(robot_path, "a", encoding="utf-8") as r:
                 r.write(rendered_script)
+                
+            with open(robot_path, "a", encoding="utf-8") as r:
+                r.write(rendered_keyword)
