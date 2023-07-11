@@ -107,8 +107,8 @@ class MyWindow(QMainWindow):
         self.tc_additional_action = QComboBox(self.tab_51)
         self.tc_additional_action.addItems(self.specialActions.keys())
         self.tc_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
-        self.test_plan_form = CustomForm(self.tab_51)
-        self.test_plan_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.tc_form = CustomForm(self.tab_51)
+        self.tc_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
         self.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
         self.add_tc_additional_action = QPushButton("Add Action", self.tab_51)
         self.add_tc_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
@@ -120,7 +120,32 @@ class MyWindow(QMainWindow):
         self.table_tc_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
         self.table_tc_additional_action.setObjectName("table_tc_additional_action")
         self.table_tc_additional_action.headerItem().setText(0, "Index")
-        self.table_tc_additional_action.headerItem().setText(1, "Action Name")       
+        self.table_tc_additional_action.headerItem().setText(1, "Action Name")
+        
+        # * Test Plan Dependency Additional Action
+        self.tab_52 = QtWidgets.QWidget()
+        self.tab_52.setObjectName("tab_52")
+        self.table_tc_dependency_schema_2.insertTab(3, self.tab_52, "Additional Action")
+        self.label_tc_dependency_additional_action = QtWidgets.QLabel(self.tab_52)
+        self.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_tc_dependency_additional_action.setText("Action Item :")
+        self.tc_dependency_additional_action = QComboBox(self.tab_52)
+        self.tc_dependency_additional_action.addItems(self.specialActions.keys())
+        self.tc_dependency_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.tc_dependency_form = CustomForm(self.tab_52)
+        self.tc_dependency_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
+        self.add_tc_dependency_additional_action = QPushButton("Add Action", self.tab_52)
+        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_tc_dependency_additional_action.clicked.connect(self.btn_tc_add_dependency_special_action)
+        self.remove_tc_dependency_additional_action = QPushButton("Remove Action", self.tab_52)
+        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_tc_dependency_additional_action.clicked.connect(self.btn_tc_remove_dependency_special_action)
+        self.table_tc_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_52)
+        self.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
+        self.table_tc_dependency_additional_action.setObjectName("table_tc_dependency_additional_action")
+        self.table_tc_dependency_additional_action.headerItem().setText(0, "Index")
+        self.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")               
             
         # * Define the Button Event
         self.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
@@ -240,20 +265,199 @@ class MyWindow(QMainWindow):
         fields = self.specialActions[current_tc_action]
         self.tc_form.load_form(current_tc_action, fields)
         
+    def tc_dependency_additional_action_changed(self):
+        """ When the additional action is changed by the user, the form will be reloaded. """
+        current_tc_dependency_action = self.tc_dependency_additional_action.currentText()
+        fields = self.specialActions[current_tc_dependency_action]
+        self.tc_dependency_form.load_form(current_tc_dependency_action, fields)
+        
+    def btn_tc_add_dependency_special_action(self):
+        """ Add the additional action to a dependency. """
+        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_parent_item = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        operation_id = test_plan_parent_item.parent().text(0)
+        
+        values = self.tc_dependency_form.get_values(self.tc_dependency_additional_action.currentText())
+        
+        file_path = "./test_plan/" + operation_id + ".json"
+        if os.path.exists(file_path):
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                if data['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type][dependency_sequence_num]['additional_action'] == {}:
+                    next_key = str(1)
+                else:
+                    last_key = int(list(data['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type][dependency_sequence_num]['additional_action'].keys())[-1])
+                    next_key = str(last_key + 1)
+                result = GeneralTool.add_key_in_json(
+                    data,
+                    ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type, dependency_sequence_num, 'additional_action'],
+                    next_key,
+                    values,
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully add the additional action to the dependency of {operation_id}.")
+                else:
+                    logging.error(f"Failed to add the additional action to the dependency of {operation_id}.")
+                    
+            with open(file_path, "r") as f:
+                add_action = json.load(f)
+                GeneralTool.parse_tc_dependency_additional_action_rule(
+                    operation_id,
+                    test_case_id,
+                    test_point_id,
+                    self.table_tc_dependency_additional_action,
+                    dependency_type,
+                    dependency_sequence_num,
+                )
+        else:
+            logging.error(f"Failed to load the test plan of {operation_id}.")
+    
+    def btn_tc_remove_dependency_special_action(self):
+        """ Remove the additional action from a dependency. """
+        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_parent_item = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        operation_id = test_plan_parent_item.parent().text(0)
+        additional_action_index = self.table_tc_dependency_additional_action.selectedItems()[0].text(0)
+        
+        file_path = "./test_plan/" + operation_id + ".json"
+        if os.path.exists(file_path):
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.remove_key_in_json(
+                    data,
+                    ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type, dependency_sequence_num, 'additional_action', additional_action_index]
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully remove the additional action from the dependency of {operation_id}.")
+                else:
+                    logging.error(f"Failed to remove the additional action from the dependency of {operation_id}.")
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                GeneralTool.parse_tc_dependency_additional_action_rule(
+                    operation_id,
+                    test_case_id,
+                    test_point_id,
+                    self.table_tc_dependency_additional_action,
+                    dependency_type,
+                    dependency_sequence_num,
+                )
+        else:
+            logging.error(f"Failed to load the test plan of {operation_id}.")
+    
     def btn_tc_add_special_action(self):
         """ Add the additional action to a test case. """
-        if len(table_test_plan_api_list.selectedItems()) == 0:
-            return
-        elif table_test_plan_api_list.selectedItems()[0].parent() is None:
-            return
-        elif table_test_plan_api_list.selectedItems()[0].parent().parent() is not None:
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
             return
         
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
         
-    
+        if parent_item is not None and parent_item.parent() is not None:
+            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_parent_item = test_plan_selected_item.parent()
+            operation_id = test_plan_parent_item.parent().text(0)
+            test_case_id = test_plan_selected_item.text(1).split(".")[0]
+            test_point_id = test_plan_selected_item.text(1).split(".")[1]
+            action_name = self.tc_additional_action.currentText()
+            values = self.tc_form.get_values(action_name)
+            
+            file_path = "./test_plan/" + operation_id + ".json"
+            if os.path.exists(file_path):
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    action_list_len = len(data['test_cases'][test_case_id]['test_point'][test_point_id]["additional_action"])
+                    if action_list_len == 0:
+                        next_key = str(1)
+                    elif action_list_len > 0:
+                        last_key = int(list(data['test_cases'][test_case_id]['test_point'][test_point_id]["additional_action"].keys())[-1])
+                        next_key = str(last_key + 1)
+                        
+                    result = GeneralTool.add_key_in_json(
+                        data,
+                        ['test_cases', test_case_id, 'test_point', test_point_id, 'additional_action'],
+                        next_key,
+                        values,
+                    )
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Successfully add the additional action to the test case of {operation_id}.")
+                    else:
+                        logging.error(f"Failed to add the additional action to the test case of {operation_id}.")
+                        
+                with open(file_path, "r") as f:
+                    add_action = json.load(f)
+                    GeneralTool.parse_tc_additional_action_rule(
+                        operation_id,
+                        self.table_tc_additional_action,
+                        test_case_id,
+                        test_point_id,
+                    )
+            else:
+                logging.error(f"Failed to load the test plan of {operation_id}.")
     def btn_tc_remove_special_action(self):
         """ Remove the additional action from a test case. """
-        pass    
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_parent_item = test_plan_selected_item.parent()
+            operation_id = test_plan_parent_item.parent().text(0)
+            test_case_id = test_plan_selected_item.text(1).split(".")[0]
+            test_point_id = test_plan_selected_item.text(1).split(".")[1]
+            action_index = self.table_tc_additional_action.selectedItems()[0].text(0)
+            
+            file_path = "./test_plan/" + operation_id + ".json"
+            if os.path.exists(file_path):
+                with open(file_path, "r+") as f:
+                    data = json.load(f)
+                    result = GeneralTool.remove_key_in_json(
+                        data,
+                        ['test_cases', test_case_id, 'test_point', test_point_id, 'additional_action', action_index]
+                    )
+                    if result is not False:
+                        f.seek(0)
+                        json.dump(data, f, indent=4)
+                        f.truncate()
+                        logging.info(f"Successfully remove the additional action from the test case of {operation_id}.")
+                    else:
+                        logging.error(f"Failed to remove the additional action from the test case of {operation_id}.")
+                        
+                with open(file_path, "r+") as f:
+                    add_action = json.load(f)
+                    GeneralTool.parse_tc_additional_action_rule(
+                        operation_id,
+                        self.table_tc_additional_action,
+                        test_case_id,
+                        test_point_id,
+                    )
+            else:
+                logging.error(f"Failed to load the test plan of {operation_id}.")
     
     def btn_add_dependency_special_action(self):
         """ Add the additional action to a dependency. """
@@ -1030,6 +1234,7 @@ class MyWindow(QMainWindow):
                     "action": uri_name,
                     "response_name": return_name, 
                     "data_generation_rules": generation_rule if generation_rule is not None else {},
+                    "additional_action": {},
                     "path": path_rule if path_rule is not None else {},
                     "config_name": file_name
                 }
@@ -1649,6 +1854,7 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_schema,
             self.textbox_tc_path_dependency_name,
             self.textbox_tc_path_dependency_value,
+            self.table_tc_dependency_additional_action,
         ])
         
         selected_item = self.table_tc_dependency_rule.selectedItems()[0]
@@ -1703,6 +1909,14 @@ class MyWindow(QMainWindow):
             except FileNotFoundError:
                 logging.info(f"Test Data `{testdata_path}` is not exist.")
                 
+            # * Render the additional action rule
+            if 'additional_action' in data:
+                root_item = QTreeWidgetItem(["Additional Action"])
+                self.table_tc_dependency_additional_action.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["additional_action"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_additional_action, level=2)
+            else:
+                logging.info(f"Additional Action is not exist in the dependency rule `{operation_id}`.")
         else:
             self.comboBox_tc_dependency_type.setEnabled(True)
             self.line_tc_api_search.setEnabled(True)
@@ -2649,7 +2863,7 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_rule, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
             self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency_rule, self.table_tc_dependency_generation_rule,
             self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name, self.textbox_tc_description,
-            self.textbox_tc_request_name, self.textbox_tc_response_name])
+            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action])
         self.comboBox_tc_dependency_type.setEnabled(True)
         self.line_tc_api_search.setEnabled(True)
         
@@ -2717,6 +2931,9 @@ class MyWindow(QMainWindow):
                 self.text_body.setPlainText(testdata_str)
             except FileNotFoundError:
                 logging.info(f"Test data file `./TestData/{test_plan_name}_{serial_num}_{test_point}.json` does not exist.")
+                
+            # * Render Additional Action
+            GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.table_tc_additional_action, test_case_id, test_point_id)
 
     def api_tree_item_clicked(self, item, column):
         """When the api tree item is clicked."""

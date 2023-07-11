@@ -879,6 +879,53 @@ class GeneralTool:
             logging.warning(f"Additional Action File Not Found: {file_path}")
             
     @classmethod
+    def parse_tc_additional_action_rule(
+        cls,
+        operation_id: str, 
+        tc_additional_action_rule_table: object,
+        test_case_id: str,
+        test_point_id: str,
+    ) -> None:
+
+        file_path = f"./test_plan/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                data = data['test_cases'][test_case_id]['test_point'][test_point_id]['additional_action']
+            
+            tc_additional_action_rule_table.clear()
+            root_item = QTreeWidgetItem(["Additional Action"])
+            tc_additional_action_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(data, root_item)
+            cls.expand_and_resize_tree(tc_additional_action_rule_table, level=2)
+        else:
+            logging.warning(f"Additional Action File Not Found: {file_path}")
+            
+    @classmethod
+    def parse_tc_dependency_additional_action_rule(
+        cls,
+        operation_id: str,
+        test_case_id: str,
+        test_point_id: str,
+        tc_dependency_additional_action_table: object,
+        dependency_type: str,
+        dependency_sequence_num: str,
+    ) -> None:
+
+        file_path = f"./test_plan/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                data = data['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type][dependency_sequence_num]['additional_action']
+            tc_dependency_additional_action_table.clear()
+            root_item = QTreeWidgetItem(["Additional Action"])
+            tc_dependency_additional_action_table.addTopLevelItem(root_item)
+            cls.parse_request_body(data, root_item)
+            cls.expand_and_resize_tree(tc_dependency_additional_action_table, level=2)
+        else:
+            logging.warning(f"Additional Action File Not Found: {file_path}")
+            
+    @classmethod
     def parse_dependency_additional_action_rule(
         cls, operation_id: str, dependecy_type: str, sequence_num: str , dependency_aditional_action_table: object) -> None:  
         
@@ -894,8 +941,7 @@ class GeneralTool:
             cls.parse_request_body(data, root_item)
             cls.expand_and_resize_tree(dependency_aditional_action_table, level=2)
         else:
-            logging.warning(f"Dependency Action File Not Found: {file_path}")
-             
+            logging.warning(f"Dependency Action File Not Found: {file_path}") 
     
     @classmethod
     def parse_dependency_rule(cls, operation_id: str, dependency_rule_table: object) -> None:

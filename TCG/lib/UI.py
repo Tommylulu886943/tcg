@@ -15,8 +15,6 @@ class CustomForm(QWidget):
     def load_form(self, action, fields):
         self.clear_form()
         for field in fields:
-            print(fields)
-            print(field)
             label = QLabel(field)
             edit = None
             if action == "Parser - API Parser":
