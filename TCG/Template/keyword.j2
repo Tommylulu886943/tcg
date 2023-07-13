@@ -1,0 +1,109 @@
+*** Keywords ***
+{%- if test_cases != None -%}
+{%- for case_id, case in test_cases.items() -%}
+{% for point_id, point in case.test_point.items() %}
+{% if point.dependency.Setup.items() -%}
+{{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Setup
+    {% for id, setup in point.dependency.Setup.items() %}
+        # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
+        ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
+        {% if 'path' in setup -%}
+        {% if setup.path != {} -%}
+        {% for path_id, path in setup.path.items() -%}
+        {% if 'Value' in path -%}
+            {% set value = path.Value -%}
+        {% else -%}
+            {% set value = path -%}
+        {% endif -%}
+        ...  {{ path_id }}={{ value }}
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
+        {%- if setup.data_generation_rules != {} -%}
+        ...  file_name={{ setup.config_name }}
+        {%- endif %}
+        Set Test Variable  {{ '${' }}{{ setup.response_name }}}
+    {% endfor %}
+    {% for action_index, action in point.additional_action.items() -%}
+    {% if action['Action Name'] == 'Parser - API Parser' -%}
+        {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
+        {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
+        {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
+        {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
+        {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
+    {% elif action['Action Name'] == 'Analyzer - Data Analyzer' -%}
+        {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
+        {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
+        {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
+        {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
+        {% set verbose_option = '' if action.Verbose == '' else 'verbose=' + action.Verbose -%}
+        {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
+        {% set result_type_option = '' if action['Result Type'] == '' else 'result_type=' + action['Result Type'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
+    {% elif action['Action Name'] == 'Analyzer - Config Analyzer' -%}
+        {% set src_data_option = '' if action['Src. Data'] == '' else 'src_data=' + action['Src. Data'] -%}
+        {% set dest_data_option = '' if action['Dest. Data'] == '' else 'dest_data=' + action['Dest. Data'] -%}
+        {% set action_option = '' if action.Action == '' else 'action=' + action.Action -%}
+        {% set start_level_option = '' if action['Start Level'] == '' else 'start_level=' + action['Start Level'] -%}
+        {% set obj_option = '' if action['Obj'] == '' else 'obj=' + action['Obj'] -%}
+        {% set verbose_option = '' if action['Verbose'] == '' else 'verbose=' + action['Verbose'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
+    {% endif -%}
+        Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
+    {% endfor -%}
+{% endif -%}
+{% if point.dependency.Teardown.items() -%}
+{{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Teardown
+    {% for id, teardown in point.dependency.Teardown.items() %}
+        # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
+        {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
+        {% if 'path' in teardown -%}
+        {% if teardown.path != {} -%}
+        {% for path_id, path in teardown.path.items() -%}
+        {% if 'Value' in path -%}
+            {% set value = path.Value -%}
+        {% else -%}
+            {% set value = path -%}
+        {% endif -%}
+        ...  {{ path_id }}={{ value }}  
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
+        {%- if teardown.data_generation_rules != {} -%}
+        ...  file_name={{ teardown.config_name }}
+        {%- endif %}
+        Set Test Variable  {{ '${' }}{{ teardown.response_name }}}
+    {% endfor %}
+    {% for action_index, action in point.additional_action.items() -%}
+    {% if action['Action Name'] == 'Parser - API Parser' -%}
+        {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
+        {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
+        {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
+        {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
+        {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
+    {% elif action['Action Name'] == 'Analyzer - Data Analyzer' -%}
+        {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
+        {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
+        {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
+        {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
+        {% set verbose_option = '' if action.Verbose == '' else 'verbose=' + action.Verbose -%}
+        {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
+        {% set result_type_option = '' if action['Result Type'] == '' else 'result_type=' + action['Result Type'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
+    {% elif action['Action Name'] == 'Analyzer - Config Analyzer' -%}
+        {% set src_data_option = '' if action['Src. Data'] == '' else 'src_data=' + action['Src. Data'] -%}
+        {% set dest_data_option = '' if action['Dest. Data'] == '' else 'dest_data=' + action['Dest. Data'] -%}
+        {% set action_option = '' if action.Action == '' else 'action=' + action.Action -%}
+        {% set start_level_option = '' if action['Start Level'] == '' else 'start_level=' + action['Start Level'] -%}
+        {% set obj_option = '' if action['Obj'] == '' else 'obj=' + action['Obj'] -%}
+        {% set verbose_option = '' if action['Verbose'] == '' else 'verbose=' + action['Verbose'] -%}
+        {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
+    {% endif -%}
+        Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
+    {% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif %}

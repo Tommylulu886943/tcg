@@ -20,15 +20,25 @@ class CustomForm(QWidget):
             if action == "Parser - API Parser":
                 edit = QComboBox()
                 if field == "Return Type":
-                    edit.addItems(["String", "List", "Dict"])
+                    edit.addItems(["list", "string", "set"])
                 else:
                     edit = QLineEdit()
             elif action == "Analyzer - Config Analyzer":
                 edit = QComboBox()
                 if field == "Action":
-                    edit.addItems(["Config Compare", "String Match"])
+                    edit.addItems(["", "config_compare", "string_match"])
                 elif field == "Verbose":
-                    edit.addItems(["True", "False"])
+                    edit.addItems(["", "true", "false"])
+                else:
+                    edit = QLineEdit()
+            elif action == "Analyzer - Data Analyzer":
+                edit = QComboBox()
+                if field == "Return Type":
+                    edit.addItems(["list", "string", "set"])
+                elif field == "Result Type":
+                    edit.addItems(["", "count_interval", "number_count", "success_rate"])
+                elif field == "Verbose":
+                    edit.addItems(["", "true", "false"])
                 else:
                     edit = QLineEdit()
             else:

@@ -35,10 +35,9 @@ class MyWindow(QMainWindow):
         # * Dynamic UI
         self.specialActions = {
             "None": [],
-            "Parser - API Parser": ["Variable Name", "Response Name", "Field", "Return Type"],
-            "Assertion": ["Assertion Type", "Actual Result", "Expected Value"],
-            "Analyzer - Data Analyzer": ["Data", "Field", "Response Name", "Return Type"],
-            "Analyzer - Config Analyzer": ["Action", "Src. Data", "Dest. Data", "Verbose", "Return Type", "Response Name", "Compare Log Name"],
+            "Parser - API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"],
+            "Analyzer - Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
+            "Analyzer - Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"],
         }        
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
@@ -713,11 +712,22 @@ class MyWindow(QMainWindow):
         
         export_folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Export", os.path.expanduser("~"))  
         if export_folder_path:
+            tcg_folder_path = os.path.join(export_folder_path, "TestCase")
+            os.makedirs(tcg_folder_path, exist_ok=True)
             file_list = glob.glob("./TestCases/RESTful_API/*.robot")
             for file in file_list:
                 src_path = os.path.join(os.getcwd(), file)
-                dst_path = os.path.join(export_folder_path, os.path.basename(file))
+                dst_path = os.path.join(tcg_folder_path, os.path.basename(file))
                 shutil.copyfile(src_path, dst_path)
+                
+            testdata_folder_path = os.path.join(export_folder_path, "TestData")
+            os.makedirs(testdata_folder_path, exist_ok=True)
+            file_list = glob.glob("./TestData/*.json") + glob.glob("./TestData/Dependency_TestData/*.json")
+            for file in file_list:
+                src_path = os.path.join(os.getcwd(), file)
+                dst_path = os.path.join(testdata_folder_path, os.path.basename(file))
+                shutil.copyfile(src_path, dst_path)
+                
             logging.info(f"Export test cases to {export_folder_path} successfully")
             GeneralTool.show_info_dialog(f"Export test cases to {export_folder_path} successfully")
             
