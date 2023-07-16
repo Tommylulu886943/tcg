@@ -158,6 +158,7 @@ class MyWindow(QMainWindow):
         self.btn_api_table_add_use_case.clicked.connect(self.btn_api_table_add_use_case_clicked)
         self.btn_constraint_rule_apply.clicked.connect(self.btn_constraint_rule_apply_clicked)
         self.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
+        self.btn_add_path.clicked.connect(self.btn_add_path_clicked)
         self.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
         self.btn_update_path.clicked.connect(self.btn_update_path_clicked)
         self.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
@@ -2157,6 +2158,40 @@ class MyWindow(QMainWindow):
             self.textbox_path_value.setText(selected_item.child(4).text(1))
         else:
             return
+        
+    def btn_add_path_clicked(self):
+        if len(self.table_api_tree.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_api_tree.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None and parent_item.parent() is None:
+            name, value, operation_id = self.textbox_path_name.text(), self.textbox_path_value.text(), self.table_api_tree.selectedItems()[0].text(4)
+            file_path = f"./PathRule/{operation_id}.json"
+            if not os.path.exists(file_path):
+                with open(file_path, "w") as f:
+                    json.dump({}, f)
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                new_value = {
+                    "Type": "",
+                    "Format": "",
+                    "Required": "",
+                    "Nullable": "",
+                    "Value": value,
+                }
+                result = GeneralTool.add_key_in_json(data, None, name, new_value)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to add key `{[name, value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to add key `{[name, value]}`.")
+                    
+            GeneralTool.clean_ui_content([self.textbox_path_name, self.textbox_path_value])
+            GeneralTool.parse_path_rule(operation_id, self.table_path)
+            GeneralTool.expand_and_resize_tree(self.table_path)
         
     def btn_update_path_clicked(self):
         if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_path.selectedItems()) == 0:

@@ -490,6 +490,9 @@ class GeneralTool:
     @classmethod
     def add_key_in_json(cls, data, key_path, new_key, new_value):
         value = data
+        if not key_path:
+            value[new_key] = new_value
+            return True
         for key in key_path[:-1]:
             if key in value:
                 value = value[key]
