@@ -2272,6 +2272,19 @@
                       </property>
                      </widget>
                     </item>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="btn_add_assertion_rule">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Add</string>
+                      </property>
+                     </widget>
+                    </item>
                     <item row="0" column="3">
                      <widget class="QComboBox" name="comboBox_assertion_type">
                       <property name="font">
@@ -2292,8 +2305,8 @@
                       </item>
                      </widget>
                     </item>
-                    <item row="0" column="0">
-                     <widget class="QPushButton" name="btn_add_assertion_rule">
+                    <item row="2" column="0">
+                     <widget class="QPushButton" name="btn_update_assertion_rule">
                       <property name="font">
                        <font>
                         <family>Segoe UI</family>
@@ -2301,20 +2314,7 @@
                        </font>
                       </property>
                       <property name="text">
-                       <string>Add</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QLabel" name="label_assertion_type">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Type :</string>
+                       <string>Update</string>
                       </property>
                      </widget>
                     </item>
@@ -2331,8 +2331,8 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="0">
-                     <widget class="QPushButton" name="btn_update_assertion_rule">
+                    <item row="0" column="2">
+                     <widget class="QLabel" name="label_assertion_type">
                       <property name="font">
                        <font>
                         <family>Segoe UI</family>
@@ -2340,7 +2340,7 @@
                        </font>
                       </property>
                       <property name="text">
-                       <string>Update</string>
+                       <string>Type :</string>
                       </property>
                      </widget>
                     </item>
@@ -2370,19 +2370,6 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="5">
-                     <widget class="QLabel" name="label_7">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Filter Expression : </string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="1" column="3">
                      <widget class="QComboBox" name="comboBox_assertion_source">
                       <property name="font">
@@ -2406,6 +2393,42 @@
                         <string>Header</string>
                        </property>
                       </item>
+                     </widget>
+                    </item>
+                    <item row="1" column="5">
+                     <widget class="QLabel" name="label_7">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Filter Expression : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="5">
+                     <widget class="QLabel" name="label_8">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Field Expression : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="6">
+                     <widget class="QLineEdit" name="textbox_assertion_rule_field_expression">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -3980,6 +4003,11 @@
                     </column>
                     <column>
                      <property name="text">
+                      <string>Field Expression</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
                       <string>Filter Expression</string>
                      </property>
                     </column>
@@ -3998,7 +4026,101 @@
                   <item row="1" column="6">
                    <widget class="QLineEdit" name="textbox_tc_assertion_rule_expression"/>
                   </item>
-                  <item row="2" column="3">
+                  <item row="2" column="6">
+                   <widget class="QLineEdit" name="textbox_tc_assertion_rule_expected_value"/>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_add_assertion_rule">
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_assertion_rule">
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_assertion_rule">
+                    <property name="text">
+                     <string>Update</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="5">
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Expected Value : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="5">
+                   <widget class="QLabel" name="label_11">
+                    <property name="text">
+                     <string>Filter Expression : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="5">
+                   <widget class="QLabel" name="label_16">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Field Expression : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="6">
+                   <widget class="QLineEdit" name="textbox_tc_assertion_rule_field_expression">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLabel" name="label_assertion_type_4">
+                    <property name="text">
+                     <string>Source :</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QComboBox" name="comboBox_tc_assertion_source">
+                    <item>
+                     <property name="text">
+                      <string>Status Code</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Body</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Header</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QLabel" name="label_assertion_type_6">
+                    <property name="text">
+                     <string>Assertion Method:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="3">
                    <widget class="QComboBox" name="comboBox_tc_assertion_method">
                     <property name="maximumSize">
                      <size>
@@ -4059,77 +4181,6 @@
                     <item>
                      <property name="text">
                       <string>Should Be Equal As Strings</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
-                  <item row="2" column="6">
-                   <widget class="QLineEdit" name="textbox_tc_assertion_rule_expected_value"/>
-                  </item>
-                  <item row="1" column="2">
-                   <widget class="QLabel" name="label_assertion_type_4">
-                    <property name="text">
-                     <string>Source :</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QPushButton" name="btn_tc_add_assertion_rule">
-                    <property name="text">
-                     <string>Add</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QPushButton" name="btn_tc_remove_assertion_rule">
-                    <property name="text">
-                     <string>Remove</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0">
-                   <widget class="QPushButton" name="btn_tc_update_assertion_rule">
-                    <property name="text">
-                     <string>Update</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="5">
-                   <widget class="QLabel" name="label_10">
-                    <property name="text">
-                     <string>Expected Value : </string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="2">
-                   <widget class="QLabel" name="label_assertion_type_6">
-                    <property name="text">
-                     <string>Assertion Method:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="5">
-                   <widget class="QLabel" name="label_11">
-                    <property name="text">
-                     <string>Filter Expression : </string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="3">
-                   <widget class="QComboBox" name="comboBox_tc_assertion_source">
-                    <item>
-                     <property name="text">
-                      <string>Status Code</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Body</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Header</string>
                      </property>
                     </item>
                    </widget>

@@ -716,7 +716,7 @@ class GeneralTool:
                 continue
 
             fields[test_type][str(counter[test_type])] = {
-                'source': 'Status Code', 'filter_expression': '',
+                'source': 'Status Code', 'field_expression': '', 'filter_expression': '',
                 'assertion_method': 'Should Be Equal', 'expected_value': status_code,   
             }
             counter[test_type] += 1
@@ -1113,7 +1113,7 @@ class GeneralTool:
 
         def _create_child_item(item):
             child_item = QTreeWidgetItem([
-                "", item['source'], item['filter_expression'], 
+                "", item['source'], item['field_expression'], item['filter_expression'], 
                 item['assertion_method'], item['expected_value']
             ])
             child_item.setFlags(child_item.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)

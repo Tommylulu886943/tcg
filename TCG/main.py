@@ -1296,6 +1296,7 @@ class MyWindow(QMainWindow):
                 sequence_num = str(max((int(k) for k in assertion_rules.keys()), default=0) + 1)
                 new_value = {
                     "source": self.comboBox_tc_assertion_source.currentText(),
+                    "field_expression": self.textbox_tc_assertion_rule_field_expression.text(),
                     "filter_expression": self.textbox_tc_assertion_rule_expression.text(),
                     "assertion_method": self.comboBox_tc_assertion_method.currentText(),
                     "expected_value": self.textbox_tc_assertion_rule_expected_value.text(),
@@ -1318,6 +1319,7 @@ class MyWindow(QMainWindow):
                 self.table_tc_assertion_rule,
                 self.comboBox_tc_assertion_source,
                 self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_field_expression,
                 self.textbox_tc_assertion_rule_expression,
                 self.textbox_tc_assertion_rule_expected_value
             ])
@@ -1329,6 +1331,7 @@ class MyWindow(QMainWindow):
                     QTreeWidgetItem(
                         [
                             key, item['source'], 
+                            item['field_expression'],
                             item['filter_expression'], 
                             item['assertion_method'], 
                             item['expected_value']
@@ -1363,6 +1366,7 @@ class MyWindow(QMainWindow):
                 self.table_tc_assertion_rule,
                 self.comboBox_tc_assertion_source,
                 self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_field_expression,
                 self.textbox_tc_assertion_rule_expression,
                 self.textbox_tc_assertion_rule_expected_value
             ])
@@ -1373,7 +1377,8 @@ class MyWindow(QMainWindow):
                 assertion_item.addChild(
                     QTreeWidgetItem(
                         [
-                            key, item['source'], 
+                            key, item['source'],
+                            item['field_expression'],
                             item['filter_expression'], 
                             item['assertion_method'], 
                             item['expected_value']
@@ -1397,6 +1402,7 @@ class MyWindow(QMainWindow):
             index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
             new_value = {
                 "source": self.comboBox_tc_assertion_source.currentText(),
+                "field_expression": self.textbox_tc_assertion_rule_field_expression.text(),
                 "filter_expression": self.textbox_tc_assertion_rule_expression.text(),
                 "assertion_method": self.comboBox_tc_assertion_method.currentText(),
                 "expected_value": self.textbox_tc_assertion_rule_expected_value.text(),
@@ -1421,6 +1427,7 @@ class MyWindow(QMainWindow):
                 self.table_tc_assertion_rule,
                 self.comboBox_tc_assertion_source,
                 self.comboBox_tc_assertion_method,
+                self.textbox_tc_assertion_rule_field_expression,
                 self.textbox_tc_assertion_rule_expression,
                 self.textbox_tc_assertion_rule_expected_value
             ])
@@ -1431,7 +1438,8 @@ class MyWindow(QMainWindow):
                 assertion_item.addChild(
                     QTreeWidgetItem(
                         [
-                            key, item['source'], 
+                            key, item['source'],
+                            item['field_expression'],
                             item['filter_expression'], 
                             item['assertion_method'], 
                             item['expected_value']
@@ -1443,6 +1451,7 @@ class MyWindow(QMainWindow):
     def table_tc_assertion_rule_item_clicked(self, item):
         GeneralTool.clean_ui_content([
             self.comboBox_tc_assertion_source,
+            self.textbox_tc_assertion_rule_field_expression,
             self.textbox_tc_assertion_rule_expression,
             self.comboBox_tc_assertion_method,
             self.textbox_tc_assertion_rule_expected_value
@@ -1452,9 +1461,10 @@ class MyWindow(QMainWindow):
         
         if parent_item is not None:
             self.comboBox_tc_assertion_source.setCurrentText(parent_item.text(1))
-            self.textbox_tc_assertion_rule_expression.setText(selected_item.text(2))
-            self.comboBox_tc_assertion_method.setCurrentText(selected_item.text(3))
-            self.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(4))
+            self.textbox_tc_assertion_rule_field_expression.setText(selected_item.text(2))
+            self.textbox_tc_assertion_rule_expression.setText(selected_item.text(3))
+            self.comboBox_tc_assertion_method.setCurrentText(selected_item.text(4))
+            self.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(5))
         
     def btn_tc_remove_path_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
@@ -2410,9 +2420,10 @@ class MyWindow(QMainWindow):
         if parent_item and parent_item.parent() is None:
             self.comboBox_assertion_type.setCurrentText(parent_item.text(0))
             self.comboBox_assertion_source.setCurrentText(selected_item.child(0).text(1))
-            self.textbox_assertion_rule_expression.setText(selected_item.child(1).text(1))
-            self.comboBox_assertion_method.setCurrentText(selected_item.child(2).text(1))
-            self.textbox_assertion_rule_expected_value.setText(selected_item.child(3).text(1))
+            self.textbox_assertion_rule_field_expression.setText(selected_item.child(1).text(1))
+            self.textbox_assertion_rule_expression.setText(selected_item.child(2).text(1))
+            self.comboBox_assertion_method.setCurrentText(selected_item.child(3).text(1))
+            self.textbox_assertion_rule_expected_value.setText(selected_item.child(4).text(1))
             self.comboBox_assertion_type.setEnabled(False)
         else:
             self.comboBox_assertion_type.setEnabled(True)
@@ -2425,6 +2436,7 @@ class MyWindow(QMainWindow):
         test_type = self.comboBox_assertion_type.currentText()
         source = self.comboBox_assertion_source.currentText()
         filter_expression = self.textbox_assertion_rule_expression.text()
+        field_expression = self.textbox_assertion_rule_field_expression.text()
         method = self.comboBox_assertion_method.currentText()
         expected_value = self.textbox_assertion_rule_expected_value.text()
                 
@@ -2446,7 +2458,7 @@ class MyWindow(QMainWindow):
                 data = json.load(f)
                 path = [test_type.lower(), sequence_num]
                 value = {
-                    "source": source, "filter_expression": filter_expression, 
+                    "source": source, "field_expression": field_expression, "filter_expression": filter_expression, 
                     "assertion_method": method, "expected_value": expected_value
                 }
                 result = GeneralTool.update_value_in_json(data, path, value)
@@ -2457,7 +2469,7 @@ class MyWindow(QMainWindow):
                     logging.info(f"Update JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
-            for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
+            for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_field_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
                 clean_item.clear()
             GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
             GeneralTool.expand_and_resize_tree(self.table_assertion_rule)
@@ -2500,6 +2512,7 @@ class MyWindow(QMainWindow):
         
         test_type = self.comboBox_assertion_type.currentText()
         source = self.comboBox_assertion_source.currentText()
+        field_expression = self.textbox_assertion_rule_field_expression.text()
         filter_expression = self.textbox_assertion_rule_expression.text()
         method = self.comboBox_assertion_method.currentText()
         expected_value = self.textbox_assertion_rule_expected_value.text()
@@ -2518,7 +2531,7 @@ class MyWindow(QMainWindow):
             else:
                 sequence_num = 1
             value = {
-                "source": source, "filter_expression": filter_expression, 
+                "source": source, "field_expression": field_expression, "filter_expression": filter_expression, 
                 "assertion_method": method, "expected_value": expected_value
             }
             result = GeneralTool.add_key_in_json(data, path, sequence_num, value)
@@ -2529,7 +2542,7 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
             else:
                 logging.error(f"Error updating JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
-        for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
+        for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_field_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
             clean_item.clear()
         GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
         GeneralTool.expand_and_resize_tree(self.table_assertion_rule)
@@ -2922,7 +2935,8 @@ class MyWindow(QMainWindow):
                 assertion_item.addChild(
                     QTreeWidgetItem(
                         [
-                            key, item['source'], 
+                            key, item['source'],
+                            item['field_expression'],
                             item['filter_expression'], 
                             item['assertion_method'], 
                             item['expected_value']

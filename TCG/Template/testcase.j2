@@ -50,9 +50,11 @@
         Run Keyword If  ${resp.status_code} != {{ assertion.expected_value }}  Log  ${resp.content}
         {{ assertion.assertion_method }}  ${resp.status_code}  {{ assertion.expected_value }}
         {% elif assertion.source == 'Body' -%}
-        {% if assertion.filter_expression != '' -%}
+        {% if assertion.filter_expression != '' or assertion.field_expression != '' -%}
+        {% set filter_option = '' if assertion.filter_expression == '' else 'filter=' + assertion.filter_expression -%}
+        {% set field_option = '' if assertion.field_expression == '' else 'field=' + assertion.field_expression -%}
         ${filterd_result}=  Analyzer.data_analyzer  data=${parsed_resp}
-        ...  filter={{ assertion.filter_expression }}
+        ...  {{ filter_option }}  {{ field_option }}
         Log  ${filterd_result}
         {{ assertion.assertion_method }}  ${filterd_result}  {{ assertion.expected_value }}
         {% else -%}
