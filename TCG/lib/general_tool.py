@@ -364,6 +364,7 @@ class GeneralTool:
         textbox_range: object, 
         combobox_required: object, 
         combobox_nullable: object,
+        textbox_regex_pattern: object,
     ) -> None:
         """ When the user clicks on a field in the Data Generation Rule Table,
             the field properties will be rendered in the corresponding text box.
@@ -378,6 +379,7 @@ class GeneralTool:
             textbox_range: The text box for the range field.
             combobox_required: The combobox for the required field.
             combobox_nullable: The combobox for the nullable field.
+            textbox_regex_pattern: The text box for the regex pattern field.
         """        
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None: 
@@ -387,7 +389,8 @@ class GeneralTool:
             combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
             textbox_range.setText(selected_item.child(3).child(1).text(1))
             combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
-            combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1)) 
+            combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1))
+            textbox_regex_pattern.setText(selected_item.child(3).child(4).text(1))
             
     @classmethod
     def render_constraint_rule(
@@ -820,6 +823,9 @@ class GeneralTool:
             
             required = False
             if "required" in schema: required = schema["required"]
+            
+            regex_pattern = ""
+            if "pattern" in schema: regex_pattern = schema["pattern"]
                         
             default = ""
             if "default" in schema: default = schema["default"]
@@ -840,6 +846,7 @@ class GeneralTool:
                     "Data Length": str(data_length),
                     "Required": required,
                     "Nullable": nullable,
+                    "Regex Pattern": regex_pattern,
                     "Enum": enum,
                 }
             }

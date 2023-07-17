@@ -4,7 +4,7 @@ import re
 import json
 import random
 import string
-import exrex
+import genrex
 import uuid
 import pytest
 import logging
@@ -57,6 +57,8 @@ class DataBuilder:
             rule = generation_rules[key]['rule']
             if generation_rules[key]['Default'] != "":
                 value = generation_rules[key]['Default']
+            elif rule['Regex Pattern'] != "":
+                value = cls.generate_data_from_regex(rule['Regex Pattern'])
             elif rule['Data Generator'] == 'Random String (Without Special Characters)':
                 value = cls.generate_random_string(rule['Data Length'])
             elif rule['Data Generator'] == 'Random String':
@@ -221,7 +223,8 @@ class DataBuilder:
     
     @classmethod
     def generate_data_from_regex(cls, regex):
-        return exrex.getone(regex)
+        value = genrex.parse(regex)
+        return value.random()
     
     @classmethod
     def generate_random_ip(cls):
@@ -251,10 +254,6 @@ class DataBuilder:
     @classmethod
     def generate_random_password(cls):
         return ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(random.randint(8, 16)))
-    
-    @classmethod
-    def generate_random_string_from_openapi_pattern(cls, pattern):
-        return exrex.getone(pattern)
     
     @classmethod
     def generate_random_int32(cls):

@@ -764,6 +764,7 @@ class MyWindow(QMainWindow):
             data_length = self.textbox_tc_dependency_data_rule_data_length.text()
             required_value = self.comboBox_tc_dependency_data_rule_required.currentText()
             nullalbe_value = self.comboBox_tc_dependency_data_rule_nullable.currentText()
+            regex_pattern = self.textbox_tc_dependency_data_rule_regex_pattern.text()
             
             with open(f"./test_plan/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -771,6 +772,7 @@ class MyWindow(QMainWindow):
                 g_rule_field["Default"] = default_value
                 g_rule_field['rule']["Data Generator"] = data_generator
                 g_rule_field['rule']["Data Length"] = data_length
+                g_rule_field['rule']["Regex Pattern"] = regex_pattern
                 if required_value == "True":
                     g_rule_field['rule']["Required"] = True
                 elif required_value == "False":
@@ -793,6 +795,7 @@ class MyWindow(QMainWindow):
                 self.textbox_tc_dependency_data_rule_data_length,
                 self.comboBox_tc_dependency_data_rule_required,
                 self.comboBox_tc_dependency_data_rule_nullable,
+                self.textbox_tc_dependency_data_rule_regex_pattern,
             ])
             GeneralTool.parse_tc_dependency_generation_rule(
                 operation_id, 
@@ -822,12 +825,14 @@ class MyWindow(QMainWindow):
             data_length = self.textbox_dependency_data_rule_data_length.text()
             required_value = self.comboBox_dependency_data_rule_required.currentText()
             nullalbe_value = self.comboBox_dependency_data_rule_nullable.currentText()
+            regex_pattern = self.textbox_dependency_data_rule_regex_pattern.text()
             
             with open(f"./DependencyRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]["Default"] = default_value
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Data Generator"] = data_generator
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Data Length"] = data_length
+                g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Regex Pattern"] = regex_pattern
                 if required_value == "True":
                     g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Required"] = True
                 elif required_value == "False":
@@ -850,6 +855,7 @@ class MyWindow(QMainWindow):
                 self.textbox_dependency_data_rule_data_length,
                 self.comboBox_dependency_data_rule_required,
                 self.comboBox_dependency_data_rule_nullable,
+                self.textbox_dependency_data_rule_regex_pattern,
             ])
             GeneralTool.parse_dependency_generation_rule(
                 operation_id,
@@ -875,12 +881,14 @@ class MyWindow(QMainWindow):
             data_length = self.textbox_data_rule_data_length.text()
             required_value = self.comboBox_data_rule_required.currentText()
             nullalbe_value = self.comboBox_data_rule_nullable.currentText()
+            regex_pattern = self.textbox_data_rule_regex_pattern.text()
         
             with open(f"./GenerationRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[field_name]["Default"] = default_value
                 g_rule[field_name]['rule']["Data Generator"] = data_generator
                 g_rule[field_name]['rule']["Data Length"] = data_length
+                g_rule[field_name]['rule']["Regex Pattern"] = regex_pattern
                 if required_value == "True":
                     g_rule[field_name]['rule']["Required"] = True
                 elif required_value == "False":
@@ -903,6 +911,7 @@ class MyWindow(QMainWindow):
                 self.textbox_data_rule_data_length,
                 self.comboBox_data_rule_required,
                 self.comboBox_data_rule_nullable,
+                self.textbox_data_rule_regex_pattern,
             ])
             GeneralTool.parse_generation_rule(operation_id, self.table_generation_rule)
             GeneralTool.expand_and_resize_tree(self.table_generation_rule)
@@ -2347,7 +2356,8 @@ class MyWindow(QMainWindow):
             self.comboBox_data_rule_data_generator,
             self.textbox_data_rule_data_length,
             self.comboBox_data_rule_required,
-            self.comboBox_data_rule_nullable
+            self.comboBox_data_rule_nullable,
+            self.textbox_data_rule_regex_pattern
         )
                  
     def table_dependency_generation_rule_item_clicked(self):
@@ -2372,7 +2382,8 @@ class MyWindow(QMainWindow):
             self.comboBox_dependency_data_rule_data_generator,
             self.textbox_dependency_data_rule_data_length,
             self.comboBox_dependency_data_rule_required,
-            self.comboBox_dependency_data_rule_nullable
+            self.comboBox_dependency_data_rule_nullable,
+            self.textbox_dependency_data_rule_regex_pattern,
         )        
         
     def table_tc_dependency_generation_rule_item_clicked(self):
@@ -2397,7 +2408,8 @@ class MyWindow(QMainWindow):
             self.comboBox_tc_dependency_data_rule_data_generator,
             self.textbox_tc_dependency_data_rule_data_length,
             self.comboBox_tc_dependency_data_rule_required,
-            self.comboBox_tc_dependency_data_rule_nullable
+            self.comboBox_tc_dependency_data_rule_nullable,
+            self.textbox_tc_dependency_data_rule_regex_pattern,
         )  
 
         
@@ -3010,6 +3022,7 @@ class MyWindow(QMainWindow):
             self.comboBox_data_rule_required,
             self.comboBox_data_rule_nullable,
             self.table_additional_action,
+            self.textbox_data_rule_regex_pattern,
         ])
         self.comboBox_dependency_type.setEnabled(True)
         self.line_api_search.setEnabled(True)

@@ -437,8 +437,8 @@
                                </property>
                               </widget>
                              </item>
-                             <item row="3" column="0">
-                              <widget class="QLabel" name="label_52">
+                             <item row="2" column="0">
+                              <widget class="QLabel" name="label_51">
                                <property name="font">
                                 <font>
                                  <family>Segoe UI</family>
@@ -446,7 +446,7 @@
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Nullable :</string>
+                                <string>Required :</string>
                                </property>
                                <property name="alignment">
                                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -469,8 +469,8 @@
                                </property>
                               </widget>
                              </item>
-                             <item row="2" column="0">
-                              <widget class="QLabel" name="label_51">
+                             <item row="3" column="0">
+                              <widget class="QLabel" name="label_52">
                                <property name="font">
                                 <font>
                                  <family>Segoe UI</family>
@@ -478,7 +478,7 @@
                                 </font>
                                </property>
                                <property name="text">
-                                <string>Required :</string>
+                                <string>Nullable :</string>
                                </property>
                                <property name="alignment">
                                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -625,6 +625,35 @@
                                  <string>False</string>
                                 </property>
                                </item>
+                              </widget>
+                             </item>
+                             <item row="4" column="0">
+                              <widget class="QLabel" name="label_57">
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Regex Pattern :</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="4" column="2">
+                              <widget class="QLineEdit" name="textbox_data_rule_regex_pattern">
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
                               </widget>
                              </item>
                             </layout>
@@ -1494,54 +1523,6 @@
                                    <string>Rule</string>
                                   </property>
                                   <layout class="QGridLayout" name="gridLayout_32">
-                                   <item row="1" column="0">
-                                    <widget class="QLabel" name="label_56">
-                                     <property name="font">
-                                      <font>
-                                       <family>Segoe UI</family>
-                                       <pointsize>10</pointsize>
-                                      </font>
-                                     </property>
-                                     <property name="text">
-                                      <string>Data Length / Range :</string>
-                                     </property>
-                                     <property name="alignment">
-                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                                     </property>
-                                    </widget>
-                                   </item>
-                                   <item row="3" column="0">
-                                    <widget class="QLabel" name="label_59">
-                                     <property name="font">
-                                      <font>
-                                       <family>Segoe UI</family>
-                                       <pointsize>10</pointsize>
-                                      </font>
-                                     </property>
-                                     <property name="text">
-                                      <string>Nullable :</string>
-                                     </property>
-                                     <property name="alignment">
-                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                                     </property>
-                                    </widget>
-                                   </item>
-                                   <item row="0" column="0">
-                                    <widget class="QLabel" name="label_60">
-                                     <property name="font">
-                                      <font>
-                                       <family>Segoe UI</family>
-                                       <pointsize>10</pointsize>
-                                      </font>
-                                     </property>
-                                     <property name="text">
-                                      <string>Data Generator :</string>
-                                     </property>
-                                     <property name="alignment">
-                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                                     </property>
-                                    </widget>
-                                   </item>
                                    <item row="2" column="0">
                                     <widget class="QLabel" name="label_61">
                                      <property name="font">
@@ -1672,6 +1653,54 @@
                                      </item>
                                     </widget>
                                    </item>
+                                   <item row="1" column="0">
+                                    <widget class="QLabel" name="label_56">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Data Length / Range :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="3" column="0">
+                                    <widget class="QLabel" name="label_59">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Nullable :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="0">
+                                    <widget class="QLabel" name="label_60">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Data Generator :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
                                    <item row="3" column="2">
                                     <widget class="QComboBox" name="comboBox_dependency_data_rule_nullable">
                                      <property name="font">
@@ -1698,6 +1727,35 @@
                                        <string>False</string>
                                       </property>
                                      </item>
+                                    </widget>
+                                   </item>
+                                   <item row="4" column="0">
+                                    <widget class="QLabel" name="label_114">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string>Regex Pattern :</string>
+                                     </property>
+                                     <property name="alignment">
+                                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="4" column="2">
+                                    <widget class="QLineEdit" name="textbox_dependency_data_rule_regex_pattern">
+                                     <property name="font">
+                                      <font>
+                                       <family>Segoe UI</family>
+                                       <pointsize>10</pointsize>
+                                      </font>
+                                     </property>
+                                     <property name="text">
+                                      <string/>
+                                     </property>
                                     </widget>
                                    </item>
                                   </layout>
@@ -3267,22 +3325,6 @@
                                  <string>Rule</string>
                                 </property>
                                 <layout class="QGridLayout" name="gridLayout_35">
-                                 <item row="1" column="0">
-                                  <widget class="QLabel" name="label_66">
-                                   <property name="font">
-                                    <font>
-                                     <family>Segoe UI</family>
-                                     <pointsize>10</pointsize>
-                                    </font>
-                                   </property>
-                                   <property name="text">
-                                    <string>Data Length / Range :</string>
-                                   </property>
-                                   <property name="alignment">
-                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                                   </property>
-                                  </widget>
-                                 </item>
                                  <item row="3" column="0">
                                   <widget class="QLabel" name="label_67">
                                    <property name="font">
@@ -3293,6 +3335,22 @@
                                    </property>
                                    <property name="text">
                                     <string>Nullable :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="0">
+                                  <widget class="QLabel" name="label_66">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Data Length / Range :</string>
                                    </property>
                                    <property name="alignment">
                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3471,6 +3529,35 @@
                                      <string>False</string>
                                     </property>
                                    </item>
+                                  </widget>
+                                 </item>
+                                 <item row="4" column="0">
+                                  <widget class="QLabel" name="label_115">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Regex Pattern :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="4" column="2">
+                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_regex_pattern">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string/>
+                                   </property>
                                   </widget>
                                  </item>
                                 </layout>
