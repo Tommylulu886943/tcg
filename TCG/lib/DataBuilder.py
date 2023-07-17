@@ -55,9 +55,7 @@ class DataBuilder:
             keys = key.split('.')
             info = generation_rules[key]
             rule = generation_rules[key]['rule']
-            if 'ReadOnly' in info and info['ReadOnly'] == True:
-                continue
-            elif generation_rules[key]['Default'] != "":
+            if generation_rules[key]['Default'] != "":
                 value = generation_rules[key]['Default']
             elif rule['Data Generator'] == 'Random String (Without Special Characters)':
                 value = cls.generate_random_string(rule['Data Length'])

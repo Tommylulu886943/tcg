@@ -358,8 +358,7 @@ class GeneralTool:
         cls, 
         selected_item: object,
         textbox_type: object, 
-        textbox_format: object, 
-        combobox_readonly: object, 
+        textbox_format: object,
         textbox_default: object,
         combobox_data_generator: object, 
         textbox_range: object, 
@@ -374,7 +373,6 @@ class GeneralTool:
             selected_item: The selected item in the Data Generation Rule table.
             textbox_type: The text box for the type field.
             textbox_format: The text box for the format field.
-            combobox_readonly: The combobox for the readonly field.
             textbox_default: The text box for the default field.
             combobox_data_generator: The combobox for the data generator field.
             textbox_range: The text box for the range field.
@@ -385,12 +383,11 @@ class GeneralTool:
         if parent_item is not None and parent_item.parent() is None: 
             textbox_type.setText(selected_item.child(0).text(1))
             textbox_format.setText(selected_item.child(1).text(1))
-            combobox_readonly.setCurrentText(selected_item.child(2).text(1))
-            textbox_default.setText(selected_item.child(3).text(1))
-            combobox_data_generator.setCurrentText(selected_item.child(4).child(0).text(1))
-            textbox_range.setText(selected_item.child(4).child(1).text(1))
-            combobox_required.setCurrentText(selected_item.child(4).child(2).text(1))
-            combobox_nullable.setCurrentText(selected_item.child(4).child(3).text(1)) 
+            textbox_default.setText(selected_item.child(2).text(1))
+            combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
+            textbox_range.setText(selected_item.child(3).child(1).text(1))
+            combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
+            combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1)) 
             
     @classmethod
     def render_constraint_rule(
@@ -754,6 +751,8 @@ class GeneralTool:
                     new_path = path + "." + prop_name
                 else:
                     new_path = prop_name
+                if "readOnly" in prop_schema and prop_schema["readOnly"] == True:
+                    continue
                 fields.update(cls.parse_schema_to_generation_rule(prop_schema, new_path))
         elif "items" in schema:
             if "properties" in schema["items"]:
@@ -762,6 +761,8 @@ class GeneralTool:
                         new_path = path + "[0]." + prop_name
                     else:
                         new_path = prop_name
+                    if "readOnly" in prop_schema and prop_schema["readOnly"] == True:
+                        continue
                     fields.update(cls.parse_schema_to_generation_rule(prop_schema, new_path))
             else:
                 if path:
@@ -819,9 +820,6 @@ class GeneralTool:
             
             required = False
             if "required" in schema: required = schema["required"]
-            
-            readonly = False
-            if "readOnly" in schema: readonly = schema["readOnly"]
                         
             default = ""
             if "default" in schema: default = schema["default"]
@@ -836,7 +834,6 @@ class GeneralTool:
             fields[path] = {
                 "Type": schema["type"],
                 "Format": data_format,
-                "ReadOnly": readonly,
                 "Default": default,
                 "rule": {
                     "Data Generator": genType,
