@@ -853,8 +853,7 @@ class GeneralTool:
             
             included_field = [
                 "minLength","maxLength", "minItems", "maxItems", "minimum", "maximum",
-                "uniqueItems", "exclusiveMinimum", "exclusiveMaximum", "pattern",
-            ]
+                "uniqueItems", "exclusiveMinimum", "exclusiveMaximum",]
             for key in included_field:
                 if key in schema:
                     fields[path]['rule'][key] = schema[key]
