@@ -116,9 +116,18 @@ class DataBuilder:
     @classmethod
     def generate_random_float(cls, length_range="[1,10]"):
         if isinstance(length_range, str):
-            min_len, max_len = map(int, length_range.strip('[]').split(','))
+            min_len, max_len = map(lambda x: float(x) if x != "None" else None, length_range.strip('[]').split(','))
         elif isinstance(length_range, list):
-            min_len, max_len = length_range
+            min_len, max_len = map(lambda x: float(x) if x != "None" else None, length_range)
+        else:
+            return None
+        
+        if min_len is None and max_len is None:
+            return None
+        elif min_len is None:
+            return random.uniform(None, max_len)
+        elif max_len is None:
+            return random.uniform(min_len, None)
             
         if min_len > max_len:
             # * Switch min_len and max_len
@@ -129,10 +138,19 @@ class DataBuilder:
     @classmethod
     def generate_random_string(cls, length_range="[1,10]", specical_char=False, blacklist=None, whitelist=None):
         if isinstance(length_range, str):
-            min_len, max_len = map(int, length_range.strip('[]').split(','))
+            min_len, max_len = map(lambda x: int(x) if x != "None" else None, length_range.strip('[]').split(','))
         elif isinstance(length_range, list):
-            min_len, max_len = length_range
-
+            min_len, max_len = map(lambda x: int(x) if x != "None" else None, length_range)
+        else:
+            return None
+        
+        if min_len is None and max_len is None:
+            return None
+        elif min_len is None:
+            return random.uniform(None, max_len)
+        elif max_len is None:
+            return random.uniform(min_len, None)
+            
         if min_len > max_len:
             # * Switch min_len and max_len
             min_len, max_len = max_len, min_len
@@ -160,10 +178,17 @@ class DataBuilder:
     @classmethod
     def generate_random_integer(cls, number_range="[1,10]", blacklist=None):
         if isinstance(number_range, str):
-            min_value, max_value = map(int, number_range.strip('[]').split(','))
+            min_value, max_value = map(lambda x: int(x) if x != "None" else None, number_range.strip('[]').split(','))
         elif isinstance(number_range, list):
-            min_value, max_value = number_range
+            min_value, max_value = map(lambda x: float(x) if x != "None" else None, number_range)
 
+        if min_value == None and max_value == None:
+            return None
+        elif min_value == None:
+            min_value = max_value 
+        elif max_value == None:
+            max_value = min_value
+            
         if min_value > max_value:
             # * Switch min_value and max_value
             min_value, max_value = max_value, min_value
@@ -301,12 +326,14 @@ class TestDataBuilder:
     # Tests that generate_random_integer() raises a ValueError when called with min_value > max_value.
     def test_generate_random_integer_min_value_greater_than_max_value(self):
         # Arrange
-        min_value = 10
-        max_value = 5
+        number_range = "[10,5]"
         
-        # Act & Assert
-        with pytest.raises(ValueError):
-            DataBuilder.generate_random_integer(min_value=min_value, max_value=max_value)
+        # Act
+        result = DataBuilder.generate_random_integer(number_range=number_range)
+        
+        # Assert
+        assert isinstance(result, int)
+        assert result >= 5 and result <= 10
 
     # Tests that generate_random_integer() returns an integer of length 1 when called with max_len=1.
     def test_generate_random_integer_max_len_1(self):

@@ -4473,8 +4473,8 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>310</x>
-            <y>10</y>
-            <width>191</width>
+            <y>160</y>
+            <width>451</width>
             <height>141</height>
            </rect>
           </property>
@@ -4511,6 +4511,114 @@ p, li { white-space: pre-wrap; }
               <string>FortiNAC</string>
              </property>
             </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="group_test_strategy_3">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>10</y>
+            <width>451</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Test Case Count</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Each Test Strategy for every API Operation generates</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinbox_test_case_count">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>test cases.</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="group_test_strategy_4">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>80</y>
+            <width>451</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="title">
+           <string>Automatic Import General Test Rules ?</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_24">
+             <item>
+              <widget class="QRadioButton" name="radio_general_test_yes">
+               <property name="text">
+                <string>Yes</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radio_general_test_no">
+               <property name="text">
+                <string>No</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>

@@ -584,15 +584,15 @@ class GeneralTool:
             raise FileNotFoundError
                 
     @classmethod
-    def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata):
-        for test_type in tcg_config['config']['test_strategy']:
-            for test_strategy in tcg_config['config']['test_strategy'][test_type]:
-                test_strategy_func = getattr(TestStrategy, test_strategy)
-                serial_number = test_strategy_func(
-                    test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
-                )
-                logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
-        return serial_number
+    def generate_test_cases(cls, tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count):
+            for test_type in tcg_config['config']['test_strategy']:
+                for test_strategy in tcg_config['config']['test_strategy'][test_type]:
+                    for count in range(test_count):
+                        test_strategy_func = getattr(TestStrategy, test_strategy)
+                        serial_number = test_strategy_func(
+                            test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
+                        )
+                        logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for successfully.')
     
     @classmethod
     def generate_dependency_test_data_file(cls, dependency_testdata: dict, operation_id: str, serial_number: str, test_point_num: str) -> dict:
