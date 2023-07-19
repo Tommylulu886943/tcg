@@ -740,6 +740,22 @@ class GeneralTool:
                 }
                 path_rule[parameter['name']] = fields
         return path_rule
+    
+    @classmethod
+    def parse_schema_to_query_rule(cls, parameters: dict) -> dict:
+        """ To generate a API's query rule file that contains query rules of some fields. """
+        query_rule = {}
+        for parameter in parameters:
+            if parameter['in'] == 'query':
+                fields = {
+                    'Type': parameter['schema']['type'],
+                    'Format': parameter['schema']['format'] if 'format' in parameter['schema'] else "",
+                    'Required': parameter['required'] if 'required' in parameter else False,
+                    "Nullable": parameter['schema']['nullable'] if 'nullable' in parameter['schema'] else False,
+                    'Value': parameter['default'] if 'default' in parameter else "",
+                }
+                query_rule[parameter['name']] = fields
+        return query_rule
 
     @classmethod
     def parse_schema_to_generation_rule(cls, schema: dict, path: str = "") -> dict:
@@ -1025,7 +1041,6 @@ class GeneralTool:
         To parse path rule files to TreeWidget.
         Ex: (./PathRule/{operation_id}.json)
         """
-        
         file_path = f"./PathRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
@@ -1036,6 +1051,24 @@ class GeneralTool:
             cls.parse_request_body(path_rule, root_item, editabled=True)
         else:
             logging.warning(f"Path rule file not found: {file_path}")
+            
+    @classmethod
+    def parse_query_rule(cls, operation_id: str, query_rule_table: object) -> None:
+        """
+        To parse query rule files to TreeWidget.
+        Ex: (./QueryRule/{operation_id}.json)
+        """
+        
+        file_path = f"./QueryRule/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                query_rule = json.load(f)
+            query_rule_table.clear()
+            root_item = QTreeWidgetItem(["Query Parameter"])
+            query_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(query_rule, root_item, editabled=True)
+        else:
+            logging.warning(f"Query rule file not found: {file_path}")
             
     @classmethod
     def parse_generation_rule(cls, operation_id: str, generation_rule_table: object) -> None:

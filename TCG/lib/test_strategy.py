@@ -78,6 +78,11 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
+        
+        # * Load Query Rule
+        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+                query_rule = json.load(f)
                 
         # * Load Additional Action
         if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
@@ -105,6 +110,7 @@ class TestStrategy:
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):
                 i = str(i)
+                
                 # * Add dependency rule to test plan.
                 d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                 parsed_json['test_point'][i]['dependency'] = d_rule
@@ -113,6 +119,13 @@ class TestStrategy:
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                
+                # * Add query rule value to test plan.
+                if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                    for key, query_item in query_rule.items():
+                        parsed_json['test_point'][i]['query'][key] = query_item['Value']       
+                
+                # * Add Assertion rule value to test plan.
                 parsed_json['test_point'][i]['assertion'] = assertion_rule
                 
                 # * Add additional action to test plan.
@@ -164,6 +177,11 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
+
+        # * Load Query Rule
+        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+                query_rule = json.load(f)
                 
         # * Load Additional Action
         if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
@@ -213,6 +231,13 @@ class TestStrategy:
                         if os.path.exists(f"./PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                                
+                        # * Add query rule value to test plan.
+                        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                            for key, query_item in query_rule.items():
+                                parsed_json['test_point'][i]['query'][key] = query_item['Value']
+                                
+                        # * Add assertion rule value to test plan.
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
                         
                         # * Add additional action to test plan.
@@ -265,7 +290,12 @@ class TestStrategy:
         if os.path.exists(f"./PathRule/{operation_id}.json"):
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
-                
+
+        # * Load Query Rule
+        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+                query_rule = json.load(f) 
+                               
         # * Load Additional Action
         if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
             with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
@@ -345,6 +375,13 @@ class TestStrategy:
                     if os.path.exists(f"./PathRule/{operation_id}.json"):
                         for key, path_item in path_rule.items():
                             parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                            
+                    # * Add query rule value to test plan.
+                    if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                        for key, query_item in query_rule.items():
+                            parsed_json['test_point'][i]['query'][key] = query_item['Value']
+
+                    # * Add assertion rule value to test plan.                         
                     parsed_json['test_point'][i]['assertion'] = assertion_rule
                     
                     # * Add additional action to test plan.
@@ -395,6 +432,11 @@ class TestStrategy:
             with open(f"./PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
                 
+        # * Load Query Rule
+        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+                query_rule = json.load(f)
+                
         # * Load Additional Action
         if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
             with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
@@ -439,6 +481,13 @@ class TestStrategy:
                         if os.path.exists(f"./PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                                    
+                        # * Add query rule value to test plan.
+                        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                            for key, query_item in query_rule.items():
+                                parsed_json['test_point'][i]['query'][key] = query_item['Value']                                
+                                    
+                        # * Add assertion rule value to test plan.
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
                         
                         # * Add additional action to test plan.
@@ -530,9 +579,6 @@ class TestStrategy:
                     logging.debug(f'key: {key}, min_value: {min_value}, max_value: {max_value}, mid_value: {mid_value}')
                 else:
                     logging.debug(f'key: {key}, under_min_value: {under_min_value}, over_max_value: {over_max_value}')
-                
-            # TODO : 上面的template 需要重新整理
-            # TODO : 上方的數據生成器需要重新整理，需要考慮一下能否復用或簡化
             
             # * Load assertion rule
             with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
@@ -546,7 +592,12 @@ class TestStrategy:
             if os.path.exists(f"./PathRule/{operation_id}.json"):
                 with open(f"./PathRule/{operation_id}.json", 'r') as f:
                     path_rule = json.load(f)
-                    
+
+            # * Load Query Rule
+            if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+                    query_rule = json.load(f)
+                                    
             # * Load Additional Action
             if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
                 with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
@@ -634,6 +685,13 @@ class TestStrategy:
                 if os.path.exists(f"./PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                    
+                # * Add query rule value to test plan.
+                if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                    for key, query_item in query_rule.items():
+                        parsed_json['test_point'][i]['query'][key] = query_item['Value']   
+                                      
+                # * Add asssertion rule value to test plan.
                 parsed_json['test_point'][i]['assertion'] = assertion_rule
 
                 # * Add additional action to test plan.

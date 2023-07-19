@@ -1054,6 +1054,167 @@
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="tab_17">
+                 <attribute name="title">
+                  <string>Query</string>
+                 </attribute>
+                 <layout class="QHBoxLayout" name="horizontalLayout_25">
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_69" columnstretch="1,1,8">
+                    <property name="spacing">
+                     <number>10</number>
+                    </property>
+                    <item row="1" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_55" stretch="0,0">
+                      <item>
+                       <widget class="QLabel" name="label_116">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Value : </string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame_5">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QLineEdit" name="textbox_query_value">
+                      <property name="maximumSize">
+                       <size>
+                        <width>1000</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QLineEdit" name="textbox_query_name">
+                      <property name="maximumSize">
+                       <size>
+                        <width>1000</width>
+                        <height>150</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0" colspan="3">
+                     <widget class="QTreeWidget" name="table_query">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <column>
+                       <property name="text">
+                        <string>Name</string>
+                       </property>
+                      </column>
+                      <column>
+                       <property name="text">
+                        <string>Value</string>
+                       </property>
+                      </column>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_56" stretch="0,0">
+                      <item>
+                       <widget class="QLabel" name="label_117">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Name : </string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame_6">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="btn_update_query">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="btn_remove_query">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Remove</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
                 <widget class="QWidget" name="tab_5">
                  <attribute name="title">
                   <string>Dependency</string>
@@ -2085,6 +2246,109 @@
                         </item>
                        </layout>
                       </widget>
+                      <widget class="QWidget" name="tab_20">
+                       <attribute name="title">
+                        <string>Query</string>
+                       </attribute>
+                       <layout class="QHBoxLayout" name="horizontalLayout_28">
+                        <item>
+                         <layout class="QGridLayout" name="gridLayout_28">
+                          <item row="0" column="1">
+                           <widget class="QLabel" name="label_70">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Name : </string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="0">
+                           <widget class="QPushButton" name="btn_remove_dependency_query">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Remove</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="0">
+                           <widget class="QPushButton" name="btn_update_dependency_query">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Update</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="2">
+                           <widget class="QLineEdit" name="textbox_query_dependency_name">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="2">
+                           <widget class="QLineEdit" name="textbox_query_dependency_value">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="1">
+                           <widget class="QLabel" name="label_74">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Value : </string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="0" colspan="3">
+                           <widget class="QTreeWidget" name="table_dependency_query">
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                            <column>
+                             <property name="text">
+                              <string>Name</string>
+                             </property>
+                            </column>
+                            <column>
+                             <property name="text">
+                              <string>Value</string>
+                             </property>
+                            </column>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
+                       </layout>
+                      </widget>
                       <widget class="QWidget" name="tab_36">
                        <attribute name="title">
                         <string>Schema</string>
@@ -2834,6 +3098,167 @@
                       <string>Value</string>
                      </property>
                     </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_18">
+               <attribute name="title">
+                <string>Query</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_26">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_70" columnstretch="1,1,8">
+                  <property name="spacing">
+                   <number>10</number>
+                  </property>
+                  <item row="1" column="1">
+                   <layout class="QHBoxLayout" name="horizontalLayout_57" stretch="0,0">
+                    <item>
+                     <widget class="QLabel" name="label_118">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Value : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="frame_7">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QLineEdit" name="textbox_tc_query_value">
+                    <property name="maximumSize">
+                     <size>
+                      <width>1000</width>
+                      <height>150</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLineEdit" name="textbox_tc_query_name">
+                    <property name="maximumSize">
+                     <size>
+                      <width>1000</width>
+                      <height>150</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0" colspan="3">
+                   <widget class="QTreeWidget" name="table_tc_query">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <column>
+                     <property name="text">
+                      <string>Name</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Value</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <layout class="QHBoxLayout" name="horizontalLayout_58" stretch="0,0">
+                    <item>
+                     <widget class="QLabel" name="label_119">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Name : </string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="frame_8">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_query">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Update</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_query">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -3886,6 +4311,102 @@
                         </item>
                         <item row="2" column="0" colspan="3">
                          <widget class="QTreeWidget" name="table_tc_dependency_path">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <column>
+                           <property name="text">
+                            <string>Name</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Value</string>
+                           </property>
+                          </column>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_19">
+                     <attribute name="title">
+                      <string>Query</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_27">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_36">
+                        <item row="0" column="1">
+                         <widget class="QLabel" name="label_58">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Name : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QPushButton" name="btn_tc_remove_dependency_query">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Remove</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QPushButton" name="btn_tc_update_dependency_query">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Update</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="2">
+                         <widget class="QLineEdit" name="textbox_tc_query_dependency_name"/>
+                        </item>
+                        <item row="1" column="2">
+                         <widget class="QLineEdit" name="textbox_tc_query_dependency_value">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="1">
+                         <widget class="QLabel" name="label_65">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Value : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="0" colspan="3">
+                         <widget class="QTreeWidget" name="table_tc_dependency_query">
                           <property name="font">
                            <font>
                             <family>Segoe UI</family>

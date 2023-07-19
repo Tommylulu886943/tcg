@@ -2440,7 +2440,7 @@ class MyWindow(QMainWindow):
             
             # * Copy the Generation Rule and Assertion Rule and Dependency Request Body and Path Rule
             operation_id = selected_item.text(4)
-            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]:
+            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]:
                 file_path = f"./{folder}/{operation_id}.json"
                 if os.path.exists(file_path):
                     new_file_path = f"./{folder}/{new_operation_id}.json"
@@ -2725,6 +2725,14 @@ class MyWindow(QMainWindow):
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
                         
+                    # * Create the Query Rule File
+                    if 'parameters' in operation:
+                        query_rule = GeneralTool.parse_schema_to_query_rule(operation['parameters'])
+                        with open(f"./QueryRule/{operation_id}.json", "w") as f:
+                            json.dump(query_rule, f, indent=4)
+                    else:
+                        logging.debug(f'This API "{method} {uri}"  does not have parameters.')
+                        
                     # * Create the Dependency Rule File
                     dependency_rule = GeneralTool.init_dependency_rule(operation_id)
                     
@@ -2773,14 +2781,14 @@ class MyWindow(QMainWindow):
         selected_items = self.table_api_tree.selectedItems()
         for item in selected_items:
             if item.parent() is None:
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
                 for folder in teardown_folder:  
                     for child_file in glob.glob(f"./{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
                 self.table_api_tree.takeTopLevelItem(self.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
                 for folder in teardown_folder:
                     file_path = f"./{folder}/" + file_name + ".json"
                     if os.path.exists(file_path):
@@ -2869,10 +2877,12 @@ class MyWindow(QMainWindow):
         )
         
         # * Clean Environment
-        GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction"])
+        GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction", "./QueryRule"])
         GeneralTool.clean_ui_content([
             self.table_api_tree, 
-            self.table_schema, 
+            self.table_schema,
+            self.table_path,
+            self.table_query,
             self.table_generation_rule, 
             self.table_assertion_rule, 
             self.list_dependency_available_api_list,
