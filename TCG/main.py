@@ -31,6 +31,10 @@ class MyWindow(QMainWindow):
         
         # * Set Icon
         self.btn_import_openapi_doc.setIcon(QIcon("./source/new.png"))
+        self.setWindowIcon(QIcon("./source/fortinet.png"))
+        
+        # * Set Window Title
+        self.setWindowTitle('FortiTCG (Test Case Generator)')
         
         # * Dynamic UI
         self.specialActions = {
@@ -38,13 +42,22 @@ class MyWindow(QMainWindow):
             "Parser - API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"],
             "Analyzer - Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
             "Analyzer - Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"],
-        }        
+        }
+        
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
         self.tabWidget_2.insertTab(4, self.tab_22, "Additional Action")
         
+        self.specialActionCategory = ["None", "Parser", "Analyzer", "Assertion"]
+        self.label_action_type = QtWidgets.QLabel(self.tab_22)
+        self.label_action_type.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_action_type.setText("Action Category :")
+        self.action_type = QComboBox(self.tab_22)
+        self.action_type.addItems(self.specialActionCategory)
+        self.action_type.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        
         self.label_additional_action = QtWidgets.QLabel(self.tab_22)
-        self.label_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.label_additional_action.setGeometry(QtCore.QRect(10, 10, 230, 30))
         self.label_additional_action.setText("Action Item :")
         self.additional_action = QComboBox(self.tab_22)
         self.additional_action.addItems(self.specialActions.keys())
@@ -73,7 +86,7 @@ class MyWindow(QMainWindow):
         # *　Dependency Additonal Action
         self.tab_50 = QtWidgets.QWidget()
         self.tab_50.setObjectName("tab_50")
-        self.tabWidget_5.insertTab(2, self.tab_50, "Additional Action")
+        self.tabWidget_5.insertTab(3, self.tab_50, "Additional Action")
         self.label_additional_action_2 = QtWidgets.QLabel(self.tab_50)
         self.label_additional_action_2.setGeometry(QtCore.QRect(10, 10, 200, 30))
         self.label_additional_action_2.setText("Action Item :")
@@ -124,7 +137,7 @@ class MyWindow(QMainWindow):
         # * Test Plan Dependency Additional Action
         self.tab_52 = QtWidgets.QWidget()
         self.tab_52.setObjectName("tab_52")
-        self.table_tc_dependency_schema_2.insertTab(3, self.tab_52, "Additional Action")
+        self.table_tc_dependency_schema_2.insertTab(4, self.tab_52, "Additional Action")
         self.label_tc_dependency_additional_action = QtWidgets.QLabel(self.tab_52)
         self.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
         self.label_tc_dependency_additional_action.setText("Action Item :")
@@ -160,9 +173,11 @@ class MyWindow(QMainWindow):
         self.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
         self.btn_add_path.clicked.connect(self.btn_add_path_clicked)
         self.btn_remove_query.clicked.connect(self.btn_remove_query_clicked)
-        self.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
         self.btn_update_query.clicked.connect(self.btn_update_query_clicked)
+        self.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
         self.btn_update_path.clicked.connect(self.btn_update_path_clicked)
+        self.btn_tc_remove_query.clicked.connect(self.btn_tc_remove_query_clicked)
+        self.btn_tc_update_query.clicked.connect(self.btn_tc_update_query_clicked)
         self.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
         self.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
         self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
@@ -173,6 +188,8 @@ class MyWindow(QMainWindow):
         self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
         self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
         self.btn_update_dependency_path.clicked.connect(self.btn_update_dependency_path_clicked)
+        self.btn_remove_dependency_query.clicked.connect(self.btn_remove_dependency_query_clicked)
+        self.btn_update_dependency_query.clicked.connect(self.btn_update_dependency_query_clicked)
         self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
         self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
         self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
@@ -186,6 +203,8 @@ class MyWindow(QMainWindow):
         self.btn_tc_dependency_update_text_body.clicked.connect(self.btn_tc_dependency_update_text_body_clicked)
         self.btn_tc_remove_dependency_path.clicked.connect(self.btn_tc_remove_dependency_path_clicked)
         self.btn_tc_update_dependency_path.clicked.connect(self.btn_tc_update_dependency_path_clicked)
+        self.btn_tc_remove_dependency_query.clicked.connect(self.btn_tc_remove_dependency_query_clicked)
+        self.btn_tc_update_dependency_query.clicked.connect(self.btn_tc_update_dependency_query_clicked)
         self.btn_generate_test_case.clicked.connect(self.btn_generate_test_case_clicked)
         self.btn_clear_dependency_rule.clicked.connect(self.btn_clear_dependency_rule_clicked)
         self.btn_up_dependency_rule.clicked.connect(self.btn_up_dependency_rule_clicked)
@@ -220,6 +239,7 @@ class MyWindow(QMainWindow):
         self.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
         self.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
         self.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
+        self.btn_export_test_plans.clicked.connect(self.btn_export_test_plans_clicked)
         self.btn_update_info.clicked.connect(self.btn_update_info_clicked)
         
         # * Item Changed Event
@@ -714,6 +734,22 @@ class MyWindow(QMainWindow):
         ])
         GeneralTool.render_test_plan_files(self.table_test_plan_api_list)
 
+    def btn_export_test_plans_clicked(self):
+        """ To export the test plans to the local folder. """
+        
+        export_folder_path = QFileDialog.getExistingDirectory(self, "Select Folder to Export", os.path.expanduser("~"))
+        if export_folder_path:
+            test_plan_folder_path = os.path.join(export_folder_path, "TestPlan")
+            os.makedirs(test_plan_folder_path, exist_ok=True)
+            file_list = glob.glob("./test_plan/*.json")
+            for file in file_list:
+                src_path = os.path.join(os.getcwd(), file)
+                dst_path = os.path.join(test_plan_folder_path, os.path.basename(file))
+                shutil.copyfile(src_path, dst_path)
+                
+            logging.info(f"Export test plans to {export_folder_path} successfully")
+            GeneralTool.show_info_dialog(f"Export test plans to {export_folder_path} successfully")
+
     def btn_export_test_cases_clicked(self):
         """ To export the test cases to the local folder. """
         
@@ -944,7 +980,6 @@ class MyWindow(QMainWindow):
             self.textbox_dependency_return_variable_name,
             self.table_dependency_generation_rule,
             self.table_dependency_path,
-            self.table_dependency_schema,
         ])
         self.comboBox_dependency_type.setEnabled(True)
         self.list_dependency_available_api_list.clearSelection()
@@ -1017,6 +1052,74 @@ class MyWindow(QMainWindow):
         self.tabTCG.setCurrentIndex(2)
         GeneralTool.clean_ui_content([self.table_robot_file_list, self.text_robot_file])
         GeneralTool.rander_robot_file_list(self.table_robot_file_list)
+        
+    def btn_tc_remove_dependency_query_clicked(self):
+        if len(self.table_tc_dependency_query.selectedItems()) == 0 or self.table_tc_dependency_query.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.textbox_tc_query_dependency_name.text()
+        
+        file_path = f"./test_plan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            test_plan = json.load(f)
+            result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"].pop(name)
+            f.seek(0)
+            json.dump(test_plan, f, indent=4)
+            f.truncate()
+            logging.info(f"Dependency Query Rule {result} is removed from {operation_id}.json")
+            
+        GeneralTool.clean_ui_content([self.table_tc_dependency_query, self.textbox_tc_query_dependency_name, self.textbox_tc_query_dependency_value])
+        root_item = QTreeWidgetItem(["query"])
+        self.table_tc_dependency_query.addTopLevelItem(root_item)
+        query_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
+        GeneralTool.parse_request_body(query_rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=3)
+        
+    def btn_tc_update_dependency_query_clicked(self):
+        if len(self.table_tc_dependency_query.selectedItems()) == 0 or self.table_tc_dependency_query.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.textbox_tc_query_dependency_name.text()
+        value = self.textbox_tc_query_dependency_value.text()
+        
+        file_path = f"./test_plan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            test_plan = json.load(f)
+            new_query_data = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
+            new_query_data[name]["Value"] = value
+            result = GeneralTool.update_value_in_json(
+                test_plan, 
+                ["test_cases", test_case_id ,"test_point", test_point_id, "dependency", dependency_type, dependency_sequence_num, "query"],
+                new_query_data
+            )
+            if result is not False:
+                f.seek(0)
+                json.dump(test_plan, f, indent=4)
+                f.truncate()
+                logging.info(f"Update dependency query rule in {file_path} successfully")
+            else:
+                logging.error(f"Update dependency query rule in {file_path} failed")
+        
+        GeneralTool.clean_ui_content([self.table_tc_dependency_query, self.textbox_tc_query_dependency_name, self.textbox_tc_query_dependency_value])
+        root_item = QTreeWidgetItem(["query"])
+        self.table_tc_dependency_query.addTopLevelItem(root_item)
+        query_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
+        GeneralTool.parse_request_body(query_rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=3)
         
     def btn_tc_remove_dependency_path_clicked(self):
         if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
@@ -1250,7 +1353,7 @@ class MyWindow(QMainWindow):
                 # * If 'dependency_rules' is not empty, it will give us the maximum key value plus one.
                 dependency_rules = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type]
                 sequence_num = str(max((int(k) for k in dependency_rules.keys()), default=0) + 1)
-                generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api)
+                generation_rule, path_rule, query_rule = GeneralTool.generate_dependency_data_generation_and_path_and_query_rule(api)
                 test_data = DataBuilder.data_builder(generation_rule)
                 obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
@@ -1269,6 +1372,7 @@ class MyWindow(QMainWindow):
                     "data_generation_rules": generation_rule if generation_rule is not None else {},
                     "additional_action": {},
                     "path": path_rule if path_rule is not None else {},
+                    "query": query_rule if query_rule is not None else {},
                     "config_name": file_name
                 }
                 result = GeneralTool.add_key_in_json(
@@ -1488,6 +1592,75 @@ class MyWindow(QMainWindow):
             self.textbox_tc_assertion_rule_expression.setText(selected_item.text(3))
             self.comboBox_tc_assertion_method.setCurrentText(selected_item.text(4))
             self.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(5))
+
+    def btn_tc_remove_query_clicked(self):
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+    
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id = test_id.split(".")[0]
+            use_case_id = test_id.split(".")[1]
+            name = self.textbox_tc_query_name.text()
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.remove_key_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "query", name]
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name]}`.")
+            GeneralTool.clean_ui_content([self.textbox_tc_query_name, self.textbox_tc_query_value, self.table_tc_query])
+            root_item = QTreeWidgetItem(["Query Parameter"])
+            self.table_tc_query.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["query"], root_item)
+            GeneralTool.expand_and_resize_tree(self.table_tc_query, level=2)            
+    
+    def btn_tc_update_query_clicked(self):
+        
+        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
+            name = self.textbox_tc_query_name.text()
+            new_value = self.textbox_tc_query_value.text()
+            file_path = f"./test_plan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.update_value_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "query", name],
+                    new_value
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name, new_value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name, new_value]}`.") 
+            
+            GeneralTool.clean_ui_content([self.textbox_tc_query_name, self.textbox_tc_query_value, self.table_tc_query])
+            root_item = QTreeWidgetItem(["Query Parameter"])
+            self.table_tc_query.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["query"], root_item)
+            GeneralTool.expand_and_resize_tree(self.table_tc_query, level=2)
         
     def btn_tc_remove_path_clicked(self):
         if len(self.table_test_plan_api_list.selectedItems()) == 0:
@@ -1844,6 +2017,72 @@ class MyWindow(QMainWindow):
             value = selected_item.child(4).text(1)
             self.textbox_query_dependency_name.setText(name)
             self.textbox_query_dependency_value.setText(value)
+            
+    def btn_remove_dependency_query_clicked(self):
+        
+        if len(self.table_dependency_query.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.table_dependency_query.selectedItems()[0]
+        
+        name = self.textbox_query_dependency_name.text()
+        value = self.textbox_query_dependency_value.text()
+        
+        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "query", name]
+            result = GeneralTool.remove_key_in_json(data, path)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([self.textbox_query_dependency_name, self.textbox_query_dependency_value, self.table_dependency_query])
+        root_item = QTreeWidgetItem(["Query Parameter"])
+        self.table_dependency_query.addTopLevelItem(root_item)
+        query_rule = data[dependency_type][dependency_sequence_num]["query"]
+        GeneralTool.parse_request_body(query_rule, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_query, level=3)
+    
+    def btn_update_dependency_query_clicked(self):
+        
+        if len(self.table_dependency_query.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.table_dependency_query.selectedItems()[0]
+        
+        name = self.textbox_query_dependency_name.text()
+        value = self.textbox_query_dependency_value.text()
+        
+        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "query", name, "Value"]
+            result = GeneralTool.update_value_in_json(data, path, value)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([self.textbox_query_dependency_name, self.textbox_query_dependency_value, self.table_dependency_query])
+        root_item = QTreeWidgetItem(["Query Parameter"])
+        self.table_dependency_query.addTopLevelItem(root_item)
+        query_rule = data[dependency_type][dependency_sequence_num]["query"]
+        GeneralTool.parse_request_body(query_rule, root_item)
+        GeneralTool.expand_and_resize_tree(self.table_query, level=3)
         
     def btn_remove_dependency_path_clicked(self):
         
@@ -1918,6 +2157,7 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_generation_rule,
             self.textbox_tc_dependency_requestbody,
             self.table_tc_dependency_path,
+            self.table_tc_dependency_query,
             self.table_tc_dependency_schema,
             self.textbox_tc_path_dependency_name,
             self.textbox_tc_path_dependency_value,
@@ -1967,6 +2207,24 @@ class MyWindow(QMainWindow):
             else:
                 logging.info(f"Path Rule is not exist in the dependency rule `{operation_id}`.")
                 
+            # * Render the Query Rule
+            if "query" in data:
+                root_item = QTreeWidgetItem(["Query Parameter"])
+                self.table_tc_dependency_query.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["query"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=2)
+            else:
+                logging.info(f"Query Rule is not exist in the dependency rule `{operation_id}`.")
+            
+            # * Render the additional action rule
+            if 'additional_action' in data:
+                root_item = QTreeWidgetItem(["Additional Action"])
+                self.table_tc_dependency_additional_action.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["additional_action"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_additional_action, level=2)
+            else:
+                logging.info(f"Additional Action is not exist in the dependency rule `{operation_id}`.")
+                
             testdata_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{index}.json"
             try:
                 with open(testdata_path, "r+") as f:
@@ -1976,14 +2234,6 @@ class MyWindow(QMainWindow):
             except FileNotFoundError:
                 logging.info(f"Test Data `{testdata_path}` is not exist.")
                 
-            # * Render the additional action rule
-            if 'additional_action' in data:
-                root_item = QTreeWidgetItem(["Additional Action"])
-                self.table_tc_dependency_additional_action.addTopLevelItem(root_item)
-                GeneralTool.parse_request_body(data["additional_action"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_additional_action, level=2)
-            else:
-                logging.info(f"Additional Action is not exist in the dependency rule `{operation_id}`.")
         else:
             self.comboBox_tc_dependency_type.setEnabled(True)
             self.line_tc_api_search.setEnabled(True)
@@ -1994,7 +2244,7 @@ class MyWindow(QMainWindow):
         GeneralTool.clean_ui_content([
             self.table_dependency_generation_rule,
             self.table_dependency_path,
-            self.table_dependency_schema,
+            self.table_dependency_query,
             self.textbox_path_dependency_name,
             self.textbox_path_dependency_value,
             self.table_dependency_additional_action,
@@ -2037,6 +2287,15 @@ class MyWindow(QMainWindow):
                 GeneralTool.expand_and_resize_tree(self.table_dependency_path, level=2)
             else:
                 logging.info(f"Path Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
+                
+            # * Render the Query Rule
+            if "query" in data:
+                root_item = QTreeWidgetItem(["Query Parameter"])
+                self.table_dependency_query.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["query"], root_item)
+                GeneralTool.expand_and_resize_tree(self.table_dependency_query, level=2)
+            else:
+                logging.info(f"Query Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
                 
             # * Render the additional action rule
             if 'additional_action' in data:
@@ -2089,7 +2348,7 @@ class MyWindow(QMainWindow):
         GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
         
         # * Generate the Data Generation Rule and Path Rule and Schema.
-        self._create_dependency_generation_rule_and_path_rule(api, operation_id, dependency_type, sequence_num)
+        self._create_dependency_generation_and_path_and_query_rule(api, operation_id, dependency_type, sequence_num)
         
     def btn_remove_dependency_rule_clicked(self):
         """Remove Dependency Rule Item"""
@@ -2163,7 +2422,6 @@ class MyWindow(QMainWindow):
             GeneralTool.clean_ui_content([
                 self.line_api_search,
                 self.textbox_dependency_return_variable_name,
-                self.table_dependency_schema,
                 self.table_dependency_path,
                 self.table_dependency_generation_rule,
                 self.textbox_path_dependency_name,
@@ -2747,7 +3005,7 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` with new value `{new_value}` at path `{path}`.")
                 
-    def _create_dependency_generation_rule_and_path_rule(
+    def _create_dependency_generation_and_path_and_query_rule(
         self, 
         api_name : str, 
         original_operation_id : str,
@@ -2760,7 +3018,7 @@ class MyWindow(QMainWindow):
             api_name: Which API to create the G_Rule and P_Rule and Schema File.
             original_operation_id: Which original API to create this dependency API.
         """
-        generation_rule, path_rule = GeneralTool.generate_dependency_data_generation_rule_and_path_rule(api_name)
+        generation_rule, path_rule, query_rule = GeneralTool.generate_dependency_data_generation_and_path_and_query_rule(api_name)
         
         if generation_rule != None or generation_rule != {}:
             with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
@@ -2785,6 +3043,18 @@ class MyWindow(QMainWindow):
                     logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")
                 else:
                     logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")    
+        
+        if query_rule != None:
+            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "query", query_rule)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f , indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
+                else:
+                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
         
     def _create_generation_rule_and_assertion_files(self):
         """ Create Generation Rule and Assertion Files """
@@ -3035,14 +3305,16 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_rule, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
             self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency_rule, self.table_tc_dependency_generation_rule,
             self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name, self.textbox_tc_description,
-            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action, self.table_tc_dependency_additional_action,])
+            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action, self.table_tc_dependency_additional_action,
+            self.table_tc_query, self.table_tc_dependency_query
+        ])
         self.comboBox_tc_dependency_type.setEnabled(True)
         self.line_tc_api_search.setEnabled(True)
         
         # * Determine the column is top level or not
         parent = item.parent()
         if parent is None:
-            test_plan_name = item.text(0)
+            test_plan_name = item.text(0)                                                                                           
             logging.debug(f"Test Plan Name: {test_plan_name}")
         elif parent.parent() is None:
             test_plan_name = parent.text(0)
@@ -3075,6 +3347,14 @@ class MyWindow(QMainWindow):
             for key, value in path_rule.items():
                 path_item.addChild(QTreeWidgetItem([key, value]))
             GeneralTool.expand_and_resize_tree(self.table_tc_path)
+            
+            # * Render the Query Rule.
+            query_item = QTreeWidgetItem(["Query Parameters"])
+            self.table_tc_query.addTopLevelItem(query_item)
+            query_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['query']
+            for key, value in query_rule.items():
+                query_item.addChild(QTreeWidgetItem([key, value]))
+            GeneralTool.expand_and_resize_tree(self.table_tc_query)
             
             # * Render the Assertion Rule.
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
@@ -3120,7 +3400,6 @@ class MyWindow(QMainWindow):
             self.table_dependency_rule,
             self.table_dependency_path,
             self.table_dependency_generation_rule,
-            self.table_dependency_schema,
             self.line_api_search,
             self.textbox_dependency_return_variable_name,
             self.textbox_data_rule_type,

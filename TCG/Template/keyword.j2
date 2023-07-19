@@ -1,4 +1,5 @@
 *** Keywords ***
+{% set jump = '\n' -%}
 {%- if test_cases != None -%}
 {%- for case_id, case in test_cases.items() -%}
 {% for point_id, point in case.test_point.items() %}
@@ -7,6 +8,7 @@
     {% for id, setup in point.dependency.Setup.items() %}
         # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
         ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
+{#- Setup Path #}
         {% if 'path' in setup -%}
         {% if setup.path != {} -%}
         {% for path_id, path in setup.path.items() -%}
@@ -19,6 +21,24 @@
         {% endfor -%}
         {%- endif %}
         {%- endif %}
+{#- Setup Query #}
+        {%- if 'query' in setup -%}
+        {% if setup.query != {} -%}
+        {% set start = '...  query_param={' -%}
+        {% set end = '}' -%}
+        {{ start }}
+        {%- for query_id, query in setup.query.items() -%}
+        {% if 'Value' in query -%}
+            {% set value = query.Value -%}
+        {% else -%}
+            {% set value = query -%}
+        {%- endif -%}
+        "{{ query_id }}":"{{ value }}"{% if not loop.last -%}, {% endif -%}
+        {% if loop.last -%}{{ end }}{{ jump }}        {% endif -%}
+        {% endfor %}
+        {%- endif %}
+        {%- endif %}
+{#-  Setup Data Generation Rules #}
         {%- if setup.data_generation_rules != {} -%}
         ...  file_name={{ setup.config_name }}
         {%- endif %}
@@ -52,12 +72,13 @@
     {% endif -%}
         Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
     {% endfor -%}
-{% endif -%}
+{% endif %}
 {% if point.dependency.Teardown.items() -%}
 {{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Teardown
     {% for id, teardown in point.dependency.Teardown.items() %}
         # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
         {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
+{#- Teardown Path #}        
         {% if 'path' in teardown -%}
         {% if teardown.path != {} -%}
         {% for path_id, path in teardown.path.items() -%}
@@ -70,6 +91,24 @@
         {% endfor -%}
         {%- endif %}
         {%- endif %}
+{#- Teardown Query #}
+        {%- if 'query' in teardown -%}
+        {% if teardown.query != {} -%}
+        {% set start = '...  query_param={' -%}
+        {% set end = '}' -%}
+        {{ start }}
+        {%- for query_id, query in teardown.query.items() -%}
+        {% if 'Value' in query -%}
+            {% set value = query.Value -%}
+        {% else -%}
+            {% set value = query -%}
+        {%- endif -%}
+        "{{ query_id }}":"{{ value }}"{% if not loop.last -%}, {% endif -%}
+        {% if loop.last -%}{{ end }}{{ jump }}        {% endif -%}
+        {% endfor %}
+        {%- endif %}
+        {%- endif %}
+{#-  Teardown Data Generation Rules #}
         {%- if teardown.data_generation_rules != {} -%}
         ...  file_name={{ teardown.config_name }}
         {%- endif %}

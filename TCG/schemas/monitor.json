@@ -72,6 +72,23 @@
                 ],
                 "default": "ALL"
               }
+            },
+            {
+              "name": "alertTest",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "ALL",
+                  "NETWORK",
+                  "WEB_AUTOMATION",
+                  "SDNS",
+                  "DNS_SERVER",
+                  "DDNS_API"
+                ],
+                "default": "ALL"
+              }
             }
           ],
           "tags": [
@@ -149,6 +166,23 @@
               "required": true,
               "schema": {
                 "type": "string"
+              }
+            },
+            {
+              "name": "alertFilter",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "ALL",
+                  "NETWORK",
+                  "WEB_AUTOMATION",
+                  "SDNS",
+                  "DNS_SERVER",
+                  "DDNS_API"
+                ],
+                "default": "ALL"
               }
             }
           ],

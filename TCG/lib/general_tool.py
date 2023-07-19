@@ -323,7 +323,7 @@ class GeneralTool:
             wildcard.setEnabled(True)
             
     @classmethod
-    def generate_dependency_data_generation_rule_and_path_rule(cls, api_name: str) -> dict | None:
+    def generate_dependency_data_generation_and_path_and_query_rule(cls, api_name: str) -> dict | None:
         try:
             api_method, api_uri = api_name.split(" ")[0].lower(), api_name.split(" ")[1]
         except Exception as e:
@@ -350,8 +350,14 @@ class GeneralTool:
                             path_rule = None
                             if "{" in uri and "}" in uri and 'parameters' in operation:
                                 path_rule = cls.parse_schema_to_path_rule(operation['parameters'])
+                                
+                            # * Create the Query Rule File
+                            query_rule = None
+                            if "parameters" in operation:
+                                query_rule = cls.parse_schema_to_query_rule(operation['parameters'])
+                            logging.debug(f"Query Rule: {query_rule}")
                             
-                            return generation_rule, path_rule
+                            return generation_rule, path_rule, query_rule
                         
     @classmethod
     def render_data_rule(
@@ -995,6 +1001,8 @@ class GeneralTool:
                         del dependency_rule[section][key]['action']
                     if 'additional_action' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['additional_action']
+                    if 'query' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['query']
                         
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
@@ -1025,7 +1033,9 @@ class GeneralTool:
                     del dependency_rule[section][key]['action']
                 if 'additional_action' in dependency_rule[section][key]:
                     del dependency_rule[section][key]['additional_action']
-                                                            
+                if 'query' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['query']
+                                                             
         setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
         setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
         table.clear()
