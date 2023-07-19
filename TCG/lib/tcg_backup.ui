@@ -2785,7 +2785,7 @@
 }</string>
               </property>
               <property name="text">
-               <string>Export Test Plan</string>
+               <string>Export All Test Plans</string>
               </property>
              </widget>
             </item>

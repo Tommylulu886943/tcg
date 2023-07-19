@@ -39,69 +39,77 @@ class MyWindow(QMainWindow):
         # * Dynamic UI
         self.specialActions = {
             "None": [],
-            "Parser - API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"],
-            "Analyzer - Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
-            "Analyzer - Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"],
+            "Parser": {
+                "API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"]
+            },
+            "Analyzer": {
+                "Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
+                "Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"]
+            }
         }
         
         self.tab_22 = QtWidgets.QWidget()
         self.tab_22.setObjectName("tab_22")
         self.tabWidget_2.insertTab(4, self.tab_22, "Additional Action")
+        self.specialActionCategory = ["None", "Parser", "Analyzer"]
         
-        self.specialActionCategory = ["None", "Parser", "Analyzer", "Assertion"]
-        self.label_action_type = QtWidgets.QLabel(self.tab_22)
-        self.label_action_type.setGeometry(QtCore.QRect(10, 10, 200, 30))
-        self.label_action_type.setText("Action Category :")
-        self.action_type = QComboBox(self.tab_22)
+        self.groupBox = QGroupBox(self.tab_22)
+        self.groupBox.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.groupBox.setTitle("Action")
+        self.label_action_type = QtWidgets.QLabel(self.groupBox)
+        self.label_action_type.setGeometry(QtCore.QRect(10, 30, 230, 30))
+        self.label_action_type.setText("Category :")
+        self.action_type = QComboBox(self.groupBox)
         self.action_type.addItems(self.specialActionCategory)
-        self.action_type.setGeometry(QtCore.QRect(100, 10, 250, 30))
-        
-        self.label_additional_action = QtWidgets.QLabel(self.tab_22)
-        self.label_additional_action.setGeometry(QtCore.QRect(10, 10, 230, 30))
-        self.label_additional_action.setText("Action Item :")
-        self.additional_action = QComboBox(self.tab_22)
-        self.additional_action.addItems(self.specialActions.keys())
-        self.additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
-
+        self.action_type.setGeometry(QtCore.QRect(100, 30, 120, 30))
+        self.action_type.currentTextChanged.connect(self.action_type_changed)
+        self.label_additional_action = QtWidgets.QLabel(self.groupBox)
+        self.label_additional_action.setGeometry(QtCore.QRect(250, 30, 230, 30))
+        self.label_additional_action.setText("Action :")
+        self.additional_action = QComboBox(self.groupBox)
+        self.additional_action.setGeometry(QtCore.QRect(320, 30, 240, 30))
         self.form = CustomForm(self.tab_22)
-        self.form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.form.setGeometry(QtCore.QRect(10, 90, 400, 200))
         self.additional_action.currentTextChanged.connect(self.additional_action_changed)
-
         self.add_additional_action = QPushButton("Add Action", self.tab_22)
-        self.add_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
         self.add_additional_action.clicked.connect(self.btn_add_special_action)
-        self.additional_action_changed()
-        
         self.remove_additional_action = QPushButton("Remove Action", self.tab_22)
-        self.remove_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
         self.remove_additional_action.clicked.connect(self.btn_remove_special_action)
-        self.additional_action_changed()
-        
         self.table_additional_action = QtWidgets.QTreeWidget(parent=self.tab_22)
-        self.table_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
+        self.table_additional_action.setGeometry(QtCore.QRect(10, 340, 600, 400))
         self.table_additional_action.setObjectName("table_additional_action")
         self.table_additional_action.headerItem().setText(0, "Index")
         self.table_additional_action.headerItem().setText(1, "Action Name")
-        
+            
         # *　Dependency Additonal Action
         self.tab_50 = QtWidgets.QWidget()
         self.tab_50.setObjectName("tab_50")
         self.tabWidget_5.insertTab(3, self.tab_50, "Additional Action")
+        self.groupBox_2 = QGroupBox(self.tab_50)
+        self.groupBox_2.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.groupBox_2.setTitle("Action")
+        self.label_action_type_2 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_action_type_2.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.label_action_type_2.setText("Category :")
+        self.dependency_action_type = QComboBox(self.groupBox_2)
+        self.dependency_action_type.addItems(self.specialActionCategory)
+        self.dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.dependency_action_type.currentTextChanged.connect(self.dependency_action_type_changed) 
         self.label_additional_action_2 = QtWidgets.QLabel(self.tab_50)
-        self.label_additional_action_2.setGeometry(QtCore.QRect(10, 10, 200, 30))
-        self.label_additional_action_2.setText("Action Item :")
+        self.label_additional_action_2.setGeometry(QtCore.QRect(250, 35, 230, 30))
+        self.label_additional_action_2.setText("Action :")
         self.dependency_additional_action = QComboBox(self.tab_50)
-        self.dependency_additional_action.addItems(self.specialActions.keys())
-        self.dependency_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
         self.dependency_form = CustomForm(self.tab_50)
-        self.dependency_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
         self.dependency_additional_action.currentTextChanged.connect(self.dependency_additional_action_changed)
-        
         self.add_dependency_additional_action = QPushButton("Add Action", self.tab_50)
-        self.add_dependency_additional_action.setGeometry(QtCore.QRect(390, 10, 100, 30))
+        self.add_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
         self.add_dependency_additional_action.clicked.connect(self.btn_add_dependency_special_action)
         self.remove_dependency_additional_action = QPushButton("Remove Action", self.tab_50)
-        self.remove_dependency_additional_action.setGeometry(QtCore.QRect(510, 10, 100, 30))
+        self.remove_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
         self.remove_dependency_additional_action.clicked.connect(self.btn_remove_dependency_special_action)
         self.table_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_50)
         self.table_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
@@ -113,23 +121,32 @@ class MyWindow(QMainWindow):
         self.tab_51 = QtWidgets.QWidget()
         self.tab_51.setObjectName("tab_51")
         self.tabWidget_testPlan.insertTab(4, self.tab_51, "Additional Action")
+        self.groupBox_3 = QGroupBox(self.tab_51)
+        self.groupBox_3.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.groupBox_3.setTitle("Action")   
+        self.label_action_type_3 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_action_type_3.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.label_action_type_3.setText("Category :")
+        self.tc_action_type = QComboBox(self.groupBox_3)
+        self.tc_action_type.addItems(self.specialActionCategory)
+        self.tc_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.tc_action_type.currentTextChanged.connect(self.tc_action_type_changed)
         self.label_tc_additional_action = QtWidgets.QLabel(self.tab_51)
-        self.label_tc_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
-        self.label_tc_additional_action.setText("Action Item :")
+        self.label_tc_additional_action.setGeometry(QtCore.QRect(240, 35, 200, 30))
+        self.label_tc_additional_action.setText("Action :")
         self.tc_additional_action = QComboBox(self.tab_51)
-        self.tc_additional_action.addItems(self.specialActions.keys())
-        self.tc_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.tc_additional_action.setGeometry(QtCore.QRect(300, 35, 250, 30))
         self.tc_form = CustomForm(self.tab_51)
-        self.tc_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.tc_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
         self.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
         self.add_tc_additional_action = QPushButton("Add Action", self.tab_51)
-        self.add_tc_additional_action.setGeometry(QtCore.QRect(10, 280, 120, 30))
+        self.add_tc_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
         self.add_tc_additional_action.clicked.connect(self.btn_tc_add_special_action)
         self.remove_tc_additional_action = QPushButton("Remove Action", self.tab_51)
-        self.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 280, 120, 30))
+        self.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
         self.remove_tc_additional_action.clicked.connect(self.btn_tc_remove_special_action)
         self.table_tc_additional_action = QtWidgets.QTreeWidget(parent=self.tab_51)
-        self.table_tc_additional_action.setGeometry(QtCore.QRect(10, 330, 600, 400))
+        self.table_tc_additional_action.setGeometry(QtCore.QRect(10, 350, 600, 400))
         self.table_tc_additional_action.setObjectName("table_tc_additional_action")
         self.table_tc_additional_action.headerItem().setText(0, "Index")
         self.table_tc_additional_action.headerItem().setText(1, "Action Name")
@@ -138,20 +155,29 @@ class MyWindow(QMainWindow):
         self.tab_52 = QtWidgets.QWidget()
         self.tab_52.setObjectName("tab_52")
         self.table_tc_dependency_schema_2.insertTab(4, self.tab_52, "Additional Action")
+        self.groupBox_4 = QGroupBox(self.tab_52)
+        self.groupBox_4.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.groupBox_4.setTitle("Action")   
+        self.label_action_type_4 = QtWidgets.QLabel(self.groupBox_4)
+        self.label_action_type_4.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.label_action_type_4.setText("Category :")
+        self.tc_dependency_action_type = QComboBox(self.groupBox_4)
+        self.tc_dependency_action_type.addItems(self.specialActionCategory)
+        self.tc_dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.tc_dependency_action_type.currentTextChanged.connect(self.tc_dependency_action_type_changed)
         self.label_tc_dependency_additional_action = QtWidgets.QLabel(self.tab_52)
-        self.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 10, 200, 30))
-        self.label_tc_dependency_additional_action.setText("Action Item :")
+        self.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(250, 35, 230, 30))
+        self.label_tc_dependency_additional_action.setText("Action :")
         self.tc_dependency_additional_action = QComboBox(self.tab_52)
-        self.tc_dependency_additional_action.addItems(self.specialActions.keys())
-        self.tc_dependency_additional_action.setGeometry(QtCore.QRect(100, 10, 250, 30))
+        self.tc_dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
         self.tc_dependency_form = CustomForm(self.tab_52)
-        self.tc_dependency_form.setGeometry(QtCore.QRect(10, 50, 400, 200))
+        self.tc_dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
         self.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
         self.add_tc_dependency_additional_action = QPushButton("Add Action", self.tab_52)
-        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(390, 10, 100, 30))
+        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
         self.add_tc_dependency_additional_action.clicked.connect(self.btn_tc_add_dependency_special_action)
         self.remove_tc_dependency_additional_action = QPushButton("Remove Action", self.tab_52)
-        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(510, 10, 100, 30))
+        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
         self.remove_tc_dependency_additional_action.clicked.connect(self.btn_tc_remove_dependency_special_action)
         self.table_tc_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_52)
         self.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
@@ -273,29 +299,73 @@ class MyWindow(QMainWindow):
         self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
         self.setCentralWidget(self.tabTCG)
         
+    def action_type_changed(self):
+        """ When the action type is changed by the user, the form will be reloaded. """
+        self.additional_action.clear()
+        category = self.action_type.currentText()
+        if category != "None":
+            actions = self.specialActions[category].keys()
+            self.additional_action.addItems(actions)
+        
     def additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        current_action = self.additional_action.currentText()
-        fields = self.specialActions[current_action]
-        self.form.load_form(current_action, fields)
+        category = self.action_type.currentText()
+        action = self.additional_action.currentText()
+        if category != "None" and action != "":
+            self.form.clear_form()
+            fields = self.specialActions[category][action]
+            self.form.load_form(action, fields)
+            
+    def dependency_action_type_changed(self):
+        """ When the action type is changed by the user, the form will be reloaded. """
+        self.dependency_additional_action.clear()
+        category = self.dependency_action_type.currentText()
+        if category != "None":
+            actions = self.specialActions[category].keys()
+            self.dependency_additional_action.addItems(actions)
         
     def dependency_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        current_dependency_action = self.dependency_additional_action.currentText()
-        fields = self.specialActions[current_dependency_action]
-        self.dependency_form.load_form(current_dependency_action, fields)
+        category = self.dependency_action_type.currentText()
+        action = self.dependency_additional_action.currentText()
+        if category != "None" and action != "":
+            self.dependency_form.clear_form()
+            fields = self.specialActions[category][action]
+            self.dependency_form.load_form(action, fields)
+            
+    def tc_action_type_changed(self):
+        """ When the action type is changed by the user, the form will be reloaded. """
+        self.tc_additional_action.clear()
+        category = self.tc_action_type.currentText()
+        if category != "None":
+            actions = self.specialActions[category].keys()
+            self.tc_additional_action.addItems(actions)
         
     def tc_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        current_tc_action = self.tc_additional_action.currentText()
-        fields = self.specialActions[current_tc_action]
-        self.tc_form.load_form(current_tc_action, fields)
+        category = self.tc_action_type.currentText()
+        action = self.tc_additional_action.currentText()
+        if category != "None" and action != "":
+            self.tc_form.clear_form()
+            fields = self.specialActions[category][action]
+            self.tc_form.load_form(action, fields)
+
+    def tc_dependency_action_type_changed(self):
+        """ When the action type is changed by the user, the form will be reloaded. """
+        self.tc_dependency_additional_action.clear()
+        category = self.tc_dependency_action_type.currentText()
+        if category != "None":
+            actions = self.specialActions[category].keys()
+            self.tc_dependency_additional_action.addItems(actions)
         
     def tc_dependency_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        current_tc_dependency_action = self.tc_dependency_additional_action.currentText()
-        fields = self.specialActions[current_tc_dependency_action]
-        self.tc_dependency_form.load_form(current_tc_dependency_action, fields)
+        category = self.tc_dependency_action_type.currentText()
+        action = self.tc_dependency_additional_action.currentText()
+        if category != "None" and action != "":
+            self.tc_dependency_form.clear_form()
+            fields = self.specialActions[category][action]
+            self.tc_dependency_form.load_form(action, fields)
         
     def btn_tc_add_dependency_special_action(self):
         """ Add the additional action to a dependency. """
@@ -966,7 +1036,6 @@ class MyWindow(QMainWindow):
             self.table_tc_dependency_generation_rule,
             self.textbox_tc_dependency_requestbody,
             self.table_tc_dependency_path,
-            self.table_tc_dependency_schema,
         ])
         self.comboBox_tc_dependency_type.setEnabled(True)
         self.line_tc_api_search.setEnabled(True)
@@ -2158,7 +2227,6 @@ class MyWindow(QMainWindow):
             self.textbox_tc_dependency_requestbody,
             self.table_tc_dependency_path,
             self.table_tc_dependency_query,
-            self.table_tc_dependency_schema,
             self.textbox_tc_path_dependency_name,
             self.textbox_tc_path_dependency_value,
             self.table_tc_dependency_additional_action,

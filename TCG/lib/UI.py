@@ -14,16 +14,17 @@ class CustomForm(QWidget):
 
     def load_form(self, action, fields):
         self.clear_form()
+        print(action, fields)
         for field in fields:
             label = QLabel(field)
             edit = None
-            if action == "Parser - API Parser":
+            if action == "API Parser":
                 edit = QComboBox()
                 if field == "Return Type":
                     edit.addItems(["list", "string", "set"])
                 else:
                     edit = QLineEdit()
-            elif action == "Analyzer - Config Analyzer":
+            elif action == "Config Analyzer":
                 edit = QComboBox()
                 if field == "Action":
                     edit.addItems(["", "config_compare", "string_match"])
@@ -31,7 +32,7 @@ class CustomForm(QWidget):
                     edit.addItems(["", "true", "false"])
                 else:
                     edit = QLineEdit()
-            elif action == "Analyzer - Data Analyzer":
+            elif action == "Data Analyzer":
                 edit = QComboBox()
                 if field == "Return Type":
                     edit.addItems(["list", "string", "set"])
