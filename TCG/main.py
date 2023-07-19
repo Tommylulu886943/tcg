@@ -187,6 +187,7 @@ class MyWindow(QMainWindow):
             
         # * Define the Button Event
         self.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
+        self.btn_import_object_mapping_file.clicked.connect(self.import_object_mapping_file)
         self.btn_generate_test_plan.clicked.connect(self.generate_test_plan)
         self.btn_api_table_remove.clicked.connect(self.btn_api_table_remove_clicked)
         self.btn_generation_rule_remove.clicked.connect(self.btn_generation_rule_remove_clicked)
@@ -3236,6 +3237,14 @@ class MyWindow(QMainWindow):
     def generate_test_plan(self):
         """ Generate Test Plan """
         
+        # * Check if the object mapping file is imported.
+        if not os.path.exists("config/obj_mapping.json"):
+            logging.error(f"Object Mapping File not found.")
+            error_message = f"The Object Mapping File is not imported."
+            detailed_message = f"Please import the Object Mapping File first."
+            GeneralTool.show_error_dialog(error_message, detailed_message)
+            return
+        
         # * Generate TCG Config
         GeneralTool.generate_tcg_config(self.group_test_strategy.findChildren(QCheckBox))
         with open(f"config/tcg_config.json", "r") as f:
@@ -3304,13 +3313,23 @@ class MyWindow(QMainWindow):
                 for tp_index, test_point in test_case['test_point'].items():
                     tp_index = str(index) + "." + str(tp_index)
                     testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
+                    
+    def import_object_mapping_file(self):
+        """ Import Object Mapping File """
+        file_filter = "Object Mapping File (*.json)"
+        response = QtWidgets.QFileDialog.getOpenFileNames(
+            parent=self.tab, caption="Open Object Mapping File", directory=os.getcwd(), filter=file_filter)
+
+        for file_path in response[0]:
+            file_name = os.path.basename(file_path)
+            shutil.copy(file_path, f"./config/obj_mapping.json")
+            logging.info(f"Import Object Mapping File `{file_name}`.")
 
     def import_openapi_doc(self):
         """ Import OpenAPI Doc """
         file_filter = "OpenAPI Doc (*.yaml *.yml *.json)"
         response = QtWidgets.QFileDialog.getOpenFileNames(
-            parent=self.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter
-        )
+            parent=self.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter)
         
         # * Clean Environment
         GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction", "./QueryRule"])
@@ -3332,6 +3351,10 @@ class MyWindow(QMainWindow):
             file_name = os.path.basename(file_path).split(".")[0]
             api_doc = GeneralTool.load_schema_file(file_path)
             index = self._render_api_tree(api_doc, index, file_name)
+            # * If the index is None, it means the API Doc is not in the correct format, return directly.
+            if index == None:
+                self.table_api_tree.clear()
+                return
         self._create_generation_rule_and_assertion_files()
         GeneralTool.expand_and_resize_tree(self.table_api_tree)
         
@@ -3354,15 +3377,22 @@ class MyWindow(QMainWindow):
         """ Render API Tree """
         toplevel_length = self.table_api_tree.topLevelItemCount()
         self.table_api_tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
-        for uri, path_item in api_doc['paths'].items():
-            for method, operation in path_item.items():
-                self.table_api_tree.topLevelItem(toplevel_length).addChild(
-                    QtWidgets.QTreeWidgetItem(["", str(index), uri, method.upper(), operation['operationId']])
-                )
-                # * Render the Available API List
-                self.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
-                self.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
-                index += 1
+        try:
+            for uri, path_item in api_doc['paths'].items():
+                for method, operation in path_item.items():
+                    self.table_api_tree.topLevelItem(toplevel_length).addChild(
+                        QtWidgets.QTreeWidgetItem(["", str(index), uri, method.upper(), operation['operationId']])
+                    )
+                    # * Render the Available API List
+                    self.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                    self.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                    index += 1
+        except KeyError as e:
+            logging.error(f"Error parsing API Doc `{file_name}`.")
+            error_message = f"Error parsing API Doc `{file_name}`. Please check the format."
+            detailed_message = "Cannot find the key `{}` in the API Doc.".format(e.args[0])
+            GeneralTool.show_error_dialog(error_message, detailed_message)
+            return None
         return index
     
     def test_plan_api_list_item_clicked(self, item, column):

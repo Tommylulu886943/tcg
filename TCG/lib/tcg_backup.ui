@@ -58,7 +58,7 @@
              <number>0</number>
             </property>
             <item>
-             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0" columnstretch="4,6">
+             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0" columnstretch="4,6">
               <property name="sizeConstraint">
                <enum>QLayout::SetDefaultConstraint</enum>
               </property>
@@ -74,69 +74,7 @@
               <property name="spacing">
                <number>5</number>
               </property>
-              <item row="0" column="1" rowspan="4">
-               <widget class="QPushButton" name="btn_generate_test_plan">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Generate Test Plan</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QPushButton" name="btn_api_table_add_use_case">
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Add Use Case</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QPushButton" name="btn_import_openapi_doc">
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Import OpenAPI Doc</string>
-                </property>
-                <property name="icon">
-                 <iconset theme="document-new">
-                  <normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QPushButton" name="btn_api_table_remove">
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Remove</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" colspan="2">
+              <item row="5" column="0" colspan="2">
                <widget class="QTreeWidget" name="table_api_tree">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -184,6 +122,85 @@
                   <string>Operation ID</string>
                  </property>
                 </column>
+               </widget>
+              </item>
+              <item row="0" column="1" rowspan="5">
+               <widget class="QPushButton" name="btn_generate_test_plan">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Generate Test Plan</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QPushButton" name="btn_api_table_add_use_case">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Add Use Case</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="btn_api_table_remove">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btn_import_openapi_doc">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Import OpenAPI Doc</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-new">
+                  <normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="btn_import_object_mapping_file">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Import Object Mapping File</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-new">
+                  <normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</iconset>
+                </property>
                </widget>
               </item>
              </layout>
