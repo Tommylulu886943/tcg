@@ -672,7 +672,7 @@ class GeneralTool:
             with open(file_path, "r", encoding='utf-8') as f:
                 api_doc = yaml.load(f, Loader=yaml.FullLoader)
         elif file_extension == ".json":
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding='utf-8') as f:
                 api_doc = json.load(f)
         else:
             logger.error(f"Unsupported file extension: {file_extension}")
@@ -794,12 +794,19 @@ class GeneralTool:
                     new_path = "[0]"
                 fields.update(cls.parse_schema_to_generation_rule(schema["items"], new_path))
         else:
+            print(schema["type"])
+
             genType = None
             if schema["type"] == "string":
+                print(1)
                 if 'format' in schema:
-                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri']:
+                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32']:
                         genType = f"Random {schema['format'].upper()}"
                         data_length = ""
+                    # * add other format
+                    else:
+                        genType = "Random String (Without Special Characters)"
+                        data_length = [4, 30]
                 elif 'pattern' in schema:
                     genType = "Random String By Pattern"
                     data_length = ""

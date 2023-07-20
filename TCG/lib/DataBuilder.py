@@ -81,6 +81,10 @@ class DataBuilder:
                 value = cls.generate_random_uuid()
             elif rule['Data Generator'] == 'Random Number (Float)':
                 value = cls.generate_random_float(rule['Data Length'])
+            elif rule['Data Generator'] == 'Random INT64':
+                value = cls.generate_random_int64()
+            elif rule['Data Generator'] == 'Random INT32':
+                value = cls.generate_random_int32()
             else:
                 value = None
             cls._create_nested_dict(result, keys, value)

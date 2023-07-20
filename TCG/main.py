@@ -18,7 +18,7 @@ from lib.general_tool import GeneralTool
 from lib.databuilder import DataBuilder
 from lib.render import Render
 from lib.display import CustomForm
-from lib.ui import Ui_MainWindow
+from lib.UI import Ui_MainWindow
 
 basedir = os.path.dirname(__file__)
 
@@ -3611,6 +3611,8 @@ class MyWindow(QMainWindow):
                             for status_code, response in operation['responses'].items():
                                 if len(status_code) == 3 or status_code == 'default':
                                     # * WARNING: Only support the first content type now.
+                                    if operation['responses'][status_code]['content'] == {}:
+                                        continue
                                     first_content_type = next(iter(operation['responses'][status_code]['content']))
                                     response_body_schema = response['content'][first_content_type]['schema']
                                     response_body_schema = GeneralTool().retrive_ref_schema(api_doc, response_body_schema)
