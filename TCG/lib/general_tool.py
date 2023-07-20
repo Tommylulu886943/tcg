@@ -71,7 +71,6 @@ class GeneralTool:
             ui.table_tc_dependency_generation_rule,
             ui.textbox_tc_dependency_requestbody,
             ui.table_tc_dependency_path,
-            ui.table_tc_dependency_schema,
         ])
         ui.comboBox_tc_dependency_type.setEnabled(True)
         ui.line_tc_api_search.setEnabled(True)
@@ -106,7 +105,6 @@ class GeneralTool:
             ui.textbox_dependency_return_variable_name,
             ui.table_dependency_generation_rule,
             ui.table_dependency_path,
-            ui.table_dependency_schema,
             ui.table_dependency_rule
         ])
         ui.comboBox_dependency_type.setEnabled(True)

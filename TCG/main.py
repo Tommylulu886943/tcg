@@ -17,7 +17,8 @@ from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.DataBuilder import DataBuilder
 from lib.render import Render
-from lib.UI import CustomForm
+from lib.display import CustomForm
+from lib.ui import Ui_MainWindow
 
 DEBUG = False
 logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=logging.DEBUG)
@@ -27,17 +28,19 @@ class MyWindow(QMainWindow):
         super().__init__()
         
         # * Load the UI Page
-        uic.loadUi('lib/tcg_backup.ui', self)
-        
+        #uic.loadUi('lib/tcg.ui', self)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self) 
+
         # * Set Icon
-        self.btn_import_openapi_doc.setIcon(QIcon("./source/new.png"))
+        self.ui.btn_import_openapi_doc.setIcon(QIcon("./source/new.png"))
         self.setWindowIcon(QIcon("./source/fortinet.png"))
         
         # * Set Window Title
         self.setWindowTitle('FortiTCG (Test Case Generator)')
         
         # * Dynamic UI
-        self.specialActions = {
+        self.ui.specialActions = {
             "None": [],
             "Parser": {
                 "API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"]
@@ -48,340 +51,340 @@ class MyWindow(QMainWindow):
             }
         }
         
-        self.tab_22 = QtWidgets.QWidget()
-        self.tab_22.setObjectName("tab_22")
-        self.tabWidget_2.insertTab(4, self.tab_22, "Additional Action")
-        self.specialActionCategory = ["None", "Parser", "Analyzer"]
+        self.ui.tab_22 = QtWidgets.QWidget()
+        self.ui.tab_22.setObjectName("tab_22")
+        self.ui.tabWidget_2.insertTab(4, self.ui.tab_22, "Additional Action")
+        self.ui.specialActionCategory = ["None", "Parser", "Analyzer"]
         
-        self.groupBox = QGroupBox(self.tab_22)
-        self.groupBox.setGeometry(QtCore.QRect(10, 10, 600, 70))
-        self.groupBox.setTitle("Action")
-        self.label_action_type = QtWidgets.QLabel(self.groupBox)
-        self.label_action_type.setGeometry(QtCore.QRect(10, 30, 230, 30))
-        self.label_action_type.setText("Category :")
-        self.action_type = QComboBox(self.groupBox)
-        self.action_type.addItems(self.specialActionCategory)
-        self.action_type.setGeometry(QtCore.QRect(100, 30, 120, 30))
-        self.action_type.currentTextChanged.connect(self.action_type_changed)
-        self.label_additional_action = QtWidgets.QLabel(self.groupBox)
-        self.label_additional_action.setGeometry(QtCore.QRect(250, 30, 230, 30))
-        self.label_additional_action.setText("Action :")
-        self.additional_action = QComboBox(self.groupBox)
-        self.additional_action.setGeometry(QtCore.QRect(320, 30, 240, 30))
-        self.form = CustomForm(self.tab_22)
-        self.form.setGeometry(QtCore.QRect(10, 90, 400, 200))
-        self.additional_action.currentTextChanged.connect(self.additional_action_changed)
-        self.add_additional_action = QPushButton("Add Action", self.tab_22)
-        self.add_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
-        self.add_additional_action.clicked.connect(self.btn_add_special_action)
-        self.remove_additional_action = QPushButton("Remove Action", self.tab_22)
-        self.remove_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
-        self.remove_additional_action.clicked.connect(self.btn_remove_special_action)
-        self.table_additional_action = QtWidgets.QTreeWidget(parent=self.tab_22)
-        self.table_additional_action.setGeometry(QtCore.QRect(10, 340, 600, 400))
-        self.table_additional_action.setObjectName("table_additional_action")
-        self.table_additional_action.headerItem().setText(0, "Index")
-        self.table_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.groupBox = QGroupBox(self.ui.tab_22)
+        self.ui.groupBox.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.ui.groupBox.setTitle("Action")
+        self.ui.label_action_type = QtWidgets.QLabel(self.ui.groupBox)
+        self.ui.label_action_type.setGeometry(QtCore.QRect(10, 30, 230, 30))
+        self.ui.label_action_type.setText("Category :")
+        self.ui.action_type = QComboBox(self.ui.groupBox)
+        self.ui.action_type.addItems(self.ui.specialActionCategory)
+        self.ui.action_type.setGeometry(QtCore.QRect(100, 30, 120, 30))
+        self.ui.action_type.currentTextChanged.connect(self.action_type_changed)
+        self.ui.label_additional_action = QtWidgets.QLabel(self.ui.groupBox)
+        self.ui.label_additional_action.setGeometry(QtCore.QRect(250, 30, 230, 30))
+        self.ui.label_additional_action.setText("Action :")
+        self.ui.additional_action = QComboBox(self.ui.groupBox)
+        self.ui.additional_action.setGeometry(QtCore.QRect(320, 30, 240, 30))
+        self.ui.form = CustomForm(self.ui.tab_22)
+        self.ui.form.setGeometry(QtCore.QRect(10, 90, 400, 200))
+        self.ui.additional_action.currentTextChanged.connect(self.additional_action_changed)
+        self.ui.add_additional_action = QPushButton("Add Action", self.ui.tab_22)
+        self.ui.add_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
+        self.ui.add_additional_action.clicked.connect(self.btn_add_special_action)
+        self.ui.remove_additional_action = QPushButton("Remove Action", self.ui.tab_22)
+        self.ui.remove_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
+        self.ui.remove_additional_action.clicked.connect(self.btn_remove_special_action)
+        self.ui.table_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_22)
+        self.ui.table_additional_action.setGeometry(QtCore.QRect(10, 340, 600, 400))
+        self.ui.table_additional_action.setObjectName("table_additional_action")
+        self.ui.table_additional_action.headerItem().setText(0, "Index")
+        self.ui.table_additional_action.headerItem().setText(1, "Action Name")
             
         # *　Dependency Additonal Action
-        self.tab_50 = QtWidgets.QWidget()
-        self.tab_50.setObjectName("tab_50")
-        self.tabWidget_5.insertTab(3, self.tab_50, "Additional Action")
-        self.groupBox_2 = QGroupBox(self.tab_50)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 10, 600, 70))
-        self.groupBox_2.setTitle("Action")
-        self.label_action_type_2 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_action_type_2.setGeometry(QtCore.QRect(10, 26, 230, 30))
-        self.label_action_type_2.setText("Category :")
-        self.dependency_action_type = QComboBox(self.groupBox_2)
-        self.dependency_action_type.addItems(self.specialActionCategory)
-        self.dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
-        self.dependency_action_type.currentTextChanged.connect(self.dependency_action_type_changed) 
-        self.label_additional_action_2 = QtWidgets.QLabel(self.tab_50)
-        self.label_additional_action_2.setGeometry(QtCore.QRect(250, 35, 230, 30))
-        self.label_additional_action_2.setText("Action :")
-        self.dependency_additional_action = QComboBox(self.tab_50)
-        self.dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
-        self.dependency_form = CustomForm(self.tab_50)
-        self.dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
-        self.dependency_additional_action.currentTextChanged.connect(self.dependency_additional_action_changed)
-        self.add_dependency_additional_action = QPushButton("Add Action", self.tab_50)
-        self.add_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
-        self.add_dependency_additional_action.clicked.connect(self.btn_add_dependency_special_action)
-        self.remove_dependency_additional_action = QPushButton("Remove Action", self.tab_50)
-        self.remove_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
-        self.remove_dependency_additional_action.clicked.connect(self.btn_remove_dependency_special_action)
-        self.table_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_50)
-        self.table_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
-        self.table_dependency_additional_action.setObjectName("table_dependency_additional_action")
-        self.table_dependency_additional_action.headerItem().setText(0, "Index")
-        self.table_dependency_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.tab_50 = QtWidgets.QWidget()
+        self.ui.tab_50.setObjectName("tab_50")
+        self.ui.tabWidget_5.insertTab(3, self.ui.tab_50, "Additional Action")
+        self.ui.groupBox_2 = QGroupBox(self.ui.tab_50)
+        self.ui.groupBox_2.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.ui.groupBox_2.setTitle("Action")
+        self.ui.label_action_type_2 = QtWidgets.QLabel(self.ui.groupBox_2)
+        self.ui.label_action_type_2.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.ui.label_action_type_2.setText("Category :")
+        self.ui.dependency_action_type = QComboBox(self.ui.groupBox_2)
+        self.ui.dependency_action_type.addItems(self.ui.specialActionCategory)
+        self.ui.dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.ui.dependency_action_type.currentTextChanged.connect(self.dependency_action_type_changed) 
+        self.ui.label_additional_action_2 = QtWidgets.QLabel(self.ui.tab_50)
+        self.ui.label_additional_action_2.setGeometry(QtCore.QRect(250, 35, 230, 30))
+        self.ui.label_additional_action_2.setText("Action :")
+        self.ui.dependency_additional_action = QComboBox(self.ui.tab_50)
+        self.ui.dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
+        self.ui.dependency_form = CustomForm(self.ui.tab_50)
+        self.ui.dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.dependency_additional_action.currentTextChanged.connect(self.dependency_additional_action_changed)
+        self.ui.add_dependency_additional_action = QPushButton("Add Action", self.ui.tab_50)
+        self.ui.add_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
+        self.ui.add_dependency_additional_action.clicked.connect(self.btn_add_dependency_special_action)
+        self.ui.remove_dependency_additional_action = QPushButton("Remove Action", self.ui.tab_50)
+        self.ui.remove_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
+        self.ui.remove_dependency_additional_action.clicked.connect(self.btn_remove_dependency_special_action)
+        self.ui.table_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_50)
+        self.ui.table_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
+        self.ui.table_dependency_additional_action.setObjectName("table_dependency_additional_action")
+        self.ui.table_dependency_additional_action.headerItem().setText(0, "Index")
+        self.ui.table_dependency_additional_action.headerItem().setText(1, "Action Name")
         
         # * Test Plan Additional Action
-        self.tab_51 = QtWidgets.QWidget()
-        self.tab_51.setObjectName("tab_51")
-        self.tabWidget_testPlan.insertTab(4, self.tab_51, "Additional Action")
-        self.groupBox_3 = QGroupBox(self.tab_51)
-        self.groupBox_3.setGeometry(QtCore.QRect(10, 10, 600, 70))
-        self.groupBox_3.setTitle("Action")   
-        self.label_action_type_3 = QtWidgets.QLabel(self.groupBox_3)
-        self.label_action_type_3.setGeometry(QtCore.QRect(10, 26, 230, 30))
-        self.label_action_type_3.setText("Category :")
-        self.tc_action_type = QComboBox(self.groupBox_3)
-        self.tc_action_type.addItems(self.specialActionCategory)
-        self.tc_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
-        self.tc_action_type.currentTextChanged.connect(self.tc_action_type_changed)
-        self.label_tc_additional_action = QtWidgets.QLabel(self.tab_51)
-        self.label_tc_additional_action.setGeometry(QtCore.QRect(240, 35, 200, 30))
-        self.label_tc_additional_action.setText("Action :")
-        self.tc_additional_action = QComboBox(self.tab_51)
-        self.tc_additional_action.setGeometry(QtCore.QRect(300, 35, 250, 30))
-        self.tc_form = CustomForm(self.tab_51)
-        self.tc_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
-        self.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
-        self.add_tc_additional_action = QPushButton("Add Action", self.tab_51)
-        self.add_tc_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
-        self.add_tc_additional_action.clicked.connect(self.btn_tc_add_special_action)
-        self.remove_tc_additional_action = QPushButton("Remove Action", self.tab_51)
-        self.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
-        self.remove_tc_additional_action.clicked.connect(self.btn_tc_remove_special_action)
-        self.table_tc_additional_action = QtWidgets.QTreeWidget(parent=self.tab_51)
-        self.table_tc_additional_action.setGeometry(QtCore.QRect(10, 350, 600, 400))
-        self.table_tc_additional_action.setObjectName("table_tc_additional_action")
-        self.table_tc_additional_action.headerItem().setText(0, "Index")
-        self.table_tc_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.tab_51 = QtWidgets.QWidget()
+        self.ui.tab_51.setObjectName("tab_51")
+        self.ui.tabWidget_testPlan.insertTab(4, self.ui.tab_51, "Additional Action")
+        self.ui.groupBox_3 = QGroupBox(self.ui.tab_51)
+        self.ui.groupBox_3.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.ui.groupBox_3.setTitle("Action")   
+        self.ui.label_action_type_3 = QtWidgets.QLabel(self.ui.groupBox_3)
+        self.ui.label_action_type_3.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.ui.label_action_type_3.setText("Category :")
+        self.ui.tc_action_type = QComboBox(self.ui.groupBox_3)
+        self.ui.tc_action_type.addItems(self.ui.specialActionCategory)
+        self.ui.tc_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.ui.tc_action_type.currentTextChanged.connect(self.tc_action_type_changed)
+        self.ui.label_tc_additional_action = QtWidgets.QLabel(self.ui.tab_51)
+        self.ui.label_tc_additional_action.setGeometry(QtCore.QRect(240, 35, 200, 30))
+        self.ui.label_tc_additional_action.setText("Action :")
+        self.ui.tc_additional_action = QComboBox(self.ui.tab_51)
+        self.ui.tc_additional_action.setGeometry(QtCore.QRect(300, 35, 250, 30))
+        self.ui.tc_form = CustomForm(self.ui.tab_51)
+        self.ui.tc_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
+        self.ui.add_tc_additional_action = QPushButton("Add Action", self.ui.tab_51)
+        self.ui.add_tc_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
+        self.ui.add_tc_additional_action.clicked.connect(self.btn_tc_add_special_action)
+        self.ui.remove_tc_additional_action = QPushButton("Remove Action", self.ui.tab_51)
+        self.ui.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
+        self.ui.remove_tc_additional_action.clicked.connect(self.btn_tc_remove_special_action)
+        self.ui.table_tc_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_51)
+        self.ui.table_tc_additional_action.setGeometry(QtCore.QRect(10, 350, 600, 400))
+        self.ui.table_tc_additional_action.setObjectName("table_tc_additional_action")
+        self.ui.table_tc_additional_action.headerItem().setText(0, "Index")
+        self.ui.table_tc_additional_action.headerItem().setText(1, "Action Name")
         
         # * Test Plan Dependency Additional Action
-        self.tab_52 = QtWidgets.QWidget()
-        self.tab_52.setObjectName("tab_52")
-        self.table_tc_dependency_schema_2.insertTab(4, self.tab_52, "Additional Action")
-        self.groupBox_4 = QGroupBox(self.tab_52)
-        self.groupBox_4.setGeometry(QtCore.QRect(10, 10, 600, 70))
-        self.groupBox_4.setTitle("Action")   
-        self.label_action_type_4 = QtWidgets.QLabel(self.groupBox_4)
-        self.label_action_type_4.setGeometry(QtCore.QRect(10, 26, 230, 30))
-        self.label_action_type_4.setText("Category :")
-        self.tc_dependency_action_type = QComboBox(self.groupBox_4)
-        self.tc_dependency_action_type.addItems(self.specialActionCategory)
-        self.tc_dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
-        self.tc_dependency_action_type.currentTextChanged.connect(self.tc_dependency_action_type_changed)
-        self.label_tc_dependency_additional_action = QtWidgets.QLabel(self.tab_52)
-        self.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(250, 35, 230, 30))
-        self.label_tc_dependency_additional_action.setText("Action :")
-        self.tc_dependency_additional_action = QComboBox(self.tab_52)
-        self.tc_dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
-        self.tc_dependency_form = CustomForm(self.tab_52)
-        self.tc_dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
-        self.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
-        self.add_tc_dependency_additional_action = QPushButton("Add Action", self.tab_52)
-        self.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
-        self.add_tc_dependency_additional_action.clicked.connect(self.btn_tc_add_dependency_special_action)
-        self.remove_tc_dependency_additional_action = QPushButton("Remove Action", self.tab_52)
-        self.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
-        self.remove_tc_dependency_additional_action.clicked.connect(self.btn_tc_remove_dependency_special_action)
-        self.table_tc_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.tab_52)
-        self.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
-        self.table_tc_dependency_additional_action.setObjectName("table_tc_dependency_additional_action")
-        self.table_tc_dependency_additional_action.headerItem().setText(0, "Index")
-        self.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")               
+        self.ui.tab_52 = QtWidgets.QWidget()
+        self.ui.tab_52.setObjectName("tab_52")
+        self.ui.table_tc_dependency_schema_2.insertTab(4, self.ui.tab_52, "Additional Action")
+        self.ui.groupBox_4 = QGroupBox(self.ui.tab_52)
+        self.ui.groupBox_4.setGeometry(QtCore.QRect(10, 10, 600, 70))
+        self.ui.groupBox_4.setTitle("Action")   
+        self.ui.label_action_type_4 = QtWidgets.QLabel(self.ui.groupBox_4)
+        self.ui.label_action_type_4.setGeometry(QtCore.QRect(10, 26, 230, 30))
+        self.ui.label_action_type_4.setText("Category :")
+        self.ui.tc_dependency_action_type = QComboBox(self.ui.groupBox_4)
+        self.ui.tc_dependency_action_type.addItems(self.ui.specialActionCategory)
+        self.ui.tc_dependency_action_type.setGeometry(QtCore.QRect(100, 26, 120, 30))
+        self.ui.tc_dependency_action_type.currentTextChanged.connect(self.tc_dependency_action_type_changed)
+        self.ui.label_tc_dependency_additional_action = QtWidgets.QLabel(self.ui.tab_52)
+        self.ui.label_tc_dependency_additional_action.setGeometry(QtCore.QRect(250, 35, 230, 30))
+        self.ui.label_tc_dependency_additional_action.setText("Action :")
+        self.ui.tc_dependency_additional_action = QComboBox(self.ui.tab_52)
+        self.ui.tc_dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
+        self.ui.tc_dependency_form = CustomForm(self.ui.tab_52)
+        self.ui.tc_dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
+        self.ui.add_tc_dependency_additional_action = QPushButton("Add Action", self.ui.tab_52)
+        self.ui.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
+        self.ui.add_tc_dependency_additional_action.clicked.connect(self.btn_tc_add_dependency_special_action)
+        self.ui.remove_tc_dependency_additional_action = QPushButton("Remove Action", self.ui.tab_52)
+        self.ui.remove_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 50, 100, 30))
+        self.ui.remove_tc_dependency_additional_action.clicked.connect(self.btn_tc_remove_dependency_special_action)
+        self.ui.table_tc_dependency_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_52)
+        self.ui.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
+        self.ui.table_tc_dependency_additional_action.setObjectName("table_tc_dependency_additional_action")
+        self.ui.table_tc_dependency_additional_action.headerItem().setText(0, "Index")
+        self.ui.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")               
             
         # * Define the Button Event
-        self.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
-        self.btn_import_object_mapping_file.clicked.connect(self.import_object_mapping_file)
-        self.btn_generate_test_plan.clicked.connect(self.generate_test_plan)
-        self.btn_api_table_remove.clicked.connect(self.btn_api_table_remove_clicked)
-        self.btn_generation_rule_remove.clicked.connect(self.btn_generation_rule_remove_clicked)
-        self.btn_update_text_body.clicked.connect(self.btn_update_text_body_clicked)
-        self.btn_add_assertion_rule.clicked.connect(self.btn_add_assertion_rule_clicked)
-        self.btn_update_assertion_rule.clicked.connect(self.btn_update_assertion_rule_clicked)
-        self.btn_remove_assertion_rule.clicked.connect(self.btn_remove_assertion_rule_clicked)
-        self.btn_api_table_add_use_case.clicked.connect(self.btn_api_table_add_use_case_clicked)
-        self.btn_constraint_rule_apply.clicked.connect(self.btn_constraint_rule_apply_clicked)
-        self.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
-        self.btn_add_path.clicked.connect(self.btn_add_path_clicked)
-        self.btn_remove_query.clicked.connect(self.btn_remove_query_clicked)
-        self.btn_update_query.clicked.connect(self.btn_update_query_clicked)
-        self.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
-        self.btn_update_path.clicked.connect(self.btn_update_path_clicked)
-        self.btn_tc_remove_query.clicked.connect(self.btn_tc_remove_query_clicked)
-        self.btn_tc_update_query.clicked.connect(self.btn_tc_update_query_clicked)
-        self.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
-        self.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
-        self.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
-        self.btn_tc_add_dependency_rule.clicked.connect(self.btn_tc_add_dependency_rule_clicked)
-        self.btn_tc_remove_dependency_rule.clicked.connect(self.btn_tc_remove_dependency_rule_clicked)
-        self.btn_tc_update_dependency_rule.clicked.connect(self.btn_tc_update_dependency_rule_clicked)
-        self.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
-        self.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
-        self.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
-        self.btn_update_dependency_path.clicked.connect(self.btn_update_dependency_path_clicked)
-        self.btn_remove_dependency_query.clicked.connect(self.btn_remove_dependency_query_clicked)
-        self.btn_update_dependency_query.clicked.connect(self.btn_update_dependency_query_clicked)
-        self.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
-        self.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
-        self.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
-        self.btn_tc_dependency_constraint_rule_clear.clicked.connect(self.btn_tc_dependency_constraint_rule_clear_clicked)
-        self.btn_tc_dependency_constraint_rule_apply.clicked.connect(self.btn_tc_dependency_constraint_rule_apply_clicked)
-        self.btn_tc_dependency_generation_rule_remove.clicked.connect(self.btn_tc_dependency_generation_rule_remove_clicked)
-        self.btn_tc_dependency_generation_rule_build.clicked.connect(self.btn_tc_dependency_generation_rule_build_clicked)
-        self.btn_tc_add_assertion_rule.clicked.connect(self.btn_tc_add_assertion_rule_clicked)
-        self.btn_tc_update_assertion_rule.clicked.connect(self.btn_tc_update_assertion_rule_clicked)
-        self.btn_tc_remove_assertion_rule.clicked.connect(self.btn_tc_remove_assertion_rule_clicked)
-        self.btn_tc_dependency_update_text_body.clicked.connect(self.btn_tc_dependency_update_text_body_clicked)
-        self.btn_tc_remove_dependency_path.clicked.connect(self.btn_tc_remove_dependency_path_clicked)
-        self.btn_tc_update_dependency_path.clicked.connect(self.btn_tc_update_dependency_path_clicked)
-        self.btn_tc_remove_dependency_query.clicked.connect(self.btn_tc_remove_dependency_query_clicked)
-        self.btn_tc_update_dependency_query.clicked.connect(self.btn_tc_update_dependency_query_clicked)
-        self.btn_generate_test_case.clicked.connect(self.btn_generate_test_case_clicked)
-        self.btn_clear_dependency_rule.clicked.connect(self.btn_clear_dependency_rule_clicked)
-        self.btn_up_dependency_rule.clicked.connect(self.btn_up_dependency_rule_clicked)
-        self.btn_down_dependency_rule.clicked.connect(self.btn_down_dependency_rule_clicked)
-        self.btn_tc_clear_dependency_rule.clicked.connect(self.btn_tc_clear_dependency_rule_clicked)
-        self.btn_tc_up_dependency_rule.clicked.connect(self.btn_tc_up_dependency_rule_clicked)
-        self.btn_tc_down_dependency_rule.clicked.connect(self.btn_tc_down_dependency_rule_clicked)
-        self.btn_remove_test_case.clicked.connect(self.btn_remove_test_case_clicked)
-        self.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
-        self.btn_dependency_update_data_rule.clicked.connect(self.btn_dependency_update_data_rule_clicked)
-        self.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
+        self.ui.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
+        self.ui.btn_import_object_mapping_file.clicked.connect(self.import_object_mapping_file)
+        self.ui.btn_generate_test_plan.clicked.connect(self.generate_test_plan)
+        self.ui.btn_api_table_remove.clicked.connect(self.btn_api_table_remove_clicked)
+        self.ui.btn_generation_rule_remove.clicked.connect(self.btn_generation_rule_remove_clicked)
+        self.ui.btn_update_text_body.clicked.connect(self.btn_update_text_body_clicked)
+        self.ui.btn_add_assertion_rule.clicked.connect(self.btn_add_assertion_rule_clicked)
+        self.ui.btn_update_assertion_rule.clicked.connect(self.btn_update_assertion_rule_clicked)
+        self.ui.btn_remove_assertion_rule.clicked.connect(self.btn_remove_assertion_rule_clicked)
+        self.ui.btn_api_table_add_use_case.clicked.connect(self.btn_api_table_add_use_case_clicked)
+        self.ui.btn_constraint_rule_apply.clicked.connect(self.btn_constraint_rule_apply_clicked)
+        self.ui.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
+        self.ui.btn_add_path.clicked.connect(self.btn_add_path_clicked)
+        self.ui.btn_remove_query.clicked.connect(self.btn_remove_query_clicked)
+        self.ui.btn_update_query.clicked.connect(self.btn_update_query_clicked)
+        self.ui.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
+        self.ui.btn_update_path.clicked.connect(self.btn_update_path_clicked)
+        self.ui.btn_tc_remove_query.clicked.connect(self.btn_tc_remove_query_clicked)
+        self.ui.btn_tc_update_query.clicked.connect(self.btn_tc_update_query_clicked)
+        self.ui.btn_tc_remove_path.clicked.connect(self.btn_tc_remove_path_clicked)
+        self.ui.btn_tc_update_path.clicked.connect(self.btn_tc_update_path_clicked)
+        self.ui.btn_add_dependency_rule.clicked.connect(self.btn_add_dependency_rule_clicked)
+        self.ui.btn_tc_add_dependency_rule.clicked.connect(self.btn_tc_add_dependency_rule_clicked)
+        self.ui.btn_tc_remove_dependency_rule.clicked.connect(self.btn_tc_remove_dependency_rule_clicked)
+        self.ui.btn_tc_update_dependency_rule.clicked.connect(self.btn_tc_update_dependency_rule_clicked)
+        self.ui.btn_remove_dependency_rule.clicked.connect(self.btn_remove_dependency_rule_clicked)
+        self.ui.btn_update_dependency_rule.clicked.connect(self.btn_update_dependency_rule_clicked)
+        self.ui.btn_remove_dependency_path.clicked.connect(self.btn_remove_dependency_path_clicked)
+        self.ui.btn_update_dependency_path.clicked.connect(self.btn_update_dependency_path_clicked)
+        self.ui.btn_remove_dependency_query.clicked.connect(self.btn_remove_dependency_query_clicked)
+        self.ui.btn_update_dependency_query.clicked.connect(self.btn_update_dependency_query_clicked)
+        self.ui.btn_dependency_constraint_rule_clear.clicked.connect(self.btn_dependency_constraint_rule_clear_clicked)
+        self.ui.btn_dependency_constraint_rule_apply.clicked.connect(self.btn_dependency_constraint_rule_apply_clicked)
+        self.ui.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
+        self.ui.btn_tc_dependency_constraint_rule_clear.clicked.connect(self.btn_tc_dependency_constraint_rule_clear_clicked)
+        self.ui.btn_tc_dependency_constraint_rule_apply.clicked.connect(self.btn_tc_dependency_constraint_rule_apply_clicked)
+        self.ui.btn_tc_dependency_generation_rule_remove.clicked.connect(self.btn_tc_dependency_generation_rule_remove_clicked)
+        self.ui.btn_tc_dependency_generation_rule_build.clicked.connect(self.btn_tc_dependency_generation_rule_build_clicked)
+        self.ui.btn_tc_add_assertion_rule.clicked.connect(self.btn_tc_add_assertion_rule_clicked)
+        self.ui.btn_tc_update_assertion_rule.clicked.connect(self.btn_tc_update_assertion_rule_clicked)
+        self.ui.btn_tc_remove_assertion_rule.clicked.connect(self.btn_tc_remove_assertion_rule_clicked)
+        self.ui.btn_tc_dependency_update_text_body.clicked.connect(self.btn_tc_dependency_update_text_body_clicked)
+        self.ui.btn_tc_remove_dependency_path.clicked.connect(self.btn_tc_remove_dependency_path_clicked)
+        self.ui.btn_tc_update_dependency_path.clicked.connect(self.btn_tc_update_dependency_path_clicked)
+        self.ui.btn_tc_remove_dependency_query.clicked.connect(self.btn_tc_remove_dependency_query_clicked)
+        self.ui.btn_tc_update_dependency_query.clicked.connect(self.btn_tc_update_dependency_query_clicked)
+        self.ui.btn_generate_test_case.clicked.connect(self.btn_generate_test_case_clicked)
+        self.ui.btn_clear_dependency_rule.clicked.connect(self.btn_clear_dependency_rule_clicked)
+        self.ui.btn_up_dependency_rule.clicked.connect(self.btn_up_dependency_rule_clicked)
+        self.ui.btn_down_dependency_rule.clicked.connect(self.btn_down_dependency_rule_clicked)
+        self.ui.btn_tc_clear_dependency_rule.clicked.connect(self.btn_tc_clear_dependency_rule_clicked)
+        self.ui.btn_tc_up_dependency_rule.clicked.connect(self.btn_tc_up_dependency_rule_clicked)
+        self.ui.btn_tc_down_dependency_rule.clicked.connect(self.btn_tc_down_dependency_rule_clicked)
+        self.ui.btn_remove_test_case.clicked.connect(self.btn_remove_test_case_clicked)
+        self.ui.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
+        self.ui.btn_dependency_update_data_rule.clicked.connect(self.btn_dependency_update_data_rule_clicked)
+        self.ui.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
         
         # * Table's Item Click Event
-        self.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
-        self.table_test_plan_api_list.itemClicked.connect(self.test_plan_api_list_item_clicked)
-        self.table_assertion_rule.itemClicked.connect(self.table_assertion_rule_item_clicked)
-        self.table_generation_rule.itemClicked.connect(self.table_generation_rule_item_clicked)
-        self.table_dependency_generation_rule.itemClicked.connect(self.table_dependency_generation_rule_item_clicked)
-        self.table_query.itemClicked.connect(self.table_query_item_clicked)
-        self.table_path.itemClicked.connect(self.table_path_item_clicked)
-        self.table_tc_query.itemClicked.connect(self.table_tc_query_item_clicked)
-        self.table_tc_path.itemClicked.connect(self.table_tc_path_item_clicked)
-        self.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
-        self.list_tc_dependency_available_api_list.itemClicked.connect(self.list_tc_dependency_available_api_list_item_clicked)
-        self.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
-        self.table_dependency_query.itemClicked.connect(self.table_dependency_query_item_clicked)
-        self.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
-        self.table_tc_dependency_rule.itemClicked.connect(self.table_tc_dependency_item_clicked)
-        self.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
-        self.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
-        self.table_tc_dependency_query.itemClicked.connect(self.table_tc_dependency_query_item_clicked)
-        self.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
-        self.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
-        self.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
-        self.btn_export_test_plans.clicked.connect(self.btn_export_test_plans_clicked)
-        self.btn_update_info.clicked.connect(self.btn_update_info_clicked)
+        self.ui.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
+        self.ui.table_test_plan_api_list.itemClicked.connect(self.test_plan_api_list_item_clicked)
+        self.ui.table_assertion_rule.itemClicked.connect(self.table_assertion_rule_item_clicked)
+        self.ui.table_generation_rule.itemClicked.connect(self.table_generation_rule_item_clicked)
+        self.ui.table_dependency_generation_rule.itemClicked.connect(self.table_dependency_generation_rule_item_clicked)
+        self.ui.table_query.itemClicked.connect(self.table_query_item_clicked)
+        self.ui.table_path.itemClicked.connect(self.table_path_item_clicked)
+        self.ui.table_tc_query.itemClicked.connect(self.table_tc_query_item_clicked)
+        self.ui.table_tc_path.itemClicked.connect(self.table_tc_path_item_clicked)
+        self.ui.list_dependency_available_api_list.itemClicked.connect(self.list_dependency_available_api_list_item_clicked)
+        self.ui.list_tc_dependency_available_api_list.itemClicked.connect(self.list_tc_dependency_available_api_list_item_clicked)
+        self.ui.table_dependency_rule.itemClicked.connect(self.table_dependency_rule_item_clicked)
+        self.ui.table_dependency_query.itemClicked.connect(self.table_dependency_query_item_clicked)
+        self.ui.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
+        self.ui.table_tc_dependency_rule.itemClicked.connect(self.table_tc_dependency_item_clicked)
+        self.ui.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
+        self.ui.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
+        self.ui.table_tc_dependency_query.itemClicked.connect(self.table_tc_dependency_query_item_clicked)
+        self.ui.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
+        self.ui.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
+        self.ui.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
+        self.ui.btn_export_test_plans.clicked.connect(self.btn_export_test_plans_clicked)
+        self.ui.btn_update_info.clicked.connect(self.btn_update_info_clicked)
         
         # * Item Changed Event
-        self.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
-        self.comboBox_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_constraint_rule_src_action_changed)
-        self.comboBox_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_constraint_rule_dst_action_changed)
-        self.comboBox_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_dst_action_changed)
-        self.comboBox_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_src_action_changed)
-        self.comboBox_tc_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_src_action_changed)
-        self.comboBox_tc_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_dst_action_changed)
-        self.line_api_search.textChanged.connect(self.line_api_search_text_changed)
-        self.line_tc_api_search.textChanged.connect(self.line_tc_api_search_text_changed)
+        self.ui.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
+        self.ui.comboBox_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_constraint_rule_src_action_changed)
+        self.ui.comboBox_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_constraint_rule_dst_action_changed)
+        self.ui.comboBox_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_dst_action_changed)
+        self.ui.comboBox_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_dependency_constraint_rule_src_action_changed)
+        self.ui.comboBox_tc_dependency_constraint_rule_src_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_src_action_changed)
+        self.ui.comboBox_tc_dependency_constraint_rule_dst_action.currentTextChanged.connect(self.comboBox_tc_dependency_constraint_rule_dst_action_changed)
+        self.ui.line_api_search.textChanged.connect(self.line_api_search_text_changed)
+        self.ui.line_tc_api_search.textChanged.connect(self.line_tc_api_search_text_changed)
         
         # * Checkbox Event
-        self.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
-        self.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
-        self.checkBox_tc_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_dependency_constraint_rule_wildcard_changed)
+        self.ui.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
+        self.ui.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
+        self.ui.checkBox_tc_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_dependency_constraint_rule_wildcard_changed)
         
         # * Completer Event
-        self.search_completer = QCompleter()
-        self.line_api_search.setCompleter(self.search_completer)
-        self.tc_search_completer = QCompleter()
-        self.line_tc_api_search.setCompleter(self.tc_search_completer)
+        self.ui.search_completer = QCompleter()
+        self.ui.line_api_search.setCompleter(self.ui.search_completer)
+        self.ui.tc_search_completer = QCompleter()
+        self.ui.line_tc_api_search.setCompleter(self.ui.tc_search_completer)
         
         # * Convert / Validate Tab
-        self.web_page = QtWidgets.QWidget()
-        self.web_page_layout = QtWidgets.QVBoxLayout(self.web_page)
-        self.web_view = QtWebEngineWidgets.QWebEngineView(self.web_page)
-        self.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
-        self.web_page_layout.addWidget(self.web_view)
-        self.tabTCG.insertTab(5, self.web_page, "Convert / Validate")
-        self.setCentralWidget(self.tabTCG)
+        self.ui.web_page = QtWidgets.QWidget()
+        self.ui.web_page_layout = QtWidgets.QVBoxLayout(self.ui.web_page)
+        self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
+        self.ui.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
+        self.ui.web_page_layout.addWidget(self.ui.web_view)
+        self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
+        self.setCentralWidget(self.ui.tabTCG)
         
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
-        self.additional_action.clear()
-        category = self.action_type.currentText()
+        self.ui.additional_action.clear()
+        category = self.ui.action_type.currentText()
         if category != "None":
-            actions = self.specialActions[category].keys()
-            self.additional_action.addItems(actions)
+            actions = self.ui.specialActions[category].keys()
+            self.ui.additional_action.addItems(actions)
         
     def additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        category = self.action_type.currentText()
-        action = self.additional_action.currentText()
+        category = self.ui.action_type.currentText()
+        action = self.ui.additional_action.currentText()
         if category != "None" and action != "":
-            self.form.clear_form()
-            fields = self.specialActions[category][action]
-            self.form.load_form(action, fields)
+            self.ui.form.clear_form()
+            fields = self.ui.specialActions[category][action]
+            self.ui.form.load_form(action, fields)
             
     def dependency_action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
-        self.dependency_additional_action.clear()
-        category = self.dependency_action_type.currentText()
+        self.ui.dependency_additional_action.clear()
+        category = self.ui.dependency_action_type.currentText()
         if category != "None":
-            actions = self.specialActions[category].keys()
-            self.dependency_additional_action.addItems(actions)
+            actions = self.ui.specialActions[category].keys()
+            self.ui.dependency_additional_action.addItems(actions)
         
     def dependency_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        category = self.dependency_action_type.currentText()
-        action = self.dependency_additional_action.currentText()
+        category = self.ui.dependency_action_type.currentText()
+        action = self.ui.dependency_additional_action.currentText()
         if category != "None" and action != "":
-            self.dependency_form.clear_form()
-            fields = self.specialActions[category][action]
-            self.dependency_form.load_form(action, fields)
+            self.ui.dependency_form.clear_form()
+            fields = self.ui.specialActions[category][action]
+            self.ui.dependency_form.load_form(action, fields)
             
     def tc_action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
-        self.tc_additional_action.clear()
-        category = self.tc_action_type.currentText()
+        self.ui.tc_additional_action.clear()
+        category = self.ui.tc_action_type.currentText()
         if category != "None":
-            actions = self.specialActions[category].keys()
-            self.tc_additional_action.addItems(actions)
+            actions = self.ui.specialActions[category].keys()
+            self.ui.tc_additional_action.addItems(actions)
         
     def tc_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        category = self.tc_action_type.currentText()
-        action = self.tc_additional_action.currentText()
+        category = self.ui.tc_action_type.currentText()
+        action = self.ui.tc_additional_action.currentText()
         if category != "None" and action != "":
-            self.tc_form.clear_form()
-            fields = self.specialActions[category][action]
-            self.tc_form.load_form(action, fields)
+            self.ui.tc_form.clear_form()
+            fields = self.ui.specialActions[category][action]
+            self.ui.tc_form.load_form(action, fields)
 
     def tc_dependency_action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
-        self.tc_dependency_additional_action.clear()
-        category = self.tc_dependency_action_type.currentText()
+        self.ui.tc_dependency_additional_action.clear()
+        category = self.ui.tc_dependency_action_type.currentText()
         if category != "None":
-            actions = self.specialActions[category].keys()
-            self.tc_dependency_additional_action.addItems(actions)
+            actions = self.ui.specialActions[category].keys()
+            self.ui.tc_dependency_additional_action.addItems(actions)
         
     def tc_dependency_additional_action_changed(self):
         """ When the additional action is changed by the user, the form will be reloaded. """
-        category = self.tc_dependency_action_type.currentText()
-        action = self.tc_dependency_additional_action.currentText()
+        category = self.ui.tc_dependency_action_type.currentText()
+        action = self.ui.tc_dependency_additional_action.currentText()
         if category != "None" and action != "":
-            self.tc_dependency_form.clear_form()
-            fields = self.specialActions[category][action]
-            self.tc_dependency_form.load_form(action, fields)
+            self.ui.tc_dependency_form.clear_form()
+            fields = self.ui.specialActions[category][action]
+            self.ui.tc_dependency_form.load_form(action, fields)
         
     def btn_tc_add_dependency_special_action(self):
         """ Add the additional action to a dependency. """
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         operation_id = test_plan_parent_item.parent().text(0)
         
-        values = self.tc_dependency_form.get_values(self.tc_dependency_additional_action.currentText())
+        values = self.ui.tc_dependency_form.get_values(self.ui.tc_dependency_additional_action.currentText())
         
         file_path = "./test_plan/" + operation_id + ".json"
         if os.path.exists(file_path):
@@ -412,7 +415,7 @@ class MyWindow(QMainWindow):
                     operation_id,
                     test_case_id,
                     test_point_id,
-                    self.table_tc_dependency_additional_action,
+                    self.ui.table_tc_dependency_additional_action,
                     dependency_type,
                     dependency_sequence_num,
                 )
@@ -421,17 +424,17 @@ class MyWindow(QMainWindow):
     
     def btn_tc_remove_dependency_special_action(self):
         """ Remove the additional action from a dependency. """
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         operation_id = test_plan_parent_item.parent().text(0)
-        additional_action_index = self.table_tc_dependency_additional_action.selectedItems()[0].text(0)
+        additional_action_index = self.ui.table_tc_dependency_additional_action.selectedItems()[0].text(0)
         
         file_path = "./test_plan/" + operation_id + ".json"
         if os.path.exists(file_path):
@@ -454,7 +457,7 @@ class MyWindow(QMainWindow):
                     operation_id,
                     test_case_id,
                     test_point_id,
-                    self.table_tc_dependency_additional_action,
+                    self.ui.table_tc_dependency_additional_action,
                     dependency_type,
                     dependency_sequence_num,
                 )
@@ -463,20 +466,20 @@ class MyWindow(QMainWindow):
     
     def btn_tc_add_special_action(self):
         """ Add the additional action to a test case. """
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
-            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
             test_plan_parent_item = test_plan_selected_item.parent()
             operation_id = test_plan_parent_item.parent().text(0)
             test_case_id = test_plan_selected_item.text(1).split(".")[0]
             test_point_id = test_plan_selected_item.text(1).split(".")[1]
-            action_name = self.tc_additional_action.currentText()
-            values = self.tc_form.get_values(action_name)
+            action_name = self.ui.tc_additional_action.currentText()
+            values = self.ui.tc_form.get_values(action_name)
             
             file_path = "./test_plan/" + operation_id + ".json"
             if os.path.exists(file_path):
@@ -507,7 +510,7 @@ class MyWindow(QMainWindow):
                     add_action = json.load(f)
                     GeneralTool.parse_tc_additional_action_rule(
                         operation_id,
-                        self.table_tc_additional_action,
+                        self.ui.table_tc_additional_action,
                         test_case_id,
                         test_point_id,
                     )
@@ -515,19 +518,19 @@ class MyWindow(QMainWindow):
                 logging.error(f"Failed to load the test plan of {operation_id}.")
     def btn_tc_remove_special_action(self):
         """ Remove the additional action from a test case. """
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
-            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
             test_plan_parent_item = test_plan_selected_item.parent()
             operation_id = test_plan_parent_item.parent().text(0)
             test_case_id = test_plan_selected_item.text(1).split(".")[0]
             test_point_id = test_plan_selected_item.text(1).split(".")[1]
-            action_index = self.table_tc_additional_action.selectedItems()[0].text(0)
+            action_index = self.ui.table_tc_additional_action.selectedItems()[0].text(0)
             
             file_path = "./test_plan/" + operation_id + ".json"
             if os.path.exists(file_path):
@@ -549,7 +552,7 @@ class MyWindow(QMainWindow):
                     add_action = json.load(f)
                     GeneralTool.parse_tc_additional_action_rule(
                         operation_id,
-                        self.table_tc_additional_action,
+                        self.ui.table_tc_additional_action,
                         test_case_id,
                         test_point_id,
                     )
@@ -558,17 +561,17 @@ class MyWindow(QMainWindow):
     
     def btn_add_dependency_special_action(self):
         """ Add the additional action to a dependency. """
-        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0 or self.ui.table_dependency_rule.selectedItems()[0].parent() is None:
             return
-        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
             return
         
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
         
-        values = self.dependency_form.get_values(self.dependency_additional_action.currentText())
+        values = self.ui.dependency_form.get_values(self.ui.dependency_additional_action.currentText())
 
         add_action = {}
         file_path = "./DependencyRule/" + operation_id + ".json"
@@ -604,23 +607,23 @@ class MyWindow(QMainWindow):
                     operation_id,
                     dependency_type,
                     dependency_sequence_num,
-                    self.table_dependency_additional_action
+                    self.ui.table_dependency_additional_action
                 )    
             
     def btn_remove_dependency_special_action(self):
         """ Remove the additional action from a dependency. """
-        if len(self.table_dependency_additional_action.selectedItems()) == 0:
+        if len(self.ui.table_dependency_additional_action.selectedItems()) == 0:
             return
-        elif self.table_dependency_additional_action.selectedItems()[0].parent() is None:
+        elif self.ui.table_dependency_additional_action.selectedItems()[0].parent() is None:
             return
-        elif self.table_dependency_additional_action.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_dependency_additional_action.selectedItems()[0].parent().parent() is not None:
             return
         
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        additional_action_sequence_num = self.table_dependency_additional_action.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        additional_action_sequence_num = self.ui.table_dependency_additional_action.selectedItems()[0].text(0)
         
         file_path = "./DependencyRule/" + operation_id + ".json"
         if os.path.exists(file_path):
@@ -643,17 +646,17 @@ class MyWindow(QMainWindow):
                     operation_id,
                     dependency_type,
                     dependency_sequence_num,
-                    self.table_dependency_additional_action
+                    self.ui.table_dependency_additional_action
                 )                                  
         
     def btn_add_special_action(self):
         """ Add the additional action to a test case. """
-        if len(self.table_api_tree.selectedItems()) == 0 or self.table_api_tree.selectedItems()[0].parent() == None:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or self.ui.table_api_tree.selectedItems()[0].parent() == None:
             return
 
-        selected_item = self.table_api_tree.selectedItems()[0]
-        operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        values = self.form.get_values(self.additional_action.currentText())
+        selected_item = self.ui.table_api_tree.selectedItems()[0]
+        operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        values = self.ui.form.get_values(self.ui.additional_action.currentText())
         
         add_action = {}
         file_path = "./AdditionalAction/" + operation_id + ".json"
@@ -673,20 +676,20 @@ class MyWindow(QMainWindow):
                 
             with open(file_path, "r") as file:
                 add_action = json.load(file)
-                GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
+                GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
 
     def btn_remove_special_action(self):
         """ Remove the additional action from a test case. """
-        if len(self.table_additional_action.selectedItems()) == 0 or self.table_api_tree.selectedItems()[0] == None:
+        if len(self.ui.table_additional_action.selectedItems()) == 0 or self.ui.table_api_tree.selectedItems()[0] == None:
             return
-        elif self.table_additional_action.selectedItems()[0].parent() == None:
+        elif self.ui.table_additional_action.selectedItems()[0].parent() == None:
             return
-        elif self.table_additional_action.selectedItems()[0].parent().parent() != None:
+        elif self.ui.table_additional_action.selectedItems()[0].parent().parent() != None:
             return
 
-        selected_item = self.table_additional_action.selectedItems()[0]
+        selected_item = self.ui.table_additional_action.selectedItems()[0]
         parent_item = selected_item.parent()
-        operation_id = self.table_api_tree.selectedItems()[0].text(4)
+        operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
         action_sequence_num = selected_item.text(0)
         
         file_path = "./AdditionalAction/" + operation_id + ".json"
@@ -703,17 +706,17 @@ class MyWindow(QMainWindow):
                 logging.info("Remove additional action rule successfully.")
             else:
                 logging.error("Remove additional action rule failed.")
-        GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action) 
+        GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action) 
         
     def btn_update_info_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
                 return
                 
-        description = self.textbox_tc_description.text()
-        request_name = self.textbox_tc_request_name.text()
-        response_name = self.textbox_tc_response_name.text()
+        description = self.ui.textbox_tc_description.text()
+        request_name = self.ui.textbox_tc_request_name.text()
+        response_name = self.ui.textbox_tc_response_name.text()
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         operation_id = test_plan_parent_item.parent().text(0)
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
@@ -732,7 +735,7 @@ class MyWindow(QMainWindow):
             logging.info(f"Update {file_path} successfully.")
     
     def btn_remove_test_case_clicked(self):
-        selected_items = self.table_test_plan_api_list.selectedItems()
+        selected_items = self.ui.table_test_plan_api_list.selectedItems()
         if not selected_items:
             return
 
@@ -794,16 +797,16 @@ class MyWindow(QMainWindow):
                 logging.info(f"Remove {test_plan_file} successfully")
 
         GeneralTool.clean_ui_content([
-            self.table_test_plan_api_list,
-            self.table_tc_assertion_rule,
-            self.table_tc_dependency_rule,
-            self.table_tc_dependency_path,
-            self.table_tc_dependency_generation_rule,
-            self.textbox_tc_dependency_requestbody,
-            self.table_tc_path,
-            self.text_body,
+            self.ui.table_test_plan_api_list,
+            self.ui.table_tc_assertion_rule,
+            self.ui.table_tc_dependency_rule,
+            self.ui.table_tc_dependency_path,
+            self.ui.table_tc_dependency_generation_rule,
+            self.ui.textbox_tc_dependency_requestbody,
+            self.ui.table_tc_path,
+            self.ui.text_body,
         ])
-        GeneralTool.render_test_plan_files(self.table_test_plan_api_list)
+        GeneralTool.render_test_plan_files(self.ui.table_test_plan_api_list)
 
     def btn_export_test_plans_clicked(self):
         """ To export the test plans to the local folder. """
@@ -847,37 +850,37 @@ class MyWindow(QMainWindow):
             
     def table_robot_file_list_item_clicked(self):
         """ Render the robot file content when the item is clicked. """
-        if len(self.table_robot_file_list.selectedItems()) == 0:
+        if len(self.ui.table_robot_file_list.selectedItems()) == 0:
             return
         
-        file_name = self.table_robot_file_list.selectedItems()[0].text(0)
+        file_name = self.ui.table_robot_file_list.selectedItems()[0].text(0)
         with open(f"./TestCases/RESTful_API/{file_name}", "r") as f:
             content = f.read()
-        self.text_robot_file.setText(content)
+        self.ui.text_robot_file.setText(content)
         
     def btn_tc_dependency_update_data_rule_clicked(self):
-        if len(self.table_tc_dependency_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
                 
-        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_tc_dependency_generation_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         field_name = selected_item.text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_index = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.textbox_tc_dependency_data_rule_value.text()
-            data_generator = self.comboBox_tc_dependency_data_rule_data_generator.currentText()
-            data_length = self.textbox_tc_dependency_data_rule_data_length.text()
-            required_value = self.comboBox_tc_dependency_data_rule_required.currentText()
-            nullalbe_value = self.comboBox_tc_dependency_data_rule_nullable.currentText()
-            regex_pattern = self.textbox_tc_dependency_data_rule_regex_pattern.text()
+            default_value = self.ui.textbox_tc_dependency_data_rule_value.text()
+            data_generator = self.ui.comboBox_tc_dependency_data_rule_data_generator.currentText()
+            data_length = self.ui.textbox_tc_dependency_data_rule_data_length.text()
+            required_value = self.ui.comboBox_tc_dependency_data_rule_required.currentText()
+            nullalbe_value = self.ui.comboBox_tc_dependency_data_rule_nullable.currentText()
+            regex_pattern = self.ui.textbox_tc_dependency_data_rule_regex_pattern.text()
             
             with open(f"./test_plan/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -900,45 +903,45 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
             GeneralTool.clean_ui_content([
-                self.table_tc_dependency_generation_rule,
-                self.textbox_tc_dependency_data_rule_type,
-                self.textbox_tc_dependency_data_rule_format,
-                self.textbox_tc_dependency_data_rule_value,
-                self.comboBox_tc_dependency_data_rule_data_generator,
-                self.textbox_tc_dependency_data_rule_data_length,
-                self.comboBox_tc_dependency_data_rule_required,
-                self.comboBox_tc_dependency_data_rule_nullable,
-                self.textbox_tc_dependency_data_rule_regex_pattern,
+                self.ui.table_tc_dependency_generation_rule,
+                self.ui.textbox_tc_dependency_data_rule_type,
+                self.ui.textbox_tc_dependency_data_rule_format,
+                self.ui.textbox_tc_dependency_data_rule_value,
+                self.ui.comboBox_tc_dependency_data_rule_data_generator,
+                self.ui.textbox_tc_dependency_data_rule_data_length,
+                self.ui.comboBox_tc_dependency_data_rule_required,
+                self.ui.comboBox_tc_dependency_data_rule_nullable,
+                self.ui.textbox_tc_dependency_data_rule_regex_pattern,
             ])
             GeneralTool.parse_tc_dependency_generation_rule(
                 operation_id, 
-                self.table_tc_dependency_generation_rule,
+                self.ui.table_tc_dependency_generation_rule,
                 test_case_id,
                 test_point_id,
                 dependency_type,
                 dependency_index
             )
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency_generation_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_generation_rule)
         
     def btn_dependency_update_data_rule_clicked(self):
-        if len(self.table_dependency_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0:
             return
         
-        selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_dependency_generation_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         field_name = selected_item.text(0)
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
 
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.textbox_dependency_data_rule_value.text()
-            data_generator = self.comboBox_dependency_data_rule_data_generator.currentText()
-            data_length = self.textbox_dependency_data_rule_data_length.text()
-            required_value = self.comboBox_dependency_data_rule_required.currentText()
-            nullalbe_value = self.comboBox_dependency_data_rule_nullable.currentText()
-            regex_pattern = self.textbox_dependency_data_rule_regex_pattern.text()
+            default_value = self.ui.textbox_dependency_data_rule_value.text()
+            data_generator = self.ui.comboBox_dependency_data_rule_data_generator.currentText()
+            data_length = self.ui.textbox_dependency_data_rule_data_length.text()
+            required_value = self.ui.comboBox_dependency_data_rule_required.currentText()
+            nullalbe_value = self.ui.comboBox_dependency_data_rule_nullable.currentText()
+            regex_pattern = self.ui.textbox_dependency_data_rule_regex_pattern.text()
             
             with open(f"./DependencyRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -960,41 +963,41 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
             GeneralTool.clean_ui_content([
-                self.table_dependency_generation_rule,
-                self.textbox_dependency_data_rule_type,
-                self.textbox_dependency_data_rule_format,
-                self.textbox_dependency_data_rule_value,
-                self.comboBox_dependency_data_rule_data_generator,
-                self.textbox_dependency_data_rule_data_length,
-                self.comboBox_dependency_data_rule_required,
-                self.comboBox_dependency_data_rule_nullable,
-                self.textbox_dependency_data_rule_regex_pattern,
+                self.ui.table_dependency_generation_rule,
+                self.ui.textbox_dependency_data_rule_type,
+                self.ui.textbox_dependency_data_rule_format,
+                self.ui.textbox_dependency_data_rule_value,
+                self.ui.comboBox_dependency_data_rule_data_generator,
+                self.ui.textbox_dependency_data_rule_data_length,
+                self.ui.comboBox_dependency_data_rule_required,
+                self.ui.comboBox_dependency_data_rule_nullable,
+                self.ui.textbox_dependency_data_rule_regex_pattern,
             ])
             GeneralTool.parse_dependency_generation_rule(
                 operation_id,
-                self.table_dependency_generation_rule,
+                self.ui.table_dependency_generation_rule,
                 dependency_type,
                 dependency_index
             )
         
     def btn_update_data_rule_clicked(self):
         """ Update the new data rule to the generation rule. """
-        if len(self.table_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_generation_rule.selectedItems()) == 0:
             return
         
-        selected_item = self.table_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_generation_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         field_name = selected_item.text(0)
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
 
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.textbox_data_rule_value.text()
-            data_generator = self.comboBox_data_rule_data_generator.currentText()
-            data_length = self.textbox_data_rule_data_length.text()
-            required_value = self.comboBox_data_rule_required.currentText()
-            nullalbe_value = self.comboBox_data_rule_nullable.currentText()
-            regex_pattern = self.textbox_data_rule_regex_pattern.text()
+            default_value = self.ui.textbox_data_rule_value.text()
+            data_generator = self.ui.comboBox_data_rule_data_generator.currentText()
+            data_length = self.ui.textbox_data_rule_data_length.text()
+            required_value = self.ui.comboBox_data_rule_required.currentText()
+            nullalbe_value = self.ui.comboBox_data_rule_nullable.currentText()
+            regex_pattern = self.ui.textbox_data_rule_regex_pattern.text()
         
             with open(f"./GenerationRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -1016,125 +1019,125 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
             GeneralTool.clean_ui_content([
-                self.table_generation_rule,
-                self.textbox_data_rule_type,
-                self.textbox_data_rule_format,
-                self.textbox_data_rule_value,
-                self.comboBox_data_rule_data_generator,
-                self.textbox_data_rule_data_length,
-                self.comboBox_data_rule_required,
-                self.comboBox_data_rule_nullable,
-                self.textbox_data_rule_regex_pattern,
+                self.ui.table_generation_rule,
+                self.ui.textbox_data_rule_type,
+                self.ui.textbox_data_rule_format,
+                self.ui.textbox_data_rule_value,
+                self.ui.comboBox_data_rule_data_generator,
+                self.ui.textbox_data_rule_data_length,
+                self.ui.comboBox_data_rule_required,
+                self.ui.comboBox_data_rule_nullable,
+                self.ui.textbox_data_rule_regex_pattern,
             ])
-            GeneralTool.parse_generation_rule(operation_id, self.table_generation_rule)
-            GeneralTool.expand_and_resize_tree(self.table_generation_rule)
+            GeneralTool.parse_generation_rule(operation_id, self.ui.table_generation_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_generation_rule)
         
     def btn_tc_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
         GeneralTool.clean_ui_content([
-            self.line_tc_api_search,
-            self.textbox_tc_dependency_return_variable_name,
-            self.table_tc_dependency_generation_rule,
-            self.textbox_tc_dependency_requestbody,
-            self.table_tc_dependency_path,
+            self.ui.line_tc_api_search,
+            self.ui.textbox_tc_dependency_return_variable_name,
+            self.ui.table_tc_dependency_generation_rule,
+            self.ui.textbox_tc_dependency_requestbody,
+            self.ui.table_tc_dependency_path,
         ])
-        self.comboBox_tc_dependency_type.setEnabled(True)
-        self.line_tc_api_search.setEnabled(True)
-        self.list_tc_dependency_available_api_list.clearSelection()
-        self.table_tc_dependency_rule.clearSelection()
+        self.ui.comboBox_tc_dependency_type.setEnabled(True)
+        self.ui.line_tc_api_search.setEnabled(True)
+        self.ui.list_tc_dependency_available_api_list.clearSelection()
+        self.ui.table_tc_dependency_rule.clearSelection()
           
     def btn_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
         GeneralTool.clean_ui_content([
-            self.line_api_search,
-            self.textbox_dependency_return_variable_name,
-            self.table_dependency_generation_rule,
-            self.table_dependency_path,
+            self.ui.line_api_search,
+            self.ui.textbox_dependency_return_variable_name,
+            self.ui.table_dependency_generation_rule,
+            self.ui.table_dependency_path,
         ])
-        self.comboBox_dependency_type.setEnabled(True)
-        self.list_dependency_available_api_list.clearSelection()
-        self.table_dependency_rule.clearSelection()
+        self.ui.comboBox_dependency_type.setEnabled(True)
+        self.ui.list_dependency_available_api_list.clearSelection()
+        self.ui.table_dependency_rule.clearSelection()
             
     def btn_up_dependency_rule_clicked(self):
-        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0 or self.ui.table_dependency_rule.selectedItems()[0].parent() is None:
             return
-        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
             return
 
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
 
-        GeneralTool.update_dependency_rule_index(self, operation_id, dependency_type, dependency_index, "up")
+        GeneralTool.update_dependency_rule_index(self.ui, operation_id, dependency_type, dependency_index, "up")
         
     def btn_tc_up_dependency_rule_clicked(self):
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
-        elif self.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         GeneralTool.update_tc_dependency_rule_index(
-            self, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "up")
+            self.ui, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "up")
     
     def btn_tc_down_dependency_rule_clicked(self):
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
-        elif self.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_tc_dependency_rule.selectedItems()[0].parent().parent() is not None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         GeneralTool.update_tc_dependency_rule_index(
-            self, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "down")
+            self.ui, operation_id, test_case_id, test_point_id, dependency_type, dependency_sequence_num, "down")
          
     def btn_down_dependency_rule_clicked(self):
-        if len(self.table_dependency_rule.selectedItems()) == 0 or self.table_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0 or self.ui.table_dependency_rule.selectedItems()[0].parent() is None:
                 return
-        elif self.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
+        elif self.ui.table_dependency_rule.selectedItems()[0].parent().parent() is not None:
             return
 
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         operation_id = api_selected_item.text(4)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_index = self.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
 
-        GeneralTool.update_dependency_rule_index(self, operation_id, dependency_type, dependency_index, "down")
+        GeneralTool.update_dependency_rule_index(self.ui, operation_id, dependency_type, dependency_index, "down")
         
     def btn_generate_test_case_clicked(self):
         
         GeneralTool.teardown_folder_files(["./TestCases/RESTful_API"])  
         Render.generate_robot_test_case()
-        self.tabTCG.setCurrentIndex(2)
-        GeneralTool.clean_ui_content([self.table_robot_file_list, self.text_robot_file])
-        GeneralTool.rander_robot_file_list(self.table_robot_file_list)
+        self.ui.tabTCG.setCurrentIndex(2)
+        GeneralTool.clean_ui_content([self.ui.table_robot_file_list, self.ui.text_robot_file])
+        GeneralTool.rander_robot_file_list(self.ui.table_robot_file_list)
         
     def btn_tc_remove_dependency_query_clicked(self):
-        if len(self.table_tc_dependency_query.selectedItems()) == 0 or self.table_tc_dependency_query.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_query.selectedItems()) == 0 or self.ui.table_tc_dependency_query.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        name = self.textbox_tc_query_dependency_name.text()
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_query_dependency_name.text()
         
         file_path = f"./test_plan/{operation_id}.json"
         with open(file_path, "r+") as f:
@@ -1145,26 +1148,26 @@ class MyWindow(QMainWindow):
             f.truncate()
             logging.info(f"Dependency Query Rule {result} is removed from {operation_id}.json")
             
-        GeneralTool.clean_ui_content([self.table_tc_dependency_query, self.textbox_tc_query_dependency_name, self.textbox_tc_query_dependency_value])
+        GeneralTool.clean_ui_content([self.ui.table_tc_dependency_query, self.ui.textbox_tc_query_dependency_name, self.ui.textbox_tc_query_dependency_value])
         root_item = QTreeWidgetItem(["query"])
-        self.table_tc_dependency_query.addTopLevelItem(root_item)
+        self.ui.table_tc_dependency_query.addTopLevelItem(root_item)
         query_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rules, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_query, level=3)
         
     def btn_tc_update_dependency_query_clicked(self):
-        if len(self.table_tc_dependency_query.selectedItems()) == 0 or self.table_tc_dependency_query.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_query.selectedItems()) == 0 or self.ui.table_tc_dependency_query.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        name = self.textbox_tc_query_dependency_name.text()
-        value = self.textbox_tc_query_dependency_value.text()
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_query_dependency_name.text()
+        value = self.ui.textbox_tc_query_dependency_value.text()
         
         file_path = f"./test_plan/{operation_id}.json"
         with open(file_path, "r+") as f:
@@ -1184,25 +1187,25 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Update dependency query rule in {file_path} failed")
         
-        GeneralTool.clean_ui_content([self.table_tc_dependency_query, self.textbox_tc_query_dependency_name, self.textbox_tc_query_dependency_value])
+        GeneralTool.clean_ui_content([self.ui.table_tc_dependency_query, self.ui.textbox_tc_query_dependency_name, self.ui.textbox_tc_query_dependency_value])
         root_item = QTreeWidgetItem(["query"])
-        self.table_tc_dependency_query.addTopLevelItem(root_item)
+        self.ui.table_tc_dependency_query.addTopLevelItem(root_item)
         query_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rules, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_query, level=3)
         
     def btn_tc_remove_dependency_path_clicked(self):
-        if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_path.selectedItems()) == 0 or self.ui.table_tc_dependency_path.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        name = self.textbox_tc_path_dependency_name.text()
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_path_dependency_name.text()
         
         file_path = f"./test_plan/{operation_id}.json"
         with open(file_path, "r+") as f:
@@ -1213,26 +1216,26 @@ class MyWindow(QMainWindow):
             f.truncate()
             logging.info(f"Dependency Path Rule {result} is removed from {operation_id}.json")
             
-        GeneralTool.clean_ui_content([self.table_tc_dependency_path, self.textbox_tc_path_dependency_name, self.textbox_tc_path_dependency_value])
+        GeneralTool.clean_ui_content([self.ui.table_tc_dependency_path, self.ui.textbox_tc_path_dependency_name, self.ui.textbox_tc_path_dependency_value])
         root_item = QTreeWidgetItem(["path"])
-        self.table_tc_dependency_path.addTopLevelItem(root_item)
+        self.ui.table_tc_dependency_path.addTopLevelItem(root_item)
         path_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rules, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_path, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_path, level=3)
         
     def btn_tc_update_dependency_path_clicked(self):
-        if len(self.table_tc_dependency_path.selectedItems()) == 0 or self.table_tc_dependency_path.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_path.selectedItems()) == 0 or self.ui.table_tc_dependency_path.selectedItems()[0].parent() is None:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_selected_item_parent = test_plan_selected_item.parent()
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
         operation_id = test_plan_selected_item_parent.parent().text(0)
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        name = self.textbox_tc_path_dependency_name.text()
-        value = self.textbox_tc_path_dependency_value.text()
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_path_dependency_name.text()
+        value = self.ui.textbox_tc_path_dependency_value.text()
         
         file_path = f"./test_plan/{operation_id}.json"
         with open(file_path, "r+") as f:
@@ -1251,46 +1254,46 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update dependency path rule in {file_path} successfully")
             else:
                 logging.error(f"Update dependency path rule in {file_path} failed")
-        GeneralTool.clean_ui_content([self.table_tc_dependency_path, self.textbox_tc_path_dependency_name, self.textbox_tc_path_dependency_value])
+        GeneralTool.clean_ui_content([self.ui.table_tc_dependency_path, self.ui.textbox_tc_path_dependency_name, self.ui.textbox_tc_path_dependency_value])
         root_item = QTreeWidgetItem(["path"])
-        self.table_tc_dependency_path.addTopLevelItem(root_item)
+        self.ui.table_tc_dependency_path.addTopLevelItem(root_item)
         path_rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rules, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_path, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_path, level=3)
         
     def table_tc_dependency_path_item_clicked(self):
-        selected_item = self.table_tc_dependency_path.selectedItems()[0]
+        selected_item = self.ui.table_tc_dependency_path.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None:
             name = selected_item.text(0)
             value = selected_item.child(4).text(1) if selected_item.child(4) is not None else ""
-            self.textbox_tc_path_dependency_name.setText(name)
-            self.textbox_tc_path_dependency_value.setText(value)
+            self.ui.textbox_tc_path_dependency_name.setText(name)
+            self.ui.textbox_tc_path_dependency_value.setText(value)
             
     def table_tc_dependency_query_item_clicked(self):
-        selected_item = self.table_tc_dependency_query.selectedItems()[0]
+        selected_item = self.ui.table_tc_dependency_query.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None:
             name = selected_item.text(0)
             value = selected_item.child(4).text(1) if selected_item.child(4) is not None else ""
-            self.textbox_tc_query_dependency_name.setText(name)
-            self.textbox_tc_query_dependency_value.setText(value)
+            self.ui.textbox_tc_query_dependency_name.setText(name)
+            self.ui.textbox_tc_query_dependency_value.setText(value)
         
     def btn_tc_dependency_update_text_body_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0 or len(self.table_tc_dependency_rule.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0 or len(self.ui.table_tc_dependency_rule.selectedItems()) == 0:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         operation_id = test_plan_parent_item.parent().text(0)
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        selected_item = self.table_tc_dependency_rule.selectedItems()[0]
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        new_value = self.textbox_tc_dependency_requestbody.toPlainText()
+        selected_item = self.ui.table_tc_dependency_rule.selectedItems()[0]
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        new_value = self.ui.textbox_tc_dependency_requestbody.toPlainText()
         file_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
         
         with open(file_path, "r") as f:
@@ -1307,16 +1310,16 @@ class MyWindow(QMainWindow):
             detailed_message = f"JSONDecodeError: {e}"
             GeneralTool.show_error_dialog(error_message, detailed_message)
             logging.error(f"JSONDecodeError: {e}")
-            self.textbox_tc_dependency_requestbody.setPlainText(json.dumps(copy_testdata, indent=4))
+            self.ui.textbox_tc_dependency_requestbody.setPlainText(json.dumps(copy_testdata, indent=4))
             return
         logging.info(f"Update {file_path} successfully")
         return
 
     def btn_tc_remove_dependency_rule_clicked(self):
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
 
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
@@ -1324,8 +1327,8 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-            dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+            dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+            dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 test_plan = json.load(f)
@@ -1335,17 +1338,17 @@ class MyWindow(QMainWindow):
                 f.truncate()
                 logging.info(f"Dependency Rule {result} is removed from {operation_id}.json")
 
-            self.comboBox_tc_dependency_type.setCurrentText("Setup")
-            self.comboBox_tc_dependency_type.setEnabled(True)
-            self.line_tc_api_search.setEnabled(True)
+            self.ui.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.ui.comboBox_tc_dependency_type.setEnabled(True)
+            self.ui.line_tc_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([
-                self.table_tc_dependency_rule,
-                self.comboBox_tc_dependency_type,
-                self.line_tc_api_search,
-                self.textbox_tc_dependency_return_variable_name
+                self.ui.table_tc_dependency_rule,
+                self.ui.comboBox_tc_dependency_type,
+                self.ui.line_tc_api_search,
+                self.ui.textbox_tc_dependency_return_variable_name
             ])
-            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency_rule, level=3)
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.ui.table_tc_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_rule, level=3)
             
         # * Remove the dependency test data file
         file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
@@ -1353,10 +1356,10 @@ class MyWindow(QMainWindow):
             os.remove(f"./TestData/Dependency_TestData/{file_name}")
     
     def btn_tc_update_dependency_rule_clicked(self):
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0 or self.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
             return
 
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
@@ -1364,8 +1367,8 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-            dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+            dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+            dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
 
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, 'r+') as f:
@@ -1373,7 +1376,7 @@ class MyWindow(QMainWindow):
                 result = GeneralTool.update_value_in_json(
                     test_plan, 
                     ["test_cases", test_case_id ,"test_point", test_point_id, "dependency", dependency_type, dependency_sequence_num, "response_name"],
-                    self.textbox_tc_dependency_return_variable_name.text()
+                    self.ui.textbox_tc_dependency_return_variable_name.text()
                 )
                 if result is not False:
                     f.seek(0)
@@ -1383,23 +1386,23 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Update dependency rule in {file_path} failed")
 
-            self.comboBox_tc_dependency_type.setCurrentText("Setup")
-            self.comboBox_tc_dependency_type.setEnabled(True)
-            self.line_tc_api_search.setEnabled(True)
+            self.ui.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.ui.comboBox_tc_dependency_type.setEnabled(True)
+            self.ui.line_tc_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([
-                self.table_tc_dependency_rule,
-                self.comboBox_tc_dependency_type,
-                self.line_tc_api_search,
-                self.textbox_tc_dependency_return_variable_name
+                self.ui.table_tc_dependency_rule,
+                self.ui.comboBox_tc_dependency_type,
+                self.ui.line_tc_api_search,
+                self.ui.textbox_tc_dependency_return_variable_name
             ])
-            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency_rule, level=3)
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.ui.table_tc_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_rule, level=3)
         
     def btn_tc_add_dependency_rule_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return 
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
@@ -1407,9 +1410,9 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            dependency_type = self.comboBox_tc_dependency_type.currentText()
-            api = self.line_tc_api_search.text()
-            return_name = self.textbox_tc_dependency_return_variable_name.text()
+            dependency_type = self.ui.comboBox_tc_dependency_type.currentText()
+            api = self.ui.line_tc_api_search.text()
+            return_name = self.ui.textbox_tc_dependency_return_variable_name.text()
             if api == "" or return_name == "":
                 logging.error("API or Return Name is empty.")
                 return
@@ -1459,23 +1462,23 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to add key `{['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', dependency_type, sequence_num, new_value]}`.")
                     
-            self.comboBox_tc_dependency_type.setCurrentText("Setup")
-            self.comboBox_tc_dependency_type.setEnabled(True)
-            self.line_tc_api_search.setEnabled(True)
+            self.ui.comboBox_tc_dependency_type.setCurrentText("Setup")
+            self.ui.comboBox_tc_dependency_type.setEnabled(True)
+            self.ui.line_tc_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([
-                self.textbox_tc_dependency_return_variable_name,
-                self.line_tc_api_search,
-                self.textbox_tc_dependency_return_variable_name,
-                self.table_tc_dependency_rule
+                self.ui.textbox_tc_dependency_return_variable_name,
+                self.ui.line_tc_api_search,
+                self.ui.textbox_tc_dependency_return_variable_name,
+                self.ui.table_tc_dependency_rule
             ])
-            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_tc_dependency_rule, level=3)
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.ui.table_tc_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_rule, level=3)
         
     def btn_tc_add_assertion_rule_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0 or self.table_test_plan_api_list.selectedItems()[0].parent() is None:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0 or self.ui.table_test_plan_api_list.selectedItems()[0].parent() is None:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()   
          
         if parent_item is not None and parent_item.parent() is not None:
@@ -1492,11 +1495,11 @@ class MyWindow(QMainWindow):
                 assertion_rules = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
                 sequence_num = str(max((int(k) for k in assertion_rules.keys()), default=0) + 1)
                 new_value = {
-                    "source": self.comboBox_tc_assertion_source.currentText(),
-                    "field_expression": self.textbox_tc_assertion_rule_field_expression.text(),
-                    "filter_expression": self.textbox_tc_assertion_rule_expression.text(),
-                    "assertion_method": self.comboBox_tc_assertion_method.currentText(),
-                    "expected_value": self.textbox_tc_assertion_rule_expected_value.text(),
+                    "source": self.ui.comboBox_tc_assertion_source.currentText(),
+                    "field_expression": self.ui.textbox_tc_assertion_rule_field_expression.text(),
+                    "filter_expression": self.ui.textbox_tc_assertion_rule_expression.text(),
+                    "assertion_method": self.ui.comboBox_tc_assertion_method.currentText(),
+                    "expected_value": self.ui.textbox_tc_assertion_rule_expected_value.text(),
                 }
                 result = GeneralTool.add_key_in_json(
                     test_plan,
@@ -1513,15 +1516,15 @@ class MyWindow(QMainWindow):
                     logging.error(f"Update assertion rule in {file_path} failed")
 
             GeneralTool.clean_ui_content([
-                self.table_tc_assertion_rule,
-                self.comboBox_tc_assertion_source,
-                self.comboBox_tc_assertion_method,
-                self.textbox_tc_assertion_rule_field_expression,
-                self.textbox_tc_assertion_rule_expression,
-                self.textbox_tc_assertion_rule_expected_value
+                self.ui.table_tc_assertion_rule,
+                self.ui.comboBox_tc_assertion_source,
+                self.ui.comboBox_tc_assertion_method,
+                self.ui.textbox_tc_assertion_rule_field_expression,
+                self.ui.textbox_tc_assertion_rule_expression,
+                self.ui.textbox_tc_assertion_rule_expected_value
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
-            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            self.ui.table_tc_assertion_rule.addTopLevelItem(assertion_item)
             assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
@@ -1535,13 +1538,13 @@ class MyWindow(QMainWindow):
                         ]
                     )
                 )
-            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule, level=3)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_assertion_rule, level=3)
         
     def btn_tc_remove_assertion_rule_clicked(self):
-        if len(self.table_tc_assertion_rule.selectedItems()) == 0 or self.table_tc_assertion_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_assertion_rule.selectedItems()) == 0 or self.ui.table_tc_assertion_rule.selectedItems()[0].parent() is None:
             return
 
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item is not None:
@@ -1549,7 +1552,7 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
+            index = self.ui.table_tc_assertion_rule.selectedItems()[0].text(0)
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 test_plan = json.load(f)
@@ -1560,15 +1563,15 @@ class MyWindow(QMainWindow):
                 logging.info(f"Assertion Rule {result} is removed from {operation_id}.json")
 
             GeneralTool.clean_ui_content([
-                self.table_tc_assertion_rule,
-                self.comboBox_tc_assertion_source,
-                self.comboBox_tc_assertion_method,
-                self.textbox_tc_assertion_rule_field_expression,
-                self.textbox_tc_assertion_rule_expression,
-                self.textbox_tc_assertion_rule_expected_value
+                self.ui.table_tc_assertion_rule,
+                self.ui.comboBox_tc_assertion_source,
+                self.ui.comboBox_tc_assertion_method,
+                self.ui.textbox_tc_assertion_rule_field_expression,
+                self.ui.textbox_tc_assertion_rule_expression,
+                self.ui.textbox_tc_assertion_rule_expected_value
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
-            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            self.ui.table_tc_assertion_rule.addTopLevelItem(assertion_item)
             assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
@@ -1582,13 +1585,13 @@ class MyWindow(QMainWindow):
                         ]
                     )
                 )
-            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_assertion_rule)
        
     def btn_tc_update_assertion_rule_clicked(self):
-        if len(self.table_tc_assertion_rule.selectedItems()) == 0 or self.table_tc_assertion_rule.selectedItems()[0].parent() is None:
+        if len(self.ui.table_tc_assertion_rule.selectedItems()) == 0 or self.ui.table_tc_assertion_rule.selectedItems()[0].parent() is None:
             return
 
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item is not None:
@@ -1596,13 +1599,13 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            index = self.table_tc_assertion_rule.selectedItems()[0].text(0)
+            index = self.ui.table_tc_assertion_rule.selectedItems()[0].text(0)
             new_value = {
-                "source": self.comboBox_tc_assertion_source.currentText(),
-                "field_expression": self.textbox_tc_assertion_rule_field_expression.text(),
-                "filter_expression": self.textbox_tc_assertion_rule_expression.text(),
-                "assertion_method": self.comboBox_tc_assertion_method.currentText(),
-                "expected_value": self.textbox_tc_assertion_rule_expected_value.text(),
+                "source": self.ui.comboBox_tc_assertion_source.currentText(),
+                "field_expression": self.ui.textbox_tc_assertion_rule_field_expression.text(),
+                "filter_expression": self.ui.textbox_tc_assertion_rule_expression.text(),
+                "assertion_method": self.ui.comboBox_tc_assertion_method.currentText(),
+                "expected_value": self.ui.textbox_tc_assertion_rule_expected_value.text(),
             }
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, 'r+') as f:
@@ -1621,15 +1624,15 @@ class MyWindow(QMainWindow):
                     logging.error(f"Update assertion rule in {file_path} failed")
 
             GeneralTool.clean_ui_content([
-                self.table_tc_assertion_rule,
-                self.comboBox_tc_assertion_source,
-                self.comboBox_tc_assertion_method,
-                self.textbox_tc_assertion_rule_field_expression,
-                self.textbox_tc_assertion_rule_expression,
-                self.textbox_tc_assertion_rule_expected_value
+                self.ui.table_tc_assertion_rule,
+                self.ui.comboBox_tc_assertion_source,
+                self.ui.comboBox_tc_assertion_method,
+                self.ui.textbox_tc_assertion_rule_field_expression,
+                self.ui.textbox_tc_assertion_rule_expression,
+                self.ui.textbox_tc_assertion_rule_expected_value
             ])
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
-            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            self.ui.table_tc_assertion_rule.addTopLevelItem(assertion_item)
             assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
@@ -1643,31 +1646,31 @@ class MyWindow(QMainWindow):
                         ]
                     )
                 )
-            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule)        
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_assertion_rule)        
         
     def table_tc_assertion_rule_item_clicked(self, item):
         GeneralTool.clean_ui_content([
-            self.comboBox_tc_assertion_source,
-            self.textbox_tc_assertion_rule_field_expression,
-            self.textbox_tc_assertion_rule_expression,
-            self.comboBox_tc_assertion_method,
-            self.textbox_tc_assertion_rule_expected_value
+            self.ui.comboBox_tc_assertion_source,
+            self.ui.textbox_tc_assertion_rule_field_expression,
+            self.ui.textbox_tc_assertion_rule_expression,
+            self.ui.comboBox_tc_assertion_method,
+            self.ui.textbox_tc_assertion_rule_expected_value
         ])
-        selected_item = self.table_tc_assertion_rule.selectedItems()[0]
+        selected_item = self.ui.table_tc_assertion_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None:
-            self.comboBox_tc_assertion_source.setCurrentText(parent_item.text(1))
-            self.textbox_tc_assertion_rule_field_expression.setText(selected_item.text(2))
-            self.textbox_tc_assertion_rule_expression.setText(selected_item.text(3))
-            self.comboBox_tc_assertion_method.setCurrentText(selected_item.text(4))
-            self.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(5))
+            self.ui.comboBox_tc_assertion_source.setCurrentText(parent_item.text(1))
+            self.ui.textbox_tc_assertion_rule_field_expression.setText(selected_item.text(2))
+            self.ui.textbox_tc_assertion_rule_expression.setText(selected_item.text(3))
+            self.ui.comboBox_tc_assertion_method.setCurrentText(selected_item.text(4))
+            self.ui.textbox_tc_assertion_rule_expected_value.setText(selected_item.text(5))
 
     def btn_tc_remove_query_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
     
         if parent_item is not None and parent_item.parent() is not None:
@@ -1675,7 +1678,7 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id = test_id.split(".")[0]
             use_case_id = test_id.split(".")[1]
-            name = self.textbox_tc_query_name.text()
+            name = self.ui.textbox_tc_query_name.text()
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -1690,26 +1693,26 @@ class MyWindow(QMainWindow):
                     logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name]}`.")
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name]}`.")
-            GeneralTool.clean_ui_content([self.textbox_tc_query_name, self.textbox_tc_query_value, self.table_tc_query])
+            GeneralTool.clean_ui_content([self.ui.textbox_tc_query_name, self.ui.textbox_tc_query_value, self.ui.table_tc_query])
             root_item = QTreeWidgetItem(["Query Parameter"])
-            self.table_tc_query.addTopLevelItem(root_item)
+            self.ui.table_tc_query.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["query"], root_item)
-            GeneralTool.expand_and_resize_tree(self.table_tc_query, level=2)            
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_query, level=2)            
     
     def btn_tc_update_query_clicked(self):
         
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
             operation_id = parent_item.parent().text(0)
             test_id = selected_item.text(1)
             test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
-            name = self.textbox_tc_query_name.text()
-            new_value = self.textbox_tc_query_value.text()
+            name = self.ui.textbox_tc_query_name.text()
+            new_value = self.ui.textbox_tc_query_value.text()
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -1726,17 +1729,17 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'query', name, new_value]}`.") 
             
-            GeneralTool.clean_ui_content([self.textbox_tc_query_name, self.textbox_tc_query_value, self.table_tc_query])
+            GeneralTool.clean_ui_content([self.ui.textbox_tc_query_name, self.ui.textbox_tc_query_value, self.ui.table_tc_query])
             root_item = QTreeWidgetItem(["Query Parameter"])
-            self.table_tc_query.addTopLevelItem(root_item)
+            self.ui.table_tc_query.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["query"], root_item)
-            GeneralTool.expand_and_resize_tree(self.table_tc_query, level=2)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_query, level=2)
         
     def btn_tc_remove_path_clicked(self):
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
     
         if parent_item is not None and parent_item.parent() is not None:
@@ -1744,7 +1747,7 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id = test_id.split(".")[0]
             use_case_id = test_id.split(".")[1]
-            name = self.textbox_tc_path_name.text()
+            name = self.ui.textbox_tc_path_name.text()
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -1759,26 +1762,26 @@ class MyWindow(QMainWindow):
                     logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name]}`.")
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name]}`.")
-            GeneralTool.clean_ui_content([self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_path])
+            GeneralTool.clean_ui_content([self.ui.textbox_tc_path_name, self.ui.textbox_tc_path_value, self.ui.table_tc_path])
             root_item = QTreeWidgetItem(["Path Parameter"])
-            self.table_tc_path.addTopLevelItem(root_item)
+            self.ui.table_tc_path.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["path"], root_item)
-            GeneralTool.expand_and_resize_tree(self.table_tc_path, level=2)            
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_path, level=2)            
     
     def btn_tc_update_path_clicked(self):
         
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is not None:
             operation_id = parent_item.parent().text(0)
             test_id = selected_item.text(1)
             test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
-            name = self.textbox_tc_path_name.text()
-            new_value = self.textbox_tc_path_value.text()
+            name = self.ui.textbox_tc_path_name.text()
+            new_value = self.ui.textbox_tc_path_value.text()
             file_path = f"./test_plan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -1795,45 +1798,45 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'path', name, new_value]}`.") 
             
-            GeneralTool.clean_ui_content([self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_path])
+            GeneralTool.clean_ui_content([self.ui.textbox_tc_path_name, self.ui.textbox_tc_path_value, self.ui.table_tc_path])
             root_item = QTreeWidgetItem(["Path Parameter"])
-            self.table_tc_path.addTopLevelItem(root_item)
+            self.ui.table_tc_path.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["path"], root_item)
-            GeneralTool.expand_and_resize_tree(self.table_tc_path, level=2)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_path, level=2)
         
         
     def table_tc_path_item_clicked(self):
 
-        selected_item = self.table_tc_path.selectedItems()[0]
+        selected_item = self.ui.table_tc_path.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None:
-            self.textbox_tc_path_name.setText(selected_item.text(0))
-            self.textbox_tc_path_value.setText(selected_item.text(1))
+            self.ui.textbox_tc_path_name.setText(selected_item.text(0))
+            self.ui.textbox_tc_path_value.setText(selected_item.text(1))
             
     def table_tc_query_item_clicked(self):
         
-        selected_item = self.table_tc_query.selectedItems()[0]
+        selected_item = self.ui.table_tc_query.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None:
-            self.textbox_tc_query_name.setText(selected_item.text(0))
-            self.textbox_tc_query_value.setText(selected_item.text(1))
+            self.ui.textbox_tc_query_name.setText(selected_item.text(0))
+            self.ui.textbox_tc_query_value.setText(selected_item.text(1))
 
     def btn_tc_dependency_generation_rule_remove_clicked(self):
         """ Remove Dependency Generation Rule Field """
-        if len(self.table_tc_dependency_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
             return
         
         # * Retrieve the origin API Operation ID.
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         origin_api_operation_id = test_plan_parent_item.parent().text(0)
         
         # * Retrieve the Dependency Rule Index and Data Generation Rule Field name which should be removed.
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
-        generation_table_selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        generation_table_selected_item = self.ui.table_tc_dependency_generation_rule.selectedItems()[0]
         test_case_id = test_plan_selected_item.text(1).split('.')[0]
         test_point_id = test_plan_selected_item.text(1).split('.')[1]
         if generation_table_selected_item.parent() is None or generation_table_selected_item.parent().parent() is not None:
@@ -1843,7 +1846,7 @@ class MyWindow(QMainWindow):
             
         # * Retrieve the Generation Rule List selected items to get the corresponding path
         paths = []
-        for item in self.table_tc_dependency_generation_rule.selectedItems():
+        for item in self.ui.table_tc_dependency_generation_rule.selectedItems():
             path = []
             while item.parent() is not None:
                 path.insert(0, item.text(0))
@@ -1868,23 +1871,23 @@ class MyWindow(QMainWindow):
             f.seek(0)
             json.dump(data, f, indent=4)
             f.truncate()
-        GeneralTool.remove_table_item_from_ui(self.table_tc_dependency_generation_rule)     
+        GeneralTool.remove_table_item_from_ui(self.ui.table_tc_dependency_generation_rule)     
        
     def btn_dependency_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
         
         # * If no API or Generation Rule is selected, return directly.
-        if len(self.table_dependency_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0:
             return
         
         # * Retrieve the origin API Operation ID.
-        api_selected_item = self.table_api_tree.selectedItems()[0]
+        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
         origin_api_operation_id = api_selected_item.text(4)
         
         # * Retrieve the Dependency Rule Index and Data Generation Rule Field name which should be removed.
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        generation_table_selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        generation_table_selected_item = self.ui.table_dependency_generation_rule.selectedItems()[0]
         if generation_table_selected_item.parent() is None or generation_table_selected_item.parent().parent() is not None:
             return
         else:
@@ -1892,7 +1895,7 @@ class MyWindow(QMainWindow):
             
         # * Retrieve the Generation Rule List selected items to get the corresponding path
         paths = []
-        for item in self.table_dependency_generation_rule.selectedItems():
+        for item in self.ui.table_dependency_generation_rule.selectedItems():
             path = []
             while item.parent() is not None:
                 path.insert(0, item.text(0))
@@ -1914,24 +1917,24 @@ class MyWindow(QMainWindow):
             f.seek(0)
             json.dump(data, f, indent=4)
             f.truncate()
-        GeneralTool.remove_table_item_from_ui(self.table_dependency_generation_rule)
+        GeneralTool.remove_table_item_from_ui(self.ui.table_dependency_generation_rule)
         
     def btn_dependency_constraint_rule_apply_clicked(self):
-        src_action = self.comboBox_dependency_constraint_rule_src_action.currentText()
-        src_path = self.textbox_dependency_constraint_rule_src.text()
-        src_condition = self.comboBox_dependency_constraint_rule_condition.currentText()
-        src_expected_value = self.textbox_dependency_constraint_rule_expected_value.text()
-        dst_action = self.comboBox_dependency_constraint_rule_dst_action.currentText()
-        dst_path = self.textbox_dependency_constraint_rule_dst.text()
-        dst_action_type = self.comboBox_dependency_constraint_dst_action_type.currentText()
-        dst_value = self.textbox_dependency_constraint_rule_dst_value.text()
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
+        src_action = self.ui.comboBox_dependency_constraint_rule_src_action.currentText()
+        src_path = self.ui.textbox_dependency_constraint_rule_src.text()
+        src_condition = self.ui.comboBox_dependency_constraint_rule_condition.currentText()
+        src_expected_value = self.ui.textbox_dependency_constraint_rule_expected_value.text()
+        dst_action = self.ui.comboBox_dependency_constraint_rule_dst_action.currentText()
+        dst_path = self.ui.textbox_dependency_constraint_rule_dst.text()
+        dst_action_type = self.ui.comboBox_dependency_constraint_dst_action_type.currentText()
+        dst_value = self.ui.textbox_dependency_constraint_rule_dst_value.text()
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
         
-        if len(self.table_dependency_rule.selectedItems()) == 0:
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0:
             return
         else:
-            operation_id = self.table_api_tree.selectedItems()[0].text(4)
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
             file_path = f"./DependencyRule/{operation_id}.json"
             
         GeneralTool.apply_constraint_rule(
@@ -1943,59 +1946,59 @@ class MyWindow(QMainWindow):
             data = json.load(f)
         # * Refresh the Dependency Generation Rule Table
         root_item = QTreeWidgetItem(["Data Generation Rule"])
-        self.table_dependency_generation_rule.clear()
-        self.table_dependency_generation_rule.addTopLevelItem(root_item)
+        self.ui.table_dependency_generation_rule.clear()
+        self.ui.table_dependency_generation_rule.addTopLevelItem(root_item)
         GeneralTool.parse_request_body(data[dependency_type][dependency_sequence_num]["data_generation_rules"], root_item, editabled=True)
-        GeneralTool.expand_and_resize_tree(self.table_dependency_generation_rule, 0)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_generation_rule, 0)
         # * Clear the constraint rule UI
         GeneralTool.clean_ui_content([
-            self.textbox_dependency_constraint_rule_src,
-            self.textbox_dependency_constraint_rule_expected_value,
-            self.textbox_dependency_constraint_rule_dst,
-            self.textbox_dependency_constraint_rule_dst_value,
+            self.ui.textbox_dependency_constraint_rule_src,
+            self.ui.textbox_dependency_constraint_rule_expected_value,
+            self.ui.textbox_dependency_constraint_rule_dst,
+            self.ui.textbox_dependency_constraint_rule_dst_value,
         ])
-        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
-        self.comboBox_dependency_constraint_rule_dst_action.setCurrentText("Then Remove")
-        self.comboBox_dependency_constraint_dst_action_type.setCurrentText("")
-        self.comboBox_dependency_constraint_dst_action_type.setEnabled(False)
-        self.textbox_dependency_constraint_rule_dst_value.setEnabled(False)
+        self.ui.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
+        self.ui.comboBox_dependency_constraint_rule_dst_action.setCurrentText("Then Remove")
+        self.ui.comboBox_dependency_constraint_dst_action_type.setCurrentText("")
+        self.ui.comboBox_dependency_constraint_dst_action_type.setEnabled(False)
+        self.ui.textbox_dependency_constraint_rule_dst_value.setEnabled(False)
         
     def btn_dependency_constraint_rule_clear_clicked(self):
         """ Clear the Dependency Constraint Rule UI. """
         GeneralTool.clean_ui_content([
-            self.textbox_dependency_constraint_rule_src, 
-            self.textbox_dependency_constraint_rule_expected_value, 
-            self.textbox_dependency_constraint_rule_dst, 
-            self.textbox_dependency_constraint_rule_dst_value,
+            self.ui.textbox_dependency_constraint_rule_src, 
+            self.ui.textbox_dependency_constraint_rule_expected_value, 
+            self.ui.textbox_dependency_constraint_rule_dst, 
+            self.ui.textbox_dependency_constraint_rule_dst_value,
         ])
-        self.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
+        self.ui.checkBox_dependency_constraint_rule_wildcard.setChecked(False)
         
     def btn_tc_dependency_constraint_rule_clear_clicked(self):
         """ Clear the Dependency Constraint Rule UI. """
         GeneralTool.clean_ui_content([
-            self.textbox_tc_dependency_constraint_rule_src,
-            self.textbox_tc_dependency_constraint_rule_expected_value,
-            self.textbox_tc_dependency_constraint_rule_dst,
-            self.textbox_tc_dependency_constraint_rule_dst_value,
+            self.ui.textbox_tc_dependency_constraint_rule_src,
+            self.ui.textbox_tc_dependency_constraint_rule_expected_value,
+            self.ui.textbox_tc_dependency_constraint_rule_dst,
+            self.ui.textbox_tc_dependency_constraint_rule_dst_value,
         ])
     
     def btn_tc_dependency_constraint_rule_apply_clicked(self):
         """ Apply the Dependency Constraint Rule to the selected API. """
-        src_action = self.comboBox_tc_dependency_constraint_rule_src_action.currentText()
-        src_path = self.textbox_tc_dependency_constraint_rule_src.text()
-        src_condition = self.comboBox_tc_dependency_constraint_rule_condition.currentText()
-        src_expected_value = self.textbox_tc_dependency_constraint_rule_expected_value.text()
-        dst_action = self.comboBox_tc_dependency_constraint_rule_dst_action.currentText()
-        dst_path = self.textbox_tc_dependency_constraint_rule_dst.text()
-        dst_action_type = self.comboBox_tc_dependency_constraint_dst_action_type.currentText()
-        dst_value = self.textbox_tc_dependency_constraint_rule_dst_value.text()
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        src_action = self.ui.comboBox_tc_dependency_constraint_rule_src_action.currentText()
+        src_path = self.ui.textbox_tc_dependency_constraint_rule_src.text()
+        src_condition = self.ui.comboBox_tc_dependency_constraint_rule_condition.currentText()
+        src_expected_value = self.ui.textbox_tc_dependency_constraint_rule_expected_value.text()
+        dst_action = self.ui.comboBox_tc_dependency_constraint_rule_dst_action.currentText()
+        dst_path = self.ui.textbox_tc_dependency_constraint_rule_dst.text()
+        dst_action_type = self.ui.comboBox_tc_dependency_constraint_dst_action_type.currentText()
+        dst_value = self.ui.textbox_tc_dependency_constraint_rule_dst_value.text()
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
-        if len(self.table_test_plan_api_list.selectedItems()) == 0:
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
             return
         else:
-            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
             test_plan_parent_item = test_plan_selected_item.parent()
             operation_id = test_plan_parent_item.parent().text(0)
             test_case_id = test_plan_selected_item.text(1).split(".")[0]
@@ -2009,37 +2012,37 @@ class MyWindow(QMainWindow):
             data = json.load(f)
         # * Refresh the Dependency Generation Rule Table
         root_item = QTreeWidgetItem(["Data Generation Rule"])
-        self.table_tc_dependency_generation_rule.clear()
-        self.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
+        self.ui.table_tc_dependency_generation_rule.clear()
+        self.ui.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
         GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["data_generation_rules"], root_item, editabled=True)
-        GeneralTool.expand_and_resize_tree(self.table_tc_dependency_generation_rule, 0)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_generation_rule, 0)
         # * Clear the constraint rule UI
         GeneralTool.clean_ui_content([
-            self.textbox_tc_dependency_constraint_rule_src,
-            self.textbox_tc_dependency_constraint_rule_expected_value,
-            self.textbox_tc_dependency_constraint_rule_dst,
-            self.textbox_tc_dependency_constraint_rule_dst_value,
+            self.ui.textbox_tc_dependency_constraint_rule_src,
+            self.ui.textbox_tc_dependency_constraint_rule_expected_value,
+            self.ui.textbox_tc_dependency_constraint_rule_dst,
+            self.ui.textbox_tc_dependency_constraint_rule_dst_value,
         ])
-        self.checkBox_tc_dependency_constraint_rule_wildcard.setChecked(False)
-        self.comboBox_tc_dependency_constraint_rule_dst_action.setCurrentText("Then Remove")
-        self.comboBox_tc_dependency_constraint_dst_action_type.setCurrentText("")
-        self.comboBox_tc_dependency_constraint_dst_action_type.setEnabled(False)
-        self.textbox_tc_dependency_constraint_rule_dst_value.setEnabled(False)
+        self.ui.checkBox_tc_dependency_constraint_rule_wildcard.setChecked(False)
+        self.ui.comboBox_tc_dependency_constraint_rule_dst_action.setCurrentText("Then Remove")
+        self.ui.comboBox_tc_dependency_constraint_dst_action_type.setCurrentText("")
+        self.ui.comboBox_tc_dependency_constraint_dst_action_type.setEnabled(False)
+        self.ui.textbox_tc_dependency_constraint_rule_dst_value.setEnabled(False)
     
     def btn_tc_dependency_generation_rule_build_clicked(self):
         
-        if len(self.table_tc_dependency_rule.selectedItems()) == 0:
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0:
             return
         
-        test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         test_plan_parent_item = test_plan_selected_item.parent()
         operation_id = test_plan_parent_item.parent().text(0)
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        selected_item = self.table_test_plan_api_list.selectedItems()[0]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
         parent_item = selected_item.parent()
-        dependency_type = self.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_sequence_num = self.table_tc_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         # * Retrieve the dependency data generation rule.
         file_path = f"./test_plan/{operation_id}.json"
@@ -2055,51 +2058,51 @@ class MyWindow(QMainWindow):
         with open(testdata_path, "r+") as f:
             testdata = json.load(f)
         testdata_str = json.dumps(testdata, indent=4)
-        self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
-        self.table_tc_dependency_schema_2.setCurrentIndex(1)
+        self.ui.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
+        self.ui.table_tc_dependency_schema_2.setCurrentIndex(1)
         
     def table_dependency_path_item_clicked(self):
         
-        if len(self.table_dependency_path.selectedItems()) == 0:
+        if len(self.ui.table_dependency_path.selectedItems()) == 0:
             return
         
-        selected_item = self.table_dependency_path.selectedItems()[0]
+        selected_item = self.ui.table_dependency_path.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
         
             name = selected_item.text(0)
             value = selected_item.child(4).text(1)
-            self.textbox_path_dependency_name.setText(name)
-            self.textbox_path_dependency_value.setText(value)
+            self.ui.textbox_path_dependency_name.setText(name)
+            self.ui.textbox_path_dependency_value.setText(value)
             
     def table_dependency_query_item_clicked(self):
         
-        if len(self.table_dependency_query.selectedItems()) == 0:
+        if len(self.ui.table_dependency_query.selectedItems()) == 0:
             return
         
-        selected_item = self.table_dependency_query.selectedItems()[0]
+        selected_item = self.ui.table_dependency_query.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
             
             name = selected_item.text(0)
             value = selected_item.child(4).text(1)
-            self.textbox_query_dependency_name.setText(name)
-            self.textbox_query_dependency_value.setText(value)
+            self.ui.textbox_query_dependency_name.setText(name)
+            self.ui.textbox_query_dependency_value.setText(value)
             
     def btn_remove_dependency_query_clicked(self):
         
-        if len(self.table_dependency_query.selectedItems()) == 0:
+        if len(self.ui.table_dependency_query.selectedItems()) == 0:
             return
         
-        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        selected_item = self.table_dependency_query.selectedItems()[0]
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.ui.table_dependency_query.selectedItems()[0]
         
-        name = self.textbox_query_dependency_name.text()
-        value = self.textbox_query_dependency_value.text()
+        name = self.ui.textbox_query_dependency_name.text()
+        value = self.ui.textbox_query_dependency_value.text()
         
         file_path = f"./DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
@@ -2114,25 +2117,25 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
                 
-        GeneralTool.clean_ui_content([self.textbox_query_dependency_name, self.textbox_query_dependency_value, self.table_dependency_query])
+        GeneralTool.clean_ui_content([self.ui.textbox_query_dependency_name, self.ui.textbox_query_dependency_value, self.ui.table_dependency_query])
         root_item = QTreeWidgetItem(["Query Parameter"])
-        self.table_dependency_query.addTopLevelItem(root_item)
+        self.ui.table_dependency_query.addTopLevelItem(root_item)
         query_rule = data[dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
     
     def btn_update_dependency_query_clicked(self):
         
-        if len(self.table_dependency_query.selectedItems()) == 0:
+        if len(self.ui.table_dependency_query.selectedItems()) == 0:
             return
         
-        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        selected_item = self.table_dependency_query.selectedItems()[0]
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.ui.table_dependency_query.selectedItems()[0]
         
-        name = self.textbox_query_dependency_name.text()
-        value = self.textbox_query_dependency_value.text()
+        name = self.ui.textbox_query_dependency_name.text()
+        value = self.ui.textbox_query_dependency_value.text()
         
         file_path = f"./DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
@@ -2147,25 +2150,25 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
                 
-        GeneralTool.clean_ui_content([self.textbox_query_dependency_name, self.textbox_query_dependency_value, self.table_dependency_query])
+        GeneralTool.clean_ui_content([self.ui.textbox_query_dependency_name, self.ui.textbox_query_dependency_value, self.ui.table_dependency_query])
         root_item = QTreeWidgetItem(["Query Parameter"])
-        self.table_dependency_query.addTopLevelItem(root_item)
+        self.ui.table_dependency_query.addTopLevelItem(root_item)
         query_rule = data[dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
         
     def btn_remove_dependency_path_clicked(self):
         
-        if len(self.table_dependency_path.selectedItems()) == 0:
+        if len(self.ui.table_dependency_path.selectedItems()) == 0:
             return
         
-        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        selected_item = self.table_dependency_path.selectedItems()[0]
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.ui.table_dependency_path.selectedItems()[0]
         
-        name = self.textbox_path_dependency_name.text()
-        value = self.textbox_path_dependency_value.text()
+        name = self.ui.textbox_path_dependency_name.text()
+        value = self.ui.textbox_path_dependency_value.text()
         
         file_path = f"./DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
@@ -2180,25 +2183,25 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
                 
-        GeneralTool.clean_ui_content([self.textbox_path_dependency_name, self.textbox_path_dependency_value, self.table_dependency_path])
+        GeneralTool.clean_ui_content([self.ui.textbox_path_dependency_name, self.ui.textbox_path_dependency_value, self.ui.table_dependency_path])
         root_item = QTreeWidgetItem(["Path Parameter"])
-        self.table_dependency_path.addTopLevelItem(root_item)
+        self.ui.table_dependency_path.addTopLevelItem(root_item)
         path_rule = data[dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_path, level=2)
+        GeneralTool.expand_and_resize_tree(self.ui.table_path, level=2)
     
     def btn_update_dependency_path_clicked(self):
         
-        if len(self.table_dependency_path.selectedItems()) == 0:
+        if len(self.ui.table_dependency_path.selectedItems()) == 0:
             return
         
-        origin_api_operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        dependency_sequence_num = self.table_dependency_rule.selectedItems()[0].text(0)
-        dependency_type = self.table_dependency_rule.selectedItems()[0].parent().text(0)
-        selected_item = self.table_dependency_path.selectedItems()[0]
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        selected_item = self.ui.table_dependency_path.selectedItems()[0]
         
-        name = self.textbox_path_dependency_name.text()
-        value = self.textbox_path_dependency_value.text()
+        name = self.ui.textbox_path_dependency_name.text()
+        value = self.ui.textbox_path_dependency_value.text()
         
         file_path = f"./DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
@@ -2213,38 +2216,38 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
                 
-        GeneralTool.clean_ui_content([self.textbox_path_dependency_name, self.textbox_path_dependency_value, self.table_dependency_path])
+        GeneralTool.clean_ui_content([self.ui.textbox_path_dependency_name, self.ui.textbox_path_dependency_value, self.ui.table_dependency_path])
         root_item = QTreeWidgetItem(["Path Parameter"])
-        self.table_dependency_path.addTopLevelItem(root_item)
+        self.ui.table_dependency_path.addTopLevelItem(root_item)
         path_rule = data[dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.table_path, level=2)
+        GeneralTool.expand_and_resize_tree(self.ui.table_path, level=2)
         
     def table_tc_dependency_item_clicked(self):
         
         # * Render the Dependency Action's Data Generation Rule and Path Rule and Schema.
         GeneralTool.clean_ui_content([
-            self.table_tc_dependency_generation_rule,
-            self.textbox_tc_dependency_requestbody,
-            self.table_tc_dependency_path,
-            self.table_tc_dependency_query,
-            self.textbox_tc_path_dependency_name,
-            self.textbox_tc_path_dependency_value,
-            self.table_tc_dependency_additional_action,
+            self.ui.table_tc_dependency_generation_rule,
+            self.ui.textbox_tc_dependency_requestbody,
+            self.ui.table_tc_dependency_path,
+            self.ui.table_tc_dependency_query,
+            self.ui.textbox_tc_path_dependency_name,
+            self.ui.textbox_tc_path_dependency_value,
+            self.ui.table_tc_dependency_additional_action,
         ])
         
-        selected_item = self.table_tc_dependency_rule.selectedItems()[0]
+        selected_item = self.ui.table_tc_dependency_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
             # * Render the Dependency Rule Mangement UI for the update action.
-            self.comboBox_tc_dependency_type.setCurrentText(parent_item.text(0))
-            self.line_tc_api_search.setText(selected_item.child(0).text(1))
-            self.textbox_tc_dependency_return_variable_name.setText(selected_item.child(1).text(1))
-            self.comboBox_tc_dependency_type.setEnabled(False)
-            self.line_tc_api_search.setEnabled(False)
+            self.ui.comboBox_tc_dependency_type.setCurrentText(parent_item.text(0))
+            self.ui.line_tc_api_search.setText(selected_item.child(0).text(1))
+            self.ui.textbox_tc_dependency_return_variable_name.setText(selected_item.child(1).text(1))
+            self.ui.comboBox_tc_dependency_type.setEnabled(False)
+            self.ui.line_tc_api_search.setEnabled(False)
             
-            test_plan_selected_item = self.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
             test_plan_parent_item = test_plan_selected_item.parent()
             operation_id = test_plan_parent_item.parent().text(0)
             test_id = test_plan_selected_item.text(1)
@@ -2259,38 +2262,38 @@ class MyWindow(QMainWindow):
             # * Render the Data Generation Rule and Path Rule and Schema.
             if "data_generation_rules" in data and data["data_generation_rules"] != {}:
                 root_item = QTreeWidgetItem(["Data Generation Rule"])
-                self.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
+                self.ui.table_tc_dependency_generation_rule.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["data_generation_rules"], root_item, editabled=True)
-                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_generation_rule, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_generation_rule, level=2)
             else:
                 root_item = QTreeWidgetItem(["This API does not have a request body."])
-                self.table_dependency_generation_rule.addTopLevelItem(root_item)
+                self.ui.table_dependency_generation_rule.addTopLevelItem(root_item)
                 logging.info(f"Data Generation Rule is not exist in the dependency rule `{operation_id}`.")
                 
             # * Render the Path Rule
             if "path" in data:
                 root_item = QTreeWidgetItem(["Path Parameter"])
-                self.table_tc_dependency_path.addTopLevelItem(root_item)
+                self.ui.table_tc_dependency_path.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["path"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_path, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_path, level=2)
             else:
                 logging.info(f"Path Rule is not exist in the dependency rule `{operation_id}`.")
                 
             # * Render the Query Rule
             if "query" in data:
                 root_item = QTreeWidgetItem(["Query Parameter"])
-                self.table_tc_dependency_query.addTopLevelItem(root_item)
+                self.ui.table_tc_dependency_query.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["query"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_query, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_query, level=2)
             else:
                 logging.info(f"Query Rule is not exist in the dependency rule `{operation_id}`.")
             
             # * Render the additional action rule
             if 'additional_action' in data:
                 root_item = QTreeWidgetItem(["Additional Action"])
-                self.table_tc_dependency_additional_action.addTopLevelItem(root_item)
+                self.ui.table_tc_dependency_additional_action.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["additional_action"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_tc_dependency_additional_action, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_additional_action, level=2)
             else:
                 logging.info(f"Additional Action is not exist in the dependency rule `{operation_id}`.")
                 
@@ -2299,38 +2302,38 @@ class MyWindow(QMainWindow):
                 with open(testdata_path, "r+") as f:
                     testdata = json.load(f)
                 testdata_str = json.dumps(testdata, indent=4)
-                self.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
+                self.ui.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
             except FileNotFoundError:
                 logging.info(f"Test Data `{testdata_path}` is not exist.")
                 
         else:
-            self.comboBox_tc_dependency_type.setEnabled(True)
-            self.line_tc_api_search.setEnabled(True)
+            self.ui.comboBox_tc_dependency_type.setEnabled(True)
+            self.ui.line_tc_api_search.setEnabled(True)
         
     def table_dependency_rule_item_clicked(self):
         
         # * Render the Dependency Action's Data Generation Rule and Path Rule and Schema.
         GeneralTool.clean_ui_content([
-            self.table_dependency_generation_rule,
-            self.table_dependency_path,
-            self.table_dependency_query,
-            self.textbox_path_dependency_name,
-            self.textbox_path_dependency_value,
-            self.table_dependency_additional_action,
+            self.ui.table_dependency_generation_rule,
+            self.ui.table_dependency_path,
+            self.ui.table_dependency_query,
+            self.ui.textbox_path_dependency_name,
+            self.ui.textbox_path_dependency_value,
+            self.ui.table_dependency_additional_action,
         ])
 
-        selected_item = self.table_dependency_rule.selectedItems()[0]
+        selected_item = self.ui.table_dependency_rule.selectedItems()[0]
         parent_item = selected_item.parent()
 
         if parent_item and parent_item.parent() is None:
             # * Render the Dependency Rule Mangement UI for the update action.
-            self.comboBox_dependency_type.setCurrentText(parent_item.text(0))
-            self.line_api_search.setText(selected_item.child(0).text(1))
-            self.textbox_dependency_return_variable_name.setText(selected_item.child(1).text(1))
-            self.comboBox_dependency_type.setEnabled(False)
-            self.line_api_search.setEnabled(False)
+            self.ui.comboBox_dependency_type.setCurrentText(parent_item.text(0))
+            self.ui.line_api_search.setText(selected_item.child(0).text(1))
+            self.ui.textbox_dependency_return_variable_name.setText(selected_item.child(1).text(1))
+            self.ui.comboBox_dependency_type.setEnabled(False)
+            self.ui.line_api_search.setEnabled(False)
             
-            api_tree_selected_item = self.table_api_tree.selectedItems()[0]
+            api_tree_selected_item = self.ui.table_api_tree.selectedItems()[0]
             dependency_type = parent_item.text(0)
             sequence_num = selected_item.text(0)
             origin_api_operation_id = api_tree_selected_item.text(4)
@@ -2340,53 +2343,53 @@ class MyWindow(QMainWindow):
             # * Render the Data Generation Rule and Path Rule and Schema.
             if "data_generation_rules" in data and data["data_generation_rules"] != {}:
                 root_item = QTreeWidgetItem(["Data Generation Rule"])
-                self.table_dependency_generation_rule.addTopLevelItem(root_item)
+                self.ui.table_dependency_generation_rule.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["data_generation_rules"], root_item, editabled=True)
-                GeneralTool.expand_and_resize_tree(self.table_dependency_generation_rule, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_dependency_generation_rule, level=2)
             else:
                 root_item = QTreeWidgetItem(["This API does not have a request body."])
-                self.table_dependency_generation_rule.addTopLevelItem(root_item)
+                self.ui.table_dependency_generation_rule.addTopLevelItem(root_item)
                 logging.info(f"Data Generation Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
             
             # * Render the Path Rule
             if "path" in data:
                 root_item = QTreeWidgetItem(["Path Parameter"])
-                self.table_dependency_path.addTopLevelItem(root_item)
+                self.ui.table_dependency_path.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["path"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_dependency_path, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_dependency_path, level=2)
             else:
                 logging.info(f"Path Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
                 
             # * Render the Query Rule
             if "query" in data:
                 root_item = QTreeWidgetItem(["Query Parameter"])
-                self.table_dependency_query.addTopLevelItem(root_item)
+                self.ui.table_dependency_query.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["query"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_dependency_query, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_dependency_query, level=2)
             else:
                 logging.info(f"Query Rule is not exist in the dependency rule `{origin_api_operation_id}`.")
                 
             # * Render the additional action rule
             if 'additional_action' in data:
                 root_item = QTreeWidgetItem(["Additional Action"])
-                self.table_dependency_additional_action.addTopLevelItem(root_item)
+                self.ui.table_dependency_additional_action.addTopLevelItem(root_item)
                 GeneralTool.parse_request_body(data["additional_action"], root_item)
-                GeneralTool.expand_and_resize_tree(self.table_dependency_additional_action, level=2)
+                GeneralTool.expand_and_resize_tree(self.ui.table_dependency_additional_action, level=2)
                 
         else:
-            self.comboBox_dependency_type.setEnabled(True)
-            self.line_api_search.setEnabled(True)
+            self.ui.comboBox_dependency_type.setEnabled(True)
+            self.ui.line_api_search.setEnabled(True)
         
     def btn_add_dependency_rule_clicked(self):
         """Add Dependency Rule Item"""
         
-        if len(self.table_api_tree.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0:
             return
         
-        operation_id = self.table_api_tree.selectedItems()[0].text(4)
-        dependency_type = self.comboBox_dependency_type.currentText()
-        api = self.line_api_search.text()
-        return_name = self.textbox_dependency_return_variable_name.text()
+        operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_type = self.ui.comboBox_dependency_type.currentText()
+        api = self.ui.line_api_search.text()
+        return_name = self.ui.textbox_dependency_return_variable_name.text()
         if api == "" or return_name == "":
             logging.error(f"API or Return Name is empty.")
             return
@@ -2411,10 +2414,10 @@ class MyWindow(QMainWindow):
             else:
                 logging.error(f"Error updating JSON file `{file_path}` with new value `{[dependency_type, sequence_num, new_value]}`.")
                 
-        self.comboBox_dependency_type.setCurrentText("Setup")
-        GeneralTool.clean_ui_content([self.line_api_search, self.textbox_dependency_return_variable_name])
-        GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
-        GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+        self.ui.comboBox_dependency_type.setCurrentText("Setup")
+        GeneralTool.clean_ui_content([self.ui.line_api_search, self.ui.textbox_dependency_return_variable_name])
+        GeneralTool.parse_dependency_rule(operation_id, self.ui.table_dependency_rule)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_rule, level=3)
         
         # * Generate the Data Generation Rule and Path Rule and Schema.
         self._create_dependency_generation_and_path_and_query_rule(api, operation_id, dependency_type, sequence_num)
@@ -2422,15 +2425,15 @@ class MyWindow(QMainWindow):
     def btn_remove_dependency_rule_clicked(self):
         """Remove Dependency Rule Item"""
         
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_dependency_rule.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_dependency_rule.selectedItems()) == 0:
             return
         
-        selected_item = self.table_dependency_rule.selectedItems()[0]
+        selected_item = self.ui.table_dependency_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
-            operation_id = self.table_api_tree.selectedItems()[0].text(4)
-            dependency_type = self.comboBox_dependency_type.currentText()
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+            dependency_type = self.ui.comboBox_dependency_type.currentText()
             dependency_name = selected_item.text(0)
             file_path = f"./DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
@@ -2444,31 +2447,31 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{[dependency_type, dependency_name]}`.")
             
-            self.comboBox_dependency_type.setCurrentText("Setup")
-            self.comboBox_dependency_type.setEnabled(True)
-            self.line_api_search.setEnabled(True)
-            GeneralTool.clean_ui_content([self.line_api_search, self.textbox_dependency_return_variable_name])
-            GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+            self.ui.comboBox_dependency_type.setCurrentText("Setup")
+            self.ui.comboBox_dependency_type.setEnabled(True)
+            self.ui.line_api_search.setEnabled(True)
+            GeneralTool.clean_ui_content([self.ui.line_api_search, self.ui.textbox_dependency_return_variable_name])
+            GeneralTool.parse_dependency_rule(operation_id, self.ui.table_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_rule, level=3)
     
     def btn_update_dependency_rule_clicked(self):
         """Update Dependency Rule Item"""
             
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_dependency_rule.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_dependency_rule.selectedItems()) == 0:
             return
         
-        selected_item = self.table_dependency_rule.selectedItems()[0]
+        selected_item = self.ui.table_dependency_rule.selectedItems()[0]
         selected_item_api_name = selected_item.child(0).text(1)
         parent_item = selected_item.parent()
 
         if parent_item and parent_item.parent() is None:
-            operation_id = self.table_api_tree.selectedItems()[0].text(4)
-            dependency_type = self.comboBox_dependency_type.currentText()
-            api = self.line_api_search.text()
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+            dependency_type = self.ui.comboBox_dependency_type.currentText()
+            api = self.ui.line_api_search.text()
             if api != selected_item_api_name:
                 logging.error(f"API name cannot be changed.")
                 return
-            return_name = self.textbox_dependency_return_variable_name.text()
+            return_name = self.ui.textbox_dependency_return_variable_name.text()
             file_path = f"./DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -2485,69 +2488,69 @@ class MyWindow(QMainWindow):
                     else:
                         logging.error(f"Error updating JSON file `{file_path}` to update key `{[dependency_type, sequence_num, key, value]}`.")
             
-            self.comboBox_dependency_type.setCurrentText("Setup")
-            self.comboBox_dependency_type.setEnabled(True)
-            self.line_api_search.setEnabled(True)
+            self.ui.comboBox_dependency_type.setCurrentText("Setup")
+            self.ui.comboBox_dependency_type.setEnabled(True)
+            self.ui.line_api_search.setEnabled(True)
             GeneralTool.clean_ui_content([
-                self.line_api_search,
-                self.textbox_dependency_return_variable_name,
-                self.table_dependency_path,
-                self.table_dependency_generation_rule,
-                self.textbox_path_dependency_name,
-                self.textbox_path_dependency_value,  
+                self.ui.line_api_search,
+                self.ui.textbox_dependency_return_variable_name,
+                self.ui.table_dependency_path,
+                self.ui.table_dependency_generation_rule,
+                self.ui.textbox_path_dependency_name,
+                self.ui.textbox_path_dependency_value,  
             ])
-            GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+            GeneralTool.parse_dependency_rule(operation_id, self.ui.table_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_rule, level=3)
 
     def line_api_search_text_changed(self):
         """ When the text in the line_api_search is changed to trigger this event. """
-        for api in range(self.list_dependency_available_api_list.count()):
-            if self.line_api_search.text() in self.list_dependency_available_api_list.item(api).text():
-                self.list_dependency_available_api_list.setCurrentItem(self.list_dependency_available_api_list.item(api))
+        for api in range(self.ui.list_dependency_available_api_list.count()):
+            if self.ui.line_api_search.text() in self.ui.list_dependency_available_api_list.item(api).text():
+                self.ui.list_dependency_available_api_list.setCurrentItem(self.ui.list_dependency_available_api_list.item(api))
                 break
             
     def line_tc_api_search_text_changed(self):
-        for api in range(self.list_tc_dependency_available_api_list.count()):
-            if self.line_tc_api_search.text() in self.list_tc_dependency_available_api_list.item(api).text():
-                self.list_tc_dependency_available_api_list.setCurrentItem(self.list_tc_dependency_available_api_list.item(api))
+        for api in range(self.ui.list_tc_dependency_available_api_list.count()):
+            if self.ui.line_tc_api_search.text() in self.ui.list_tc_dependency_available_api_list.item(api).text():
+                self.ui.list_tc_dependency_available_api_list.setCurrentItem(self.ui.list_tc_dependency_available_api_list.item(api))
                 break
         
     def list_dependency_available_api_list_item_clicked(self):
         """ When the item in the list_dependency_available_api_list is clicked. """
-        api_name = self.list_dependency_available_api_list.selectedItems()[0].text()
-        self.line_api_search.setText(api_name)
+        api_name = self.ui.list_dependency_available_api_list.selectedItems()[0].text()
+        self.ui.line_api_search.setText(api_name)
         
     def list_tc_dependency_available_api_list_item_clicked(self):
         """ When the item in the list_tc_dependency_available_api_list is clicked. """
-        api_name = self.list_tc_dependency_available_api_list.selectedItems()[0].text()
-        self.line_tc_api_search.setText(api_name)
+        api_name = self.ui.list_tc_dependency_available_api_list.selectedItems()[0].text()
+        self.ui.line_tc_api_search.setText(api_name)
     
     def table_path_item_clicked(self):
-        selected_item = self.table_path.selectedItems()[0]
+        selected_item = self.ui.table_path.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is None:
-            self.textbox_path_name.setText(selected_item.text(0))
-            self.textbox_path_value.setText(selected_item.child(4).text(1))
+            self.ui.textbox_path_name.setText(selected_item.text(0))
+            self.ui.textbox_path_value.setText(selected_item.child(4).text(1))
         else:
             return
         
     def table_query_item_clicked(self):
-        selected_item = self.table_query.selectedItems()[0]
+        selected_item = self.ui.table_query.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item is not None and parent_item.parent() is None:
-            self.textbox_query_name.setText(selected_item.text(0))
-            self.textbox_query_value.setText(selected_item.child(4).text(1))
+            self.ui.textbox_query_name.setText(selected_item.text(0))
+            self.ui.textbox_query_value.setText(selected_item.child(4).text(1))
         
     def btn_add_path_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0:
             return
         
-        selected_item = self.table_api_tree.selectedItems()[0]
+        selected_item = self.ui.table_api_tree.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name, value, operation_id = self.textbox_path_name.text(), self.textbox_path_value.text(), self.table_api_tree.selectedItems()[0].text(4)
+            name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
             file_path = f"./PathRule/{operation_id}.json"
             if not os.path.exists(file_path):
                 with open(file_path, "w") as f:
@@ -2570,18 +2573,18 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to add key `{[name, value]}`.")
                     
-            GeneralTool.clean_ui_content([self.textbox_path_name, self.textbox_path_value])
-            GeneralTool.parse_path_rule(operation_id, self.table_path)
-            GeneralTool.expand_and_resize_tree(self.table_path)
+            GeneralTool.clean_ui_content([self.ui.textbox_path_name, self.ui.textbox_path_value])
+            GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+            GeneralTool.expand_and_resize_tree(self.ui.table_path)
         
     def btn_update_path_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_path.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_path.selectedItems()) == 0:
             return
         
-        selected_item = self.table_path.selectedItems()[0]
+        selected_item = self.ui.table_path.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name, value, operation_id = self.textbox_path_name.text(), self.textbox_path_value.text(), self.table_api_tree.selectedItems()[0].text(4)      
+            name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)      
             file_path = f"./PathRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -2594,18 +2597,18 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to update key `{[name, value]}`.")
             
-            GeneralTool.clean_ui_content([self.textbox_path_name, self.textbox_path_value])
-            GeneralTool.parse_path_rule(operation_id, self.table_path)
-            GeneralTool.expand_and_resize_tree(self.table_path)
+            GeneralTool.clean_ui_content([self.ui.textbox_path_name, self.ui.textbox_path_value])
+            GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+            GeneralTool.expand_and_resize_tree(self.ui.table_path)
             
     def btn_update_query_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_query.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_query.selectedItems()) == 0:
             return
         
-        selected_item = self.table_query.selectedItems()[0]
+        selected_item = self.ui.table_query.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name, value, operation_id = self.textbox_query_name.text(), self.textbox_query_value.text(), self.table_api_tree.selectedItems()[0].text(4)      
+            name, value, operation_id = self.ui.textbox_query_name.text(), self.ui.textbox_query_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)      
             file_path = f"./QueryRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -2618,19 +2621,19 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to update key `{[name, value]}`.")
             
-            GeneralTool.clean_ui_content([self.textbox_query_name, self.textbox_query_value])
-            GeneralTool.parse_query_rule(operation_id, self.table_query)
-            GeneralTool.expand_and_resize_tree(self.table_query)
+            GeneralTool.clean_ui_content([self.ui.textbox_query_name, self.ui.textbox_query_value])
+            GeneralTool.parse_query_rule(operation_id, self.ui.table_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_query)
 
     def btn_remove_query_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_query.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_query.selectedItems()) == 0:
             return
         
-        selected_item = self.table_query.selectedItems()[0]
+        selected_item = self.ui.table_query.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name = self.textbox_query_name.text()
-            operation_id = self.table_api_tree.selectedItems()[0].text(4) 
+            name = self.ui.textbox_query_name.text()
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4) 
             file_path = f"./QueryRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -2643,19 +2646,19 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{[name]}`.")
         
-            GeneralTool.clean_ui_content([self.textbox_query_name, self.textbox_query_value])
-            GeneralTool.parse_path_rule(operation_id, self.table_query)
-            GeneralTool.expand_and_resize_tree(self.table_path)
+            GeneralTool.clean_ui_content([self.ui.textbox_query_name, self.ui.textbox_query_value])
+            GeneralTool.parse_path_rule(operation_id, self.ui.table_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_path)
                 
     def btn_remove_path_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0 or len(self.table_path.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_path.selectedItems()) == 0:
             return
 
-        selected_item = self.table_path.selectedItems()[0]
+        selected_item = self.ui.table_path.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name = self.textbox_path_name.text()
-            operation_id = self.table_api_tree.selectedItems()[0].text(4) 
+            name = self.ui.textbox_path_name.text()
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4) 
             file_path = f"./PathRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -2668,82 +2671,82 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{[name]}`.")
         
-            GeneralTool.clean_ui_content([self.textbox_path_name, self.textbox_path_value])
-            GeneralTool.parse_path_rule(operation_id, self.table_path)
-            GeneralTool.expand_and_resize_tree(self.table_path)
+            GeneralTool.clean_ui_content([self.ui.textbox_path_name, self.ui.textbox_path_value])
+            GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+            GeneralTool.expand_and_resize_tree(self.ui.table_path)
         
     def checkBox_constraint_rule_wildcard_changed(self):
         GeneralTool.update_dependency_wildcard(
-            self.textbox_constraint_rule_dst, self.checkBox_constraint_rule_wildcard, self.textbox_constraint_rule_dst)
+            self.ui.textbox_constraint_rule_dst, self.ui.checkBox_constraint_rule_wildcard, self.ui.textbox_constraint_rule_dst)
         
     def checkBox_dependency_constraint_rule_wildcard_changed(self):
         GeneralTool.update_dependency_wildcard(
-            self.textbox_dependency_constraint_rule_dst, self.checkBox_dependency_constraint_rule_wildcard, self.textbox_dependency_constraint_rule_dst)
+            self.ui.textbox_dependency_constraint_rule_dst, self.ui.checkBox_dependency_constraint_rule_wildcard, self.ui.textbox_dependency_constraint_rule_dst)
 
     def checkBox_tc_dependency_constraint_rule_wildcard_changed(self):
         GeneralTool.update_dependency_wildcard(
-            self.textbox_tc_dependency_constraint_rule_dst, self.checkBox_tc_dependency_constraint_rule_wildcard, self.textbox_tc_dependency_constraint_rule_dst)
+            self.ui.textbox_tc_dependency_constraint_rule_dst, self.ui.checkBox_tc_dependency_constraint_rule_wildcard, self.ui.textbox_tc_dependency_constraint_rule_dst)
         
     def comboBox_constraint_rule_src_action_changed(self):
         GeneralTool.update_constraint_actions_src(
-            self.comboBox_constraint_rule_src_action, self.comboBox_constraint_rule_condition)
+            self.ui.comboBox_constraint_rule_src_action, self.ui.comboBox_constraint_rule_condition)
             
     def comboBox_dependency_constraint_rule_src_action_changed(self):
         GeneralTool.update_constraint_actions_src(
-            self.comboBox_dependency_constraint_rule_src_action, self.comboBox_dependency_constraint_rule_condition)
+            self.ui.comboBox_dependency_constraint_rule_src_action, self.ui.comboBox_dependency_constraint_rule_condition)
             
     def comboBox_tc_dependency_constraint_rule_src_action_changed(self):
         GeneralTool.update_constraint_actions_src(
-            self.comboBox_tc_dependency_constraint_rule_src_action, self.comboBox_tc_dependency_constraint_rule_condition)
+            self.ui.comboBox_tc_dependency_constraint_rule_src_action, self.ui.comboBox_tc_dependency_constraint_rule_condition)
             
     def comboBox_constraint_rule_dst_action_changed(self):
         GeneralTool.update_constraint_actions_dst(
-            self.comboBox_constraint_rule_dst_action,
-            self.comboBox_constraint_dst_action_type,
-            self.textbox_constraint_rule_dst_value,
-            self.checkBox_constraint_rule_wildcard
+            self.ui.comboBox_constraint_rule_dst_action,
+            self.ui.comboBox_constraint_dst_action_type,
+            self.ui.textbox_constraint_rule_dst_value,
+            self.ui.checkBox_constraint_rule_wildcard
         )
             
     def comboBox_dependency_constraint_rule_dst_action_changed(self):
         GeneralTool.update_constraint_actions_dst(
-            self.comboBox_dependency_constraint_rule_dst_action,
-            self.comboBox_dependency_constraint_dst_action_type,
-            self.textbox_dependency_constraint_rule_dst_value,
-            self.checkBox_dependency_constraint_rule_wildcard
+            self.ui.comboBox_dependency_constraint_rule_dst_action,
+            self.ui.comboBox_dependency_constraint_dst_action_type,
+            self.ui.textbox_dependency_constraint_rule_dst_value,
+            self.ui.checkBox_dependency_constraint_rule_wildcard
         )
             
     def comboBox_tc_dependency_constraint_rule_dst_action_changed(self):
         GeneralTool.update_constraint_actions_dst(
-            self.comboBox_tc_dependency_constraint_rule_dst_action,
-            self.comboBox_tc_dependency_constraint_dst_action_type,
-            self.textbox_tc_dependency_constraint_rule_dst_value,
-            self.checkBox_tc_dependency_constraint_rule_wildcard
+            self.ui.comboBox_tc_dependency_constraint_rule_dst_action,
+            self.ui.comboBox_tc_dependency_constraint_dst_action_type,
+            self.ui.textbox_tc_dependency_constraint_rule_dst_value,
+            self.ui.checkBox_tc_dependency_constraint_rule_wildcard
         )
       
     def btn_constraint_rule_clear_clicked(self):
         """ Clear the Constraint Rule UI. """
         GeneralTool.clean_ui_content([
-            self.textbox_constraint_rule_src, 
-            self.textbox_constraint_rule_expected_value, 
-            self.textbox_constraint_rule_dst, 
-            self.textbox_constraint_rule_dst_value,
+            self.ui.textbox_constraint_rule_src, 
+            self.ui.textbox_constraint_rule_expected_value, 
+            self.ui.textbox_constraint_rule_dst, 
+            self.ui.textbox_constraint_rule_dst_value,
         ])
-        self.checkBox_constraint_rule_wildcard.setChecked(False)
+        self.ui.checkBox_constraint_rule_wildcard.setChecked(False)
 
     def btn_constraint_rule_apply_clicked(self):
-        src_action = self.comboBox_constraint_rule_src_action.currentText()
-        src_path = self.textbox_constraint_rule_src.text()
-        src_condition = self.comboBox_constraint_rule_condition.currentText()
-        src_expected_value = self.textbox_constraint_rule_expected_value.text()
-        dst_action = self.comboBox_constraint_rule_dst_action.currentText()
-        dst_path = self.textbox_constraint_rule_dst.text()
-        dst_action_type = self.comboBox_constraint_dst_action_type.currentText()
-        dst_value = self.textbox_constraint_rule_dst_value.text()
+        src_action = self.ui.comboBox_constraint_rule_src_action.currentText()
+        src_path = self.ui.textbox_constraint_rule_src.text()
+        src_condition = self.ui.comboBox_constraint_rule_condition.currentText()
+        src_expected_value = self.ui.textbox_constraint_rule_expected_value.text()
+        dst_action = self.ui.comboBox_constraint_rule_dst_action.currentText()
+        dst_path = self.ui.textbox_constraint_rule_dst.text()
+        dst_action_type = self.ui.comboBox_constraint_dst_action_type.currentText()
+        dst_value = self.ui.textbox_constraint_rule_dst_value.text()
         
-        if len(self.table_api_tree.selectedItems()) == 0 or self.table_api_tree.selectedItems()[0].parent() is None:
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or self.ui.table_api_tree.selectedItems()[0].parent() is None:
             return
         else:
-            operation_id = self.table_api_tree.selectedItems()[0].text(4)
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
             file_path = f"./GenerationRule/{operation_id}.json"
             if os.path.exists(file_path) is False:
                 return
@@ -2752,36 +2755,36 @@ class MyWindow(QMainWindow):
             operation_id, src_action, src_path, src_condition, src_expected_value, dst_action, dst_path, dst_action_type, dst_value)
         
         # * Refresh the Generation Rule Table
-        GeneralTool.refresh_generation_rule_table(self.table_api_tree, self.table_generation_rule, file_path)
-        GeneralTool.expand_and_resize_tree(self.table_generation_rule, 0)
-        GeneralTool.clean_ui_content([self.textbox_constraint_rule_src, self.textbox_constraint_rule_expected_value,
-                                        self.textbox_constraint_rule_dst, self.textbox_constraint_rule_dst_value])
-        self.checkBox_constraint_rule_wildcard.setChecked(False)
+        GeneralTool.refresh_generation_rule_table(self.ui.table_api_tree, self.ui.table_generation_rule, file_path)
+        GeneralTool.expand_and_resize_tree(self.ui.table_generation_rule, 0)
+        GeneralTool.clean_ui_content([self.ui.textbox_constraint_rule_src, self.ui.textbox_constraint_rule_expected_value,
+                                        self.ui.textbox_constraint_rule_dst, self.ui.textbox_constraint_rule_dst_value])
+        self.ui.checkBox_constraint_rule_wildcard.setChecked(False)
             
     def table_generation_rule_item_clicked(self):
         """ 
         When the user click the item in the table_generation_rule.
         It will render the constraint rule UI for quick setup the constraint rule.
         """
-        selected_item = self.table_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_generation_rule.selectedItems()[0]
         GeneralTool.render_constraint_rule(
             selected_item,
-            self.textbox_constraint_rule_src, 
-            self.textbox_constraint_rule_expected_value, 
-            self.textbox_constraint_rule_dst,
-            self.textbox_constraint_rule_dst_value, 
-            self.checkBox_constraint_rule_wildcard,
+            self.ui.textbox_constraint_rule_src, 
+            self.ui.textbox_constraint_rule_expected_value, 
+            self.ui.textbox_constraint_rule_dst,
+            self.ui.textbox_constraint_rule_dst_value, 
+            self.ui.checkBox_constraint_rule_wildcard,
         )
         GeneralTool.render_data_rule(
             selected_item,
-            self.textbox_data_rule_type,
-            self.textbox_data_rule_format,
-            self.textbox_data_rule_value,
-            self.comboBox_data_rule_data_generator,
-            self.textbox_data_rule_data_length,
-            self.comboBox_data_rule_required,
-            self.comboBox_data_rule_nullable,
-            self.textbox_data_rule_regex_pattern
+            self.ui.textbox_data_rule_type,
+            self.ui.textbox_data_rule_format,
+            self.ui.textbox_data_rule_value,
+            self.ui.comboBox_data_rule_data_generator,
+            self.ui.textbox_data_rule_data_length,
+            self.ui.comboBox_data_rule_required,
+            self.ui.comboBox_data_rule_nullable,
+            self.ui.textbox_data_rule_regex_pattern
         )
                  
     def table_dependency_generation_rule_item_clicked(self):
@@ -2789,25 +2792,25 @@ class MyWindow(QMainWindow):
         When the user click the item in the table_dependency_generation_rule.
         It will render the constraint rule UI for quick setup the constraint rule.
         """
-        selected_item = self.table_dependency_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_dependency_generation_rule.selectedItems()[0]
         GeneralTool.render_constraint_rule(
             selected_item, 
-            self.textbox_dependency_constraint_rule_src, 
-            self.textbox_dependency_constraint_rule_expected_value, 
-            self.textbox_dependency_constraint_rule_dst,
-            self.textbox_dependency_constraint_rule_dst_value, 
-            self.checkBox_dependency_constraint_rule_wildcard
+            self.ui.textbox_dependency_constraint_rule_src, 
+            self.ui.textbox_dependency_constraint_rule_expected_value, 
+            self.ui.textbox_dependency_constraint_rule_dst,
+            self.ui.textbox_dependency_constraint_rule_dst_value, 
+            self.ui.checkBox_dependency_constraint_rule_wildcard
         )
         GeneralTool.render_data_rule(
             selected_item,
-            self.textbox_dependency_data_rule_type,
-            self.textbox_dependency_data_rule_format,
-            self.textbox_dependency_data_rule_value,
-            self.comboBox_dependency_data_rule_data_generator,
-            self.textbox_dependency_data_rule_data_length,
-            self.comboBox_dependency_data_rule_required,
-            self.comboBox_dependency_data_rule_nullable,
-            self.textbox_dependency_data_rule_regex_pattern,
+            self.ui.textbox_dependency_data_rule_type,
+            self.ui.textbox_dependency_data_rule_format,
+            self.ui.textbox_dependency_data_rule_value,
+            self.ui.comboBox_dependency_data_rule_data_generator,
+            self.ui.textbox_dependency_data_rule_data_length,
+            self.ui.comboBox_dependency_data_rule_required,
+            self.ui.comboBox_dependency_data_rule_nullable,
+            self.ui.textbox_dependency_data_rule_regex_pattern,
         )        
         
     def table_tc_dependency_generation_rule_item_clicked(self):
@@ -2815,35 +2818,35 @@ class MyWindow(QMainWindow):
         When the user click the item in the table_tc_dependency_generation_rule.
         It will render the constraint rule UI for quick setup the constraint rule.
         """
-        selected_item = self.table_tc_dependency_generation_rule.selectedItems()[0]
+        selected_item = self.ui.table_tc_dependency_generation_rule.selectedItems()[0]
         GeneralTool.render_constraint_rule(
             selected_item,
-            self.textbox_tc_dependency_constraint_rule_src,
-            self.textbox_tc_dependency_constraint_rule_expected_value,
-            self.textbox_tc_dependency_constraint_rule_dst,
-            self.textbox_tc_dependency_constraint_rule_dst_value,
-            self.checkBox_tc_dependency_constraint_rule_wildcard,
+            self.ui.textbox_tc_dependency_constraint_rule_src,
+            self.ui.textbox_tc_dependency_constraint_rule_expected_value,
+            self.ui.textbox_tc_dependency_constraint_rule_dst,
+            self.ui.textbox_tc_dependency_constraint_rule_dst_value,
+            self.ui.checkBox_tc_dependency_constraint_rule_wildcard,
         )
         GeneralTool.render_data_rule(
             selected_item,
-            self.textbox_tc_dependency_data_rule_type,
-            self.textbox_tc_dependency_data_rule_format,
-            self.textbox_tc_dependency_data_rule_value,
-            self.comboBox_tc_dependency_data_rule_data_generator,
-            self.textbox_tc_dependency_data_rule_data_length,
-            self.comboBox_tc_dependency_data_rule_required,
-            self.comboBox_tc_dependency_data_rule_nullable,
-            self.textbox_tc_dependency_data_rule_regex_pattern,
+            self.ui.textbox_tc_dependency_data_rule_type,
+            self.ui.textbox_tc_dependency_data_rule_format,
+            self.ui.textbox_tc_dependency_data_rule_value,
+            self.ui.comboBox_tc_dependency_data_rule_data_generator,
+            self.ui.textbox_tc_dependency_data_rule_data_length,
+            self.ui.comboBox_tc_dependency_data_rule_required,
+            self.ui.comboBox_tc_dependency_data_rule_nullable,
+            self.ui.textbox_tc_dependency_data_rule_regex_pattern,
         )  
 
         
     def btn_api_table_add_use_case_clicked(self):
         """ This Add Button is used to duplicate an existing first-level API, and also copy over the Generation Rule, Assertion Rule, and Dependency Request Body. """
         # * To get the selected api item, and copy it.
-        if len(self.table_api_tree.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0:
             return
         else:
-            selected_item = self.table_api_tree.selectedItems()[0]
+            selected_item = self.ui.table_api_tree.selectedItems()[0]
             parent_item = selected_item.parent()
             
         if parent_item is not None and parent_item.parent() is not None:
@@ -2879,42 +2882,42 @@ class MyWindow(QMainWindow):
     
     def table_assertion_rule_item_clicked(self):
         """ When the assertion rule item is clicked. """
-        selected_item = self.table_assertion_rule.selectedItems()[0]
+        selected_item = self.ui.table_assertion_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
-            self.comboBox_assertion_type.setCurrentText(parent_item.text(0))
-            self.comboBox_assertion_source.setCurrentText(selected_item.child(0).text(1))
-            self.textbox_assertion_rule_field_expression.setText(selected_item.child(1).text(1))
-            self.textbox_assertion_rule_expression.setText(selected_item.child(2).text(1))
-            self.comboBox_assertion_method.setCurrentText(selected_item.child(3).text(1))
-            self.textbox_assertion_rule_expected_value.setText(selected_item.child(4).text(1))
-            self.comboBox_assertion_type.setEnabled(False)
+            self.ui.comboBox_assertion_type.setCurrentText(parent_item.text(0))
+            self.ui.comboBox_assertion_source.setCurrentText(selected_item.child(0).text(1))
+            self.ui.textbox_assertion_rule_field_expression.setText(selected_item.child(1).text(1))
+            self.ui.textbox_assertion_rule_expression.setText(selected_item.child(2).text(1))
+            self.ui.comboBox_assertion_method.setCurrentText(selected_item.child(3).text(1))
+            self.ui.textbox_assertion_rule_expected_value.setText(selected_item.child(4).text(1))
+            self.ui.comboBox_assertion_type.setEnabled(False)
         else:
-            self.comboBox_assertion_type.setEnabled(True)
+            self.ui.comboBox_assertion_type.setEnabled(True)
     
     def btn_update_assertion_rule_clicked(self):
         """ Update Assertion Rule Item """
-        if len(self.table_assertion_rule.selectedItems()) == 0:
+        if len(self.ui.table_assertion_rule.selectedItems()) == 0:
             return
         
-        test_type = self.comboBox_assertion_type.currentText()
-        source = self.comboBox_assertion_source.currentText()
-        filter_expression = self.textbox_assertion_rule_expression.text()
-        field_expression = self.textbox_assertion_rule_field_expression.text()
-        method = self.comboBox_assertion_method.currentText()
-        expected_value = self.textbox_assertion_rule_expected_value.text()
+        test_type = self.ui.comboBox_assertion_type.currentText()
+        source = self.ui.comboBox_assertion_source.currentText()
+        filter_expression = self.ui.textbox_assertion_rule_expression.text()
+        field_expression = self.ui.textbox_assertion_rule_field_expression.text()
+        method = self.ui.comboBox_assertion_method.currentText()
+        expected_value = self.ui.textbox_assertion_rule_expected_value.text()
                 
         # * Retrieve the API List selected item to get the corresponding operation id
-        api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
+        api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
         operation_id = api_selected_item[0]
         
         # * Retrieve the Rule Sequence Number
-        assertion_selected_item = [item.text(0) for item in self.table_assertion_rule.selectedItems()]
+        assertion_selected_item = [item.text(0) for item in self.ui.table_assertion_rule.selectedItems()]
         sequence_num = assertion_selected_item[0]
 
         # * To obtain the selected item's parent item
-        selected_item = self.table_assertion_rule.selectedItems()[0]
+        selected_item = self.ui.table_assertion_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item and parent_item.parent() is None:
             # * Update the value in the JSON file
@@ -2934,28 +2937,28 @@ class MyWindow(QMainWindow):
                     logging.info(f"Update JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
-            for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_field_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
+            for clean_item in [self.ui.textbox_assertion_rule_expression, self.ui.textbox_assertion_rule_field_expression, self.ui.textbox_assertion_rule_expected_value, self.ui.table_assertion_rule]:
                 clean_item.clear()
-            GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
-            GeneralTool.expand_and_resize_tree(self.table_assertion_rule)
-            self.comboBox_assertion_type.setEnabled(True)
+            GeneralTool.parse_assertion_rule(operation_id, self.ui.table_assertion_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule)
+            self.ui.comboBox_assertion_type.setEnabled(True)
         else:
             return
 
     def btn_remove_assertion_rule_clicked(self):
         """ Remove Assertion Rule Item """
         
-        if len(self.table_assertion_rule.selectedItems()) == 0:
+        if len(self.ui.table_assertion_rule.selectedItems()) == 0:
             return
 
-        selected_item = self.table_assertion_rule.selectedItems()[0]
+        selected_item = self.ui.table_assertion_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         
         if parent_item and parent_item.parent() is None:
             # * Get the JSON Path of the selected item
             path = [parent_item.text(0).lower(), selected_item.text(0)]
             # * Retrieve the API List selected item to get the corresponding operation id
-            api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
+            api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
             operation_id = api_selected_item[0]
             assertion_file_path = f"./AssertionRule/{operation_id}.json"
             with open(assertion_file_path, "r+") as f:
@@ -2968,22 +2971,22 @@ class MyWindow(QMainWindow):
                     logging.info(f"Successfully updating JSON file `{assertion_file_path}` to remove key `{path}`.")
                 else:
                     logging.error(f"Error updating JSON file `{assertion_file_path}` to remove key `{path}`.")
-            GeneralTool.remove_table_item_from_ui(self.table_assertion_rule)
-            self.comboBox_assertion_type.setEnabled(True)
+            GeneralTool.remove_table_item_from_ui(self.ui.table_assertion_rule)
+            self.ui.comboBox_assertion_type.setEnabled(True)
 
     def btn_add_assertion_rule_clicked(self):
-        if len(self.table_api_tree.selectedItems()) == 0:
+        if len(self.ui.table_api_tree.selectedItems()) == 0:
             return
         
-        test_type = self.comboBox_assertion_type.currentText()
-        source = self.comboBox_assertion_source.currentText()
-        field_expression = self.textbox_assertion_rule_field_expression.text()
-        filter_expression = self.textbox_assertion_rule_expression.text()
-        method = self.comboBox_assertion_method.currentText()
-        expected_value = self.textbox_assertion_rule_expected_value.text()
+        test_type = self.ui.comboBox_assertion_type.currentText()
+        source = self.ui.comboBox_assertion_source.currentText()
+        field_expression = self.ui.textbox_assertion_rule_field_expression.text()
+        filter_expression = self.ui.textbox_assertion_rule_expression.text()
+        method = self.ui.comboBox_assertion_method.currentText()
+        expected_value = self.ui.textbox_assertion_rule_expected_value.text()
         
         # * Retrieve the API List selected item to get the corresponding operation id
-        api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
+        api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
         operation_id = api_selected_item[0]
         
         # * Add the value in the JSON file
@@ -3007,13 +3010,13 @@ class MyWindow(QMainWindow):
                 logging.info(f"Update JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
             else:
                 logging.error(f"Error updating JSON file `{file_path}` with new value `{[test_type, sequence_num, value]}`.")
-        for clean_item in [self.textbox_assertion_rule_expression, self.textbox_assertion_rule_field_expression, self.textbox_assertion_rule_expected_value, self.table_assertion_rule]:
+        for clean_item in [self.ui.textbox_assertion_rule_expression, self.ui.textbox_assertion_rule_field_expression, self.ui.textbox_assertion_rule_expected_value, self.ui.table_assertion_rule]:
             clean_item.clear()
-        GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
-        GeneralTool.expand_and_resize_tree(self.table_assertion_rule)
+        GeneralTool.parse_assertion_rule(operation_id, self.ui.table_assertion_rule)
+        GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule)
     
     def btn_update_text_body_clicked(self):
-        selected_items = self.table_test_plan_api_list.selectedItems()
+        selected_items = self.ui.table_test_plan_api_list.selectedItems()
         parent = None
         if len(selected_items) > 0:
             parent = selected_items[0].parent()
@@ -3022,7 +3025,7 @@ class MyWindow(QMainWindow):
                 serial_num = test_id.split(".")[0]
                 test_point = test_id.split(".")[1]
                 operation_id = parent.parent().text(0)
-                new_value = self.text_body.toPlainText()
+                new_value = self.ui.text_body.toPlainText()
                 testdata_path = f"./TestData/{operation_id}_{serial_num}_{test_point}.json"
                 
                 # * Prepare the copy of the test data file for recovering.
@@ -3042,7 +3045,7 @@ class MyWindow(QMainWindow):
                         GeneralTool.show_error_dialog(error_message, detailed_message)
                         logging.warning(f"Error updating test data file `{testdata_path}` with new value `{new_value}`. Error: {e.msg}")
                         logging.warning(f"Recover the test data file `{testdata_path}` with old value `{copy_testdata}`.")
-                        self.text_body.setPlainText(json.dumps(copy_testdata, indent=4))
+                        self.ui.text_body.setPlainText(json.dumps(copy_testdata, indent=4))
                         return
                     logging.info(f"Update test data file `{testdata_path}` with new value `{new_value}`.")
                 except FileNotFoundError:
@@ -3058,7 +3061,7 @@ class MyWindow(QMainWindow):
             item = item.parent()
             
         # * Retrieve the API List selected item to get the corresponding operation id
-        api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
+        api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
         operation_id = api_selected_item[0]
         
         # * Update the value in the JSON file
@@ -3127,7 +3130,7 @@ class MyWindow(QMainWindow):
         
     def _create_generation_rule_and_assertion_files(self):
         """ Create Generation Rule and Assertion Files """
-        for schema in self.schema_list:
+        for schema in self.ui.schema_list:
             api_doc = GeneralTool.load_schema_file(schema)
             for uri, path_item in api_doc['paths'].items():
                 for method, operation in path_item.items():
@@ -3179,16 +3182,16 @@ class MyWindow(QMainWindow):
         """ Remove Generation Rule Item """
         
         # * If no API or Generation Rule is selected, return directly.
-        if self.table_api_tree.selectedItems() == [] or self.table_generation_rule.selectedItems() == []:
+        if self.ui.table_api_tree.selectedItems() == [] or self.ui.table_generation_rule.selectedItems() == []:
             return
 
         # * Retrieve the API List selected item to get the corresponding operation id
-        api_selected_item = [item.text(4) for item in self.table_api_tree.selectedItems()]
+        api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
         operation_id = api_selected_item[0]
         
         # * Retrieve the Generation Rule List selected items to get the corresponding paths
         paths = []
-        for item in self.table_generation_rule.selectedItems():
+        for item in self.ui.table_generation_rule.selectedItems():
             path = []
             while item.parent() is not None:
                 path.insert(0, item.text(0))
@@ -3210,18 +3213,18 @@ class MyWindow(QMainWindow):
             f.seek(0)
             json.dump(data, f, indent=4)
             f.truncate()
-        GeneralTool.remove_table_item_from_ui(self.table_generation_rule)
+        GeneralTool.remove_table_item_from_ui(self.ui.table_generation_rule)
         
     def btn_api_table_remove_clicked(self):
         """ Remove API Table Item """
-        selected_items = self.table_api_tree.selectedItems()
+        selected_items = self.ui.table_api_tree.selectedItems()
         for item in selected_items:
             if item.parent() is None:
                 teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
                 for folder in teardown_folder:  
                     for child_file in glob.glob(f"./{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
-                self.table_api_tree.takeTopLevelItem(self.table_api_tree.indexOfTopLevelItem(item))
+                self.ui.table_api_tree.takeTopLevelItem(self.ui.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
                 teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
@@ -3231,7 +3234,7 @@ class MyWindow(QMainWindow):
                         os.remove(file_path)
                 item.parent().takeChild(item.parent().indexOfChild(item))
                 # * Clear the table
-                teardown_table = [self.table_schema, self.table_generation_rule, self.table_assertion_rule,]
+                teardown_table = [self.ui.table_schema, self.ui.table_generation_rule, self.ui.table_assertion_rule,]
                 for table in teardown_table: table.clear()
 
     def generate_test_plan(self):
@@ -3246,16 +3249,16 @@ class MyWindow(QMainWindow):
             return
         
         # * Generate TCG Config
-        GeneralTool.generate_tcg_config(self.group_test_strategy.findChildren(QCheckBox))
+        GeneralTool.generate_tcg_config(self.ui.group_test_strategy.findChildren(QCheckBox))
         with open(f"config/tcg_config.json", "r") as f:
             tcg_config = json.load(f)
             
         # * Generate Test Plan
         GeneralTool.teardown_folder_files(["./test_plan", "./TestData", "./TestData/Dependency_TestData"])  
         serial_number = 1
-        test_count = self.spinbox_test_case_count.value()
-        for i in range(self.table_api_tree.topLevelItemCount()):
-            schema_item = self.table_api_tree.topLevelItem(i)
+        test_count = self.ui.spinbox_test_case_count.value()
+        for i in range(self.ui.table_api_tree.topLevelItemCount()):
+            schema_item = self.ui.table_api_tree.topLevelItem(i)
             # * To obtain the Api Doc Path
             exts = ["json", "yaml", "yml"]
             for ext in exts:
@@ -3287,29 +3290,29 @@ class MyWindow(QMainWindow):
                                         GeneralTool.generate_test_cases(
                                             tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
                                         )
-                                self.tabTCG.setCurrentIndex(1)
+                                self.ui.tabTCG.setCurrentIndex(1)
         
         # * Render Test Plan to Table
         GeneralTool.clean_ui_content([
-            self.table_test_plan_api_list,
-            self.table_tc_assertion_rule,
-            self.table_tc_dependency_rule,
-            self.table_tc_dependency_path,
-            self.table_tc_dependency_generation_rule,
-            self.textbox_tc_dependency_requestbody,
-            self.table_tc_path,
-            self.text_body,
+            self.ui.table_test_plan_api_list,
+            self.ui.table_tc_assertion_rule,
+            self.ui.table_tc_dependency_rule,
+            self.ui.table_tc_dependency_path,
+            self.ui.table_tc_dependency_generation_rule,
+            self.ui.textbox_tc_dependency_requestbody,
+            self.ui.table_tc_path,
+            self.ui.text_body,
         ])
-        self.table_test_plan_api_list.clear()
+        self.ui.table_test_plan_api_list.clear()
         for test_plan in glob.glob("test_plan/*.json"):
             with open(test_plan, "r") as f:
                 test_plan = json.load(f)
             file_name = test_plan['test_info']['operationId']
-            toplevel_length = self.table_test_plan_api_list.topLevelItemCount()
-            self.table_test_plan_api_list.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
+            toplevel_length = self.ui.table_test_plan_api_list.topLevelItemCount()
+            self.ui.table_test_plan_api_list.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
             for index, test_case in test_plan['test_cases'].items():
                 testcase_child = QtWidgets.QTreeWidgetItem(["", str(index), test_case['test_strategy'], test_case['test_type']])
-                self.table_test_plan_api_list.topLevelItem(toplevel_length).addChild(testcase_child)
+                self.ui.table_test_plan_api_list.topLevelItem(toplevel_length).addChild(testcase_child)
                 for tp_index, test_point in test_case['test_point'].items():
                     tp_index = str(index) + "." + str(tp_index)
                     testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
@@ -3318,7 +3321,7 @@ class MyWindow(QMainWindow):
         """ Import Object Mapping File """
         file_filter = "Object Mapping File (*.json)"
         response = QtWidgets.QFileDialog.getOpenFileNames(
-            parent=self.tab, caption="Open Object Mapping File", directory=os.getcwd(), filter=file_filter)
+            parent=self.ui.tab, caption="Open Object Mapping File", directory=os.getcwd(), filter=file_filter)
 
         for file_path in response[0]:
             file_name = os.path.basename(file_path)
@@ -3329,63 +3332,63 @@ class MyWindow(QMainWindow):
         """ Import OpenAPI Doc """
         file_filter = "OpenAPI Doc (*.yaml *.yml *.json)"
         response = QtWidgets.QFileDialog.getOpenFileNames(
-            parent=self.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter)
+            parent=self.ui.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter)
         
         # * Clean Environment
         GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction", "./QueryRule"])
         GeneralTool.clean_ui_content([
-            self.table_api_tree, 
-            self.table_schema,
-            self.table_path,
-            self.table_query,
-            self.table_generation_rule, 
-            self.table_assertion_rule, 
-            self.list_dependency_available_api_list,
-            self.list_tc_dependency_available_api_list,
+            self.ui.table_api_tree, 
+            self.ui.table_schema,
+            self.ui.table_path,
+            self.ui.table_query,
+            self.ui.table_generation_rule, 
+            self.ui.table_assertion_rule, 
+            self.ui.list_dependency_available_api_list,
+            self.ui.list_tc_dependency_available_api_list,
         ])
         
-        self.schema_list = response[0]
+        self.ui.schema_list = response[0]
         index = 1
-        for schema in self.schema_list:
+        for schema in self.ui.schema_list:
             file_path = schema
             file_name = os.path.basename(file_path).split(".")[0]
             api_doc = GeneralTool.load_schema_file(file_path)
             index = self._render_api_tree(api_doc, index, file_name)
             # * If the index is None, it means the API Doc is not in the correct format, return directly.
             if index == None:
-                self.table_api_tree.clear()
+                self.ui.table_api_tree.clear()
                 return
         self._create_generation_rule_and_assertion_files()
-        GeneralTool.expand_and_resize_tree(self.table_api_tree)
+        GeneralTool.expand_and_resize_tree(self.ui.table_api_tree)
         
         # * Update Search Completion List
         all_api_list = []
-        for i in range(self.list_dependency_available_api_list.count()):
-            all_api_list.append(self.list_dependency_available_api_list.item(i).text())
+        for i in range(self.ui.list_dependency_available_api_list.count()):
+            all_api_list.append(self.ui.list_dependency_available_api_list.item(i).text())
         model = QStringListModel()
         model.setStringList(all_api_list)
-        self.search_completer.setModel(model)
+        self.ui.search_completer.setModel(model)
         
         all_tc_api_list = []
-        for i in range(self.list_tc_dependency_available_api_list.count()):
-            all_tc_api_list.append(self.list_tc_dependency_available_api_list.item(i).text())
+        for i in range(self.ui.list_tc_dependency_available_api_list.count()):
+            all_tc_api_list.append(self.ui.list_tc_dependency_available_api_list.item(i).text())
         tc_model = QStringListModel()
         tc_model.setStringList(all_tc_api_list)
-        self.tc_search_completer.setModel(tc_model)     
+        self.ui.tc_search_completer.setModel(tc_model)     
                      
     def _render_api_tree(self, api_doc, index, file_name):
         """ Render API Tree """
-        toplevel_length = self.table_api_tree.topLevelItemCount()
-        self.table_api_tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
+        toplevel_length = self.ui.table_api_tree.topLevelItemCount()
+        self.ui.table_api_tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
         try:
             for uri, path_item in api_doc['paths'].items():
                 for method, operation in path_item.items():
-                    self.table_api_tree.topLevelItem(toplevel_length).addChild(
+                    self.ui.table_api_tree.topLevelItem(toplevel_length).addChild(
                         QtWidgets.QTreeWidgetItem(["", str(index), uri, method.upper(), operation['operationId']])
                     )
                     # * Render the Available API List
-                    self.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
-                    self.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                    self.ui.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                    self.ui.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
                     index += 1
         except KeyError as e:
             logging.error(f"Error parsing API Doc `{file_name}`.")
@@ -3400,14 +3403,14 @@ class MyWindow(QMainWindow):
         
         # * Clear the table
         GeneralTool.clean_ui_content([
-            self.table_tc_dependency_rule, self.table_tc_assertion_rule, self.text_body, self.textbox_tc_dependency_requestbody, self.table_tc_dependency_path,
-            self.table_tc_path, self.textbox_tc_path_name, self.textbox_tc_path_value, self.table_tc_dependency_rule, self.table_tc_dependency_generation_rule,
-            self.comboBox_tc_dependency_type, self.line_tc_api_search, self.textbox_tc_dependency_return_variable_name, self.textbox_tc_description,
-            self.textbox_tc_request_name, self.textbox_tc_response_name, self.table_tc_additional_action, self.table_tc_dependency_additional_action,
-            self.table_tc_query, self.table_tc_dependency_query
+            self.ui.table_tc_dependency_rule, self.ui.table_tc_assertion_rule, self.ui.text_body, self.ui.textbox_tc_dependency_requestbody, self.ui.table_tc_dependency_path,
+            self.ui.table_tc_path, self.ui.textbox_tc_path_name, self.ui.textbox_tc_path_value, self.ui.table_tc_dependency_rule, self.ui.table_tc_dependency_generation_rule,
+            self.ui.comboBox_tc_dependency_type, self.ui.line_tc_api_search, self.ui.textbox_tc_dependency_return_variable_name, self.ui.textbox_tc_description,
+            self.ui.textbox_tc_request_name, self.ui.textbox_tc_response_name, self.ui.table_tc_additional_action, self.ui.table_tc_dependency_additional_action,
+            self.ui.table_tc_query, self.ui.table_tc_dependency_query
         ])
-        self.comboBox_tc_dependency_type.setEnabled(True)
-        self.line_tc_api_search.setEnabled(True)
+        self.ui.comboBox_tc_dependency_type.setEnabled(True)
+        self.ui.line_tc_api_search.setEnabled(True)
         
         # * Determine the column is top level or not
         parent = item.parent()
@@ -3431,32 +3434,32 @@ class MyWindow(QMainWindow):
             description = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['description']
             request_name = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['request_name']
             response_name = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['response_name']
-            self.textbox_tc_description.setText(description)
-            self.textbox_tc_request_name.setText(request_name)
-            self.textbox_tc_response_name.setText(response_name)
+            self.ui.textbox_tc_description.setText(description)
+            self.ui.textbox_tc_request_name.setText(request_name)
+            self.ui.textbox_tc_response_name.setText(response_name)
             
             # * Render the Test Case Dependency Rule.
-            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.table_tc_dependency_rule)
+            GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.ui.table_tc_dependency_rule)
             
             # * Render the Path Rule.
             path_item = QTreeWidgetItem(["Path Parameters"])
-            self.table_tc_path.addTopLevelItem(path_item)
+            self.ui.table_tc_path.addTopLevelItem(path_item)
             path_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['path']
             for key, value in path_rule.items():
                 path_item.addChild(QTreeWidgetItem([key, value]))
-            GeneralTool.expand_and_resize_tree(self.table_tc_path)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_path)
             
             # * Render the Query Rule.
             query_item = QTreeWidgetItem(["Query Parameters"])
-            self.table_tc_query.addTopLevelItem(query_item)
+            self.ui.table_tc_query.addTopLevelItem(query_item)
             query_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['query']
             for key, value in query_rule.items():
                 query_item.addChild(QTreeWidgetItem([key, value]))
-            GeneralTool.expand_and_resize_tree(self.table_tc_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_query)
             
             # * Render the Assertion Rule.
             assertion_item = QTreeWidgetItem(["Assertion Rules"])
-            self.table_tc_assertion_rule.addTopLevelItem(assertion_item)
+            self.ui.table_tc_assertion_rule.addTopLevelItem(assertion_item)
             assertion_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['assertion']
             for key, item in assertion_rule.items():
                 assertion_item.addChild(
@@ -3470,7 +3473,7 @@ class MyWindow(QMainWindow):
                         ]
                     )
                 )
-            GeneralTool.expand_and_resize_tree(self.table_tc_assertion_rule, level=3)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_assertion_rule, level=3)
                     
             # * Render the request body in text box.
             serial_num = test_id.split(".")[0]
@@ -3479,46 +3482,46 @@ class MyWindow(QMainWindow):
                 with open(f"./TestData/{test_plan_name}_{serial_num}_{test_point}.json") as file:
                     testdata = json.load(file)
                 testdata_str = json.dumps(testdata, indent=4)
-                self.text_body.setPlainText(testdata_str)
+                self.ui.text_body.setPlainText(testdata_str)
             except FileNotFoundError:
                 logging.info(f"Test data file `./TestData/{test_plan_name}_{serial_num}_{test_point}.json` does not exist.")
                 
             # * Render Additional Action
-            GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.table_tc_additional_action, test_case_id, test_point_id)
+            GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.ui.table_tc_additional_action, test_case_id, test_point_id)
 
     def api_tree_item_clicked(self, item, column):
         """When the api tree item is clicked."""
         # * Clear the table
         GeneralTool.clean_ui_content([
-            self.table_schema,
-            self.table_generation_rule, 
-            self.table_assertion_rule, 
-            self.table_path,
-            self.table_query,
-            self.table_dependency_rule,
-            self.table_dependency_path,
-            self.table_dependency_generation_rule,
-            self.line_api_search,
-            self.textbox_dependency_return_variable_name,
-            self.textbox_data_rule_type,
-            self.textbox_data_rule_format,
-            self.textbox_data_rule_value,
-            self.comboBox_data_rule_data_generator,
-            self.textbox_data_rule_data_length,
-            self.comboBox_data_rule_required,
-            self.comboBox_data_rule_nullable,
-            self.table_additional_action,
-            self.textbox_data_rule_regex_pattern,
+            self.ui.table_schema,
+            self.ui.table_generation_rule, 
+            self.ui.table_assertion_rule, 
+            self.ui.table_path,
+            self.ui.table_query,
+            self.ui.table_dependency_rule,
+            self.ui.table_dependency_path,
+            self.ui.table_dependency_generation_rule,
+            self.ui.line_api_search,
+            self.ui.textbox_dependency_return_variable_name,
+            self.ui.textbox_data_rule_type,
+            self.ui.textbox_data_rule_format,
+            self.ui.textbox_data_rule_value,
+            self.ui.comboBox_data_rule_data_generator,
+            self.ui.textbox_data_rule_data_length,
+            self.ui.comboBox_data_rule_required,
+            self.ui.comboBox_data_rule_nullable,
+            self.ui.table_additional_action,
+            self.ui.textbox_data_rule_regex_pattern,
         ])
-        self.comboBox_dependency_type.setEnabled(True)
-        self.line_api_search.setEnabled(True)
+        self.ui.comboBox_dependency_type.setEnabled(True)
+        self.ui.line_api_search.setEnabled(True)
         
         # * If the column is top level, return
         if column == 0:
             return
         
         # * If the use case item is clicked.
-        selected_item = self.table_api_tree.selectedItems()[0]
+        selected_item = self.ui.table_api_tree.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is not None:
             operation_id = selected_item.text(4)
@@ -3526,34 +3529,34 @@ class MyWindow(QMainWindow):
             # * Render the Generation Rule from the file.
             # * Some API does not have requestBody, so the generation rule file does not exist.
             # * Ex : GET, DELETE, etc.
-            GeneralTool.parse_generation_rule(operation_id, self.table_generation_rule)
+            GeneralTool.parse_generation_rule(operation_id, self.ui.table_generation_rule)
             
             # * Render the Assertion Rule from the file.
-            GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
-            GeneralTool.expand_and_resize_tree(self.table_assertion_rule, level=3)
+            GeneralTool.parse_assertion_rule(operation_id, self.ui.table_assertion_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule, level=3)
             
             # * Render the Path Rule from the file.
-            GeneralTool.parse_path_rule(operation_id, self.table_path)
-            GeneralTool.expand_and_resize_tree(self.table_path, level=3)
+            GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+            GeneralTool.expand_and_resize_tree(self.ui.table_path, level=3)
             
             # * Render the Query Rule from the file.
-            GeneralTool.parse_query_rule(operation_id, self.table_query)
-            GeneralTool.expand_and_resize_tree(self.table_query, level=3)
+            GeneralTool.parse_query_rule(operation_id, self.ui.table_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
             
             # * Render the Dependency Rule from the file.
-            GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
-            GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+            GeneralTool.parse_dependency_rule(operation_id, self.ui.table_dependency_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_rule, level=3)
             
             # * Render the Additional Action from the file.
-            GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
-            GeneralTool.expand_and_resize_tree(self.table_additional_action, level=3)
+            GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
+            GeneralTool.expand_and_resize_tree(self.ui.table_additional_action, level=3)
             
             return
             
         table_path, table_method = item.text(2), item.text(3)
         logging.debug(f"Table Path: {table_path}, Table Method: {table_method}, Table Column: {column}")
         
-        for schema in self.schema_list:
+        for schema in self.ui.schema_list:
             file_path = schema
             api_doc = GeneralTool.load_schema_file(file_path)   
             for uri, path_item in api_doc['paths'].items():
@@ -3566,11 +3569,11 @@ class MyWindow(QMainWindow):
                             request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
                             request_body_schema = GeneralTool().retrive_ref_schema(api_doc, request_body_schema)                                
                             root_item = QTreeWidgetItem(["Request Body"])
-                            self.table_schema.addTopLevelItem(root_item)
+                            self.ui.table_schema.addTopLevelItem(root_item)
                             GeneralTool.parse_request_body(request_body_schema, root_item, editabled=True)
                             
                             root_item_2 = QTreeWidgetItem(["Data Generation Rule"])
-                            self.table_generation_rule.addTopLevelItem(root_item_2)
+                            self.ui.table_generation_rule.addTopLevelItem(root_item_2)
                             with open(f"./GenerationRule/{operation_id}.json", "r") as f:
                                 generation_rule = json.load(f)
                             GeneralTool.parse_request_body(generation_rule, root_item_2, editabled=True)
@@ -3579,7 +3582,7 @@ class MyWindow(QMainWindow):
                             
                         if 'responses' in operation:
                             root_item = QTreeWidgetItem(["Response Body"])
-                            self.table_schema.addTopLevelItem(root_item)
+                            self.ui.table_schema.addTopLevelItem(root_item)
                             for status_code, response in operation['responses'].items():
                                 if len(status_code) == 3 or status_code == 'default':
                                     # * WARNING: Only support the first content type now.
@@ -3593,26 +3596,26 @@ class MyWindow(QMainWindow):
                                     logging.warning(f"API {uri} has a wrong status code {status_code}.")
                                     
                         # * Render the assertion rule from the file.
-                        GeneralTool.parse_assertion_rule(operation_id, self.table_assertion_rule)
-                        GeneralTool.expand_and_resize_tree(self.table_generation_rule, level=2)
-                        GeneralTool.expand_and_resize_tree(self.table_assertion_rule, level=3)
-                        GeneralTool.expand_and_resize_tree(self.table_schema, level=2)
+                        GeneralTool.parse_assertion_rule(operation_id, self.ui.table_assertion_rule)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_generation_rule, level=2)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule, level=3)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_schema, level=2)
                         
                         # * Render the Path Rule from the file.
-                        GeneralTool.parse_path_rule(operation_id, self.table_path)
-                        GeneralTool.expand_and_resize_tree(self.table_path, level=3)
+                        GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_path, level=3)
                         
                         # * Render the Query Rule from the file.
-                        GeneralTool.parse_query_rule(operation_id, self.table_query)
-                        GeneralTool.expand_and_resize_tree(self.table_query, level=3)
+                        GeneralTool.parse_query_rule(operation_id, self.ui.table_query)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
                         
                         # * Render the Dependency Rule from the file.
-                        GeneralTool.parse_dependency_rule(operation_id, self.table_dependency_rule)
-                        GeneralTool.expand_and_resize_tree(self.table_dependency_rule, level=3)
+                        GeneralTool.parse_dependency_rule(operation_id, self.ui.table_dependency_rule)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_rule, level=3)
                         
                         # * Render the Additional Action from the file.
-                        GeneralTool.parse_additional_action_rule(operation_id, self.table_additional_action)
-                        GeneralTool.expand_and_resize_tree(self.table_additional_action, level=3)
+                        GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
+                        GeneralTool.expand_and_resize_tree(self.ui.table_additional_action, level=3)
                         
 app = QtWidgets.QApplication(sys.argv)
 window = MyWindow()
