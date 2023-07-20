@@ -15,7 +15,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTr
 
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
-from lib.DataBuilder import DataBuilder
+from lib.databuilder import DataBuilder
 from lib.render import Render
 from lib.display import CustomForm
 from lib.ui import Ui_MainWindow
@@ -28,7 +28,7 @@ class MyWindow(QMainWindow):
         super().__init__()
         
         # * Load the UI Page
-        #uic.loadUi('lib/tcg.ui', self)
+        #uic.loadUi('src/tcg.ui', self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) 
 
