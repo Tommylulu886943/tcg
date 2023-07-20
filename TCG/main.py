@@ -30,14 +30,10 @@ class MyWindow(QMainWindow):
         super().__init__()
         
         # * Load the UI Page
-        #uic.loadUi('icons/tcg.ui', self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) 
 
         # * Set Icon
-        print(basedir)
-        print(basedir)
-        print(basedir)
         self.ui.btn_import_openapi_doc.setIcon(QIcon("./icons/new.png"))
         self.setWindowIcon(QIcon(os.path.join(basedir, './icons/fortinet.png')))
         
@@ -299,14 +295,14 @@ class MyWindow(QMainWindow):
         self.ui.tc_search_completer = QCompleter()
         self.ui.line_tc_api_search.setCompleter(self.ui.tc_search_completer)
         
-        # * Convert / Validate Tab
-        self.ui.web_page = QtWidgets.QWidget()
-        self.ui.web_page_layout = QtWidgets.QVBoxLayout(self.ui.web_page)
-        self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
-        self.ui.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
-        self.ui.web_page_layout.addWidget(self.ui.web_view)
-        self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
-        self.setCentralWidget(self.ui.tabTCG)
+        # # * Convert / Validate Tab
+        # self.ui.web_page = QtWidgets.QWidget()
+        # self.ui.web_page_layout = QtWidgets.QVBoxLayout(self.ui.web_page)
+        # self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
+        # self.ui.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
+        # self.ui.web_page_layout.addWidget(self.ui.web_view)
+        # self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
+        # self.setCentralWidget(self.ui.tabTCG)
         
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
@@ -3335,7 +3331,7 @@ class MyWindow(QMainWindow):
                     os.mkdir("./config/")
                 shutil.copy(file_path, f"./config/obj_mapping.json")
                 logging.info(f"Import Object Mapping File `{file_name}`.")
-        except SameFileError as e:
+        except shutil.SameFileError as e:
             logging.warning(f"Import Object Mapping File `{file_name}` is the same as the existing one.")
 
     def import_openapi_doc(self):
@@ -3630,5 +3626,6 @@ class MyWindow(QMainWindow):
 if __name__ == '__main__':                        
     app = QtWidgets.QApplication(sys.argv)
     window = MyWindow()
+    window.showMaximized()
     window.show()
     app.exec()

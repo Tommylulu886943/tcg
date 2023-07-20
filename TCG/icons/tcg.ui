@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1837</width>
-    <height>848</height>
+    <width>1753</width>
+    <height>1027</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -2705,63 +2705,12 @@
          <attribute name="title">
           <string>Test Plan</string>
          </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <layout class="QGridLayout" name="gridLayout_20" columnstretch="3,5,0,0">
-            <item row="3" column="0" colspan="3">
-             <widget class="QTreeWidget" name="table_test_plan_api_list">
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-              </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
-              </property>
-              <property name="dragEnabled">
-               <bool>false</bool>
-              </property>
-              <property name="selectionMode">
-               <enum>QAbstractItemView::ContiguousSelection</enum>
-              </property>
-              <column>
-               <property name="text">
-                <string>Test Plan Name</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Test ID</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Test Strategy</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Test Type</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Test Point</string>
-               </property>
-              </column>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
-              <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="3,7">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="1" column="0">
                <widget class="QPushButton" name="btn_remove_test_case">
                 <property name="enabled">
                  <bool>true</bool>
@@ -2784,29 +2733,106 @@
                 </property>
                </widget>
               </item>
-             </layout>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="btn_export_test_plans">
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">* {
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btn_export_test_plans">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
     font-family: &quot;Segoe UI&quot;;
     font-size: 10pt;
     /* 添加其他字体样式属性，如颜色等 */
 }</string>
-              </property>
-              <property name="text">
-               <string>Export All Test Plans</string>
-              </property>
-             </widget>
+                </property>
+                <property name="text">
+                 <string>Export All Test Plans</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" rowspan="2">
+               <widget class="QPushButton" name="btn_generate_test_case">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                </property>
+                <property name="text">
+                 <string>GenerateTest Case</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QTreeWidget" name="table_test_plan_api_list">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
+                <property name="dragEnabled">
+                 <bool>false</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::ContiguousSelection</enum>
+                </property>
+                <column>
+                 <property name="text">
+                  <string>Test Plan Name</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Test ID</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Test Strategy</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Test Type</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Test Point</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item row="0" column="3" rowspan="4">
+            <item>
              <widget class="QTabWidget" name="tabWidget_testPlan">
               <property name="font">
                <font>
@@ -2830,7 +2856,7 @@
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
-                 <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0,2,8" columnstretch="2,8" columnminimumwidth="2,8">
+                 <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0,2,8" columnstretch="3,7" columnminimumwidth="3,7">
                   <item row="5" column="0" colspan="2">
                    <widget class="QGroupBox" name="groupBox_2">
                     <property name="title">
@@ -3616,7 +3642,7 @@
                            </attribute>
                            <layout class="QHBoxLayout" name="horizontalLayout_20">
                             <item>
-                             <layout class="QGridLayout" name="gridLayout_9" columnstretch="4,6">
+                             <layout class="QGridLayout" name="gridLayout_13" columnstretch="4,6">
                               <item row="1" column="0" rowspan="2">
                                <widget class="QGroupBox" name="group_positive_test_18">
                                 <property name="sizePolicy">
@@ -3995,7 +4021,7 @@
                            </attribute>
                            <layout class="QHBoxLayout" name="horizontalLayout_21">
                             <item>
-                             <layout class="QGridLayout" name="gridLayout_13" columnstretch="2,8,0,0,0">
+                             <layout class="QGridLayout" name="gridLayout_20" columnstretch="2,8,0,0,0">
                               <item row="3" column="2" colspan="3">
                                <widget class="QLineEdit" name="textbox_tc_dependency_constraint_rule_dst_value">
                                 <property name="enabled">
@@ -4634,32 +4660,6 @@
               </widget>
              </widget>
             </item>
-            <item row="1" column="1" rowspan="2" colspan="2">
-             <widget class="QPushButton" name="btn_generate_test_case">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Segoe UI</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-              </property>
-              <property name="text">
-               <string>GenerateTest Case</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
          </layout>
@@ -5144,7 +5144,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1837</width>
+     <width>1753</width>
      <height>21</height>
     </rect>
    </property>
