@@ -3341,7 +3341,15 @@ class MyWindow(QMainWindow):
             parent=self.ui.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter)
         
         # * Clean Environment
-        GeneralTool.teardown_folder_files(["./artifacts/GenerationRule", "./artifacts/AssertionRule", "./artifacts/PathRule", "./artifacts/DependencyRule", "./artifacts/AdditionalAction", "./artifacts/QueryRule"])
+        GeneralTool.teardown_folder_files([
+            "./artifacts/GenerationRule", 
+            "./artifacts/AssertionRule", 
+            "./artifacts/PathRule", 
+            "./artifacts/DependencyRule", 
+            "./artifacts/AdditionalAction", 
+            "./artifacts/QueryRule",
+            "./schemas",
+            ])
         GeneralTool.clean_ui_content([
             self.ui.table_api_tree, 
             self.ui.table_schema,
@@ -3352,6 +3360,16 @@ class MyWindow(QMainWindow):
             self.ui.list_dependency_available_api_list,
             self.ui.list_tc_dependency_available_api_list,
         ])
+        
+        try:
+            for file_path in response[0]:
+                file_name = os.path.basename(file_path)
+                if not os.path.exists("./schemas/"):
+                    os.mkdir("./schemas/")
+                shutil.copy(file_path, f"./schemas/{file_name}")
+                logging.info(f"Import OpenAPI Doc `{file_name}`.")
+        except shutil.SameFileError as e:
+            logging.warning(f"Import OpenAPI Doc `{file_name}` is the same as the existing one.")
         
         self.ui.schema_list = response[0]
         index = 1
@@ -3518,6 +3536,7 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_data_rule_nullable,
             self.ui.table_additional_action,
             self.ui.textbox_data_rule_regex_pattern,
+            self.ui.table_dependency_additional_action,
         ])
         self.ui.comboBox_dependency_type.setEnabled(True)
         self.ui.line_api_search.setEnabled(True)
