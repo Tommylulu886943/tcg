@@ -798,12 +798,10 @@ class GeneralTool:
 
             genType = None
             if schema["type"] == "string":
-                print(1)
                 if 'format' in schema:
-                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32']:
+                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary']:
                         genType = f"Random {schema['format'].upper()}"
                         data_length = ""
-                    # * add other format
                     else:
                         genType = "Random String (Without Special Characters)"
                         data_length = [4, 30]

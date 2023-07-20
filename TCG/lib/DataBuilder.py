@@ -85,6 +85,8 @@ class DataBuilder:
                 value = cls.generate_random_int64()
             elif rule['Data Generator'] == 'Random INT32':
                 value = cls.generate_random_int32()
+            elif rule['Data Generator'] == 'Random BINARY':
+                value = cls.generate_random_binary()
             else:
                 value = None
             cls._create_nested_dict(result, keys, value)
@@ -266,6 +268,10 @@ class DataBuilder:
     @classmethod
     def generate_random_int64(cls):
         return random.randint(-9223372036854775808, 9223372036854775807)
+    
+    @classmethod
+    def generate_random_binary(cls):
+        return ''.join(random.choice(['0', '1']) for _ in range(random.randint(8, 16)))
     
     @classmethod
     def generate_random_datetime(cls, start_year=1900, end_year=datetime.now().year):
