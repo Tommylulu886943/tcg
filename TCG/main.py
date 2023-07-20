@@ -20,6 +20,8 @@ from lib.render import Render
 from lib.display import CustomForm
 from lib.ui import Ui_MainWindow
 
+basedir = os.path.dirname(__file__)
+
 DEBUG = False
 logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=logging.DEBUG)
 
@@ -28,13 +30,16 @@ class MyWindow(QMainWindow):
         super().__init__()
         
         # * Load the UI Page
-        #uic.loadUi('src/tcg.ui', self)
+        #uic.loadUi('icons/tcg.ui', self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) 
 
         # * Set Icon
-        self.ui.btn_import_openapi_doc.setIcon(QIcon("./src/new.png"))
-        self.setWindowIcon(QIcon("./src/fortinet.png"))
+        print(basedir)
+        print(basedir)
+        print(basedir)
+        self.ui.btn_import_openapi_doc.setIcon(QIcon("./icons/new.png"))
+        self.setWindowIcon(QIcon(os.path.join(basedir, './icons/fortinet.png')))
         
         # * Set Window Title
         self.setWindowTitle('FortiTCG (Test Case Generator)')
@@ -3323,10 +3328,15 @@ class MyWindow(QMainWindow):
         response = QtWidgets.QFileDialog.getOpenFileNames(
             parent=self.ui.tab, caption="Open Object Mapping File", directory=os.getcwd(), filter=file_filter)
 
-        for file_path in response[0]:
-            file_name = os.path.basename(file_path)
-            shutil.copy(file_path, f"./config/obj_mapping.json")
-            logging.info(f"Import Object Mapping File `{file_name}`.")
+        try:
+            for file_path in response[0]:
+                file_name = os.path.basename(file_path)
+                if not os.path.exists("./config/"):
+                    os.mkdir("./config/")
+                shutil.copy(file_path, f"./config/obj_mapping.json")
+                logging.info(f"Import Object Mapping File `{file_name}`.")
+        except SameFileError as e:
+            logging.warning(f"Import Object Mapping File `{file_name}` is the same as the existing one.")
 
     def import_openapi_doc(self):
         """ Import OpenAPI Doc """
@@ -3616,8 +3626,9 @@ class MyWindow(QMainWindow):
                         # * Render the Additional Action from the file.
                         GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
                         GeneralTool.expand_and_resize_tree(self.ui.table_additional_action, level=3)
-                        
-app = QtWidgets.QApplication(sys.argv)
-window = MyWindow()
-window.show()
-app.exec()
+
+if __name__ == '__main__':                        
+    app = QtWidgets.QApplication(sys.argv)
+    window = MyWindow()
+    window.show()
+    app.exec()
