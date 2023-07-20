@@ -25,15 +25,15 @@ class Render:
             robot_path = os.path.join('TestCases', 'RESTful_API', robot_file)
             os.makedirs(os.path.dirname(robot_path), exist_ok=True)
             
-            with open('./Template/base.j2', 'r') as f:
+            with open('./templates/base.j2', 'r') as f:
                 base_template = Template(f.read())
                 rendered_base = base_template.render(test_plan)
 
-            with open('./Template/testcase.j2', 'r') as f:
-                template = Template(f.read())
-                rendered_script = template.render(test_plan)
+            with open('./templates/testcase.j2', 'r') as f:
+                test_template = Template(f.read())
+                rendered_script = test_template.render(test_plan)
                 
-            with open('./Template/keyword.j2', 'r') as f:
+            with open('./templates/keyword.j2', 'r') as f:
                 local_keyword = Template(f.read())
                 rendered_keyword = local_keyword.render(test_plan)
                 

@@ -102,7 +102,7 @@ class TestStrategy:
             else:
                 test_point_list[str(test_point_number)] = {'config_name': None}    
                 
-            with open(f"./Template/TestStrategy/positive_functional_test.j2", 'r') as f:
+            with open(f"./templates/TestStrategy/positive_functional_test.j2", 'r') as f:
                 test_temp = f.read()
             test_temp = Template(test_temp)
             rendered_template = test_temp.render(tp=test_point_list[str(test_point_number)])
@@ -215,7 +215,7 @@ class TestStrategy:
                         'prop_type': generation_rules[key]['Type'],
                     }
                     
-                    with open(f"./Template/TestStrategy/positive_parameter_nullable_test.j2", 'r') as f:
+                    with open(f"./templates/TestStrategy/positive_parameter_nullable_test.j2", 'r') as f:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
                     rendered_template = test_temp.render(test_point_list=test_point_list)
@@ -332,7 +332,7 @@ class TestStrategy:
                         }
                         test_point_number += 1
                         
-                    with open(f"./Template/TestStrategy/positive_parameter_enum_test.j2", 'r') as f:
+                    with open(f"./templates/TestStrategy/positive_parameter_enum_test.j2", 'r') as f:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
                     rendered_template = test_temp.render(test_point_list=test_point_list)
@@ -359,7 +359,7 @@ class TestStrategy:
                     }
                     test_point_number += 1
                     
-                    with open(f"./Template/TestStrategy/negative_parameter_enum_test.j2", 'r') as f:
+                    with open(f"./templates/TestStrategy/negative_parameter_enum_test.j2", 'r') as f:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
                     rendered_template = test_temp.render(test_point_list=test_point_list)
@@ -461,7 +461,7 @@ class TestStrategy:
                     with open(testdata_path, 'w') as f:
                         json.dump(testdata, f, indent=4)
                     
-                    with open(f"./Template/TestStrategy/negative_parameter_required_test.j2", 'r') as f:
+                    with open(f"./templates/TestStrategy/negative_parameter_required_test.j2", 'r') as f:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
                     rendered_template = test_temp.render(
@@ -625,7 +625,7 @@ class TestStrategy:
                 with open(median_testdata_path, 'w') as f:
                     json.dump(median_testdata, f, indent=4)
                     
-                with open(f"./Template/TestStrategy/positive_parameter_min_max_test.j2", 'r') as f:
+                with open(f"./templates/TestStrategy/positive_parameter_min_max_test.j2", 'r') as f:
                     test_temp = f.read()
                 test_temp = Template(test_temp)
                 rendered_template = test_temp.render(
@@ -659,7 +659,7 @@ class TestStrategy:
                 with open(over_max_value_testdata_path, 'w') as f:
                     json.dump(over_max_value_testdata, f, indent=4)
                     
-                with open(f"./Template/TestStrategy/negative_parameter_min_max_test.j2", 'r') as f:
+                with open(f"./templates/TestStrategy/negative_parameter_min_max_test.j2", 'r') as f:
                     test_temp = f.read()
                 test_temp = Template(test_temp)
                 rendered_template = test_temp.render(

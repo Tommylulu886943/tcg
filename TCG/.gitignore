@@ -6,7 +6,7 @@ TCG/AssertionRule/*.json
 TCG/test_plan/*.yaml
 TCG/DependencyRule/*.json
 TCG/QueryRule/*.json
-TCG/AdditionRule/*.json
+TCG/AdditionalAction/*.json
 config/*.*
 TCG/PathRule/
 pyqt6-env/
