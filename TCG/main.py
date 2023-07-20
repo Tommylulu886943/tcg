@@ -33,8 +33,8 @@ class MyWindow(QMainWindow):
         self.ui.setupUi(self) 
 
         # * Set Icon
-        self.ui.btn_import_openapi_doc.setIcon(QIcon("./source/new.png"))
-        self.setWindowIcon(QIcon("./source/fortinet.png"))
+        self.ui.btn_import_openapi_doc.setIcon(QIcon("./src/new.png"))
+        self.setWindowIcon(QIcon("./src/fortinet.png"))
         
         # * Set Window Title
         self.setWindowTitle('FortiTCG (Test Case Generator)')
