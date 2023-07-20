@@ -18,7 +18,7 @@ class DataBuilder:
     def init_test_data(cls, operation_id):
         # * Load generation rule from json file.
         try:
-            with open(f"./GenerationRule/{operation_id}.json", "r") as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", "r") as f:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             # * if generation rule not found, because this operation no request body, ex: GET, DELETE.
@@ -30,7 +30,7 @@ class DataBuilder:
     @classmethod
     def init_dependency_test_data(cls, operation_id):
         try:
-            with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+            with open(f"./artifacts/DependencyRule/{operation_id}.json", "r") as f:
                 dependency_data = json.load(f)
         except FileNotFoundError:
             logging.warning(f"Dependency data for {operation_id} not found. This operation no request body, so no dependency data is generated.")

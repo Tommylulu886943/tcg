@@ -15,7 +15,7 @@ class GeneralTool:
     @classmethod
     def render_test_plan_files(cls, table_test_plan_api_list: object) -> None:
         cls.clean_ui_content([table_test_plan_api_list])
-        for test_plan in glob.glob("test_plan/*.json"):
+        for test_plan in glob.glob("./artifacts/TestPlan/*.json"):
             with open(test_plan, "r") as f:
                 test_plan = json.load(f)
             file_name = test_plan['test_info']['operationId']
@@ -36,7 +36,7 @@ class GeneralTool:
     ) -> None:
         """ To render the all robot files in the Robot File List. """
         
-        for robot_file in glob.glob("./TestCases/RESTful_API/*.robot"):
+        for robot_file in glob.glob("./artifacts/TestCase/RESTful_API/*.robot"):
             file_name = os.path.basename(robot_file)
             root_item = QTreeWidgetItem([file_name])
             robot_file_list.addTopLevelItem(root_item)    
@@ -45,7 +45,7 @@ class GeneralTool:
     def update_tc_dependency_rule_index(
         cls, ui, operation_id, test_case_id, test_point_id, dependency_type, src_key, swap_type
     ):
-        with open(f"./test_plan/{operation_id}.json", "r") as f:
+        with open(f"./artifacts/TestPlan/{operation_id}.json", "r") as f:
             d_rule = json.load(f)
         
         dependency_keys = list(d_rule['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type].keys())
@@ -62,7 +62,7 @@ class GeneralTool:
         d_type_rule = d_rule['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type]
         d_type_rule = cls.swap_dict_keys(d_type_rule, src_key, replace_key)
         
-        with open(f"./test_plan/{operation_id}.json", "w") as f:
+        with open(f"./artifacts/TestPlan/{operation_id}.json", "w") as f:
             json.dump(d_rule, f, indent=4)
 
         cls.clean_ui_content([
@@ -81,7 +81,7 @@ class GeneralTool:
                 
     @classmethod
     def update_dependency_rule_index(cls, ui, operation_id, dependency_type, src_key, swap_type):
-        with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+        with open(f"./artifacts/DependencyRule/{operation_id}.json", "r") as f:
             d_rule = json.load(f)
 
         dependency_keys = list(d_rule[dependency_type].keys())
@@ -97,7 +97,7 @@ class GeneralTool:
 
         d_rule[dependency_type] = cls.swap_dict_keys(d_rule[dependency_type], src_key, replace_key)
 
-        with open(f"./DependencyRule/{operation_id}.json", "w") as f:
+        with open(f"./artifacts/DependencyRule/{operation_id}.json", "w") as f:
             json.dump(d_rule, f, indent=4)
 
         cls.clean_ui_content([
@@ -183,11 +183,11 @@ class GeneralTool:
     ) -> None:
         
         if is_general_dependency:
-            file_path = f"./DependencyRule/{operation_id}.json"
+            file_path = f"./artifacts/DependencyRule/{operation_id}.json"
         elif is_dependency:
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
         else:
-            file_path = f"./GenerationRule/{operation_id}.json"
+            file_path = f"./artifacts/GenerationRule/{operation_id}.json"
         
         if src_action == "Set":
             if src_condition == "WITH":
@@ -613,14 +613,14 @@ class GeneralTool:
         """        
         
         # Get the general dependency rule.
-        with open(f"./DependencyRule/{operation_id}.json", "r") as f:
+        with open(f"./artifacts/DependencyRule/{operation_id}.json", "r") as f:
             dependency_rule = json.load(f)
 
         # Generate dependency test data file for all the dependencies.
         for action_type in ['Setup', 'Teardown']:
             for index, data in dependency_testdata[action_type].items():
                 file_name = f"{operation_id}_{serial_number}_{test_point_num}_{action_type}_{index}"
-                path = f"./TestData/Dependency_TestData/{file_name}.json"
+                path = f"./artifacts/TestData/Dependency_TestData/{file_name}.json"
                 dependency_rule[action_type][index]['config_name'] = file_name
                 if not os.path.exists(path):
                     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -696,14 +696,14 @@ class GeneralTool:
     def init_dependency_rule(cls, operation_id: str):
         """ To initialize dependency rule file. """
         dependency_rule = {"Setup": {}, "Teardown": {}}
-        with open(f"./DependencyRule/{operation_id}.json", "w") as f:
+        with open(f"./artifacts/DependencyRule/{operation_id}.json", "w") as f:
             json.dump(dependency_rule, f, indent=4)
             
     @classmethod
     def init_additional_action_rule(cls, operation_id: str):
         """ To initialize additional action rule file. """
         additional_action_rule = {}
-        with open(f"./AdditionalAction/{operation_id}.json", "w") as f:
+        with open(f"./artifacts/AdditionalAction/{operation_id}.json", "w") as f:
             json.dump(additional_action_rule, f, indent=4)
         
     @classmethod
@@ -890,7 +890,7 @@ class GeneralTool:
         Returns:
             None
         """
-        file_path = f"./AdditionalAction/{operation_id}.json"
+        file_path = f"./artifacts/AdditionalAction/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 data = json.load(f)
@@ -912,7 +912,7 @@ class GeneralTool:
         test_point_id: str,
     ) -> None:
 
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 data = json.load(f)
@@ -937,7 +937,7 @@ class GeneralTool:
         dependency_sequence_num: str,
     ) -> None:
 
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 data = json.load(f)
@@ -954,7 +954,7 @@ class GeneralTool:
     def parse_dependency_additional_action_rule(
         cls, operation_id: str, dependecy_type: str, sequence_num: str , dependency_aditional_action_table: object) -> None:  
         
-        file_path = f"./DependencyRule/{operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 data = json.load(f)
@@ -979,7 +979,7 @@ class GeneralTool:
         Returns:
             None
         """
-        file_path = f"./DependencyRule/{operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 dependency_rule = json.load(f)
@@ -1047,9 +1047,9 @@ class GeneralTool:
     def parse_path_rule(cls, operation_id: str, path_rule_table: object) -> None:
         """
         To parse path rule files to TreeWidget.
-        Ex: (./PathRule/{operation_id}.json)
+        Ex: (./artifacts/PathRule/{operation_id}.json)
         """
-        file_path = f"./PathRule/{operation_id}.json"
+        file_path = f"./artifacts/PathRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 path_rule = json.load(f)
@@ -1064,10 +1064,10 @@ class GeneralTool:
     def parse_query_rule(cls, operation_id: str, query_rule_table: object) -> None:
         """
         To parse query rule files to TreeWidget.
-        Ex: (./QueryRule/{operation_id}.json)
+        Ex: (./artifacts/QueryRule/{operation_id}.json)
         """
         
-        file_path = f"./QueryRule/{operation_id}.json"
+        file_path = f"./artifacts/QueryRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 query_rule = json.load(f)
@@ -1082,10 +1082,10 @@ class GeneralTool:
     def parse_generation_rule(cls, operation_id: str, generation_rule_table: object) -> None:
         """
         To parse generation rule files to TreeWidget.
-        Ex: (./GenerationRule/{operation_id}.json)
+        Ex: (./artifacts/GenerationRule/{operation_id}.json)
         """
         
-        file_path = f"./GenerationRule/{operation_id}.json"
+        file_path = f"./artifacts/GenerationRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 generation_rule = json.load(f)
@@ -1107,10 +1107,10 @@ class GeneralTool:
     ) -> None:
         """
         To parse dependency generation rule files to TreeWidget.
-        Ex: (./GenerationRule/{operation_id}.json)
+        Ex: (./artifacts/GenerationRule/{operation_id}.json)
         """
         
-        file_path = f"./DependencyRule/{operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 generation_rule = json.load(f)
@@ -1135,10 +1135,10 @@ class GeneralTool:
     ) -> None:
         """
         To parse dependency generation rule files to TreeWidget.
-        Ex: (./GenerationRule/{operation_id}.json)
+        Ex: (./artifacts/GenerationRule/{operation_id}.json)
         """
         
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         if os.path.exists(file_path):
             with open(file_path, "r") as f:
                 generation_rule = json.load(f)
@@ -1155,7 +1155,7 @@ class GeneralTool:
     def parse_assertion_rule(cls, operation_id: str, assertion_rule_table: object) -> None:
         """
         To parse assertion rule files to TreeWidget.
-        Ex: (./AssertionRule/{operation_id}.json)
+        Ex: (./artifacts/AssertionRule/{operation_id}.json)
         """
 
         def _create_child_item(item):
@@ -1166,7 +1166,7 @@ class GeneralTool:
             child_item.setFlags(child_item.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
             return child_item
 
-        with open(f"./AssertionRule/{operation_id}.json", "r") as f:
+        with open(f"./artifacts/AssertionRule/{operation_id}.json", "r") as f:
             assertion_rule = json.load(f)
 
         positive_root_item = QTreeWidgetItem(["Positive"])

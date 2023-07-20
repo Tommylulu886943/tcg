@@ -13,7 +13,7 @@ class Render:
     def generate_robot_test_case(cls) -> None:
         """ Generate robot test case from all test plan files."""
         
-        for test_plan_file in glob.glob('./test_plan/*.json'):
+        for test_plan_file in glob.glob('./artifacts/TestPlan/*.json'):
             with open(test_plan_file, 'r') as f:
                 test_plan = json.load(f)
             
@@ -22,7 +22,7 @@ class Render:
                 continue
             
             robot_file = test_plan['test_info']['operationId'] + ".robot"
-            robot_path = os.path.join('TestCases', 'RESTful_API', robot_file)
+            robot_path = os.path.join('artifacts' ,'TestCase', 'RESTful_API', robot_file)
             os.makedirs(os.path.dirname(robot_path), exist_ok=True)
             
             with open('./templates/base.j2', 'r') as f:

@@ -387,7 +387,7 @@ class MyWindow(QMainWindow):
         
         values = self.ui.tc_dependency_form.get_values(self.ui.tc_dependency_additional_action.currentText())
         
-        file_path = "./test_plan/" + operation_id + ".json"
+        file_path = "./artifacts/TestPlan/" + operation_id + ".json"
         if os.path.exists(file_path):
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -437,7 +437,7 @@ class MyWindow(QMainWindow):
         operation_id = test_plan_parent_item.parent().text(0)
         additional_action_index = self.ui.table_tc_dependency_additional_action.selectedItems()[0].text(0)
         
-        file_path = "./test_plan/" + operation_id + ".json"
+        file_path = "./artifacts/TestPlan/" + operation_id + ".json"
         if os.path.exists(file_path):
             with open(file_path, "r+") as f:
                 data = json.load(f)
@@ -482,7 +482,7 @@ class MyWindow(QMainWindow):
             action_name = self.ui.tc_additional_action.currentText()
             values = self.ui.tc_form.get_values(action_name)
             
-            file_path = "./test_plan/" + operation_id + ".json"
+            file_path = "./artifacts/TestPlan/" + operation_id + ".json"
             if os.path.exists(file_path):
                 with open(file_path, "r+") as f:
                     data = json.load(f)
@@ -533,7 +533,7 @@ class MyWindow(QMainWindow):
             test_point_id = test_plan_selected_item.text(1).split(".")[1]
             action_index = self.ui.table_tc_additional_action.selectedItems()[0].text(0)
             
-            file_path = "./test_plan/" + operation_id + ".json"
+            file_path = "./artifacts/TestPlan/" + operation_id + ".json"
             if os.path.exists(file_path):
                 with open(file_path, "r+") as f:
                     data = json.load(f)
@@ -575,7 +575,7 @@ class MyWindow(QMainWindow):
         values = self.ui.dependency_form.get_values(self.ui.dependency_additional_action.currentText())
 
         add_action = {}
-        file_path = "./DependencyRule/" + operation_id + ".json"
+        file_path = "./artifacts/DependencyRule/" + operation_id + ".json"
         if os.path.exists(file_path):
             with open(file_path, "r+") as f:
                 add_action = json.load(f)
@@ -626,7 +626,7 @@ class MyWindow(QMainWindow):
         dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
         additional_action_sequence_num = self.ui.table_dependency_additional_action.selectedItems()[0].text(0)
         
-        file_path = "./DependencyRule/" + operation_id + ".json"
+        file_path = "./artifacts/DependencyRule/" + operation_id + ".json"
         if os.path.exists(file_path):
             with open(file_path, "r+") as f:
                 add_action = json.load(f)
@@ -660,7 +660,7 @@ class MyWindow(QMainWindow):
         values = self.ui.form.get_values(self.ui.additional_action.currentText())
         
         add_action = {}
-        file_path = "./AdditionalAction/" + operation_id + ".json"
+        file_path = "./artifacts/AdditionalAction/" + operation_id + ".json"
         if os.path.exists(file_path):
             with open(file_path, "r") as file:
                 add_action = json.load(file)
@@ -693,7 +693,7 @@ class MyWindow(QMainWindow):
         operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
         action_sequence_num = selected_item.text(0)
         
-        file_path = "./AdditionalAction/" + operation_id + ".json"
+        file_path = "./artifacts/AdditionalAction/" + operation_id + ".json"
         with open(file_path, "r+") as f:
             add_action = json.load(f)
             result = GeneralTool.remove_key_in_json(
@@ -723,7 +723,7 @@ class MyWindow(QMainWindow):
         test_case_id = test_plan_selected_item.text(1).split(".")[0]
         test_point_id = test_plan_selected_item.text(1).split(".")[1]
 
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         
         with open(file_path, "r+") as f:
             test_data = json.load(f)
@@ -747,7 +747,7 @@ class MyWindow(QMainWindow):
 
             if parent_item and parent_item.parent():
                 test_plan_name = parent_item.parent().text(0)
-                test_plan_file = f"./test_plan/{test_plan_name}.json"
+                test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
                 test_case_id, test_point_id = selected_item.text(1).split(".")[0], selected_item.text(1).split(".")[1]
                 # * Remove the selected test point from the test plan.
                 with open(test_plan_file, "r+") as f:
@@ -761,7 +761,7 @@ class MyWindow(QMainWindow):
                         test_cases_to_remove.append(test_case_id)
             elif parent_item:
                 test_plan_name = parent_item.text(0)
-                test_plan_file = f"./test_plan/{test_plan_name}.json"
+                test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
                 test_case_id = selected_item.text(1)
                 # * Remove the selected test case from the test plan.
                 with open(test_plan_file, "r+") as f:
@@ -775,14 +775,14 @@ class MyWindow(QMainWindow):
                         test_plans_to_remove.append(test_plan_name)
             else:
                 test_plan_name = selected_item.text(0)
-                test_plan_file = f"./test_plan/{test_plan_name}.json"
+                test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
                 if os.path.exists(test_plan_file):
                     os.remove(test_plan_file)
                     logging.info(f"Remove {test_plan_file} successfully")
                     test_plans_to_remove.append(test_plan_name)
 
         for test_case_id in test_cases_to_remove:
-            test_plan_file = f"./test_plan/{test_plan_name}.json"
+            test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
             with open(test_plan_file, "r+") as f:
                 test_plan = json.load(f)
                 result = test_plan["test_cases"].pop(test_case_id)
@@ -792,7 +792,7 @@ class MyWindow(QMainWindow):
                 logging.info(f"Test Case {result} is removed from {test_plan_name}.json")
 
         for test_plan_name in test_plans_to_remove:
-            test_plan_file = f"./test_plan/{test_plan_name}.json"
+            test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
             if os.path.exists(test_plan_file):
                 os.remove(test_plan_file)
                 logging.info(f"Remove {test_plan_file} successfully")
@@ -816,7 +816,7 @@ class MyWindow(QMainWindow):
         if export_folder_path:
             test_plan_folder_path = os.path.join(export_folder_path, "TestPlan")
             os.makedirs(test_plan_folder_path, exist_ok=True)
-            file_list = glob.glob("./test_plan/*.json")
+            file_list = glob.glob("./artifacts/TestPlan/*.json")
             for file in file_list:
                 src_path = os.path.join(os.getcwd(), file)
                 dst_path = os.path.join(test_plan_folder_path, os.path.basename(file))
@@ -832,7 +832,7 @@ class MyWindow(QMainWindow):
         if export_folder_path:
             tcg_folder_path = os.path.join(export_folder_path, "TestCase")
             os.makedirs(tcg_folder_path, exist_ok=True)
-            file_list = glob.glob("./TestCases/RESTful_API/*.robot")
+            file_list = glob.glob("./artifacts/TestCase/RESTful_API/*.robot")
             for file in file_list:
                 src_path = os.path.join(os.getcwd(), file)
                 dst_path = os.path.join(tcg_folder_path, os.path.basename(file))
@@ -840,7 +840,7 @@ class MyWindow(QMainWindow):
                 
             testdata_folder_path = os.path.join(export_folder_path, "TestData")
             os.makedirs(testdata_folder_path, exist_ok=True)
-            file_list = glob.glob("./TestData/*.json") + glob.glob("./TestData/Dependency_TestData/*.json")
+            file_list = glob.glob("./artifacts/TestData/*.json") + glob.glob("./artifacts/TestData/Dependency_TestData/*.json")
             for file in file_list:
                 src_path = os.path.join(os.getcwd(), file)
                 dst_path = os.path.join(testdata_folder_path, os.path.basename(file))
@@ -855,7 +855,7 @@ class MyWindow(QMainWindow):
             return
         
         file_name = self.ui.table_robot_file_list.selectedItems()[0].text(0)
-        with open(f"./TestCases/RESTful_API/{file_name}", "r") as f:
+        with open(f"./artifacts/TestCase/RESTful_API/{file_name}", "r") as f:
             content = f.read()
         self.ui.text_robot_file.setText(content)
         
@@ -883,7 +883,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_tc_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_tc_dependency_data_rule_regex_pattern.text()
             
-            with open(f"./test_plan/{operation_id}.json", "r+") as f:
+            with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule_field = g_rule["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_index]['data_generation_rules'][field_name]
                 g_rule_field["Default"] = default_value
@@ -944,7 +944,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_dependency_data_rule_regex_pattern.text()
             
-            with open(f"./DependencyRule/{operation_id}.json", "r+") as f:
+            with open(f"./artifacts/DependencyRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]["Default"] = default_value
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]['rule']["Data Generator"] = data_generator
@@ -1000,7 +1000,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_data_rule_regex_pattern.text()
         
-            with open(f"./GenerationRule/{operation_id}.json", "r+") as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[field_name]["Default"] = default_value
                 g_rule[field_name]['rule']["Data Generator"] = data_generator
@@ -1121,7 +1121,7 @@ class MyWindow(QMainWindow):
         
     def btn_generate_test_case_clicked(self):
         
-        GeneralTool.teardown_folder_files(["./TestCases/RESTful_API"])  
+        GeneralTool.teardown_folder_files(["./artifacts/TestCase/RESTful_API"])  
         Render.generate_robot_test_case()
         self.ui.tabTCG.setCurrentIndex(2)
         GeneralTool.clean_ui_content([self.ui.table_robot_file_list, self.ui.text_robot_file])
@@ -1140,7 +1140,7 @@ class MyWindow(QMainWindow):
         dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         name = self.ui.textbox_tc_query_dependency_name.text()
         
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         with open(file_path, "r+") as f:
             test_plan = json.load(f)
             result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"].pop(name)
@@ -1170,7 +1170,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_tc_query_dependency_name.text()
         value = self.ui.textbox_tc_query_dependency_value.text()
         
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         with open(file_path, "r+") as f:
             test_plan = json.load(f)
             new_query_data = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["query"]
@@ -1208,7 +1208,7 @@ class MyWindow(QMainWindow):
         dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         name = self.ui.textbox_tc_path_dependency_name.text()
         
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         with open(file_path, "r+") as f:
             test_plan = json.load(f)
             result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["path"].pop(name)
@@ -1238,7 +1238,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_tc_path_dependency_name.text()
         value = self.ui.textbox_tc_path_dependency_value.text()
         
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         with open(file_path, "r+") as f:
             test_plan = json.load(f)
             new_path_data = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["path"]
@@ -1295,7 +1295,7 @@ class MyWindow(QMainWindow):
         dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
         dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         new_value = self.ui.textbox_tc_dependency_requestbody.toPlainText()
-        file_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
+        file_path = f"./artifacts/TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
         
         with open(file_path, "r") as f:
             testdata = json.load(f)
@@ -1330,7 +1330,7 @@ class MyWindow(QMainWindow):
             
             dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
             dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 test_plan = json.load(f)
                 result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type].pop(dependency_sequence_num)
@@ -1353,8 +1353,8 @@ class MyWindow(QMainWindow):
             
         # * Remove the dependency test data file
         file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
-        if os.path.exists(f"./TestData/Dependency_TestData/{file_name}"):
-            os.remove(f"./TestData/Dependency_TestData/{file_name}")
+        if os.path.exists(f"./artifacts/TestData/Dependency_TestData/{file_name}"):
+            os.remove(f"./artifacts/TestData/Dependency_TestData/{file_name}")
     
     def btn_tc_update_dependency_rule_clicked(self):
         if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
@@ -1371,7 +1371,7 @@ class MyWindow(QMainWindow):
             dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
             dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
 
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, 'r+') as f:
                 test_plan = json.load(f)
                 result = GeneralTool.update_value_in_json(
@@ -1418,7 +1418,7 @@ class MyWindow(QMainWindow):
                 logging.error("API or Return Name is empty.")
                 return
             
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 test_plan = json.load(f)
                 
@@ -1431,7 +1431,7 @@ class MyWindow(QMainWindow):
                 test_data = DataBuilder.data_builder(generation_rule)
                 obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
-                path = f"./TestData/Dependency_TestData/{file_name}"
+                path = f"./artifacts/TestData/Dependency_TestData/{file_name}"
                 if not os.path.exists(path):
                     os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w") as test_data_file:
@@ -1487,7 +1487,7 @@ class MyWindow(QMainWindow):
             test_id = selected_item.text(1)
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, 'r+') as f:
                 test_plan = json.load(f)
                 # * Generate the sequence number for the next rule
@@ -1554,7 +1554,7 @@ class MyWindow(QMainWindow):
             test_case_id , test_point_id = test_id.split('.')[0], test_id.split('.')[1]
             
             index = self.ui.table_tc_assertion_rule.selectedItems()[0].text(0)
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 test_plan = json.load(f)
                 result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["assertion"].pop(index)
@@ -1608,7 +1608,7 @@ class MyWindow(QMainWindow):
                 "assertion_method": self.ui.comboBox_tc_assertion_method.currentText(),
                 "expected_value": self.ui.textbox_tc_assertion_rule_expected_value.text(),
             }
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, 'r+') as f:
                 test_plan = json.load(f)
                 result = GeneralTool.update_value_in_json(
@@ -1680,7 +1680,7 @@ class MyWindow(QMainWindow):
             test_case_id = test_id.split(".")[0]
             use_case_id = test_id.split(".")[1]
             name = self.ui.textbox_tc_query_name.text()
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(
@@ -1714,7 +1714,7 @@ class MyWindow(QMainWindow):
             test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
             name = self.ui.textbox_tc_query_name.text()
             new_value = self.ui.textbox_tc_query_value.text()
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.update_value_in_json(
@@ -1749,7 +1749,7 @@ class MyWindow(QMainWindow):
             test_case_id = test_id.split(".")[0]
             use_case_id = test_id.split(".")[1]
             name = self.ui.textbox_tc_path_name.text()
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(
@@ -1783,7 +1783,7 @@ class MyWindow(QMainWindow):
             test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
             name = self.ui.textbox_tc_path_name.text()
             new_value = self.ui.textbox_tc_path_value.text()
-            file_path = f"./test_plan/{operation_id}.json"
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.update_value_in_json(
@@ -1857,7 +1857,7 @@ class MyWindow(QMainWindow):
             paths.append(path)
         
         # * Update the value in the JSON file
-        file_path = f"./test_plan/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{origin_api_operation_id}.json"
         with open(file_path, 'r+') as f:
             data = json.load(f)
             for path in paths:
@@ -1906,7 +1906,7 @@ class MyWindow(QMainWindow):
             paths.append(path)
                 
         # * Update the value in the JSON file
-        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, 'r+') as f:
             data = json.load(f)
             for path in paths:
@@ -1936,7 +1936,7 @@ class MyWindow(QMainWindow):
             return
         else:
             operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
-            file_path = f"./DependencyRule/{operation_id}.json"
+            file_path = f"./artifacts/DependencyRule/{operation_id}.json"
             
         GeneralTool.apply_constraint_rule(
             operation_id, src_action, src_path, src_condition, src_expected_value, dst_action, dst_path,
@@ -2009,7 +2009,7 @@ class MyWindow(QMainWindow):
             operation_id, src_action, src_path, src_condition, src_expected_value, dst_action, dst_path,
             dst_action_type, dst_value, dependency_type, dependency_sequence_num, True, test_case_id, test_point_id)
         
-        with open(f"./test_plan/{operation_id}.json", "r+") as f:
+        with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
             data = json.load(f)
         # * Refresh the Dependency Generation Rule Table
         root_item = QTreeWidgetItem(["Data Generation Rule"])
@@ -2046,14 +2046,14 @@ class MyWindow(QMainWindow):
         dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         # * Retrieve the dependency data generation rule.
-        file_path = f"./test_plan/{operation_id}.json"
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             generation_rule = data["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["data_generation_rules"]
             testdata = DataBuilder.data_builder(generation_rule)
             
         # * Render the dependency request body. 
-        testdata_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
+        testdata_path = f"./artifacts/TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
         with open(testdata_path, "w+") as f:
             json.dump(testdata, f, indent=4)
         with open(testdata_path, "r+") as f:
@@ -2105,7 +2105,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_query_dependency_name.text()
         value = self.ui.textbox_query_dependency_value.text()
         
-        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             path = [dependency_type, dependency_sequence_num, "query", name]
@@ -2138,7 +2138,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_query_dependency_name.text()
         value = self.ui.textbox_query_dependency_value.text()
         
-        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             path = [dependency_type, dependency_sequence_num, "query", name, "Value"]
@@ -2171,7 +2171,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_path_dependency_name.text()
         value = self.ui.textbox_path_dependency_value.text()
         
-        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             path = [dependency_type, dependency_sequence_num, "path", name]
@@ -2204,7 +2204,7 @@ class MyWindow(QMainWindow):
         name = self.ui.textbox_path_dependency_name.text()
         value = self.ui.textbox_path_dependency_value.text()
         
-        file_path = f"./DependencyRule/{origin_api_operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             path = [dependency_type, dependency_sequence_num, "path", name, "Value"]
@@ -2257,7 +2257,7 @@ class MyWindow(QMainWindow):
             api = selected_item.child(0).text(1)
             index = selected_item.text(0)
             
-            with open(f"./test_plan/{operation_id}.json", "r") as f:
+            with open(f"./artifacts/TestPlan/{operation_id}.json", "r") as f:
                 data = json.load(f)["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][index]
                 
             # * Render the Data Generation Rule and Path Rule and Schema.
@@ -2298,7 +2298,7 @@ class MyWindow(QMainWindow):
             else:
                 logging.info(f"Additional Action is not exist in the dependency rule `{operation_id}`.")
                 
-            testdata_path = f"./TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{index}.json"
+            testdata_path = f"./artifacts/TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{index}.json"
             try:
                 with open(testdata_path, "r+") as f:
                     testdata = json.load(f)
@@ -2338,7 +2338,7 @@ class MyWindow(QMainWindow):
             dependency_type = parent_item.text(0)
             sequence_num = selected_item.text(0)
             origin_api_operation_id = api_tree_selected_item.text(4)
-            with open(f"./DependencyRule/{origin_api_operation_id}.json", "r") as f:
+            with open(f"./artifacts/DependencyRule/{origin_api_operation_id}.json", "r") as f:
                 data = json.load(f)[dependency_type][sequence_num]
                 
             # * Render the Data Generation Rule and Path Rule and Schema.
@@ -2395,7 +2395,7 @@ class MyWindow(QMainWindow):
             logging.error(f"API or Return Name is empty.")
             return
         
-        file_path = f"./DependencyRule/{operation_id}.json"
+        file_path = f"./artifacts/DependencyRule/{operation_id}.json"
         with open(file_path, "r+") as f:
             data = json.load(f)
             if data[dependency_type]:
@@ -2436,7 +2436,7 @@ class MyWindow(QMainWindow):
             operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
             dependency_type = self.ui.comboBox_dependency_type.currentText()
             dependency_name = selected_item.text(0)
-            file_path = f"./DependencyRule/{operation_id}.json"
+            file_path = f"./artifacts/DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(data, [dependency_type, dependency_name])
@@ -2473,7 +2473,7 @@ class MyWindow(QMainWindow):
                 logging.error(f"API name cannot be changed.")
                 return
             return_name = self.ui.textbox_dependency_return_variable_name.text()
-            file_path = f"./DependencyRule/{operation_id}.json"
+            file_path = f"./artifacts/DependencyRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 sequence_num = selected_item.text(0)
@@ -2552,7 +2552,7 @@ class MyWindow(QMainWindow):
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
             name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
-            file_path = f"./PathRule/{operation_id}.json"
+            file_path = f"./artifacts/PathRule/{operation_id}.json"
             if not os.path.exists(file_path):
                 with open(file_path, "w") as f:
                     json.dump({}, f)
@@ -2586,7 +2586,7 @@ class MyWindow(QMainWindow):
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
             name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)      
-            file_path = f"./PathRule/{operation_id}.json"
+            file_path = f"./artifacts/PathRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.update_value_in_json(data, [name, "Value"], value)
@@ -2610,7 +2610,7 @@ class MyWindow(QMainWindow):
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
             name, value, operation_id = self.ui.textbox_query_name.text(), self.ui.textbox_query_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)      
-            file_path = f"./QueryRule/{operation_id}.json"
+            file_path = f"./artifacts/QueryRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.update_value_in_json(data, [name, "Value"], value)
@@ -2635,7 +2635,7 @@ class MyWindow(QMainWindow):
         if parent_item is not None and parent_item.parent() is None:
             name = self.ui.textbox_query_name.text()
             operation_id = self.ui.table_api_tree.selectedItems()[0].text(4) 
-            file_path = f"./QueryRule/{operation_id}.json"
+            file_path = f"./artifacts/QueryRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(data, [name])
@@ -2660,7 +2660,7 @@ class MyWindow(QMainWindow):
         if parent_item is not None and parent_item.parent() is None:
             name = self.ui.textbox_path_name.text()
             operation_id = self.ui.table_api_tree.selectedItems()[0].text(4) 
-            file_path = f"./PathRule/{operation_id}.json"
+            file_path = f"./artifacts/PathRule/{operation_id}.json"
             with open(file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(data, [name])
@@ -2748,7 +2748,7 @@ class MyWindow(QMainWindow):
             return
         else:
             operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
-            file_path = f"./GenerationRule/{operation_id}.json"
+            file_path = f"./artifacts/GenerationRule/{operation_id}.json"
             if os.path.exists(file_path) is False:
                 return
 
@@ -2869,9 +2869,9 @@ class MyWindow(QMainWindow):
             # * Copy the Generation Rule and Assertion Rule and Dependency Request Body and Path Rule
             operation_id = selected_item.text(4)
             for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]:
-                file_path = f"./{folder}/{operation_id}.json"
+                file_path = f"./artifacts/{folder}/{operation_id}.json"
                 if os.path.exists(file_path):
-                    new_file_path = f"./{folder}/{new_operation_id}.json"
+                    new_file_path = f"./artifacts/{folder}/{new_operation_id}.json"
                     with open(file_path, "r") as f:
                         data = json.load(f)
                     with open(new_file_path, "w") as f:
@@ -2922,7 +2922,7 @@ class MyWindow(QMainWindow):
         parent_item = selected_item.parent()
         if parent_item and parent_item.parent() is None:
             # * Update the value in the JSON file
-            file_path = "./AssertionRule/" + operation_id + ".json"
+            file_path = "./artifacts/AssertionRule/" + operation_id + ".json"
             with open(file_path, 'r+') as f:
                 data = json.load(f)
                 path = [test_type.lower(), sequence_num]
@@ -2961,7 +2961,7 @@ class MyWindow(QMainWindow):
             # * Retrieve the API List selected item to get the corresponding operation id
             api_selected_item = [item.text(4) for item in self.ui.table_api_tree.selectedItems()]
             operation_id = api_selected_item[0]
-            assertion_file_path = f"./AssertionRule/{operation_id}.json"
+            assertion_file_path = f"./artifacts/AssertionRule/{operation_id}.json"
             with open(assertion_file_path, "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.remove_key_in_json(data, path)
@@ -2991,7 +2991,7 @@ class MyWindow(QMainWindow):
         operation_id = api_selected_item[0]
         
         # * Add the value in the JSON file
-        file_path = "./AssertionRule/" + operation_id + ".json"
+        file_path = "./artifacts/AssertionRule/" + operation_id + ".json"
         with open(file_path, 'r+') as f:
             data = json.load(f)
             path = [test_type.lower()]
@@ -3027,7 +3027,7 @@ class MyWindow(QMainWindow):
                 test_point = test_id.split(".")[1]
                 operation_id = parent.parent().text(0)
                 new_value = self.ui.text_body.toPlainText()
-                testdata_path = f"./TestData/{operation_id}_{serial_num}_{test_point}.json"
+                testdata_path = f"./artifacts/TestData/{operation_id}_{serial_num}_{test_point}.json"
                 
                 # * Prepare the copy of the test data file for recovering.
                 try:
@@ -3066,7 +3066,7 @@ class MyWindow(QMainWindow):
         operation_id = api_selected_item[0]
         
         # * Update the value in the JSON file
-        file_path = "./GenerationRule/" + operation_id + ".json"
+        file_path = "./artifacts/GenerationRule/" + operation_id + ".json"
         with open(file_path, 'r+') as f:
             data = json.load(f)
             result = GeneralTool.update_value_in_json(data, path, new_value)
@@ -3094,40 +3094,40 @@ class MyWindow(QMainWindow):
         generation_rule, path_rule, query_rule = GeneralTool.generate_dependency_data_generation_and_path_and_query_rule(api_name)
         
         if generation_rule != None or generation_rule != {}:
-            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+            with open(f"./artifacts/DependencyRule/{original_operation_id}.json", "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "data_generation_rules" , generation_rule)
                 if result is not False:
                     f.seek(0)
                     json.dump(data, f, indent=4)
                     f.truncate()
-                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'data_generation_rules']}`.")
+                    logging.info(f"Successfully updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'data_generation_rules']}`.")
                 else:
-                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'data_generation_rules']}`.")
+                    logging.error(f"Error updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'data_generation_rules']}`.")
                 
         if path_rule != None:
-            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+            with open(f"./artifacts/DependencyRule/{original_operation_id}.json", "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "path", path_rule)
                 if result is not False:
                     f.seek(0)
                     json.dump(data, f, indent=4)
                     f.truncate()
-                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")
+                    logging.info(f"Successfully updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")
                 else:
-                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")    
+                    logging.error(f"Error updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'path']}`.")    
         
         if query_rule != None:
-            with open(f"./DependencyRule/{original_operation_id}.json", "r+") as f:
+            with open(f"./artifacts/DependencyRule/{original_operation_id}.json", "r+") as f:
                 data = json.load(f)
                 result = GeneralTool.add_key_in_json(data, [dependency_type, sequence_num], "query", query_rule)
                 if result is not False:
                     f.seek(0)
                     json.dump(data, f , indent=4)
                     f.truncate()
-                    logging.info(f"Successfully updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
+                    logging.info(f"Successfully updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
                 else:
-                    logging.error(f"Error updating JSON file `./DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
+                    logging.error(f"Error updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
         
     def _create_generation_rule_and_assertion_files(self):
         """ Create Generation Rule and Assertion Files """
@@ -3144,7 +3144,7 @@ class MyWindow(QMainWindow):
                         request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
                         request_body_schema = GeneralTool().retrive_ref_schema(api_doc, request_body_schema)
                         generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
-                        with open(f"./GenerationRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/GenerationRule/{operation_id}.json", "w") as f:
                             json.dump(generation_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have requestBody.')
@@ -3152,7 +3152,7 @@ class MyWindow(QMainWindow):
                     # * Create the Assertion Rule File
                     if 'responses' in operation:
                         assertion_rule = GeneralTool.parse_schema_to_assertion_rule(operation['responses'])
-                        with open(f"./AssertionRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/AssertionRule/{operation_id}.json", "w") as f:
                             json.dump(assertion_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have responses.')
@@ -3160,7 +3160,7 @@ class MyWindow(QMainWindow):
                     # * Create the Path Rule File
                     if 'parameters' in operation:
                         path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
-                        with open(f"./PathRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/PathRule/{operation_id}.json", "w") as f:
                             json.dump(path_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
@@ -3168,7 +3168,7 @@ class MyWindow(QMainWindow):
                     # * Create the Query Rule File
                     if 'parameters' in operation:
                         query_rule = GeneralTool.parse_schema_to_query_rule(operation['parameters'])
-                        with open(f"./QueryRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/QueryRule/{operation_id}.json", "w") as f:
                             json.dump(query_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
@@ -3202,7 +3202,7 @@ class MyWindow(QMainWindow):
             paths.append(path)
                 
         # * Update the value in the JSON file
-        file_path = "./GenerationRule/" + operation_id + ".json"
+        file_path = "./artifacts/GenerationRule/" + operation_id + ".json"
         with open(file_path, 'r+') as f:
             data = json.load(f)
             for path in paths:
@@ -3223,14 +3223,14 @@ class MyWindow(QMainWindow):
             if item.parent() is None:
                 teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
                 for folder in teardown_folder:  
-                    for child_file in glob.glob(f"./{folder}/{item.text(0)}*.json"):
+                    for child_file in glob.glob(f"./artifacts/{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
                 self.ui.table_api_tree.takeTopLevelItem(self.ui.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
                 teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
                 for folder in teardown_folder:
-                    file_path = f"./{folder}/" + file_name + ".json"
+                    file_path = f"./artifacts/{folder}/" + file_name + ".json"
                     if os.path.exists(file_path):
                         os.remove(file_path)
                 item.parent().takeChild(item.parent().indexOfChild(item))
@@ -3255,7 +3255,7 @@ class MyWindow(QMainWindow):
             tcg_config = json.load(f)
             
         # * Generate Test Plan
-        GeneralTool.teardown_folder_files(["./test_plan", "./TestData", "./TestData/Dependency_TestData"])  
+        GeneralTool.teardown_folder_files(["./artifacts/TestPlan", "./artifacts/TestData", "./artifacts/TestData/Dependency_TestData"])  
         serial_number = 1
         test_count = self.ui.spinbox_test_case_count.value()
         for i in range(self.ui.table_api_tree.topLevelItemCount()):
@@ -3305,7 +3305,7 @@ class MyWindow(QMainWindow):
             self.ui.text_body,
         ])
         self.ui.table_test_plan_api_list.clear()
-        for test_plan in glob.glob("test_plan/*.json"):
+        for test_plan in glob.glob("./artifacts/TestPlan/*.json"):
             with open(test_plan, "r") as f:
                 test_plan = json.load(f)
             file_name = test_plan['test_info']['operationId']
@@ -3341,7 +3341,7 @@ class MyWindow(QMainWindow):
             parent=self.ui.tab, caption="Open OpenAPI Doc", directory=os.getcwd(), filter=file_filter)
         
         # * Clean Environment
-        GeneralTool.teardown_folder_files(["./GenerationRule", "./AssertionRule", "./PathRule", "./DependencyRule", "./AdditionalAction", "./QueryRule"])
+        GeneralTool.teardown_folder_files(["./artifacts/GenerationRule", "./artifacts/AssertionRule", "./artifacts/PathRule", "./artifacts/DependencyRule", "./artifacts/AdditionalAction", "./artifacts/QueryRule"])
         GeneralTool.clean_ui_content([
             self.ui.table_api_tree, 
             self.ui.table_schema,
@@ -3431,7 +3431,7 @@ class MyWindow(QMainWindow):
             test_plan_name = parent.parent().text(0)
             test_id, test_strategy, test_type, test_point = item.text(1), parent.text(2), parent.text(3), item.text(4)
             logging.debug(f"Test Point Index: {test_id}")
-            with open(f"test_plan/{test_plan_name}.json", "r") as f:
+            with open(f"./artifacts/TestPlan/{test_plan_name}.json", "r") as f:
                 test_plan = json.load(f)
             test_case_id = test_id.split(".")[0]
             test_point_id = test_id.split(".")[1]
@@ -3485,12 +3485,12 @@ class MyWindow(QMainWindow):
             serial_num = test_id.split(".")[0]
             test_point = test_id.split(".")[1]
             try:
-                with open(f"./TestData/{test_plan_name}_{serial_num}_{test_point}.json") as file:
+                with open(f"./artifacts/TestData/{test_plan_name}_{serial_num}_{test_point}.json") as file:
                     testdata = json.load(file)
                 testdata_str = json.dumps(testdata, indent=4)
                 self.ui.text_body.setPlainText(testdata_str)
             except FileNotFoundError:
-                logging.info(f"Test data file `./TestData/{test_plan_name}_{serial_num}_{test_point}.json` does not exist.")
+                logging.info(f"Test data file `./artifacts/TestData/{test_plan_name}_{serial_num}_{test_point}.json` does not exist.")
                 
             # * Render Additional Action
             GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.ui.table_tc_additional_action, test_case_id, test_point_id)
@@ -3580,7 +3580,7 @@ class MyWindow(QMainWindow):
                             
                             root_item_2 = QTreeWidgetItem(["Data Generation Rule"])
                             self.ui.table_generation_rule.addTopLevelItem(root_item_2)
-                            with open(f"./GenerationRule/{operation_id}.json", "r") as f:
+                            with open(f"./artifacts/GenerationRule/{operation_id}.json", "r") as f:
                                 generation_rule = json.load(f)
                             GeneralTool.parse_request_body(generation_rule, root_item_2, editabled=True)
                         else:

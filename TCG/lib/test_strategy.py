@@ -39,9 +39,9 @@ class TestStrategy:
             'test_cases': {}
         }
         
-        if not os.path.exists('test_plan'):
-            os.makedirs('test_plan')
-        test_plan_path = f'test_plan/{operationId}.json'
+        if not os.path.exists('./artifacts/TestPlan'):
+            os.makedirs('./artifacts/TestPlan')
+        test_plan_path = f'./artifacts/TestPlan/{operationId}.json'
         with open(test_plan_path, 'w', encoding='utf-8') as f:
             json.dump(basic_test_plan, f, ensure_ascii=False, sort_keys=False)
  
@@ -61,7 +61,7 @@ class TestStrategy:
         dependency_testdata
     ):
         try:
-            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
                 is_exist_g_rule = True
         except FileNotFoundError:
@@ -69,24 +69,24 @@ class TestStrategy:
             is_exist_g_rule = False
         
         # * Load assertion rule
-        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+        with open(f"./artifacts/AssertionRule/{operation_id}.json", 'r') as f:
             assertion_rule = json.load(f)
             if test_type == 'positive_test':
                 assertion_rule = assertion_rule["positive"]
         
         # * Load Path rule
-        if os.path.exists(f"./PathRule/{operation_id}.json"):
-            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+            with open(f"./artifacts/PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
         
         # * Load Query Rule
-        if os.path.exists(f"./QueryRule/{operation_id}.json"):
-            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+            with open(f"./artifacts/QueryRule/{operation_id}.json", 'r') as f:
                 query_rule = json.load(f)
                 
         # * Load Additional Action
-        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
-            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
+            with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
         
         test_point_number = 1
@@ -95,7 +95,7 @@ class TestStrategy:
             test_point_list = {}
             if is_exist_g_rule:
                 testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
-                testdata_path = f'./TestData/{testdata_file}.json'
+                testdata_path = f'./artifacts/TestData/{testdata_file}.json'
                 with open(testdata_path, 'w') as f:
                     json.dump(testdata, f, indent=4) 
                 test_point_list[str(test_point_number)] = {'config_name': testdata_file}
@@ -116,12 +116,12 @@ class TestStrategy:
                 parsed_json['test_point'][i]['dependency'] = d_rule
                 
                 # * Add path rule value to test plan.
-                if os.path.exists(f"./PathRule/{operation_id}.json"):
+                if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
                 
                 # * Add query rule value to test plan.
-                if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
                     for key, query_item in query_rule.items():
                         parsed_json['test_point'][i]['query'][key] = query_item['Value']       
                 
@@ -159,14 +159,14 @@ class TestStrategy:
         dependency_testdata
     ):
         try:
-            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the nullable_value_test case cannot be generated.')
             return serial_number
         
         # * Load assertion rule
-        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+        with open(f"./artifacts/AssertionRule/{operation_id}.json", 'r') as f:
             assertion_rule = json.load(f)
             if test_type == 'negative_test':
                 assertion_rule = assertion_rule["negative"]
@@ -174,18 +174,18 @@ class TestStrategy:
                 assertion_rule = assertion_rule["positive"]
         
         # * Load Path rule
-        if os.path.exists(f"./PathRule/{operation_id}.json"):
-            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+            with open(f"./artifacts/PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
 
         # * Load Query Rule
-        if os.path.exists(f"./QueryRule/{operation_id}.json"):
-            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+            with open(f"./artifacts/QueryRule/{operation_id}.json", 'r') as f:
                 query_rule = json.load(f)
                 
         # * Load Additional Action
-        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
-            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
+            with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
                 
         for key in generation_rules:
@@ -203,7 +203,7 @@ class TestStrategy:
                     replace_key = keys.copy()
                     DataBuilder._create_nested_dict(testdata, replace_key, None)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
-                    testdata_path = f'./TestData/{testdata_file}.json'
+                    testdata_path = f'./artifacts/TestData/{testdata_file}.json'
                     with open(testdata_path, 'w') as f:
                         json.dump(testdata, f, indent=4)
                         
@@ -228,12 +228,12 @@ class TestStrategy:
                         parsed_json['test_point'][i]['dependency'] = d_rule
                         
                         # * Add path rule value to test plan.
-                        if os.path.exists(f"./PathRule/{operation_id}.json"):
+                        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
                                 
                         # * Add query rule value to test plan.
-                        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
                             for key, query_item in query_rule.items():
                                 parsed_json['test_point'][i]['query'][key] = query_item['Value']
                                 
@@ -272,14 +272,14 @@ class TestStrategy:
     ):
         
         try:
-            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the enum_parameter_test case cannot be generated.')
             return serial_number
         
         # * Load assertion rule
-        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+        with open(f"./artifacts/AssertionRule/{operation_id}.json", 'r') as f:
             assertion_rule = json.load(f)
             if test_type == 'negative_test':
                 assertion_rule = assertion_rule["negative"]
@@ -287,18 +287,18 @@ class TestStrategy:
                 assertion_rule = assertion_rule["positive"]
         
         # * Load Path rule
-        if os.path.exists(f"./PathRule/{operation_id}.json"):
-            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+            with open(f"./artifacts/PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
 
         # * Load Query Rule
-        if os.path.exists(f"./QueryRule/{operation_id}.json"):
-            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+            with open(f"./artifacts/QueryRule/{operation_id}.json", 'r') as f:
                 query_rule = json.load(f) 
                                
         # * Load Additional Action
-        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
-            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
+            with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
                 
         for key in generation_rules:
@@ -318,7 +318,7 @@ class TestStrategy:
                         replace_key = keys.copy()
                         DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
                         testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
-                        testdata_path = f'./TestData/{testdata_file}.json'    
+                        testdata_path = f'./artifacts/TestData/{testdata_file}.json'    
                         with open(testdata_path, 'w') as f:
                             json.dump(testdata, f, indent=4)        
                                             
@@ -344,7 +344,7 @@ class TestStrategy:
                     enum_value = DataBuilder.generate_random_string()
                     DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
-                    testdata_path = f'./TestData/{testdata_file}.json'
+                    testdata_path = f'./artifacts/TestData/{testdata_file}.json'
                     
                     with open(testdata_path, 'w') as f:
                         json.dump(testdata, f, indent=4)
@@ -372,12 +372,12 @@ class TestStrategy:
                     parsed_json['test_point'][i]['dependency'] = d_rule
                     
                     # * Add path rule value to test plan.
-                    if os.path.exists(f"./PathRule/{operation_id}.json"):
+                    if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
                         for key, path_item in path_rule.items():
                             parsed_json['test_point'][i]['path'][key] = path_item['Value']
                             
                     # * Add query rule value to test plan.
-                    if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                    if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
                         for key, query_item in query_rule.items():
                             parsed_json['test_point'][i]['query'][key] = query_item['Value']
 
@@ -413,14 +413,14 @@ class TestStrategy:
     ):
         
         try:
-            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the required_parameter_test case cannot be generated.')
             return serial_number
         
         # * Load assertion rule
-        with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+        with open(f"./artifacts/AssertionRule/{operation_id}.json", 'r') as f:
             assertion_rule = json.load(f)
             if test_type == 'negative_test':
                 assertion_rule = assertion_rule["negative"]
@@ -428,18 +428,18 @@ class TestStrategy:
                 assertion_rule = assertion_rule["positive"]
         
         # * Load Path rule
-        if os.path.exists(f"./PathRule/{operation_id}.json"):
-            with open(f"./PathRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+            with open(f"./artifacts/PathRule/{operation_id}.json", 'r') as f:
                 path_rule = json.load(f)
                 
         # * Load Query Rule
-        if os.path.exists(f"./QueryRule/{operation_id}.json"):
-            with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+            with open(f"./artifacts/QueryRule/{operation_id}.json", 'r') as f:
                 query_rule = json.load(f)
                 
         # * Load Additional Action
-        if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
-            with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+        if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
+            with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
                    
         test_point_number = 1
@@ -457,7 +457,7 @@ class TestStrategy:
                     replace_key = keys.copy()
                     GeneralTool.remove_key_in_json(testdata, replace_key)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}.json'
-                    testdata_path = f'./TestData/{testdata_file}'
+                    testdata_path = f'./artifacts/TestData/{testdata_file}'
                     with open(testdata_path, 'w') as f:
                         json.dump(testdata, f, indent=4)
                     
@@ -478,12 +478,12 @@ class TestStrategy:
                         parsed_json['test_point'][i]['dependency'] = d_rule
                         
                         # * Add path rule value to test plan.
-                        if os.path.exists(f"./PathRule/{operation_id}.json"):
+                        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
                             for key, path_item in path_rule.items():
                                 parsed_json['test_point'][i]['path'][key] = path_item['Value']
                                     
                         # * Add query rule value to test plan.
-                        if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
                             for key, query_item in query_rule.items():
                                 parsed_json['test_point'][i]['query'][key] = query_item['Value']                                
                                     
@@ -519,7 +519,7 @@ class TestStrategy:
     ):
  
         try:
-            with open(f"./GenerationRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
                 generation_rules = json.load(f)
         except FileNotFoundError:
             logging.warning(f'This API does not have a generation rule: {operation_id}, so the parameter_min_max_test case cannot be generated.')
@@ -581,7 +581,7 @@ class TestStrategy:
                     logging.debug(f'key: {key}, under_min_value: {under_min_value}, over_max_value: {over_max_value}')
             
             # * Load assertion rule
-            with open(f"./AssertionRule/{operation_id}.json", 'r') as f:
+            with open(f"./artifacts/AssertionRule/{operation_id}.json", 'r') as f:
                 assertion_rule = json.load(f)
                 if test_type == 'negative_test':
                     assertion_rule = assertion_rule["negative"]
@@ -589,39 +589,39 @@ class TestStrategy:
                     assertion_rule = assertion_rule["positive"]
             
             # * Load Path rule
-            if os.path.exists(f"./PathRule/{operation_id}.json"):
-                with open(f"./PathRule/{operation_id}.json", 'r') as f:
+            if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+                with open(f"./artifacts/PathRule/{operation_id}.json", 'r') as f:
                     path_rule = json.load(f)
 
             # * Load Query Rule
-            if os.path.exists(f"./QueryRule/{operation_id}.json"):
-                with open(f"./QueryRule/{operation_id}.json", 'r') as f:
+            if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+                with open(f"./artifacts/QueryRule/{operation_id}.json", 'r') as f:
                     query_rule = json.load(f)
                                     
             # * Load Additional Action
-            if os.path.exists(f"./AdditionalAction/{operation_id}.json"):
-                with open(f"./AdditionalAction/{operation_id}.json", 'r') as f:
+            if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
+                with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                     additional_action = json.load(f)
             
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
                 DataBuilder._create_nested_dict(min_testdata, replace_key, min_value)
-                min_testdata_path = f"./TestData/{operation_id}_{serial_number}_1.json"
+                min_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_1.json"
                 with open(min_testdata_path, 'w') as f:
                     json.dump(min_testdata, f, indent=4)
                     
                 max_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
                 DataBuilder._create_nested_dict(max_testdata, replace_key, max_value)
-                max_testdata_path = f"./TestData/{operation_id}_{serial_number}_2.json"
+                max_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_2.json"
                 with open(max_testdata_path, 'w') as f:
                     json.dump(max_testdata, f, indent=4)
                     
                 median_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
                 DataBuilder._create_nested_dict(median_testdata, replace_key, mid_value)
-                median_testdata_path = f"./TestData/{operation_id}_{serial_number}_3.json"
+                median_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_3.json"
                 with open(median_testdata_path, 'w') as f:
                     json.dump(median_testdata, f, indent=4)
                     
@@ -648,14 +648,14 @@ class TestStrategy:
                 under_min_value_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
                 DataBuilder._create_nested_dict(under_min_value_testdata, replace_key, under_min_value)
-                under_min_value_testdata_path = f"./TestData/{operation_id}_{serial_number}_1.json"
+                under_min_value_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_1.json"
                 with open(under_min_value_testdata_path, 'w') as f:
                     json.dump(under_min_value_testdata, f, indent=4)
                     
                 over_max_value_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
                 DataBuilder._create_nested_dict(over_max_value_testdata, replace_key, over_max_value)
-                over_max_value_testdata_path = f"./TestData/{operation_id}_{serial_number}_2.json"
+                over_max_value_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_2.json"
                 with open(over_max_value_testdata_path, 'w') as f:
                     json.dump(over_max_value_testdata, f, indent=4)
                     
@@ -682,12 +682,12 @@ class TestStrategy:
                 parsed_json['test_point'][i]['dependency'] = d_rule
                 
                 # * Add path rule value to test plan.
-                if os.path.exists(f"./PathRule/{operation_id}.json"):
+                if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
                     for key, path_item in path_rule.items():
                         parsed_json['test_point'][i]['path'][key] = path_item['Value']
                     
                 # * Add query rule value to test plan.
-                if os.path.exists(f"./QueryRule/{operation_id}.json"):
+                if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
                     for key, query_item in query_rule.items():
                         parsed_json['test_point'][i]['query'][key] = query_item['Value']   
                                       
