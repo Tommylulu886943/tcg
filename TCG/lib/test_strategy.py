@@ -24,7 +24,8 @@ class TestStrategy:
 
         Returns:
             The path of the test plan .json file.
-        """
+        """  
+        logging.debug(f'Init Test Plan URI: {uri}, Method: {method}, OperationId: {operationId}')
         obj_name , action_name = GeneralTool._retrieve_obj_and_action(method + " " + uri)
         basic_test_plan = {
             'test_info': {
@@ -111,6 +112,14 @@ class TestStrategy:
             for i in range(1, len(parsed_json['test_point']) + 1):
                 i = str(i)
                 
+                # * Add Data Generation Rule to test plan.
+                if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                    with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                        g_rule = json.load(f)
+                        parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                else:
+                    parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}   
+                                 
                 # * Add dependency rule to test plan.
                 d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                 parsed_json['test_point'][i]['dependency'] = d_rule
@@ -223,6 +232,15 @@ class TestStrategy:
                     parsed_json = json.loads(rendered_template)
                     for i in range(1, len(parsed_json['test_point']) + 1):
                         i = str(i)
+                        
+                        # * Add Data Generation Rule to test plan.
+                        if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                                g_rule = json.load(f)
+                                parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                        else:
+                            parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
+                            
                         # * Add dependency rule to test plan.
                         d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                         parsed_json['test_point'][i]['dependency'] = d_rule
@@ -367,6 +385,15 @@ class TestStrategy:
                 parsed_json = json.loads(rendered_template)
                 for i in range(1, len(parsed_json['test_point']) + 1):
                     i = str(i)
+
+                    # * Add Data Generation Rule to test plan.
+                    if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                        with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                            g_rule = json.load(f)
+                            parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                    else:
+                        parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
+                        
                     # * Add dependency rule to test plan.
                     d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                     parsed_json['test_point'][i]['dependency'] = d_rule
@@ -473,6 +500,15 @@ class TestStrategy:
                     parsed_json = json.loads(rendered_template)
                     for i in range(1, len(parsed_json['test_point']) + 1):
                         i = str(i)
+                        
+                        # * Add Data Generation Rule to test plan.
+                        if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                                g_rule = json.load(f)
+                                parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                        else:
+                            parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
+                            
                         # * Add dependency rule to test plan.
                         d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                         parsed_json['test_point'][i]['dependency'] = d_rule
@@ -677,6 +713,15 @@ class TestStrategy:
             parsed_json = json.loads(rendered_template)
             for i in range(1, len(parsed_json['test_point']) + 1):
                 i = str(i)
+                
+                # * Add Data Generation Rule to test plan.
+                if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                    with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                        g_rule = json.load(f)
+                        parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                else:
+                    parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
+                
                 # * Add dependency rule to test plan.
                 d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                 parsed_json['test_point'][i]['dependency'] = d_rule

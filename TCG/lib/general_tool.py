@@ -137,6 +137,9 @@ class GeneralTool:
                 method = action.split(' ')[0].lower()
                 if uri == expected_uri and method == expected_method:
                     return obj_name, action
+        GeneralTool.show_error_dialog(
+            f"API {expected_method} {expected_uri} Not Found on the Object Mapping File.",
+            f"Please check the API name or add the API to the Object Mapping File.")
     
     @classmethod
     def show_error_dialog(cls, error_message: str, detailed_message: str) -> None:
@@ -180,11 +183,12 @@ class GeneralTool:
         test_case_id: str = None,
         test_point_id: str = None,
         is_general_dependency: bool = False,
+        is_test_plan: bool = False,
     ) -> None:
         
         if is_general_dependency:
             file_path = f"./artifacts/DependencyRule/{operation_id}.json"
-        elif is_dependency:
+        elif is_dependency or is_test_plan:
             file_path = f"./artifacts/TestPlan/{operation_id}.json"
         else:
             file_path = f"./artifacts/GenerationRule/{operation_id}.json"
@@ -195,6 +199,9 @@ class GeneralTool:
                     data = json.load(f)
                     if is_general_dependency:
                         path = [dependency_type, dependency_sequence_num, "data_generation_rules", src_path, "Default"]
+                    elif is_test_plan:
+                        path = ["test_cases", test_case_id, "test_point", test_point_id, "parameter", 
+                                "data_generation_rules", src_path, "Default"]
                     elif is_dependency:
                         path = ["test_cases", test_case_id, "test_point", test_point_id, "dependency", 
                                     dependency_type, dependency_sequence_num, "data_generation_rules", src_path, "Default"]
@@ -224,11 +231,19 @@ class GeneralTool:
                     else:
                         path = ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency', 
                                     dependency_type, dependency_sequence_num, 'data_generation_rules', dst_path]
-
+                elif is_test_plan:
+                    if ".*" in dst_path:
+                        path = ['test_cases', test_case_id, 'test_point', test_point_id, 'parameter', 
+                                   'data_generation_rules', dst_path.split('.*')[0]]
+                    else:
+                        path = ['test_cases', test_case_id, 'test_point', test_point_id, 'parameter', 
+                                    'data_generation_rules', dst_path]
                 else:
                     path = [dst_path]
+                    
                 if ".*" in dst_path:
-                    if is_general_dependency or is_dependency:
+                    # BUG: The wildcard not work for the general dependency rule and test plan.
+                    if is_general_dependency or is_dependency or is_test_plan:
                         result = cls.remove_key_in_json(data, path)
                     else:
                         result = cls.remove_wildcard_field_in_generation_rule(data, path)
@@ -248,6 +263,9 @@ class GeneralTool:
                     data = json.load(f)
                     if is_general_dependency:
                         path = [dependency_type, dependency_sequence_num, "data_generation_rules", dst_path, "Default"]
+                    elif is_test_plan:
+                        path = ["test_cases", test_case_id, "test_point", test_point_id, "parameter", 
+                                "data_generation_rules", src_path, "Default"]
                     elif is_dependency:
                         path = ['test_cases', test_case_id, 'test_point', test_point_id, 'dependency',
                                     dependency_type, dependency_sequence_num, 'data_generation_rules', dst_path, 'Default']
@@ -1120,6 +1138,32 @@ class GeneralTool:
             with open(file_path, "r") as f:
                 generation_rule = json.load(f)
             generation_rule = generation_rule[dependency_type][dependency_index]['data_generation_rules']
+            generation_rule_table.clear()
+            root_item = QTreeWidgetItem(["Data Generation Rule"])
+            generation_rule_table.addTopLevelItem(root_item)
+            cls.parse_request_body(generation_rule, root_item, editabled=True)
+            cls.expand_and_resize_tree(generation_rule_table, level=2)
+        else:
+            logging.warning(f"Generation rule file not found: {file_path}")
+
+    @classmethod
+    def parse_tc_generation_rule(
+        cls, 
+        operation_id: str, 
+        generation_rule_table: object,
+        test_case_id: str,
+        test_point_id: str,
+    ) -> None:
+        """
+        To parse Test Plan generation rule files to TreeWidget.
+        Ex: (./artifacts/GenerationRule/{operation_id}.json)
+        """
+        
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                generation_rule = json.load(f)
+            generation_rule = generation_rule['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['data_generation_rules']
             generation_rule_table.clear()
             root_item = QTreeWidgetItem(["Data Generation Rule"])
             generation_rule_table.addTopLevelItem(root_item)

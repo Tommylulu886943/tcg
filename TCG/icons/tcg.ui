@@ -249,7 +249,7 @@
                        </font>
                       </property>
                       <property name="title">
-                       <string>Generation Rule</string>
+                       <string>Request Body Generation Rule</string>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_16" rowstretch="1,9">
                        <item row="0" column="0">
@@ -1238,26 +1238,19 @@
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <item>
-                   <layout class="QGridLayout" name="gridLayout" columnstretch="4,0">
+                   <layout class="QGridLayout" name="gridLayout" columnstretch="4,6">
                     <property name="spacing">
                      <number>10</number>
                     </property>
                     <item row="0" column="0">
-                     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,2">
+                     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,2,5">
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
                       <property name="spacing">
                        <number>6</number>
                       </property>
-                      <item row="2" column="3">
-                       <widget class="QLineEdit" name="textbox_dependency_return_variable_name">
-                        <property name="font">
-                         <font>
-                          <family>Segoe UI</family>
-                          <pointsize>10</pointsize>
-                         </font>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="0" colspan="4">
+                      <item row="3" column="0" rowspan="2" colspan="4">
                        <widget class="QLabel" name="label">
                         <property name="font">
                          <font>
@@ -1267,6 +1260,16 @@
                         </property>
                         <property name="text">
                          <string>Avaliable API Operation List (From API Doc)</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="3">
+                       <widget class="QLineEdit" name="textbox_dependency_return_variable_name">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
                         </property>
                        </widget>
                       </item>
@@ -1283,54 +1286,16 @@
                         </property>
                        </widget>
                       </item>
-                      <item row="6" column="0" colspan="4">
-                       <widget class="QTreeWidget" name="table_dependency_rule">
+                      <item row="0" column="0">
+                       <widget class="QPushButton" name="btn_add_dependency_rule">
                         <property name="font">
                          <font>
                           <family>Segoe UI</family>
                           <pointsize>10</pointsize>
                          </font>
                         </property>
-                        <property name="selectionMode">
-                         <enum>QAbstractItemView::SingleSelection</enum>
-                        </property>
-                        <column>
-                         <property name="text">
-                          <string>Index</string>
-                         </property>
-                        </column>
-                        <column>
-                         <property name="text">
-                          <string>Value</string>
-                         </property>
-                        </column>
-                       </widget>
-                      </item>
-                      <item row="5" column="0" colspan="4">
-                       <widget class="QListWidget" name="list_dependency_available_api_list">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>1</width>
-                          <height>1</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>500</width>
-                          <height>100</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>Segoe UI</family>
-                          <pointsize>10</pointsize>
-                         </font>
+                        <property name="text">
+                         <string>Add</string>
                         </property>
                        </widget>
                       </item>
@@ -1347,19 +1312,6 @@
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="0">
-                       <widget class="QPushButton" name="btn_add_dependency_rule">
-                        <property name="font">
-                         <font>
-                          <family>Segoe UI</family>
-                          <pointsize>10</pointsize>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Add</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="1" column="0">
                        <widget class="QPushButton" name="btn_remove_dependency_rule">
                         <property name="font">
@@ -1370,19 +1322,6 @@
                         </property>
                         <property name="text">
                          <string>Remove</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="1">
-                       <widget class="QPushButton" name="btn_clear_dependency_rule">
-                        <property name="font">
-                         <font>
-                          <family>Segoe UI</family>
-                          <pointsize>10</pointsize>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Clear</string>
                         </property>
                        </widget>
                       </item>
@@ -1402,6 +1341,19 @@
                         </property>
                         <property name="text">
                          <string>&lt;Search Bar&gt;</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QPushButton" name="btn_clear_dependency_rule">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="text">
+                         <string>Clear</string>
                         </property>
                        </widget>
                       </item>
@@ -1438,8 +1390,8 @@
                         </item>
                        </widget>
                       </item>
-                      <item row="0" column="2">
-                       <widget class="QLabel" name="label_32">
+                      <item row="0" column="1">
+                       <widget class="QPushButton" name="btn_up_dependency_rule">
                         <property name="font">
                          <font>
                           <family>Segoe UI</family>
@@ -1447,7 +1399,7 @@
                          </font>
                         </property>
                         <property name="text">
-                         <string>Type :</string>
+                         <string>Up</string>
                         </property>
                        </widget>
                       </item>
@@ -1464,8 +1416,8 @@
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1">
-                       <widget class="QPushButton" name="btn_up_dependency_rule">
+                      <item row="0" column="2">
+                       <widget class="QLabel" name="label_32">
                         <property name="font">
                          <font>
                           <family>Segoe UI</family>
@@ -1473,7 +1425,58 @@
                          </font>
                         </property>
                         <property name="text">
-                         <string>Up</string>
+                         <string>Type :</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="6" column="0" colspan="4">
+                       <widget class="QTreeWidget" name="table_dependency_rule">
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
+                        </property>
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::SingleSelection</enum>
+                        </property>
+                        <column>
+                         <property name="text">
+                          <string>Index</string>
+                         </property>
+                        </column>
+                        <column>
+                         <property name="text">
+                          <string>Value</string>
+                         </property>
+                        </column>
+                       </widget>
+                      </item>
+                      <item row="5" column="0" colspan="4">
+                       <widget class="QListWidget" name="list_dependency_available_api_list">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>1</width>
+                          <height>1</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>10000</width>
+                          <height>10000</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Segoe UI</family>
+                          <pointsize>10</pointsize>
+                         </font>
                         </property>
                        </widget>
                       </item>
@@ -2850,14 +2853,741 @@
               <property name="currentIndex">
                <number>0</number>
               </property>
+              <widget class="QWidget" name="tab_21">
+               <attribute name="title">
+                <string>Data Generation Rule</string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_37" rowstretch="2,8">
+                  <item row="1" column="0">
+                   <widget class="QGroupBox" name="group_positive_test_20">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="title">
+                     <string>Request Body Generation Rule</string>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_38" rowstretch="1,9">
+                     <item row="0" column="1">
+                      <widget class="QPushButton" name="btn_tc_generation_rule_remove">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Remove</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QPushButton" name="btn_tc_generation_rule_build">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Re-Build</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0" colspan="2">
+                      <widget class="QTreeWidget" name="table_tc_generation_rule">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="selectionMode">
+                        <enum>QAbstractItemView::ContiguousSelection</enum>
+                       </property>
+                       <column>
+                        <property name="text">
+                         <string>Field</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text">
+                         <string>Value</string>
+                        </property>
+                       </column>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QTabWidget" name="tabWidget_6">
+                    <property name="currentIndex">
+                     <number>0</number>
+                    </property>
+                    <widget class="QWidget" name="tab_22">
+                     <attribute name="title">
+                      <string>Data Rule</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_29">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_39" columnstretch="4,6">
+                        <item row="1" column="0" rowspan="2">
+                         <widget class="QGroupBox" name="group_positive_test_21">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="title">
+                           <string>Field Information</string>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_40">
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="label_75">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Default / Fixed Value :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QLabel" name="label_76">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Type :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="1">
+                            <widget class="QLineEdit" name="textbox_tc_data_rule_type">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="QLineEdit" name="textbox_tc_data_rule_format">
+                             <property name="enabled">
+                              <bool>false</bool>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="label_77">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Format :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <widget class="QLineEdit" name="textbox_tc_data_rule_value">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item row="1" column="1" rowspan="2">
+                         <widget class="QGroupBox" name="group_positive_test_22">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="title">
+                           <string>Rule</string>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_41">
+                           <item row="3" column="0">
+                            <widget class="QLabel" name="label_78">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Nullable :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="label_79">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Data Length / Range :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="QLabel" name="label_80">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Data Generator :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="label_81">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Required :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="2">
+                            <widget class="QLineEdit" name="textbox_tc_data_rule_data_length">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="QComboBox" name="comboBox_tc_data_rule_data_generator">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="layoutDirection">
+                              <enum>Qt::LeftToRight</enum>
+                             </property>
+                             <item>
+                              <property name="text">
+                               <string/>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random String</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random String (Without Special Characters)</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random Boolean</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random Integer</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random Number (Float)</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random DATE-TIME</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random EMAIL</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random IPV4</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random IPV6</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random HOSTNAME</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random UUID</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="2" column="2">
+                            <widget class="QComboBox" name="comboBox_tc_data_rule_required">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="layoutDirection">
+                              <enum>Qt::LeftToRight</enum>
+                             </property>
+                             <item>
+                              <property name="text">
+                               <string/>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>True</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>False</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="3" column="2">
+                            <widget class="QComboBox" name="comboBox_tc_data_rule_nullable">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="layoutDirection">
+                              <enum>Qt::LeftToRight</enum>
+                             </property>
+                             <item>
+                              <property name="text">
+                               <string/>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>True</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>False</string>
+                              </property>
+                             </item>
+                            </widget>
+                           </item>
+                           <item row="4" column="0">
+                            <widget class="QLabel" name="label_120">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Regex Pattern :</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="4" column="2">
+                            <widget class="QLineEdit" name="textbox_tc_data_rule_regex_pattern">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item row="3" column="0">
+                         <widget class="QPushButton" name="btn_tc_update_data_rule">
+                          <property name="text">
+                           <string>Update</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_23">
+                     <attribute name="title">
+                      <string>Constraint Rule</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_30">
+                      <item>
+                       <layout class="QGridLayout" name="gridLayout_42" columnstretch="2,8,0,0,0">
+                        <item row="3" column="2" colspan="3">
+                         <widget class="QLineEdit" name="textbox_tc_constraint_rule_dst_value">
+                          <property name="enabled">
+                           <bool>false</bool>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="2" colspan="3">
+                         <widget class="QLineEdit" name="textbox_tc_constraint_rule_src">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="toolTip">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="2" colspan="3">
+                         <widget class="QLineEdit" name="textbox_tc_constraint_rule_expected_value">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="2" colspan="3">
+                         <widget class="QLineEdit" name="textbox_tc_constraint_rule_dst">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="inputMask">
+                           <string/>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="placeholderText">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="4" column="0">
+                         <widget class="QPushButton" name="btn_tc_constraint_rule_apply">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Apply</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="4" column="1">
+                         <widget class="QPushButton" name="btn_tc_constraint_rule_clear">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Clear</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0" colspan="2">
+                         <widget class="QComboBox" name="comboBox_tc_constraint_rule_src_action">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>Set</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>If</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item row="1" column="0" colspan="2">
+                         <widget class="QComboBox" name="comboBox_tc_constraint_rule_condition">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="layoutDirection">
+                           <enum>Qt::LeftToRight</enum>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>WITH</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item row="2" column="0" colspan="2">
+                         <widget class="QComboBox" name="comboBox_tc_constraint_rule_dst_action">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>Then Remove</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>Then Set</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item row="3" column="0" colspan="2">
+                         <widget class="QComboBox" name="comboBox_tc_constraint_dst_action_type">
+                          <property name="enabled">
+                           <bool>false</bool>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="toolTip">
+                           <string/>
+                          </property>
+                          <property name="layoutDirection">
+                           <enum>Qt::LeftToRight</enum>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string/>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>WITH</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                        <item row="4" column="2" colspan="3">
+                         <widget class="QCheckBox" name="checkBox_tc_constraint_rule_wildcard">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Wildcard</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
               <widget class="QWidget" name="tab_37">
                <attribute name="title">
                 <string>Request Body</string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
-                 <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0,2,8" columnstretch="3,7" columnminimumwidth="3,7">
-                  <item row="5" column="0" colspan="2">
+                 <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0,0,0" columnstretch="3,7">
+                  <item row="6" column="0" colspan="2">
+                   <widget class="QGroupBox" name="groupBox">
+                    <property name="title">
+                     <string>Request Body</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                     <item>
+                      <widget class="QPushButton" name="btn_update_text_body">
+                       <property name="maximumSize">
+                        <size>
+                         <width>150</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>Update</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPlainTextEdit" name="text_body">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="4" column="0" rowspan="2" colspan="2">
                    <widget class="QGroupBox" name="groupBox_2">
                     <property name="title">
                      <string>Case Info.</string>
@@ -2960,44 +3690,6 @@
                         </widget>
                        </item>
                       </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item row="6" column="0" colspan="2">
-                   <widget class="QGroupBox" name="groupBox">
-                    <property name="title">
-                     <string>Request Body</string>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_6">
-                     <item>
-                      <widget class="QPushButton" name="btn_update_text_body">
-                       <property name="maximumSize">
-                        <size>
-                         <width>150</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <family>Segoe UI</family>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Update</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPlainTextEdit" name="text_body">
-                       <property name="font">
-                        <font>
-                         <family>Segoe UI</family>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -3292,23 +3984,10 @@
                    <number>10</number>
                   </property>
                   <item row="0" column="0">
-                   <layout class="QGridLayout" name="gridLayout_25" rowstretch="1,0,0,0,0,0,0">
+                   <layout class="QGridLayout" name="gridLayout_25" rowstretch="1,0,0,0,0,2,5">
                     <property name="spacing">
                      <number>6</number>
                     </property>
-                    <item row="3" column="1">
-                     <widget class="QPushButton" name="btn_tc_clear_dependency_rule">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Clear</string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="0" column="0">
                      <widget class="QPushButton" name="btn_tc_add_dependency_rule">
                       <property name="font">
@@ -3319,19 +3998,6 @@
                       </property>
                       <property name="text">
                        <string>Add</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="3" column="0">
-                     <widget class="QPushButton" name="btn_tc_update_dependency_rule">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Update</string>
                       </property>
                      </widget>
                     </item>
@@ -3388,16 +4054,6 @@
                       </column>
                      </widget>
                     </item>
-                    <item row="3" column="5">
-                     <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="1" column="5">
                      <widget class="QLineEdit" name="line_tc_api_search">
                       <property name="sizePolicy">
@@ -3433,8 +4089,8 @@
                       </property>
                       <property name="maximumSize">
                        <size>
-                        <width>500</width>
-                        <height>100</height>
+                        <width>1000</width>
+                        <height>1000</height>
                        </size>
                       </property>
                       <property name="font">
@@ -3510,7 +4166,33 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="2" colspan="3">
+                    <item row="2" column="1" rowspan="2">
+                     <widget class="QPushButton" name="btn_tc_clear_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Clear</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0" rowspan="2">
+                     <widget class="QPushButton" name="btn_tc_update_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="2" rowspan="2" colspan="3">
                      <widget class="QLabel" name="label_45">
                       <property name="font">
                        <font>
@@ -3520,6 +4202,16 @@
                       </property>
                       <property name="text">
                        <string>Response Name : </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="5" rowspan="2">
+                     <widget class="QLineEdit" name="textbox_tc_dependency_return_variable_name">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
                       </property>
                      </widget>
                     </item>
@@ -3534,7 +4226,7 @@
                      </sizepolicy>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <widget class="QWidget" name="tab_41">
                      <attribute name="title">
@@ -3595,7 +4287,7 @@
                               </font>
                              </property>
                              <property name="text">
-                              <string>Build</string>
+                              <string>Re-Build</string>
                              </property>
                             </widget>
                            </item>
@@ -4740,32 +5432,6 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <layout class="QGridLayout" name="gridLayout_18">
-           <item row="1" column="0">
-            <widget class="QPushButton" name="pushButton_3">
-             <property name="font">
-              <font>
-               <family>Segoe UI</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Select All</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_8">
-             <property name="font">
-              <font>
-               <family>Segoe UI</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Un-Select All</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0" colspan="2">
             <widget class="QGroupBox" name="group_test_strategy">
              <property name="font">
@@ -5089,13 +5755,13 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="title">
-           <string>Automatic Import General Test Rules ?</string>
+           <string>Generate test data dynamically ?</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_24">
              <item>
-              <widget class="QRadioButton" name="radio_general_test_yes">
+              <widget class="QRadioButton" name="radio_dynamic_data_yes">
                <property name="text">
                 <string>Yes</string>
                </property>
@@ -5105,7 +5771,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="radio_general_test_no">
+              <widget class="QRadioButton" name="radio_dynamic_data_no">
                <property name="text">
                 <string>No</string>
                </property>

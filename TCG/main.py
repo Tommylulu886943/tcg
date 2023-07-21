@@ -226,8 +226,12 @@ class MyWindow(QMainWindow):
         self.ui.btn_dependency_generation_rule_remove.clicked.connect(self.btn_dependency_generation_rule_remove_clicked)
         self.ui.btn_tc_dependency_constraint_rule_clear.clicked.connect(self.btn_tc_dependency_constraint_rule_clear_clicked)
         self.ui.btn_tc_dependency_constraint_rule_apply.clicked.connect(self.btn_tc_dependency_constraint_rule_apply_clicked)
+        self.ui.btn_tc_constraint_rule_clear.clicked.connect(self.btn_tc_constraint_rule_clear_clicked)
+        self.ui.btn_tc_constraint_rule_apply.clicked.connect(self.btn_tc_constraint_rule_apply_clicked)
         self.ui.btn_tc_dependency_generation_rule_remove.clicked.connect(self.btn_tc_dependency_generation_rule_remove_clicked)
         self.ui.btn_tc_dependency_generation_rule_build.clicked.connect(self.btn_tc_dependency_generation_rule_build_clicked)
+        self.ui.btn_tc_generation_rule_remove.clicked.connect(self.btn_tc_generation_rule_remove_clicked)
+        self.ui.btn_tc_generation_rule_build.clicked.connect(self.btn_tc_generation_rule_build_clicked)
         self.ui.btn_tc_add_assertion_rule.clicked.connect(self.btn_tc_add_assertion_rule_clicked)
         self.ui.btn_tc_update_assertion_rule.clicked.connect(self.btn_tc_update_assertion_rule_clicked)
         self.ui.btn_tc_remove_assertion_rule.clicked.connect(self.btn_tc_remove_assertion_rule_clicked)
@@ -247,6 +251,7 @@ class MyWindow(QMainWindow):
         self.ui.btn_update_data_rule.clicked.connect(self.btn_update_data_rule_clicked)
         self.ui.btn_dependency_update_data_rule.clicked.connect(self.btn_dependency_update_data_rule_clicked)
         self.ui.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
+        self.ui.btn_tc_update_data_rule.clicked.connect(self.btn_tc_update_data_rule_clicked)
         
         # * Table's Item Click Event
         self.ui.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -254,6 +259,8 @@ class MyWindow(QMainWindow):
         self.ui.table_assertion_rule.itemClicked.connect(self.table_assertion_rule_item_clicked)
         self.ui.table_generation_rule.itemClicked.connect(self.table_generation_rule_item_clicked)
         self.ui.table_dependency_generation_rule.itemClicked.connect(self.table_dependency_generation_rule_item_clicked)
+        self.ui.table_tc_generation_rule.itemClicked.connect(self.table_tc_generation_rule_item_clicked)
+        self.ui.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
         self.ui.table_query.itemClicked.connect(self.table_query_item_clicked)
         self.ui.table_path.itemClicked.connect(self.table_path_item_clicked)
         self.ui.table_tc_query.itemClicked.connect(self.table_tc_query_item_clicked)
@@ -265,7 +272,6 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_path.itemClicked.connect(self.table_dependency_path_item_clicked)
         self.ui.table_tc_dependency_rule.itemClicked.connect(self.table_tc_dependency_item_clicked)
         self.ui.table_tc_assertion_rule.itemClicked.connect(self.table_tc_assertion_rule_item_clicked)
-        self.ui.table_tc_dependency_generation_rule.itemClicked.connect(self.table_tc_dependency_generation_rule_item_clicked)
         self.ui.table_tc_dependency_query.itemClicked.connect(self.table_tc_dependency_query_item_clicked)
         self.ui.table_tc_dependency_path.itemClicked.connect(self.table_tc_dependency_path_item_clicked)
         self.ui.table_robot_file_list.itemClicked.connect(self.table_robot_file_list_item_clicked)
@@ -287,6 +293,7 @@ class MyWindow(QMainWindow):
         # * Checkbox Event
         self.ui.checkBox_constraint_rule_wildcard.stateChanged.connect(self.checkBox_constraint_rule_wildcard_changed)
         self.ui.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
+        self.ui.checkBox_tc_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_constraint_rule_wildcard_changed)
         self.ui.checkBox_tc_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_dependency_constraint_rule_wildcard_changed)
         
         # * Completer Event
@@ -858,6 +865,67 @@ class MyWindow(QMainWindow):
         with open(f"./artifacts/TestCase/RESTful_API/{file_name}", "r") as f:
             content = f.read()
         self.ui.text_robot_file.setText(content)
+        
+    def btn_tc_update_data_rule_clicked(self):
+        if len(self.ui.table_tc_generation_rule.selectedItems()) == 0:
+            return
+        
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+                
+        selected_item = self.ui.table_tc_generation_rule.selectedItems()[0]
+        parent_item = selected_item.parent()
+        field_name = selected_item.text(0)
+        
+        if parent_item is not None and parent_item.parent() is None:
+            default_value = self.ui.textbox_tc_data_rule_value.text()
+            data_generator = self.ui.comboBox_tc_data_rule_data_generator.currentText()
+            data_length = self.ui.textbox_tc_data_rule_data_length.text()
+            required_value = self.ui.comboBox_tc_data_rule_required.currentText()
+            nullalbe_value = self.ui.comboBox_tc_data_rule_nullable.currentText()
+            regex_pattern = self.ui.textbox_tc_data_rule_regex_pattern.text()
+            
+            with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
+                g_rule = json.load(f)
+                g_rule_field = g_rule["test_cases"][test_case_id]["test_point"][test_point_id]["parameter"]["data_generation_rules"][field_name]
+                g_rule_field["Default"] = default_value
+                g_rule_field['rule']["Data Generator"] = data_generator
+                g_rule_field['rule']["Data Length"] = data_length
+                g_rule_field['rule']["Regex Pattern"] = regex_pattern
+                if required_value == "True":
+                    g_rule_field['rule']["Required"] = True
+                elif required_value == "False":
+                    g_rule_field['rule']["Required"] = False
+                if nullalbe_value == "True":
+                    g_rule_field['rule']["Nullable"] = True
+                elif nullalbe_value == "False":
+                    g_rule_field['rule']["Nullable"] = False
+                f.seek(0)
+                f.truncate()
+                f.write(json.dumps(g_rule, indent=4))
+                logging.info(f"Update {field_name} in {operation_id}.json successfully")
+                
+            GeneralTool.clean_ui_content([
+                self.ui.table_tc_generation_rule,
+                self.ui.textbox_tc_data_rule_type,
+                self.ui.textbox_tc_data_rule_format,
+                self.ui.textbox_tc_data_rule_value,
+                self.ui.comboBox_tc_data_rule_data_generator,
+                self.ui.textbox_tc_data_rule_data_length,
+                self.ui.comboBox_tc_data_rule_required,
+                self.ui.comboBox_tc_data_rule_nullable,
+                self.ui.textbox_tc_data_rule_regex_pattern,
+            ])
+            GeneralTool.parse_tc_generation_rule(
+                operation_id, 
+                self.ui.table_tc_generation_rule,
+                test_case_id,
+                test_point_id,
+            )
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_generation_rule)
         
     def btn_tc_dependency_update_data_rule_clicked(self):
         if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
@@ -1872,7 +1940,55 @@ class MyWindow(QMainWindow):
             f.seek(0)
             json.dump(data, f, indent=4)
             f.truncate()
-        GeneralTool.remove_table_item_from_ui(self.ui.table_tc_dependency_generation_rule)     
+        GeneralTool.remove_table_item_from_ui(self.ui.table_tc_dependency_generation_rule)
+        
+    def btn_tc_generation_rule_remove_clicked(self):
+        """ Remove Test Plan Generation Rule Field """
+        if len(self.ui.table_tc_generation_rule.selectedItems()) == 0:
+            return
+        
+        # * Retrieve the origin API Operation ID.
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_parent_item = test_plan_selected_item.parent()
+        origin_api_operation_id = test_plan_parent_item.parent().text(0)
+        
+        # * Retrieve the Test Point Index and Data Generation Rule Field name which should be removed.
+        generation_table_selected_item = self.ui.table_tc_generation_rule.selectedItems()[0]
+        test_case_id = test_plan_selected_item.text(1).split('.')[0]
+        test_point_id = test_plan_selected_item.text(1).split('.')[1]
+        if generation_table_selected_item.parent() is None or generation_table_selected_item.parent().parent() is not None:
+            return
+        else:
+            generation_rule_field_name = generation_table_selected_item.text(0)
+            
+        # * Retrieve the Generation Rule List selected items to get the corresponding path
+        paths = []
+        for item in self.ui.table_tc_generation_rule.selectedItems():
+            path = []
+            while item.parent() is not None:
+                path.insert(0, item.text(0))
+                item = item.parent()
+            # * If toplevel item is selected, return directly.
+            if path == []: return
+            paths.append(path)
+        
+        # * Update the value in the JSON file
+        file_path = f"./artifacts/TestPlan/{origin_api_operation_id}.json"
+        with open(file_path, 'r+') as f:
+            data = json.load(f)
+            for path in paths:
+                result = GeneralTool.remove_key_in_json(
+                    data, 
+                    ["test_cases", test_case_id, "test_point", test_point_id, "parameter", "data_generation_rules", *path]
+                )
+                if result is not False:
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', test_point_id, 'parameter', 'data_generation_rules', *path]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', test_point_id, 'parameter', 'data_generation_rules', *path]}`.")
+            f.seek(0)
+            json.dump(data, f, indent=4)
+            f.truncate()
+        GeneralTool.remove_table_item_from_ui(self.ui.table_tc_generation_rule)     
        
     def btn_dependency_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
@@ -1982,6 +2098,15 @@ class MyWindow(QMainWindow):
             self.ui.textbox_tc_dependency_constraint_rule_dst,
             self.ui.textbox_tc_dependency_constraint_rule_dst_value,
         ])
+        
+    def btn_tc_constraint_rule_clear_clicked(self):
+        """ Clear the Dependency Constraint Rule UI. """
+        GeneralTool.clean_ui_content([
+            self.ui.textbox_tc_constraint_rule_src,
+            self.ui.textbox_tc_constraint_rule_expected_value,
+            self.ui.textbox_tc_constraint_rule_dst,
+            self.ui.textbox_tc_constraint_rule_dst_value,
+        ])
     
     def btn_tc_dependency_constraint_rule_apply_clicked(self):
         """ Apply the Dependency Constraint Rule to the selected API. """
@@ -2029,6 +2154,52 @@ class MyWindow(QMainWindow):
         self.ui.comboBox_tc_dependency_constraint_dst_action_type.setCurrentText("")
         self.ui.comboBox_tc_dependency_constraint_dst_action_type.setEnabled(False)
         self.ui.textbox_tc_dependency_constraint_rule_dst_value.setEnabled(False)
+        
+    def btn_tc_constraint_rule_apply_clicked(self):
+        """ Apply the Test Plan Constraint Rule to the selected API. """
+        src_action = self.ui.comboBox_tc_constraint_rule_src_action.currentText()
+        src_path = self.ui.textbox_tc_constraint_rule_src.text()
+        src_condition = self.ui.comboBox_tc_constraint_rule_condition.currentText()
+        src_expected_value = self.ui.textbox_tc_constraint_rule_expected_value.text()
+        dst_action = self.ui.comboBox_tc_constraint_rule_dst_action.currentText()
+        dst_action_type = self.ui.comboBox_tc_constraint_dst_action_type.currentText()
+        dst_value = self.ui.textbox_tc_constraint_rule_dst_value.text()
+        dst_path = self.ui.textbox_tc_constraint_rule_dst.text()
+        
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        else:
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+            test_plan_parent_item = test_plan_selected_item.parent()
+            operation_id = test_plan_parent_item.parent().text(0)
+            test_case_id = test_plan_selected_item.text(1).split(".")[0]
+            test_point_id = test_plan_selected_item.text(1).split(".")[1]
+    
+        GeneralTool.apply_constraint_rule(
+            operation_id, src_action, src_path, src_condition, src_expected_value, dst_action, dst_path,
+            dst_action_type, dst_value, None, None, False, test_case_id, test_point_id, False, True)
+        
+        with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
+            data = json.load(f)
+        # * Refresh the Dependency Generation Rule Table
+        root_item = QTreeWidgetItem(["Data Generation Rule"])
+        self.ui.table_tc_generation_rule.clear()
+        self.ui.table_tc_generation_rule.addTopLevelItem(root_item)
+        print(data)
+        GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][test_point_id]["parameter"]["data_generation_rules"], root_item, editabled=True)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_generation_rule, 0)
+        # * Clear the constraint rule UI
+        GeneralTool.clean_ui_content([
+            self.ui.textbox_tc_constraint_rule_src,
+            self.ui.textbox_tc_constraint_rule_expected_value,
+            self.ui.textbox_tc_constraint_rule_dst,
+            self.ui.textbox_tc_constraint_rule_dst_value,
+        ])
+        self.ui.checkBox_tc_constraint_rule_wildcard.setChecked(False)
+        self.ui.comboBox_tc_constraint_rule_dst_action.setCurrentText("Then Remove")
+        self.ui.comboBox_tc_constraint_dst_action_type.setCurrentText("")
+        self.ui.comboBox_tc_constraint_dst_action_type.setEnabled(False)
+        self.ui.textbox_tc_constraint_rule_dst_value.setEnabled(False)
     
     def btn_tc_dependency_generation_rule_build_clicked(self):
         
@@ -2061,6 +2232,36 @@ class MyWindow(QMainWindow):
         testdata_str = json.dumps(testdata, indent=4)
         self.ui.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
         self.ui.table_tc_dependency_schema_2.setCurrentIndex(1)
+        
+    def btn_tc_generation_rule_build_clicked(self):
+        
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_parent_item = test_plan_selected_item.parent()
+        operation_id = test_plan_parent_item.parent().text(0)
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        # * Retrieve the data generation rule.
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            generation_rule = data["test_cases"][test_case_id]["test_point"][test_point_id]["parameter"]["data_generation_rules"]
+            testdata = DataBuilder.data_builder(generation_rule)
+            
+        # * Render the request body. 
+        testdata_path = f"./artifacts/TestData/{operation_id}_{test_case_id}_{test_point_id}.json"
+        with open(testdata_path, "w+") as f:
+            json.dump(testdata, f, indent=4)
+        with open(testdata_path, "r+") as f:
+            testdata = json.load(f)
+        testdata_str = json.dumps(testdata, indent=4)
+        self.ui.text_body.setPlainText(testdata_str)
+        self.ui.tabWidget_testPlan.setCurrentIndex(1)
         
     def table_dependency_path_item_clicked(self):
         
@@ -2684,6 +2885,10 @@ class MyWindow(QMainWindow):
         GeneralTool.update_dependency_wildcard(
             self.ui.textbox_dependency_constraint_rule_dst, self.ui.checkBox_dependency_constraint_rule_wildcard, self.ui.textbox_dependency_constraint_rule_dst)
 
+    def checkBox_tc_constraint_rule_wildcard_changed(self):
+        GeneralTool.update_dependency_wildcard(
+            self.ui.textbox_tc_constraint_rule_dst, self.ui.checkBox_tc_constraint_rule_wildcard, self.ui.textbox_tc_constraint_rule_dst)
+
     def checkBox_tc_dependency_constraint_rule_wildcard_changed(self):
         GeneralTool.update_dependency_wildcard(
             self.ui.textbox_tc_dependency_constraint_rule_dst, self.ui.checkBox_tc_dependency_constraint_rule_wildcard, self.ui.textbox_tc_dependency_constraint_rule_dst)
@@ -2814,6 +3019,32 @@ class MyWindow(QMainWindow):
             self.ui.textbox_dependency_data_rule_regex_pattern,
         )        
         
+    def table_tc_generation_rule_item_clicked(self):
+        """
+        Whem the user click the item in the table_tc_generation_rule.
+        It will render the constraint rule UI for quick setup the constraint rule.
+        """
+        selected_item = self.ui.table_tc_generation_rule.selectedItems()[0]
+        GeneralTool.render_constraint_rule(
+            selected_item,
+            self.ui.textbox_tc_constraint_rule_src,
+            self.ui.textbox_tc_constraint_rule_expected_value,
+            self.ui.textbox_tc_constraint_rule_dst,
+            self.ui.textbox_tc_constraint_rule_dst_value,
+            self.ui.checkBox_tc_constraint_rule_wildcard,
+        )
+        GeneralTool.render_data_rule(
+            selected_item,
+            self.ui.textbox_tc_data_rule_type,
+            self.ui.textbox_tc_data_rule_format,
+            self.ui.textbox_tc_data_rule_value,
+            self.ui.comboBox_tc_data_rule_data_generator,
+            self.ui.textbox_tc_data_rule_data_length,
+            self.ui.comboBox_tc_data_rule_required,
+            self.ui.comboBox_tc_data_rule_nullable,
+            self.ui.textbox_tc_data_rule_regex_pattern,
+        )  
+        
     def table_tc_dependency_generation_rule_item_clicked(self):
         """
         When the user click the item in the table_tc_dependency_generation_rule.
@@ -2839,7 +3070,6 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_tc_dependency_data_rule_nullable,
             self.ui.textbox_tc_dependency_data_rule_regex_pattern,
         )  
-
         
     def btn_api_table_add_use_case_clicked(self):
         """ This Add Button is used to duplicate an existing first-level API, and also copy over the Generation Rule, Assertion Rule, and Dependency Request Body. """
@@ -3431,7 +3661,7 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_path, self.ui.textbox_tc_path_name, self.ui.textbox_tc_path_value, self.ui.table_tc_dependency_rule, self.ui.table_tc_dependency_generation_rule,
             self.ui.comboBox_tc_dependency_type, self.ui.line_tc_api_search, self.ui.textbox_tc_dependency_return_variable_name, self.ui.textbox_tc_description,
             self.ui.textbox_tc_request_name, self.ui.textbox_tc_response_name, self.ui.table_tc_additional_action, self.ui.table_tc_dependency_additional_action,
-            self.ui.table_tc_query, self.ui.table_tc_dependency_query
+            self.ui.table_tc_query, self.ui.table_tc_dependency_query, self.ui.table_tc_generation_rule
         ])
         self.ui.comboBox_tc_dependency_type.setEnabled(True)
         self.ui.line_tc_api_search.setEnabled(True)
@@ -3461,6 +3691,13 @@ class MyWindow(QMainWindow):
             self.ui.textbox_tc_description.setText(description)
             self.ui.textbox_tc_request_name.setText(request_name)
             self.ui.textbox_tc_response_name.setText(response_name)
+            
+            # * Render the Data Generation Rule.
+            g_rule_item = QTreeWidgetItem(["Data Generation Rules"])
+            self.ui.table_tc_generation_rule.addTopLevelItem(g_rule_item)
+            g_rule = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['parameter']['data_generation_rules']
+            GeneralTool.parse_request_body(g_rule, g_rule_item, editabled=True)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_generation_rule)
             
             # * Render the Test Case Dependency Rule.
             GeneralTool.render_dependency_rule(test_plan, test_case_id, test_point_id, self.ui.table_tc_dependency_rule)
