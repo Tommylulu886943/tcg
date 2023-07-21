@@ -18,7 +18,7 @@ from lib.general_tool import GeneralTool
 from lib.databuilder import DataBuilder
 from lib.render import Render
 from lib.display import CustomForm
-from lib.UI import Ui_MainWindow
+from lib.ui import Ui_MainWindow
 
 basedir = os.path.dirname(__file__)
 
