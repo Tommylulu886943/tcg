@@ -29,6 +29,9 @@ TCG is a GUI application. To use it, execute the `python main.py` file. This wil
 
 ## Steps to generate test cases
 
-1. Import the OpenAPI document using the `Import OpenAPI Doc` button.
-2. Import the ATF `Object Mapping File` using the `Import Object Mapping File` button.
-    1. If you don't have the `Object Mapping File`, you can generate it using the ATF `schema_handler.py` file available in the ATF repository `./Library/utils/<product_name>_schema_handler.py`.
+1. Import the OpenAPI document using the `Import OpenAPI Doc` button. ![import openapi doc](img/1.png)
+2. Import the ATF `Object Mapping File` using the `Import Object Mapping File` button. ![import obj mapping ](img/2.png)
+    - 1. If you don't have the `Object Mapping File`, you can generate it using the ATF `schema_handler.py` file available in the ATF repository `./Library/utils/<product_name>_schema_handler.py`. \n
+   ![schema handler](img/4.png)
+ 3. Click on a API in the API List to design test data and dependencies for the API. ![api list](img/3.png)
+ 4. If the API has a specific dependency, path variable, or query parameter, assertion, you can add them by clicking on the `Add` button. ![add](img/5.png)

@@ -1,0 +1,126 @@
+{
+  "Licensing": {
+    "GET -SYSTEM-LICENSING": "/licensing",
+    "PUT UPLOAD-LICENSE": "/licensing"
+  },
+  "Policies": {
+    "POST CREATE_AN_EXECUTION_PREVENTION_POLICY": "/policies/execution-prevention",
+    "DELETE _EXECUTION_PREVENTION_POLICIES": "/policies/execution-prevention",
+    "GET ALL_EXECUTION_PREVENTION_POLICIES": "/policies/execution-prevention",
+    "GET _AN_EXECUTION_PREVENTION_POLICY": "/policies/execution-prevention/${Id}",
+    "PUT UPDATE_AN_EXECUTION_PREVENTION_POLICY": "/policies/execution-prevention/${Id}",
+    "POST CREATE_AN_EXFILTRATION_PREVENTION_POLICY": "/policies/exfiltration-prevention",
+    "DELETE _EXFILTRATION_PREVENTION_POLICIES": "/policies/exfiltration-prevention",
+    "GET ALL_EXFILTRATION_PREVENTION_POLICIES": "/policies/exfiltration-prevention",
+    "GET _AN_EXFILTRATION_PREVENTION_POLICY": "/policies/exfiltration-prevention/${Id}",
+    "PUT UPDATE_AN_EXFILTRATION_PREVENTION_POLICY": "/policies/exfiltration-prevention/${Id}",
+    "POST CREATE_A_RANSOMWARE_PREVENTION_POLICY": "/policies/ransomware-prevention",
+    "DELETE _RANSOMWARE_PREVENTION_POLICIES": "/policies/ransomware-prevention",
+    "GET ALL_RANSOMWARE_PREVENTION_POLICIES": "/policies/ransomware-prevention",
+    "GET _A_RANSOMWARE_PREVENTION_POLICY": "/policies/ransomware-prevention/${Id}",
+    "PUT UPDATE_A_RANSOMWARE_PREVENTION_POLICY": "/policies/ransomware-prevention/${Id}",
+    "POST CREATE_A_DEVICE_CONTROL_POLICY": "/policies/device-control",
+    "DELETE _DEVICE_CONTROL_POLICIES": "/policies/device-control",
+    "GET ALL_DEVICE_CONTROL_POLICIES": "/policies/device-control",
+    "GET _A_DEVICE_CONTROL_POLICY": "/policies/device-control/${Id}",
+    "PUT UPDATE_A_DEVICE_CONTROL_POLICY": "/policies/device-control/${Id}",
+    "GET ALL-APPLICATION-WHITEALLING-POLICIES": "/policies/application-whitelisting",
+    "DELETE -APPLICATION-WHITEALLING-POLICIES": "/policies/application-whitelisting",
+    "POST CREATE-APPLICATION-WHITEALLING-POLICY": "/policies/application-whitelisting",
+    "GET -AN-APPLICATION-WHITEALLING-POLICY": "/policies/application-whitelisting/${Id}",
+    "PUT APPLICATION-WHITEALLING-POLICY-UPDATE": "/policies/application-whitelisting/${Id}",
+    "GET ALL-FILE-INTEGRITY-POLICIES": "/policies/file-integrity",
+    "DELETE -FILE-INTEGRITY-POLICIES": "/policies/file-integrity",
+    "POST CREATE-FILE-INTEGRITY-POLICY": "/policies/file-integrity",
+    "GET -A-FILE-INTEGRITY-POLICY": "/policies/file-integrity/${Id}",
+    "PUT UPDATE-A-FILE-INTEGRITY-POLICY": "/policies/file-integrity/${Id}"
+  },
+  "Securities": {
+    "GET _A_FILE_INTEGRITY_PROFILES": "/securities/file-integrity",
+    "POST CREATE_A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity",
+    "DELETE _FILE_INTEGRITY_PROFILES": "/securities/file-integrity",
+    "GET _A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity/${Id}",
+    "PUT UPDATE_A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity/${Id}",
+    "POST APPLICATION-WHITEALLING_1": "/securities/application-whitelisting",
+    "GET ALL-APPLICATION-WHITEALLING": "/securities/application-whitelisting",
+    "DELETE -APPLICATION-WHITEALLING": "/securities/application-whitelisting",
+    "GET -AN-APPLICATION-WHITEALLING": "/securities/application-whitelisting/${Id}",
+    "PUT APPLICATION-WHITEALLING_2": "/securities/application-whitelisting/${Id}"
+  },
+  "Authentication": {
+    "POST -USER-LOGIN": "/login"
+  },
+  "Users": {
+    "POST -QR-CODE": "/users/qr-code",
+    "GET -QR-CODE": "/users/${Id}/qr-code",
+    "PUT -QR-CODE": "/users/${Id}/qr-code",
+    "DELETE RESET-TWO-FACTOR-AUTHENTICATION-TOKEN": "/users/${Id}/tfa-token",
+    "PUT UPDATE-LDAP-SETTINGS": "/users/ldap-settings",
+    "POST TEST-LDAP-SETTINGS": "/users/ldap-settings/testing",
+    "POST CREATE-USER": "/users/local-users",
+    "GET ALL-USERS": "/users/local-users",
+    "DELETE -USER": "/users/local-users",
+    "GET -LOCAL-USER": "/users/local-users/${Id}",
+    "PATCH UPDATE-USER": "/users/local-users/${Id}",
+    "PUT RESET-PASSWORD": "/users/local-users/${Id}/passwords"
+  },
+  "Agent": {
+    "POST -AGENT-REGISTER": "/agent/register",
+    "POST -AGENT-STATUS": "/agent/status",
+    "POST -AGENT-EVENT": "/agent/event",
+    "GET -AGENT-INSTALLER": "/agent/upgrade/${os}/${version}/${bit}",
+    "GET -AGENT-CONFIGURATION": "/agent/configuration"
+  },
+  "Agents": {
+    "GET ALL-AGENTS": "/agents",
+    "DELETE -AGENTS": "/agents",
+    "PATCH UPDATE-AGENTS": "/agents",
+    "GET -AGENT": "/agents/${Id}",
+    "GET AGENT-LOGS": "/agents/${Id}/logs"
+  },
+  "Agent_Groups": {
+    "POST CREATE-AGENT-GROUP": "/agent-groups",
+    "GET ALL-AGENT-GROUPS": "/agent-groups",
+    "DELETE -AGENT-GROUPS": "/agent-groups",
+    "GET ALL-AGENT-GROUP-INSTALLER-VERSION": "/agent-groups/installers",
+    "PUT UPDATE-AGENT-GROUP-INSTALLER": "/agent-groups/installers",
+    "GET ALL-AN-AGENT-GROUP": "/agent-groups/${Id}",
+    "PUT UPDATE-AGENT-GROUP": "/agent-groups/${Id}",
+    "GET ALL-AN-AGENT-GROUP-INSTALLER-VERSION": "/agent-groups/${Id}/installers",
+    "PUT UPDATE-AN-AGENT-GROUP-INSTALLER": "/agent-groups/${Id}/installers"
+  },
+  "Agent_Installers": {
+    "GET -AGENT-INSTALLERS": "/agent-installers"
+  },
+  "Events": {
+    "GET ALL-EVENTS": "/events",
+    "DELETE EVENTS": "/events",
+    "PATCH EVENTS_1": "/events",
+    "GET ALL-AN-EVENT": "/events/${Id}",
+    "PATCH UPDATE-AN-EVENT": "/events/${Id}",
+    "GET EXPORT-EVENT-JSON-WITH-ALL-RAW-DATA-ITEMS": "/events/${Id}/json",
+    "GET ALL-RAW-DATA-ITEMS": "/events/${Id}/raw-data-items",
+    "GET EXPORT-RAW-DATA-ITEMS-JSON": "/events/${Id}/raw-data-items/json",
+    "GET EXPORT-A-RAW-DATA-ITEM-JSON": "/events/${Id}/raw-data-items/${rawItemId}/json"
+  },
+  "Logs": {
+    "POST LOG-FORWARDING-PROFILE_2": "/logs/forwardings",
+    "GET LOG-FORWARDING-PROFILE_1": "/logs/forwardings",
+    "DELETE LOG-FORWARDING-PROFILE_3": "/logs/forwardings",
+    "GET -A-LOG-FORWARDING-PROFILE": "/logs/forwardings/${Id}",
+    "PUT LOG-FORWARDING-PROFILE_4": "/logs/forwardings/${Id}",
+    "POST CREATE-LOG-SERVER": "/logs/servers",
+    "GET ALL-LOG-SERVERS": "/logs/servers",
+    "DELETE -LOG-SERVERS": "/logs/servers",
+    "GET -A-LOG-SERVER": "/logs/servers/${Id}",
+    "PUT UPDATE-LOG-SERVER": "/logs/servers/${Id}"
+  },
+  "Systems": {
+    "POST UPLOAD-CERTIFICATE": "/systems/certificates",
+    "PUT IMPORT-SYSTEM": "/systems/configurations",
+    "GET EXPORT-SYSTEM": "/systems/configurations",
+    "PUT UPGRADE-FIRMWARE": "/systems/firmware",
+    "GET -FIRMWARE-INFORMATION": "/systems/firmware",
+    "PUT UPLOAD-CONTENT": "/systems/contents"
+  }
+}
