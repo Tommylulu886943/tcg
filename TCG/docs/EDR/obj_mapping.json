@@ -43,6 +43,7 @@
     "PUT UPDATE_A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity/${Id}",
     "POST APPLICATION-WHITEALLING_1": "/securities/application-whitelisting",
     "GET ALL-APPLICATION-WHITEALLING": "/securities/application-whitelisting",
+    "POST UPLOAD-APPLICATION-WHITEALLING": "/securities/application-whitelisting/csv",
     "DELETE -APPLICATION-WHITEALLING": "/securities/application-whitelisting",
     "GET -AN-APPLICATION-WHITEALLING": "/securities/application-whitelisting/${Id}",
     "PUT APPLICATION-WHITEALLING_2": "/securities/application-whitelisting/${Id}"
@@ -76,6 +77,7 @@
     "DELETE -AGENTS": "/agents",
     "PATCH UPDATE-AGENTS": "/agents",
     "GET -AGENT": "/agents/${Id}",
+    "PATCH UPDATE-AGENT": "/agents/${Id}",
     "GET AGENT-LOGS": "/agents/${Id}/logs"
   },
   "Agent_Groups": {
@@ -121,6 +123,7 @@
     "GET EXPORT-SYSTEM": "/systems/configurations",
     "PUT UPGRADE-FIRMWARE": "/systems/firmware",
     "GET -FIRMWARE-INFORMATION": "/systems/firmware",
-    "PUT UPLOAD-CONTENT": "/systems/contents"
+    "PUT UPLOAD-CONTENT": "/systems/contents",
+    "PUT UPDATE-AGENT-CONFIGURATION": "/systems/agents"
   }
 }
