@@ -49,14 +49,16 @@ class MyWindow(QMainWindow):
             "Analyzer": {
                 "Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
                 "Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"]
-            }
+            },
+            "Utility": {
+                "Get ID From Name": ["Response Name", "Name", "Sender Instance", "Objects"],
+            }   
         }
         
         self.ui.tab_22 = QtWidgets.QWidget()
         self.ui.tab_22.setObjectName("tab_22")
         self.ui.tabWidget_2.insertTab(4, self.ui.tab_22, "Additional Action")
-        self.ui.specialActionCategory = ["None", "Parser", "Analyzer"]
-        
+        self.ui.specialActionCategory = ["None", "Parser", "Analyzer", "Utility"]
         self.ui.groupBox = QGroupBox(self.ui.tab_22)
         self.ui.groupBox.setGeometry(QtCore.QRect(10, 10, 600, 70))
         self.ui.groupBox.setTitle("Action")
@@ -73,16 +75,16 @@ class MyWindow(QMainWindow):
         self.ui.additional_action = QComboBox(self.ui.groupBox)
         self.ui.additional_action.setGeometry(QtCore.QRect(320, 30, 240, 30))
         self.ui.form = CustomForm(self.ui.tab_22)
-        self.ui.form.setGeometry(QtCore.QRect(10, 90, 400, 200))
+        self.ui.form.setGeometry(QtCore.QRect(10, 90, 600, 300))
         self.ui.additional_action.currentTextChanged.connect(self.additional_action_changed)
         self.ui.add_additional_action = QPushButton("Add Action", self.ui.tab_22)
-        self.ui.add_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
+        self.ui.add_additional_action.setGeometry(QtCore.QRect(10, 340, 120, 30))
         self.ui.add_additional_action.clicked.connect(self.btn_add_special_action)
         self.ui.remove_additional_action = QPushButton("Remove Action", self.ui.tab_22)
-        self.ui.remove_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
+        self.ui.remove_additional_action.setGeometry(QtCore.QRect(140, 340, 120, 30))
         self.ui.remove_additional_action.clicked.connect(self.btn_remove_special_action)
         self.ui.table_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_22)
-        self.ui.table_additional_action.setGeometry(QtCore.QRect(10, 340, 600, 400))
+        self.ui.table_additional_action.setGeometry(QtCore.QRect(10, 380, 600, 400))
         self.ui.table_additional_action.setObjectName("table_additional_action")
         self.ui.table_additional_action.headerItem().setText(0, "Index")
         self.ui.table_additional_action.headerItem().setText(1, "Action Name")
@@ -301,6 +303,11 @@ class MyWindow(QMainWindow):
         self.ui.line_api_search.setCompleter(self.ui.search_completer)
         self.ui.tc_search_completer = QCompleter()
         self.ui.line_tc_api_search.setCompleter(self.ui.tc_search_completer)
+        
+        # * Set Hint Text
+        self.ui.textbox_dependency_return_variable_name.setPlaceholderText("e.g. resp, resp_1, ...")
+        self.ui.textbox_tc_dependency_return_variable_name.setPlaceholderText("e.g. resp, resp_1, ...")
+        self.ui.textbox_tc_assertion_rule_expected_value.setPlaceholderText("e.g. 200, 400, ...")
         
         # # * Convert / Validate Tab
         # self.ui.web_page = QtWidgets.QWidget()
@@ -3563,6 +3570,8 @@ class MyWindow(QMainWindow):
                 logging.info(f"Import Object Mapping File `{file_name}`.")
         except shutil.SameFileError as e:
             logging.warning(f"Import Object Mapping File `{file_name}` is the same as the existing one.")
+            
+        GeneralTool.show_info_dialog("Import Object Mapping File Successfully.")
 
     def import_openapi_doc(self):
         """ Import OpenAPI Doc """

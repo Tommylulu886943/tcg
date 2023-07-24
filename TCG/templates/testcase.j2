@@ -44,6 +44,11 @@
                 {% set obj_option = '' if action['Obj'] == '' else 'obj=' + action['Obj'] -%}
                 {% set verbose_option = '' if action['Verbose'] == '' else 'verbose=' + action['Verbose'] -%}
                 {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
+            {% elif action['Action Name'] == 'Get ID From Name' -%}
+                {% set name = '' if action.Name == '' else 'name=' + action.Name -%}
+                {% set sender_instance = '' if action['Sender Instance'] == '' else 'sender_instance=' + action['Sender Instance'] -%}
+                {% set objects = '' if action.Objects == '' else 'objects=' + action.Objects -%}
+                {{ '${' }}{{ action['Response Name'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
             {% endif -%}
                 Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
                 {% if not loop.last -%}{{ empty }}{% endif -%}

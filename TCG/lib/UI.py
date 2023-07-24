@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'icons\tcg.ui'
+# Form implementation generated from reading ui file '.\icons\tcg.ui'
 #
 # Created by: PyQt6 UI code generator 6.5.1
 #
