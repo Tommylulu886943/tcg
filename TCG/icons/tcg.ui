@@ -1234,7 +1234,7 @@
                 </widget>
                 <widget class="QWidget" name="tab_5">
                  <attribute name="title">
-                  <string>Dependency</string>
+                  <string>Setup / Teardown</string>
                  </attribute>
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                   <item>
@@ -3975,7 +3975,7 @@
               </widget>
               <widget class="QWidget" name="tab_39">
                <attribute name="title">
-                <string>Dependency</string>
+                <string>Setup / Teardown</string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_16">
                 <item>
@@ -4226,7 +4226,7 @@
                      </sizepolicy>
                     </property>
                     <property name="currentIndex">
-                     <number>2</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="tab_41">
                      <attribute name="title">
