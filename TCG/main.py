@@ -11,7 +11,7 @@ from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
 from PyQt6.QtCore import QStringListModel, QBasicTimer
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton, QHeaderView
 
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
@@ -88,6 +88,7 @@ class MyWindow(QMainWindow):
         self.ui.table_additional_action.setObjectName("table_additional_action")
         self.ui.table_additional_action.headerItem().setText(0, "Index")
         self.ui.table_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.table_additional_action.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
             
         # *　Dependency Additonal Action
         self.ui.tab_50 = QtWidgets.QWidget()
@@ -122,6 +123,7 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_additional_action.setObjectName("table_dependency_additional_action")
         self.ui.table_dependency_additional_action.headerItem().setText(0, "Index")
         self.ui.table_dependency_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.table_dependency_additional_action.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         
         # * Test Plan Additional Action
         self.ui.tab_51 = QtWidgets.QWidget()
@@ -156,6 +158,7 @@ class MyWindow(QMainWindow):
         self.ui.table_tc_additional_action.setObjectName("table_tc_additional_action")
         self.ui.table_tc_additional_action.headerItem().setText(0, "Index")
         self.ui.table_tc_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.table_tc_additional_action.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         
         # * Test Plan Dependency Additional Action
         self.ui.tab_52 = QtWidgets.QWidget()
@@ -189,7 +192,8 @@ class MyWindow(QMainWindow):
         self.ui.table_tc_dependency_additional_action.setGeometry(QtCore.QRect(10, 360, 630, 330))
         self.ui.table_tc_dependency_additional_action.setObjectName("table_tc_dependency_additional_action")
         self.ui.table_tc_dependency_additional_action.headerItem().setText(0, "Index")
-        self.ui.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")               
+        self.ui.table_tc_dependency_additional_action.headerItem().setText(1, "Action Name")
+        self.ui.table_tc_dependency_additional_action.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)            
             
         # * Define the Button Event
         self.ui.btn_import_openapi_doc.clicked.connect(self.import_openapi_doc)
@@ -3554,7 +3558,8 @@ class MyWindow(QMainWindow):
                 for tp_index, test_point in test_case['test_point'].items():
                     tp_index = str(index) + "." + str(tp_index)
                     testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
-                    
+        self.ui.table_test_plan_api_list.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        
     def import_object_mapping_file(self):
         """ Import Object Mapping File """
         file_filter = "Object Mapping File (*.json)"
