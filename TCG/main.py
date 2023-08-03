@@ -301,6 +301,14 @@ class MyWindow(QMainWindow):
         self.ui.checkBox_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_dependency_constraint_rule_wildcard_changed)
         self.ui.checkBox_tc_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_constraint_rule_wildcard_changed)
         self.ui.checkBox_tc_dependency_constraint_rule_wildcard.stateChanged.connect(self.checkBox_tc_dependency_constraint_rule_wildcard_changed)
+        self.ui.checkBox_path_robot_variable.stateChanged.connect(self.checkBox_path_robot_variable_changed)
+        self.ui.checkBox_query_robot_variable.stateChanged.connect(self.checkBox_query_robot_variable_changed)
+        self.ui.checkBox_tc_path_robot_variable.stateChanged.connect(self.checkBox_tc_path_robot_variable_changed)
+        self.ui.checkBox_tc_query_robot_variable.stateChanged.connect(self.checkBox_tc_query_robot_variable_changed)
+        self.ui.checkBox_path_dependency_robot_variable.stateChanged.connect(self.checkBox_path_dependency_robot_variable_changed)
+        self.ui.checkBox_query_dependency_robot_variable.stateChanged.connect(self.checkBox_query_dependency_robot_variable_changed)
+        self.ui.checkBox_tc_path_dependency_robot_variable.stateChanged.connect(self.checkBox_tc_path_dependency_robot_variable_changed)
+        self.ui.checkBox_tc_query_dependency_robot_variable.stateChanged.connect(self.checkBox_tc_query_dependency_robot_variable_changed)
         
         # * Completer Event
         self.ui.search_completer = QCompleter()
@@ -322,6 +330,86 @@ class MyWindow(QMainWindow):
         # self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
         # self.setCentralWidget(self.ui.tabTCG)
         
+    def checkBox_path_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_path_value.text()
+        if current_text == "":
+            return
+        
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_path_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_path_value.setText("${" + current_text + "}")
+    
+    def checkBox_query_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_query_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_query_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_query_value.setText("${" + current_text + "}")
+    
+    def checkBox_tc_path_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_path_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_tc_path_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_tc_path_value.setText("${" + current_text + "}")
+    
+    def checkBox_tc_query_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_query_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_tc_query_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_tc_query_value.setText("${" + current_text + "}")
+            
+    def checkBox_path_dependency_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_path_dependency_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_path_dependency_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_path_dependency_value.setText("${" + current_text + "}")
+
+    def checkBox_query_dependency_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_query_dependency_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_query_dependency_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_query_dependency_value.setText("${" + current_text + "}")
+    def checkBox_tc_query_dependency_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_query_dependency_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_tc_query_dependency_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_tc_query_dependency_value.setText("${" + current_text + "}")
+            
+    def checkBox_tc_path_dependency_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_path_dependency_value.text()
+        if current_text == "":
+            return
+        if current_text.startswith("${") and current_text.endswith("}"):
+            self.ui.textbox_tc_path_dependency_value.setText(current_text[2:-1])
+        else:
+            self.ui.textbox_tc_path_dependency_value.setText("${" + current_text + "}")
+    
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
         self.ui.additional_action.clear()
@@ -760,6 +848,7 @@ class MyWindow(QMainWindow):
 
         test_plans_to_remove = []
         test_cases_to_remove = []
+
         for selected_item in selected_items:
             parent_item = selected_item.parent()
 
@@ -777,6 +866,11 @@ class MyWindow(QMainWindow):
                     logging.info(f"Test Case {result} is removed from {test_plan_name}.json")
                     if len(test_plan["test_cases"][test_case_id]["test_point"]) == 0:
                         test_cases_to_remove.append(test_case_id)
+                # * Remove the selected test point's test data.
+                test_data_file = f"./artifacts/TestData/{test_plan_name}_{test_case_id}_{test_point_id}.json"
+                if os.path.exists(test_data_file):
+                    os.remove(test_data_file)
+                    logging.info(f"Test Data {test_data_file} is removed.")
             elif parent_item:
                 test_plan_name = parent_item.text(0)
                 test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
@@ -791,6 +885,12 @@ class MyWindow(QMainWindow):
                     logging.info(f"Test Case {result} is removed from {test_plan_name}.json")
                     if len(test_plan["test_cases"]) == 0:
                         test_plans_to_remove.append(test_plan_name)
+                # * Remove the selected test case's test data.
+                for root, dirs, files in os.walk("./artifacts/TestData"):
+                    for file in files:
+                        if file.startswith(f"{test_plan_name}_{test_case_id}"):
+                            os.remove(os.path.join(root, file))
+                            logging.info(f"Test Data {os.path.join(root, file)} is removed.")
             else:
                 test_plan_name = selected_item.text(0)
                 test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
@@ -798,6 +898,12 @@ class MyWindow(QMainWindow):
                     os.remove(test_plan_file)
                     logging.info(f"Remove {test_plan_file} successfully")
                     test_plans_to_remove.append(test_plan_name)
+                # * Remove the selected test plan's test data.
+                for root, dirs, files in os.walk("./artifacts/TestData"):
+                    for file in files:
+                        if file.startswith(f"{test_plan_name}_"):
+                            os.remove(os.path.join(root, file))
+                            logging.info(f"Test Data {os.path.join(root, file)} is removed.")
 
         for test_case_id in test_cases_to_remove:
             test_plan_file = f"./artifacts/TestPlan/{test_plan_name}.json"
@@ -3374,6 +3480,20 @@ class MyWindow(QMainWindow):
         """ Create Generation Rule and Assertion Files """
         for schema in self.ui.schema_list:
             api_doc = GeneralTool.load_schema_file(schema)
+            # * Check if the API doc version is not 3.0.0 or above.
+            if 'swagger' in api_doc:
+                error_message = f"OpenAPI version is not 3.0.0 or above."
+                detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
+                GeneralTool.show_error_dialog(error_message, detailed_message)
+                return False
+            elif 'openapi' in api_doc:
+                if api_doc['openapi'] < '3.0.0':
+                    logging.error(f"OpenAPI version is not 3.0.0 or above.")
+                    error_message = f"OpenAPI version is not 3.0.0 or above."
+                    detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
+                    GeneralTool.show_error_dialog(error_message, detailed_message)  
+                    return False
+                       
             for uri, path_item in api_doc['paths'].items():
                 for method, operation in path_item.items():
                     operation_id = operation['operationId']
@@ -3566,17 +3686,17 @@ class MyWindow(QMainWindow):
         response = QtWidgets.QFileDialog.getOpenFileNames(
             parent=self.ui.tab, caption="Open Object Mapping File", directory=os.getcwd(), filter=file_filter)
 
-        try:
-            for file_path in response[0]:
-                file_name = os.path.basename(file_path)
-                if not os.path.exists("./config/"):
-                    os.mkdir("./config/")
-                shutil.copy(file_path, f"./config/obj_mapping.json")
-                logging.info(f"Import Object Mapping File `{file_name}`.")
-        except shutil.SameFileError as e:
-            logging.warning(f"Import Object Mapping File `{file_name}` is the same as the existing one.")
-            
-        GeneralTool.show_info_dialog("Import Object Mapping File Successfully.")
+        if response[0]:
+            try:
+                for file_path in response[0]:
+                    file_name = os.path.basename(file_path)
+                    if not os.path.exists("./config/"):
+                        os.mkdir("./config/")
+                    shutil.copy(file_path, f"./config/obj_mapping.json")
+                    logging.info(f"Import Object Mapping File `{file_name}`.")
+                GeneralTool.show_info_dialog("Import Object Mapping File Successfully.")
+            except shutil.SameFileError as e:
+                logging.warning(f"Import Object Mapping File `{file_name}` is the same as the existing one.")
 
     def import_openapi_doc(self):
         """ Import OpenAPI Doc """
@@ -3626,7 +3746,10 @@ class MyWindow(QMainWindow):
             if index == None:
                 self.ui.table_api_tree.clear()
                 return
-        self._create_generation_rule_and_assertion_files()
+        result = self._create_generation_rule_and_assertion_files()
+        if result == False:
+            self.ui.table_api_tree.clear()
+            return
         GeneralTool.expand_and_resize_tree(self.ui.table_api_tree)
         
         # * Update Search Completion List
@@ -3658,6 +3781,7 @@ class MyWindow(QMainWindow):
                     self.ui.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
                     self.ui.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
                     index += 1
+        # * To handle the case that the user import a wrong format API Doc.
         except KeyError as e:
             logging.error(f"Error parsing API Doc `{file_name}`.")
             error_message = f"Error parsing API Doc `{file_name}`. Please check the format."

@@ -46,7 +46,8 @@
         {{ empty }}
         Set Test Variable  {{ '${' }}{{ setup.response_name }}}
     {% endfor -%}
-    {% for action_index, action in point.additional_action.items() %}
+    {% for action_index, setup in point.dependency.Setup.items() %}
+    {% for seq_num, action in setup.additional_action.items() %}
         {% if action['Action Name'] == 'API Parser' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
             {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
@@ -78,6 +79,7 @@
             {{ '${' }}{{ action['Response Name'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
         {% endif -%}
             Set Test Variable  {{ '${' }}{{ action['Name'] }}}
+    {% endfor -%}
     {% endfor -%}
 {% endif %}
 {% if point.dependency.Teardown.items() -%}
@@ -121,7 +123,8 @@
         {%- endif %}
         Set Test Variable  {{ '${' }}{{ teardown.response_name }}}
     {% endfor %}
-    {% for action_index, action in point.additional_action.items() %}
+    {% for action_index, teardown in point.dependency.Teardown.items() %}
+    {% for seq_num, action in teardown.additional_action.items() %}
         {% if action['Action Name'] == 'API Parser' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
             {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
@@ -153,6 +156,7 @@
             {{ '${' }}{{ action['Response Name'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
         {% endif -%}
             Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
+    {% endfor -%}
     {% endfor -%}
 {% endif %}
 {% endfor -%}
