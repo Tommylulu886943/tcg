@@ -4238,7 +4238,7 @@
                      </sizepolicy>
                     </property>
                     <property name="currentIndex">
-                     <number>3</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="tab_41">
                      <attribute name="title">
@@ -4397,6 +4397,22 @@
                                    </property>
                                   </widget>
                                  </item>
+                                 <item row="1" column="0">
+                                  <widget class="QLabel" name="label_64">
+                                   <property name="font">
+                                    <font>
+                                     <family>Segoe UI</family>
+                                     <pointsize>10</pointsize>
+                                    </font>
+                                   </property>
+                                   <property name="text">
+                                    <string>Format :</string>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
                                  <item row="0" column="1">
                                   <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_type">
                                    <property name="enabled">
@@ -4420,22 +4436,6 @@
                                      <family>Segoe UI</family>
                                      <pointsize>10</pointsize>
                                     </font>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item row="1" column="0">
-                                  <widget class="QLabel" name="label_64">
-                                   <property name="font">
-                                    <font>
-                                     <family>Segoe UI</family>
-                                     <pointsize>10</pointsize>
-                                    </font>
-                                   </property>
-                                   <property name="text">
-                                    <string>Format :</string>
-                                   </property>
-                                   <property name="alignment">
-                                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                                    </property>
                                   </widget>
                                  </item>

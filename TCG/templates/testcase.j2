@@ -15,9 +15,8 @@
         ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}{% endif %}{% if point.query != {} %}
         {% set start = '...  query_param={' -%}{% set end = '}' -%}{{ start }}{%- for query_id, query in point.query.items() -%}{% if 'Value' in query -%}{% set value = query.Value -%}{% else -%}{% set value = query -%}{%- endif -%}"{{ query_id }}":"{{ value }}"{% if not loop.last -%}, {% endif -%}{% if loop.last -%}{{ end }}{{ jump }}        {% endif -%}
         {% endfor %}{% endif %}
-        
-        ${parsed_req}= Parser.api_parser  {{ '${' }}{{ point.parameter.request_name }}}
-        Log  ${parsed_req}
+
+        Log  {{ '${' }}{{ point.parameter.request_name }}}
 
         ${parsed_resp}=  Parser.api_parser  {{ '${' }}{{ point.parameter.response_name }}}
         Log  ${parsed_resp}

@@ -336,79 +336,134 @@ class MyWindow(QMainWindow):
         if current_text == "":
             return
         
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_path_value.setText(current_text[2:-1])
+        if self.ui.checkBox_path_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_path_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_path_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_path_value.setText(current_text[2:-1])
+            else: 
+                return
     
     def checkBox_query_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_query_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_query_value.setText(current_text[2:-1])
+        
+        if self.ui.checkBox_query_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_query_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_query_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_query_value.setText(current_text[2:-1])
+            else:
+                return
     
     def checkBox_tc_path_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_tc_path_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_tc_path_value.setText(current_text[2:-1])
+
+        if self.ui.checkBox_tc_path_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_path_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_tc_path_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_path_value.setText(current_text[2:-1])
+            else:
+                return
     
     def checkBox_tc_query_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_tc_query_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_tc_query_value.setText(current_text[2:-1])
+        
+        if self.ui.checkBox_tc_query_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_query_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_tc_query_value.setText("${" + current_text + "}")
-            
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_query_value.setText(current_text[2:-1])
+            else:
+                return
+                
     def checkBox_path_dependency_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_path_dependency_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_path_dependency_value.setText(current_text[2:-1])
+        
+        if self.ui.checkBox_path_dependency_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_path_dependency_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_path_dependency_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_path_dependency_value.setText(current_text[2:-1])
+            else:
+                return
 
     def checkBox_query_dependency_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_query_dependency_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_query_dependency_value.setText(current_text[2:-1])
+        
+        if self.ui.checkBox_query_dependency_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_query_dependency_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_query_dependency_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_query_dependency_value.setText(current_text[2:-1])
+            else:
+                return
+            
     def checkBox_tc_query_dependency_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_tc_query_dependency_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_tc_query_dependency_value.setText(current_text[2:-1])
+        if self.ui.checkBox_tc_query_dependency_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_query_dependency_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_tc_query_dependency_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_query_dependency_value.setText(current_text[2:-1])
+            else:
+                return
             
     def checkBox_tc_path_dependency_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_tc_path_dependency_value.text()
         if current_text == "":
             return
-        if current_text.startswith("${") and current_text.endswith("}"):
-            self.ui.textbox_tc_path_dependency_value.setText(current_text[2:-1])
+        
+        if self.ui.checkBox_tc_path_dependency_robot_variable.isChecked():      
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_path_dependency_value.setText("${" + current_text + "}")
         else:
-            self.ui.textbox_tc_path_dependency_value.setText("${" + current_text + "}")
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_path_dependency_value.setText(current_text[2:-1])
+            else:
+                return
     
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
@@ -1025,6 +1080,12 @@ class MyWindow(QMainWindow):
                 f.write(json.dumps(g_rule, indent=4))
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
+            if selected_item.parent() is None:
+                index = self.ui.table_tc_generation_rule.indexOfTopLevelItem(selected_item)
+            else:
+                parent_item = selected_item.parent()
+                index = parent_item.indexOfChild(selected_item)   
+                             
             GeneralTool.clean_ui_content([
                 self.ui.table_tc_generation_rule,
                 self.ui.textbox_tc_data_rule_type,
@@ -1043,7 +1104,12 @@ class MyWindow(QMainWindow):
                 test_point_id,
             )
             GeneralTool.expand_and_resize_tree(self.ui.table_tc_generation_rule)
-        
+            
+            # * For user experience, expand and focus the item after update
+            self.ui.table_tc_generation_rule.topLevelItem(0).child(index).setExpanded(True)
+            self.ui.table_tc_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
+            self.ui.table_tc_generation_rule.topLevelItem(0).child(index).setSelected(True)
+            self.ui.table_tc_generation_rule.itemClicked.emit(self.ui.table_tc_generation_rule.topLevelItem(0).child(index), 0)        
     def btn_tc_dependency_update_data_rule_clicked(self):
         if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
             return
@@ -1088,6 +1154,12 @@ class MyWindow(QMainWindow):
                 f.write(json.dumps(g_rule, indent=4))
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
+            if selected_item.parent() is None:
+                index = self.ui.table_tc_dependency_generation_rule.indexOfTopLevelItem(selected_item)
+            else:
+                parent_item = selected_item.parent()
+                index = parent_item.indexOfChild(selected_item)
+                
             GeneralTool.clean_ui_content([
                 self.ui.table_tc_dependency_generation_rule,
                 self.ui.textbox_tc_dependency_data_rule_type,
@@ -1108,7 +1180,12 @@ class MyWindow(QMainWindow):
                 dependency_index
             )
             GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_generation_rule)
-        
+
+            # * For user experience, expand and focus the item after update
+            self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index).setExpanded(True)
+            self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
+            self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index).setSelected(True)
+            self.ui.table_tc_dependency_generation_rule.itemClicked.emit(self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index), 0)        
     def btn_dependency_update_data_rule_clicked(self):
         if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0:
             return
@@ -1148,6 +1225,12 @@ class MyWindow(QMainWindow):
                 f.write(json.dumps(g_rule, indent=4))
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
                 
+            if selected_item.parent() is None:
+                index = self.ui.table_dependency_generation_rule.indexOfTopLevelItem(selected_item)
+            else:
+                parent_item = selected_item.parent()
+                index = parent_item.indexOfChild(selected_item)  
+                              
             GeneralTool.clean_ui_content([
                 self.ui.table_dependency_generation_rule,
                 self.ui.textbox_dependency_data_rule_type,
@@ -1165,6 +1248,12 @@ class MyWindow(QMainWindow):
                 dependency_type,
                 dependency_index
             )
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_generation_rule)
+            # * For user experience, expand and focus the item after update
+            self.ui.table_dependency_generation_rule.topLevelItem(0).child(index).setExpanded(True)
+            self.ui.table_dependency_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
+            self.ui.table_dependency_generation_rule.topLevelItem(0).child(index).setSelected(True)
+            self.ui.table_dependency_generation_rule.itemClicked.emit(self.ui.table_dependency_generation_rule.topLevelItem(0).child(index), 0)
         
     def btn_update_data_rule_clicked(self):
         """ Update the new data rule to the generation rule. """
@@ -1203,7 +1292,13 @@ class MyWindow(QMainWindow):
                 f.truncate()
                 f.write(json.dumps(g_rule, indent=4))
                 logging.info(f"Update {field_name} in {operation_id}.json successfully")
-                
+                      
+            if selected_item.parent() is None:
+                index = self.ui.table_generation_rule.indexOfTopLevelItem(selected_item)
+            else:
+                parent_item = selected_item.parent()
+                index = parent_item.indexOfChild(selected_item)
+            
             GeneralTool.clean_ui_content([
                 self.ui.table_generation_rule,
                 self.ui.textbox_data_rule_type,
@@ -1217,6 +1312,23 @@ class MyWindow(QMainWindow):
             ])
             GeneralTool.parse_generation_rule(operation_id, self.ui.table_generation_rule)
             GeneralTool.expand_and_resize_tree(self.ui.table_generation_rule)
+            # * For user experience, expand and focus the item after update
+            self.ui.table_generation_rule.topLevelItem(0).child(index).setExpanded(True)
+            self.ui.table_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
+            self.ui.table_generation_rule.topLevelItem(0).child(index).setSelected(True)
+            self.ui.table_generation_rule.itemClicked.emit(self.ui.table_generation_rule.topLevelItem(0).child(index), 0)
+            
+# # 假設您有一個名為 tree_widget 的 QTreeWidget，並且您想展開第一個 item
+# tree_widget.topLevelItem(0).setExpanded(True)
+# # 假設您有一個名為 tree_widget 的 QTreeWidget，並且您想取得選取的 item 的 index
+# selected_item = tree_widget.selectedItems()[0]
+# if selected_item.parent() is None:
+#     # 如果選取的 item 是 top level item
+#     index = tree_widget.indexOfTopLevelItem(selected_item)
+# else:
+#     # 如果選取的 item 是 child item
+#     parent_item = selected_item.parent()
+#     index = parent_item.indexOfChild(selected_item)
         
     def btn_tc_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
