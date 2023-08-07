@@ -8,6 +8,7 @@ import logging
 import copy
 import shutil
 from json.decoder import JSONDecodeError
+
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
 from PyQt6.QtCore import QStringListModel, QBasicTimer, QThread, pyqtSignal
@@ -17,7 +18,7 @@ from PyQt6.QtWidgets import QMessageBox, QApplication, QMainWindow, QGroupBox, Q
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.databuilder import DataBuilder
-from lib.render import Render
+from lib.render import Render, UiRender, DataProcessor
 from lib.display import CustomForm
 from lib.ui import Ui_MainWindow
 
@@ -26,21 +27,13 @@ basedir = os.path.dirname(__file__)
 DEBUG = False
 logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=logging.DEBUG)
 
-class DataProcessor(QThread):
-    progress = pyqtSignal(int)
-    
-    def run(self):
-        for i in range(1, 101):
-            time.sleep(0.05)
-            self.progress.emit(i)
-
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
         # * Load the UI Page
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self) 
+        self.ui.setupUi(self)
 
         # * Set Icon
         self.ui.btn_import_openapi_doc.setIcon(QIcon("./icons/new.png"))
@@ -337,15 +330,6 @@ class MyWindow(QMainWindow):
         self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
         self.ui.web_page_layout.addWidget(self.ui.web_view)
         self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
-        self.setCentralWidget(self.ui.tabTCG)
-        
-
-    def updateProgress(self, value):
-        self.ui.progressBar.setValue(value)
-
-    def finishedProgress(self):
-        self.ui.btn_generate_test_plan.setEnabled(True)
-        QMessageBox.information(self, "完成", "數據處理已經完成。")
         
     def checkBox_path_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
@@ -3732,9 +3716,10 @@ class MyWindow(QMainWindow):
         """ Generate Test Plan """
         
         self.ui.btn_generate_test_plan.setEnabled(False)
+        self.ui.progressBar.setValue(0)
         self.thread = DataProcessor()
         self.thread.progress.connect(self.ui.progressBar.setValue)
-        self.thread.finished.connect(self.finishedProgress)
+        self.thread.finished.connect(lambda: UiRender.finish_progress(self.ui.progressBar, "Test Plan Generated Successfully."))
         self.thread.start()
         
         # * Check if the object mapping file is imported.
@@ -3750,7 +3735,7 @@ class MyWindow(QMainWindow):
         with open(f"config/tcg_config.json", "r") as f:
             tcg_config = json.load(f)
             
-        self.updateProgress(5)
+        self.ui.progressBar.setValue(25)
         # * Generate Test Plan
         GeneralTool.teardown_folder_files(["./artifacts/TestPlan", "./artifacts/TestData", "./artifacts/TestData/Dependency_TestData"])  
         serial_number = 1
@@ -3789,7 +3774,8 @@ class MyWindow(QMainWindow):
                                             tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
                                         )
                                 self.ui.tabTCG.setCurrentIndex(1)
-        self.updateProgress(50)
+                                
+        self.ui.progressBar.setValue(70)
         # * Render Test Plan to Table
         GeneralTool.clean_ui_content([
             self.ui.table_test_plan_api_list,
@@ -3814,9 +3800,8 @@ class MyWindow(QMainWindow):
                 for tp_index, test_point in test_case['test_point'].items():
                     tp_index = str(index) + "." + str(tp_index)
                     testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
-        self.updateProgress(99)
         self.ui.table_test_plan_api_list.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        self.updateProgress(100)
+        self.ui.btn_generate_test_plan.setEnabled(True)
         
     def import_object_mapping_file(self):
         """ Import Object Mapping File """

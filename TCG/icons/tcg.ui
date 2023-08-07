@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2332</width>
-    <height>1281</height>
+    <width>2286</width>
+    <height>1198</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -70,7 +70,7 @@
              <bool>true</bool>
             </property>
             <widget class="QWidget" name="layoutWidget">
-             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0" columnstretch="4,6">
+             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0" columnstretch="4,6">
               <property name="sizeConstraint">
                <enum>QLayout::SetDefaultConstraint</enum>
               </property>
@@ -161,6 +161,23 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btn_import_openapi_doc">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Import OpenAPI Doc</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-new">
+                  <normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</iconset>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="0">
                <widget class="QPushButton" name="btn_api_table_add_use_case">
                 <property name="font">
@@ -184,23 +201,6 @@
                 </property>
                 <property name="text">
                  <string>Remove</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QPushButton" name="btn_import_openapi_doc">
-                <property name="font">
-                 <font>
-                  <family>Segoe UI</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Import OpenAPI Doc</string>
-                </property>
-                <property name="icon">
-                 <iconset theme="document-new">
-                  <normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</normaloff>../../../Users/Users/Users/Tommy Lu/.designer/backup</iconset>
                 </property>
                </widget>
               </item>
@@ -691,7 +691,7 @@
                          </layout>
                         </widget>
                        </item>
-                       <item row="3" column="0">
+                       <item row="5" column="0">
                         <widget class="QPushButton" name="btn_update_data_rule">
                          <property name="text">
                           <string>Update</string>
@@ -5843,7 +5843,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2332</width>
+     <width>2286</width>
      <height>21</height>
     </rect>
    </property>
