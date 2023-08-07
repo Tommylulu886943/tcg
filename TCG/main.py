@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+import time
 import yaml
 import glob
 import logging
@@ -9,9 +10,9 @@ import shutil
 from json.decoder import JSONDecodeError
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
-from PyQt6.QtCore import QStringListModel, QBasicTimer
+from PyQt6.QtCore import QStringListModel, QBasicTimer, QThread, pyqtSignal
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton, QHeaderView
+from PyQt6.QtWidgets import QMessageBox, QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton, QHeaderView, QProgressBar
 
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
@@ -24,6 +25,14 @@ basedir = os.path.dirname(__file__)
 
 DEBUG = False
 logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=logging.DEBUG)
+
+class DataProcessor(QThread):
+    progress = pyqtSignal(int)
+    
+    def run(self):
+        for i in range(1, 101):
+            time.sleep(0.05)
+            self.progress.emit(i)
 
 class MyWindow(QMainWindow):
     def __init__(self):
@@ -313,14 +322,22 @@ class MyWindow(QMainWindow):
         self.ui.textbox_tc_dependency_return_variable_name.setPlaceholderText("e.g. resp, resp_1, ...")
         self.ui.textbox_tc_assertion_rule_expected_value.setPlaceholderText("e.g. 200, 400, ...")
         
-        # # * Convert / Validate Tab
-        # self.ui.web_page = QtWidgets.QWidget()
-        # self.ui.web_page_layout = QtWidgets.QVBoxLayout(self.ui.web_page)
-        # self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
-        # self.ui.web_view.load(QtCore.QUrl("https://mermade.org.uk/openapi-converter"))
-        # self.ui.web_page_layout.addWidget(self.ui.web_view)
-        # self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
-        # self.setCentralWidget(self.ui.tabTCG)
+        # * Convert / Validate Tab
+        self.ui.web_page = QtWidgets.QWidget()
+        self.ui.web_page_layout = QtWidgets.QVBoxLayout(self.ui.web_page)
+        self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
+        self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
+        self.ui.web_page_layout.addWidget(self.ui.web_view)
+        self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
+        self.setCentralWidget(self.ui.tabTCG)
+        
+
+    def updateProgress(self, value):
+        self.ui.progressBar.setValue(value)
+
+    def finishedProgress(self):
+        self.ui.btn_generate_test_plan.setEnabled(True)
+        QMessageBox.information(self, "完成", "數據處理已經完成。")
         
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
@@ -3482,6 +3499,12 @@ class MyWindow(QMainWindow):
     def generate_test_plan(self):
         """ Generate Test Plan """
         
+        self.ui.btn_generate_test_plan.setEnabled(False)
+        self.thread = DataProcessor()
+        self.thread.progress.connect(self.ui.progressBar.setValue)
+        self.thread.finished.connect(self.finishedProgress)
+        self.thread.start()
+        
         # * Check if the object mapping file is imported.
         if not os.path.exists("config/obj_mapping.json"):
             logging.error(f"Object Mapping File not found.")
@@ -3495,6 +3518,7 @@ class MyWindow(QMainWindow):
         with open(f"config/tcg_config.json", "r") as f:
             tcg_config = json.load(f)
             
+        self.updateProgress(5)
         # * Generate Test Plan
         GeneralTool.teardown_folder_files(["./artifacts/TestPlan", "./artifacts/TestData", "./artifacts/TestData/Dependency_TestData"])  
         serial_number = 1
@@ -3533,7 +3557,7 @@ class MyWindow(QMainWindow):
                                             tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
                                         )
                                 self.ui.tabTCG.setCurrentIndex(1)
-        
+        self.updateProgress(50)
         # * Render Test Plan to Table
         GeneralTool.clean_ui_content([
             self.ui.table_test_plan_api_list,
@@ -3558,7 +3582,9 @@ class MyWindow(QMainWindow):
                 for tp_index, test_point in test_case['test_point'].items():
                     tp_index = str(index) + "." + str(tp_index)
                     testcase_child.addChild(QtWidgets.QTreeWidgetItem(["", tp_index, "", "", test_point['parameter']['name']]))
+        self.updateProgress(99)
         self.ui.table_test_plan_api_list.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.updateProgress(100)
         
     def import_object_mapping_file(self):
         """ Import Object Mapping File """
