@@ -70,7 +70,7 @@
              <bool>true</bool>
             </property>
             <widget class="QWidget" name="layoutWidget">
-             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0,0" columnstretch="4,6">
+             <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0,0" columnstretch="4,6">
               <property name="sizeConstraint">
                <enum>QLayout::SetDefaultConstraint</enum>
               </property>
@@ -2352,6 +2352,12 @@
                      <family>Segoe UI</family>
                      <pointsize>10</pointsize>
                     </font>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
                    </property>
                    <column>
                     <property name="text">

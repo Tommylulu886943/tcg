@@ -1256,6 +1256,8 @@ class Ui_MainWindow(object):
         font.setFamily("Segoe UI")
         font.setPointSize(10)
         self.table_assertion_rule.setFont(font)
+        self.table_assertion_rule.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.table_assertion_rule.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.table_assertion_rule.setObjectName("table_assertion_rule")
         self.gridLayout_43.addWidget(self.table_assertion_rule, 3, 0, 1, 9)
         self.textbox_assertion_rule_expression = QtWidgets.QLineEdit(parent=self.tab_6)
