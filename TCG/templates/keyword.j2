@@ -54,7 +54,7 @@
             {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
             {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
             {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
         {% elif action['Action Name'] == 'Data Analyzer' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
             {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
@@ -63,7 +63,7 @@
             {% set verbose_option = '' if action.Verbose == '' else 'verbose=' + action.Verbose -%}
             {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
             {% set result_type_option = '' if action['Result Type'] == '' else 'result_type=' + action['Result Type'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
         {% elif action['Action Name'] == 'Config Analyzer' -%}
             {% set src_data_option = '' if action['Src. Data'] == '' else 'src_data=' + action['Src. Data'] -%}
             {% set dest_data_option = '' if action['Dest. Data'] == '' else 'dest_data=' + action['Dest. Data'] -%}
@@ -71,12 +71,12 @@
             {% set start_level_option = '' if action['Start Level'] == '' else 'start_level=' + action['Start Level'] -%}
             {% set obj_option = '' if action['Obj'] == '' else 'obj=' + action['Obj'] -%}
             {% set verbose_option = '' if action['Verbose'] == '' else 'verbose=' + action['Verbose'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
         {% elif action['Action Name'] == 'Get ID From Name' -%}
             {% set name = '' if action.Name == '' else 'name=' + action.Name -%}
             {% set sender_instance = '' if action['Sender Instance'] == '' else 'sender_instance=' + action['Sender Instance'] -%}
             {% set objects = '' if action.Objects == '' else 'objects=' + action.Objects -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
         {% endif -%}
             Set Test Variable  {{ '${' }}{{ action['Name'] }}}
     {% endfor -%}
@@ -131,7 +131,7 @@
             {% set last_count_option = '' if action['Last Count'] == '' else 'last_count=' + action['Last Count'] -%}
             {% set field_option = '' if action.Field == '' else 'field=' + action.Field -%}
             {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Parser.api_parser  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ return_type_option }}
         {% elif action['Action Name'] == 'Data Analyzer' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
             {% set filter_option = '' if action.Filter == '' else 'filter=' + action.Filter -%}
@@ -140,7 +140,7 @@
             {% set verbose_option = '' if action.Verbose == '' else 'verbose=' + action.Verbose -%}
             {% set return_type_option = '' if action['Return Type'] == '' else 'return_type=' + action['Return Type'] -%}
             {% set result_type_option = '' if action['Result Type'] == '' else 'result_type=' + action['Result Type'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Analyzer.data_analyzer  {{ data_option }}  {{ filter_option }}  {{ last_count_option }}  {{ field_option }}  {{ verbose_option }}  {{ return_type_option }}  {{ result_type_option }}
         {% elif action['Action Name'] == 'Config Analyzer' -%}
             {% set src_data_option = '' if action['Src. Data'] == '' else 'src_data=' + action['Src. Data'] -%}
             {% set dest_data_option = '' if action['Dest. Data'] == '' else 'dest_data=' + action['Dest. Data'] -%}
@@ -148,14 +148,14 @@
             {% set start_level_option = '' if action['Start Level'] == '' else 'start_level=' + action['Start Level'] -%}
             {% set obj_option = '' if action['Obj'] == '' else 'obj=' + action['Obj'] -%}
             {% set verbose_option = '' if action['Verbose'] == '' else 'verbose=' + action['Verbose'] -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Analyzer.config_analyzer  {{ src_data_option }}  {{ dest_data_option }}  {{ action_option }}  {{ start_level_option }}  {{ obj_option }}  {{ verbose_option }}
         {% elif action['Action Name'] == 'Get ID From Name' -%}
             {% set name = '' if action.Name == '' else 'name=' + action.Name -%}
             {% set sender_instance = '' if action['Sender Instance'] == '' else 'sender_instance=' + action['Sender Instance'] -%}
             {% set objects = '' if action.Objects == '' else 'objects=' + action.Objects -%}
-            {{ '${' }}{{ action['Response Name'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
+            {{ '${' }}{{ action['${Response Name}'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
         {% endif -%}
-            Set Test Variable  {{ '${' }}{{ action['Response Name'] }}}
+            Set Test Variable  {{ '${' }}{{ action['${Response Name}'] }}}
     {% endfor -%}
     {% endfor -%}
 {% endif %}

@@ -21,7 +21,7 @@ class CustomForm(QWidget):
                 edit = QComboBox()
                 if field == "Return Type":
                     edit.addItems(["list", "string", "set"])
-                elif field == "Response Name":
+                elif field == "${Response Name}":
                     edit = QLineEdit()
                     edit.setPlaceholderText("The name of the response variable to store the result")
                 else:
@@ -32,7 +32,7 @@ class CustomForm(QWidget):
                     edit.addItems(["", "config_compare", "string_match"])
                 elif field == "Verbose":
                     edit.addItems(["", "true", "false"])
-                elif field == "Response Name":
+                elif field == "${Response Name}":
                     edit = QLineEdit()
                     edit.setPlaceholderText("The name of the response variable to store the result")
                 else:
@@ -45,7 +45,7 @@ class CustomForm(QWidget):
                     edit.addItems(["", "count_interval", "number_count", "success_rate"])
                 elif field == "Verbose":
                     edit.addItems(["", "true", "false"])
-                elif field == "Response Name":
+                elif field == "${Response Name}":
                     edit = QLineEdit()
                     edit.setPlaceholderText("The name of the response variable to store the result")
                 else:
@@ -56,7 +56,7 @@ class CustomForm(QWidget):
                     edit.setPlaceholderText("e.g. agent, monitor, tenant")
                 elif field == "Sender Instance":
                     edit.setPlaceholderText("e.g. FHE_U1_T1, FHE_U4_T2")
-                elif field == "Response Name":
+                elif field == "${Response Name}":
                     edit = QLineEdit()
                     edit.setPlaceholderText("The name of the responce variable to store the result")
                 else:

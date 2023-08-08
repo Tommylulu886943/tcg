@@ -46,14 +46,14 @@ class MyWindow(QMainWindow):
         self.ui.specialActions = {
             "None": [],
             "Parser": {
-                "API Parser": ["Response Name", "Data", "Filter", "Last Count", "Field", "Return Type"]
+                "API Parser": ["${Response Name}", "Data", "Filter", "Last Count", "Field", "Return Type"]
             },
             "Analyzer": {
-                "Data Analyzer": ["Response Name", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
-                "Config Analyzer": ["Response Name", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"]
+                "Data Analyzer": ["${Response Name}", "Data", "Filter", "Field", "Last Count", "Verbose", "Return Type", "Result Type"],
+                "Config Analyzer": ["${Response Name}", "Src. Data", "Dest. Data", "Action", "Start Level", "Obj", "Verbose"]
             },
             "Utility": {
-                "Get ID From Name": ["Response Name", "Name", "Sender Instance", "Objects"],
+                "Get ID From Name": ["${Response Name}", "Name", "Sender Instance", "Objects"],
             }   
         }
         
@@ -582,6 +582,7 @@ class MyWindow(QMainWindow):
                     dependency_type,
                     dependency_sequence_num,
                 )
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_additional_action, 3)
         else:
             logging.error(f"Failed to load the test plan of {operation_id}.")
     
@@ -624,6 +625,7 @@ class MyWindow(QMainWindow):
                     dependency_type,
                     dependency_sequence_num,
                 )
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_additional_action, 3)
         else:
             logging.error(f"Failed to load the test plan of {operation_id}.")
     
@@ -677,8 +679,10 @@ class MyWindow(QMainWindow):
                         test_case_id,
                         test_point_id,
                     )
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_additional_action, 3)
             else:
                 logging.error(f"Failed to load the test plan of {operation_id}.")
+        
     def btn_tc_remove_special_action(self):
         """ Remove the additional action from a test case. """
         if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
@@ -719,9 +723,9 @@ class MyWindow(QMainWindow):
                         test_case_id,
                         test_point_id,
                     )
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_additional_action, 3)
             else:
                 logging.error(f"Failed to load the test plan of {operation_id}.")
-    
     def btn_add_dependency_special_action(self):
         """ Add the additional action to a dependency. """
         if len(self.ui.table_dependency_rule.selectedItems()) == 0 or self.ui.table_dependency_rule.selectedItems()[0].parent() is None:
@@ -771,7 +775,8 @@ class MyWindow(QMainWindow):
                     dependency_type,
                     dependency_sequence_num,
                     self.ui.table_dependency_additional_action
-                )    
+                )
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_additional_action, 3)
             
     def btn_remove_dependency_special_action(self):
         """ Remove the additional action from a dependency. """
@@ -810,7 +815,8 @@ class MyWindow(QMainWindow):
                     dependency_type,
                     dependency_sequence_num,
                     self.ui.table_dependency_additional_action
-                )                                  
+                )
+            GeneralTool.expand_and_resize_tree(self.ui.table_dependency_additional_action, 3)                     
         
     def btn_add_special_action(self):
         """ Add the additional action to a test case. """
@@ -840,6 +846,7 @@ class MyWindow(QMainWindow):
             with open(file_path, "r") as file:
                 add_action = json.load(file)
                 GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
+            GeneralTool.expand_and_resize_tree(self.ui.table_additional_action, 3)
 
     def btn_remove_special_action(self):
         """ Remove the additional action from a test case. """
@@ -869,7 +876,8 @@ class MyWindow(QMainWindow):
                 logging.info("Remove additional action rule successfully.")
             else:
                 logging.error("Remove additional action rule failed.")
-        GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action) 
+        GeneralTool.parse_additional_action_rule(operation_id, self.ui.table_additional_action)
+        GeneralTool.expand_and_resize_tree(self.ui.table_additional_action, 3)
         
     def btn_update_info_clicked(self):
         if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
@@ -1318,19 +1326,6 @@ class MyWindow(QMainWindow):
             self.ui.table_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
             self.ui.table_generation_rule.topLevelItem(0).child(index).setSelected(True)
             self.ui.table_generation_rule.itemClicked.emit(self.ui.table_generation_rule.topLevelItem(0).child(index), 0)
-            
-# # 假設您有一個名為 tree_widget 的 QTreeWidget，並且您想展開第一個 item
-# tree_widget.topLevelItem(0).setExpanded(True)
-# # 假設您有一個名為 tree_widget 的 QTreeWidget，並且您想取得選取的 item 的 index
-# selected_item = tree_widget.selectedItems()[0]
-# if selected_item.parent() is None:
-#     # 如果選取的 item 是 top level item
-#     index = tree_widget.indexOfTopLevelItem(selected_item)
-# else:
-#     # 如果選取的 item 是 child item
-#     parent_item = selected_item.parent()
-#     index = parent_item.indexOfChild(selected_item)
-        
     def btn_tc_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
         GeneralTool.clean_ui_content([
@@ -4010,7 +4005,8 @@ class MyWindow(QMainWindow):
                 
             # * Render Additional Action
             GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.ui.table_tc_additional_action, test_case_id, test_point_id)
-
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_additional_action, level=3)
+            
     def api_tree_item_clicked(self, item, column):
         """When the api tree item is clicked."""
         # * Clear the table
