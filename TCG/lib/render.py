@@ -51,24 +51,3 @@ class Render:
             with open(robot_path, "a", encoding="utf-8") as r:
                 r.write(rendered_keyword)
                 
-class UiRender:
-    
-    @classmethod
-    def update_progress(cls, progress_obj, value):
-        """ Update specified progress bar object with given value."""
-                
-        progress_obj.setValue(value)
-        
-    @classmethod
-    def finish_progress(cls, progress_obj, msg):
-        """ When the progress is finished, show the message."""
-        QMessageBox.information(progress_obj, "Complete", msg)
-
-class DataProcessor(QThread):
-    progress = pyqtSignal(int)
-    
-    def run(self):
-        for i in range(16, 101):
-            time.sleep(0.05)
-            self.progress.emit(i)
-            

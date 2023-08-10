@@ -18,9 +18,10 @@ from PyQt6.QtWidgets import QMessageBox, QApplication, QMainWindow, QGroupBox, Q
 from lib.test_strategy import TestStrategy
 from lib.general_tool import GeneralTool
 from lib.databuilder import DataBuilder
-from lib.render import Render, UiRender, DataProcessor
-from lib.display import CustomForm
+from lib.render import Render
+from lib.display import CustomForm, UiRender, DataProcessor
 from lib.ui import Ui_MainWindow
+from lib.validator import Validator
 
 basedir = os.path.dirname(__file__)
 
@@ -260,6 +261,7 @@ class MyWindow(QMainWindow):
         self.ui.btn_dependency_update_data_rule.clicked.connect(self.btn_dependency_update_data_rule_clicked)
         self.ui.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
         self.ui.btn_tc_update_data_rule.clicked.connect(self.btn_tc_update_data_rule_clicked)
+        self.ui.btn_validate_openapi_doc.clicked.connect(self.btn_validate_openapi_doc_clicked)
         
         # * Table's Item Click Event
         self.ui.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -329,7 +331,46 @@ class MyWindow(QMainWindow):
         self.ui.web_view = QtWebEngineWidgets.QWebEngineView(self.ui.web_page)
         self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
         self.ui.web_page_layout.addWidget(self.ui.web_view)
-        self.ui.tabTCG.insertTab(5, self.ui.web_page, "Convert / Validate")
+        self.ui.tabTCG.insertTab(5, self.ui.web_page, "Converter")
+    
+    def btn_validate_openapi_doc_clicked(self):
+        """ When the button is clicked, will validate the OpenAPI document. """
+        result = []
+        schema_list = glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml")
+        if len(schema_list) == 0:
+            GeneralTool.show_info_dialog(f"Please import the OpenAPI document first.")
+            return
+        
+        for schema in schema_list:
+            try:
+                if schema.endswith(".json"):
+                    data = json.load(open(schema))
+                elif schema.endswith(".yaml"):
+                    data = yaml.load(open(schema))
+
+                # * Check if the API doc version is not 3.0.0 or above.
+                if 'swagger' in schema:
+                    error_message = f"OpenAPI version is not 3.0.0 or above."
+                    detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
+                    GeneralTool.show_error_dialog(error_message, detailed_message)
+                    return "False"
+                elif 'openapi' in schema:
+                    if schema['openapi'] < '3.0.0':
+                        logging.error(f"OpenAPI version is not 3.0.0 or above.")
+                        error_message = f"OpenAPI version is not 3.0.0 or above."
+                        detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
+                        GeneralTool.show_error_dialog(error_message, detailed_message)  
+                        return ""
+            except Exception as e:
+                logging.error("Error when validating the OpenAPI document: " + schema)
+                error_message = f"Parsing the OpenAPI document failed: {schema}"
+                detailed_message = f"Parsing the OpenAPI document failed: {schema}\n{e}"
+                GeneralTool.show_error_dialog(error_message, detailed_message)
+            result.extend(Validator.validate_schema_restrictions(data))
+            
+        self.ui.text_validate_log.clear()
+        for item in result:
+            self.ui.text_validate_log.append(item)
         
     def checkBox_path_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
@@ -3710,6 +3751,16 @@ class MyWindow(QMainWindow):
     def generate_test_plan(self):
         """ Generate Test Plan """
         
+        selected_items = self.ui.table_api_tree.selectedItems()
+        selected_oids = []
+        for oid in selected_items:
+            selected_oids.append(oid.text(4))
+            print(oid.text(4))
+            
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("OIDS", selected_oids)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        
         self.ui.btn_generate_test_plan.setEnabled(False)
         self.ui.progressBar.setValue(0)
         self.thread = DataProcessor()
@@ -3732,7 +3783,7 @@ class MyWindow(QMainWindow):
             
         self.ui.progressBar.setValue(25)
         # * Generate Test Plan
-        GeneralTool.teardown_folder_files(["./artifacts/TestPlan", "./artifacts/TestData", "./artifacts/TestData/Dependency_TestData"])  
+        GeneralTool.teardown_folder_files(["./artifacts/TestPlan", "./artifacts/TestData", "./artifacts/TestData/Dependency_TestData"])
         serial_number = 1
         test_count = self.ui.spinbox_test_case_count.value()
         for i in range(self.ui.table_api_tree.topLevelItemCount()):
@@ -3750,26 +3801,27 @@ class MyWindow(QMainWindow):
                 for uri, path_item in schema['paths'].items():
                         for method, operation in path_item.items():
                             operation_id = operation['operationId']
-                            if operation_id == target_operation_id:                
-                                if api_item.childCount() == 0:
-                                    test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
-                                    testdata = DataBuilder.init_test_data(operation_id)
-                                    dependency_testdata = DataBuilder.init_dependency_test_data(operation_id)
-                                    GeneralTool.generate_test_cases(
-                                        tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
-                                    )
-                                elif api_item.childCount() > 0:
-                                    for use_case_i in range(api_item.childCount()):
-                                        use_case_item = api_item.child(use_case_i)
-                                        use_case_operation_id = use_case_item.text(4)
-                                        test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
-                                        testdata = DataBuilder.init_test_data(use_case_operation_id)
-                                        dependency_testdata = DataBuilder.init_dependency_test_data(use_case_operation_id)
+                            # * if the selected operation is None or the selected operation is in the selected operation list.
+                            if operation_id == target_operation_id and (selected_oids == [] or target_operation_id in selected_oids):
+                                    if api_item.childCount() == 0:
+                                        test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
+                                        testdata = DataBuilder.init_test_data(operation_id)
+                                        dependency_testdata = DataBuilder.init_dependency_test_data(operation_id)
                                         GeneralTool.generate_test_cases(
-                                            tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
+                                            tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
                                         )
-                                self.ui.tabTCG.setCurrentIndex(1)
-                                
+                                    elif api_item.childCount() > 0:
+                                        for use_case_i in range(api_item.childCount()):
+                                            use_case_item = api_item.child(use_case_i)
+                                            use_case_operation_id = use_case_item.text(4)
+                                            test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
+                                            testdata = DataBuilder.init_test_data(use_case_operation_id)
+                                            dependency_testdata = DataBuilder.init_dependency_test_data(use_case_operation_id)
+                                            GeneralTool.generate_test_cases(
+                                                tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
+                                            )
+                                    self.ui.tabTCG.setCurrentIndex(1)
+                                    
         self.ui.progressBar.setValue(70)
         # * Render Test Plan to Table
         GeneralTool.clean_ui_content([

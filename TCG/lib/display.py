@@ -1,5 +1,7 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QFormLayout, QComboBox
+import time
 
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QFormLayout, QComboBox, QMessageBox, QProgressBar
+from PyQt6.QtCore import QBasicTimer, QThread, pyqtSignal
 class CustomForm(QWidget):
     def __init__(self, parent=None):
         super(CustomForm, self).__init__(parent)
@@ -77,3 +79,25 @@ class CustomForm(QWidget):
                 values[label] = edit.currentText()
         return values
     
+class UiRender:
+    
+    @classmethod
+    def update_progress(cls, progress_obj, value):
+        """ Update specified progress bar object with given value."""
+                
+        progress_obj.setValue(value)
+        
+    @classmethod
+    def finish_progress(cls, progress_obj, msg):
+        """ When the progress is finished, show the message."""
+        QMessageBox.information(progress_obj, "Complete", msg)
+        progress_obj.setValue(0)
+
+class DataProcessor(QThread):
+    progress = pyqtSignal(int)
+    
+    def run(self):
+        for i in range(16, 101):
+            time.sleep(0.05)
+            self.progress.emit(i)
+            
