@@ -3753,14 +3753,8 @@ class MyWindow(QMainWindow):
         
         selected_items = self.ui.table_api_tree.selectedItems()
         selected_oids = []
-        for oid in selected_items:
-            selected_oids.append(oid.text(4))
-            print(oid.text(4))
+        for oid in selected_items: selected_oids.append(oid.text(4))
             
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("OIDS", selected_oids)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        
         self.ui.btn_generate_test_plan.setEnabled(False)
         self.ui.progressBar.setValue(0)
         self.thread = DataProcessor()
@@ -3909,7 +3903,7 @@ class MyWindow(QMainWindow):
         index = 1
         for schema in self.ui.schema_list:
             file_path = schema
-            file_name = os.path.basename(file_path).split(".")[0]
+            file_name, file_ext = os.path.splitext(os.path.basename(file_path))
             api_doc = GeneralTool.load_schema_file(file_path)
             index = self._render_api_tree(api_doc, index, file_name)
             # * If the index is None, it means the API Doc is not in the correct format, return directly.
