@@ -632,6 +632,7 @@ class GeneralTool:
                 for test_strategy in tcg_config['config']['test_strategy'][test_type]:
                     for count in range(test_count):
                         test_strategy_func = getattr(TestStrategy, test_strategy)
+                        logging.info(f'Generate "{method} {uri}" "{test_type} - {test_strategy}" test case for start.')
                         serial_number = test_strategy_func(
                             test_type, operation_id ,uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata
                         )
