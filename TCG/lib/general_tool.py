@@ -1112,7 +1112,7 @@ class GeneralTool:
         table.addTopLevelItem(teardown_item)            
         cls.parse_request_body(setup_list, setup_item, editabled=True)
         cls.parse_request_body(teardown_list, teardown_item, editabled=True)
-        cls.expand_and_resize_tree(table)
+        cls.expand_and_resize_tree(table, level=3)
         
     @classmethod
     def parse_dynamic_overwrite_data(cls, operation_id: str, dynamic_overwrite_table: object) -> None:

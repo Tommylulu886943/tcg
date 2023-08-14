@@ -358,6 +358,29 @@ class MyWindow(QMainWindow):
         self.ui.web_page_layout.addWidget(self.ui.web_view)
         self.ui.tabTCG.insertTab(5, self.ui.web_page, "Converter")
 
+    def closeEvent(self, event):
+        """ The close event of the main window and will clean the artifacts. """
+        reply = QtWidgets.QMessageBox.question(self, 'Confirmation', 'Are you sure you want to exit?', 
+                       QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+            GeneralTool.teardown_folder_files([
+                "./artifacts/AdditionalAction",
+                "./artifacts/AssertionRule",
+                "./artifacts/DependencyRule",
+                "./artifacts/DynamicOverwrite",
+                "./artifacts/GenerationRule",
+                "./artifacts/PathRule",
+                "./artifacts/QueryRule",
+                "./artifacts/TestCase",
+                "./artifacts/TestData",
+                "./artifacts/TestPlan",
+                "./schemas",
+                "./config"
+            ])
+            event.accept()
+        else:
+            event.ignore()
+            
     def export_tree_to_file(self, tree, filename):
         """ Export the tree to a file. """
         

@@ -3431,7 +3431,7 @@ class Ui_MainWindow(object):
         self.tabWidget_5.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_testPlan.setCurrentIndex(0)
-        self.tabWidget_6.setCurrentIndex(2)
+        self.tabWidget_6.setCurrentIndex(0)
         self.table_tc_dependency_schema_2.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
