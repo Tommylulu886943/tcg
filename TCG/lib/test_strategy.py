@@ -146,8 +146,7 @@ class TestStrategy:
                 parsed_json['test_point'][i]['additional_action'] = additional_action
                 
                 # * Add dynamic overwrite rule to test plan.
-                if 'dynamic_overwrite_data' in parsed_json['test_point'][i]:
-                    parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
+                parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
                                     
                 if DEBUG:
                     logging.debug(f'parsed_json: {parsed_json}')
