@@ -450,7 +450,28 @@ class GeneralTool:
                 textbox_dst_value.clear()
                 checkbox_wildcard.setChecked(False)
             elif dst_path == "":
-                textbox_dst.setText(field)        
+                textbox_dst.setText(field)
+    
+    @classmethod
+    def render_dynamic_overwrite_data(
+        cls,
+        selected_item: object,
+        textbox_name: object,
+    ):
+        """ When the user clicks on a field in the Data Generation Rule table, 
+            the field will be rendered in the corresponding text box.
+            For quick editing, the user can click on the text box to edit the field directly.
+
+        Args:
+            selected_item: The selected item in the Data Generation Rule table.
+            textbox_name: The text box for the name field.
+        """
+        parent_item = selected_item.parent()
+        if parent_item is not None and parent_item.parent() is None:
+            name = selected_item.text(0)
+            if '[0]' in name:
+                name = name.replace('[0]', '.0')
+            textbox_name.setText(name)
     
     @classmethod
     def collect_items_from_top_level(cls, tree, top_level_text, column_num=0):
@@ -950,6 +971,28 @@ class GeneralTool:
             logging.warning(f"Additional Action File Not Found: {file_path}")
             
     @classmethod
+    def parse_tc_dynamic_overwrite_data(
+        cls,
+        operation_id: str,
+        tc_dynamic_overwrite_data_table: object,
+        test_case_id: str,
+        test_point_id: str,
+    ) -> None:
+        
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                data = json.load(f)
+                data = data['test_cases'][test_case_id]['test_point'][test_point_id]['dynamic_overwrite_data']
+            tc_dynamic_overwrite_data_table.clear()
+            root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+            tc_dynamic_overwrite_data_table.addTopLevelItem(root_item)
+            cls.parse_request_body(data, root_item)
+            cls.expand_and_resize_tree(tc_dynamic_overwrite_data_table)
+        else:
+            logging.warning(f"Dynamic Overwrite Data File Not Found: {file_path}")
+            
+    @classmethod
     def parse_tc_dependency_additional_action_rule(
         cls,
         operation_id: str,
@@ -1024,7 +1067,9 @@ class GeneralTool:
                         del dependency_rule[section][key]['additional_action']
                     if 'query' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['query']
-                        
+                    if 'dynamic_overwrite_data' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['dynamic_overwrite_data']
+                                                                                     
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
             
@@ -1056,6 +1101,8 @@ class GeneralTool:
                     del dependency_rule[section][key]['additional_action']
                 if 'query' in dependency_rule[section][key]:
                     del dependency_rule[section][key]['query']
+                if 'dynamic_overwrite_data' in dependency_rule[section][key]:
+                    del dependency_rule[section][key]['dynamic_overwrite_data']
                                                              
         setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
         setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"]) 
@@ -1065,6 +1112,30 @@ class GeneralTool:
         cls.parse_request_body(setup_list, setup_item, editabled=True)
         cls.parse_request_body(teardown_list, teardown_item, editabled=True)
         cls.expand_and_resize_tree(table)
+        
+    @classmethod
+    def parse_dynamic_overwrite_data(cls, operation_id: str, dynamic_overwrite_table: object) -> None:
+        """To parse dynamic overwrite data files to TreeWidget.
+
+        Args:
+            operation_id: The API operation id.
+            dynamic_overwrite_table: QTreeWidget instance to be parsed.
+
+        Returns:
+            None
+        """
+        file_path = f"./artifacts/DynamicOverwrite/{operation_id}.json"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                dynamic_overwrite = json.load(f)
+                
+            dynamic_overwrite_table.clear()
+            root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+            dynamic_overwrite_table.addTopLevelItem(root_item)
+            cls.parse_request_body(dynamic_overwrite, root_item, editabled=True)
+            cls.expand_and_resize_tree(dynamic_overwrite_table, level=2)
+        else:
+            logging.warning(f"Dynamic Overwrite File Not Found: {file_path}")
     
     @classmethod
     def parse_path_rule(cls, operation_id: str, path_rule_table: object) -> None:

@@ -90,6 +90,11 @@ class TestStrategy:
             with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
         
+        # * Load Dynamic Overwrite Rule
+        if os.path.exists(f"./artifacts/DynamicOverwrite/{operation_id}.json"):
+            with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", 'r') as f:
+                dynamic_overwrite_rule = json.load(f)
+        
         test_point_number = 1
         if test_type == 'positive_test':
             testdata = copy.deepcopy(baseline_data)
@@ -139,6 +144,10 @@ class TestStrategy:
                 
                 # * Add additional action to test plan.
                 parsed_json['test_point'][i]['additional_action'] = additional_action
+                
+                # * Add dynamic overwrite rule to test plan.
+                if 'dynamic_overwrite_data' in parsed_json['test_point'][i]:
+                    parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
                                     
                 if DEBUG:
                     logging.debug(f'parsed_json: {parsed_json}')
@@ -196,6 +205,11 @@ class TestStrategy:
         if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
             with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
+                
+        # * Load Dynamic Overwrite Rule
+        if os.path.exists(f"./artifacts/DynamicOverwrite/{operation_id}.json"):
+            with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", 'r') as f:
+                dynamic_overwrite_rule = json.load(f)
                 
         for key in generation_rules:
             test_point_number = 1
@@ -259,7 +273,10 @@ class TestStrategy:
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
                         
                         # * Add additional action to test plan.
-                        parsed_json['test_point'][i]['additional_action'] = additional_action                        
+                        parsed_json['test_point'][i]['additional_action'] = additional_action       
+                        
+                        # * Add dynamic overwrite rule to test plan.
+                        parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule                 
                                     
                     if DEBUG:
                         logging.debug(f'parsed_json: {parsed_json}')
@@ -318,6 +335,11 @@ class TestStrategy:
         if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
             with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
+
+        # * Load Dynamic Overwrite Rule
+        if os.path.exists(f"./artifacts/DynamicOverwrite/{operation_id}.json"):
+            with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", 'r') as f:
+                dynamic_overwrite_rule = json.load(f)
                 
         for key in generation_rules:
             test_point_number = 1
@@ -413,6 +435,9 @@ class TestStrategy:
                     
                     # * Add additional action to test plan.
                     parsed_json['test_point'][i]['additional_action'] = additional_action
+                    
+                    # * Add dynamic overwrite rule to test plan.
+                    parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
                                     
                 with open(test_plan_path, 'r', encoding='utf-8') as f:
                     existing_test_plan = json.load(f)
@@ -468,6 +493,11 @@ class TestStrategy:
         if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
             with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                 additional_action = json.load(f)
+                
+        # * Load Dynamic Overwrite Rule
+        if os.path.exists(f"./artifacts/DynamicOverwrite/{operation_id}.json"):
+            with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", 'r') as f:
+                dynamic_overwrite_rule = json.load(f)
                    
         test_point_number = 1
         for key in generation_rules:
@@ -527,7 +557,10 @@ class TestStrategy:
                         parsed_json['test_point'][i]['assertion'] = assertion_rule
                         
                         # * Add additional action to test plan.
-                        parsed_json['test_point'][i]['additional_action'] = additional_action                        
+                        parsed_json['test_point'][i]['additional_action'] = additional_action      
+                        
+                        # * Add dynamic overwrite rule to test plan.
+                        parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule                  
                         
                     with open(test_plan_path, 'r', encoding='utf-8') as f:
                         existing_test_plan = json.load(f)
@@ -638,6 +671,11 @@ class TestStrategy:
             if os.path.exists(f"./artifacts/AdditionalAction/{operation_id}.json"):
                 with open(f"./artifacts/AdditionalAction/{operation_id}.json", 'r') as f:
                     additional_action = json.load(f)
+                    
+            # * Load Dynamic Overwrite Rule
+            if os.path.exists(f"./artifacts/DynamicOverwrite/{operation_id}.json"):
+                with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", 'r') as f:
+                    dynamic_overwrite_rule = json.load(f)
             
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
@@ -741,6 +779,9 @@ class TestStrategy:
 
                 # * Add additional action to test plan.
                 parsed_json['test_point'][i]['additional_action'] = additional_action
+                
+                # * Add dynamic overwrite rule to test plan.
+                parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
                                
             if DEBUG:
                 logging.debug(f'parsed_json: {parsed_json}')

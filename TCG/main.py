@@ -22,6 +22,7 @@ from lib.render import Render
 from lib.display import CustomForm, UiRender, DataProcessor
 from lib.ui import Ui_MainWindow
 from lib.validator import Validator
+from lib.file import FileOperation
 
 basedir = os.path.dirname(__file__)
 
@@ -211,7 +212,7 @@ class MyWindow(QMainWindow):
         self.ui.btn_api_table_add_use_case.clicked.connect(self.btn_api_table_add_use_case_clicked)
         self.ui.btn_constraint_rule_apply.clicked.connect(self.btn_constraint_rule_apply_clicked)
         self.ui.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
-        self.ui.btn_add_path.clicked.connect(self.btn_add_path_clicked)
+        # self.ui.btn_add_path.clicked.connect(self.btn_add_path_clicked)
         self.ui.btn_remove_query.clicked.connect(self.btn_remove_query_clicked)
         self.ui.btn_update_query.clicked.connect(self.btn_update_query_clicked)
         self.ui.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
@@ -262,6 +263,18 @@ class MyWindow(QMainWindow):
         self.ui.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
         self.ui.btn_tc_update_data_rule.clicked.connect(self.btn_tc_update_data_rule_clicked)
         self.ui.btn_validate_openapi_doc.clicked.connect(self.btn_validate_openapi_doc_clicked)
+        self.ui.btn_add_dynamic_overwrite_data.clicked.connect(self.btn_add_dynamic_overwrite_data_clicked)
+        self.ui.btn_remove_dynamic_overwrite_data.clicked.connect(self.btn_remove_dynamic_overwrite_data_clicked)
+        self.ui.btn_update_dynamic_overwrite_data.clicked.connect(self.btn_update_dynamic_overwrite_data_clicked)
+        self.ui.btn_dependency_add_dynamic_overwrite_data.clicked.connect(self.btn_dependency_add_dynamic_overwrite_data_clicked)
+        self.ui.btn_dependency_remove_dynamic_overwrite_data.clicked.connect(self.btn_dependency_remove_dynamic_overwrite_data_clicked)
+        self.ui.btn_dependency_update_dynamic_overwrite_data.clicked.connect(self.btn_dependency_update_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_add_dynamic_overwrite_data.clicked.connect(self.btn_tc_add_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_remove_dynamic_overwrite_data.clicked.connect(self.btn_tc_remove_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_update_dynamic_overwrite_data.clicked.connect(self.btn_tc_update_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_dependency_add_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_add_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_dependency_remove_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_remove_dynamic_overwrite_data_clicked)
+        self.ui.btn_tc_dependency_update_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_update_dynamic_overwrite_data_clicked)
         
         # * Table's Item Click Event
         self.ui.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -288,6 +301,10 @@ class MyWindow(QMainWindow):
         self.ui.btn_export_test_cases.clicked.connect(self.btn_export_test_cases_clicked)
         self.ui.btn_export_test_plans.clicked.connect(self.btn_export_test_plans_clicked)
         self.ui.btn_update_info.clicked.connect(self.btn_update_info_clicked)
+        self.ui.table_dynamic_overwrite_data.itemClicked.connect(self.table_dynamic_overwrite_data_item_clicked)
+        self.ui.table_tc_dependency_dynamic_overwrite_data.itemClicked.connect(self.table_tc_dependency_dynamic_overwrite_data_item_clicked)
+        self.ui.table_dependency_dynamic_overwrite_data.itemClicked.connect(self.table_dependency_dynamic_overwrite_data_item_clicked)
+        self.ui.table_tc_dynamic_overwrite_data.itemClicked.connect(self.table_tc_dynamic_overwrite_data_item_clicked)
         
         # * Item Changed Event
         self.ui.table_generation_rule.itemChanged.connect(self.generation_rule_item_changed)
@@ -313,6 +330,14 @@ class MyWindow(QMainWindow):
         self.ui.checkBox_query_dependency_robot_variable.stateChanged.connect(self.checkBox_query_dependency_robot_variable_changed)
         self.ui.checkBox_tc_path_dependency_robot_variable.stateChanged.connect(self.checkBox_tc_path_dependency_robot_variable_changed)
         self.ui.checkBox_tc_query_dependency_robot_variable.stateChanged.connect(self.checkBox_tc_query_dependency_robot_variable_changed)
+        self.ui.checkBox_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_dynamic_overwrite_robot_variable_changed)
+        self.ui.checkBox_tc_dependency_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_tc_dependency_dynamic_overwrite_robot_variable_changed)
+        self.ui.checkBox_dependency_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_dependency_dynamic_overwrite_robot_variable_changed)
+        self.ui.checkBox_tc_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_tc_dynamic_overwrite_robot_variable_changed)
+        
+        # * QAction Event
+        self.ui.actionExport.triggered.connect(self.action_export_triggered)
+        self.ui.actionImport.triggered.connect(self.action_import_triggered)
         
         # * Completer Event
         self.ui.search_completer = QCompleter()
@@ -332,6 +357,104 @@ class MyWindow(QMainWindow):
         self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
         self.ui.web_page_layout.addWidget(self.ui.web_view)
         self.ui.tabTCG.insertTab(5, self.ui.web_page, "Converter")
+
+    def export_tree_to_file(self, tree, filename):
+        """ Export the tree to a file. """
+        
+        def export_item(item):
+            data = {
+                'text': item.text(0),
+                'values': [item.text(i) for i in range(1, item.columnCount())],
+                'children': [export_item(item.child(i)) for i in range(item.childCount())]
+            }
+            return data
+        data = [export_item(tree.topLevelItem(i)) for i in range(tree.topLevelItemCount())]
+        with open(filename, 'w', encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
+    def import_tree_from_file(self, tree, filename):
+        """ Import the tree from a file. """
+        
+        with open(filename, 'r', encoding="utf-8") as file:
+            data = json.load(file)
+        tree.clear()
+
+        def create_item(data):
+            item = QTreeWidgetItem([data['text']] + data['values'])
+            for child_data in data['children']:
+                item.addChild(create_item(child_data))
+            return item
+
+        for item_data in data:
+            tree.addTopLevelItem(create_item(item_data))
+            
+    def action_export_triggered(self):
+        """ When the action is triggered, will export all the TCG's artifacts. """
+        
+        self.export_tree_to_file(self.ui.table_api_tree, "./artifacts/api_tree.json")
+        self.export_tree_to_file(self.ui.table_test_plan_api_list, "./artifacts/test_plan_api_list.json")
+        self.export_tree_to_file(self.ui.table_robot_file_list, "./artifacts/robot_file_list.json")
+        
+        directory_path = QFileDialog.getExistingDirectory(self.parent(), "Select Directory")
+        if directory_path:
+            FileOperation.compress_configs(directory_path)
+            GeneralTool.show_info_dialog(f"Exported to {directory_path}.") 
+            
+    def action_import_triggered(self):
+        """ When the action is triggered, will import all the TCG's artifacts. """
+        
+        # * Select the file
+        file_path, _ = QFileDialog.getOpenFileName(self.parent(), "Select File", "", "Config file (*.zip)")
+        if file_path:
+            # * Decompress the file
+            FileOperation.decompress_configs(file_path)
+            # * Reload the UI
+            GeneralTool.clean_ui_content([
+                self.ui.table_api_tree,
+                self.ui.table_generation_rule,
+                self.ui.table_dynamic_overwrite_data,
+                self.ui.table_path,
+                self.ui.table_query,
+                self.ui.list_dependency_available_api_list,
+                self.ui.table_dependency_rule,
+                self.ui.table_dependency_generation_rule,
+                self.ui.table_dependency_dynamic_overwrite_data,
+                self.ui.table_dependency_path,
+                self.ui.table_dependency_query,
+                self.ui.table_assertion_rule,
+                self.ui.table_schema,
+                self.ui.table_test_plan_api_list,
+                self.ui.text_body,
+                self.ui.table_tc_generation_rule,
+                self.ui.table_tc_dynamic_overwrite_data,
+                self.ui.table_tc_path,
+                self.ui.table_tc_query,
+                self.ui.list_tc_dependency_available_api_list,
+                self.ui.table_tc_dependency_rule,
+                self.ui.table_tc_dependency_generation_rule,
+                self.ui.table_tc_dependency_dynamic_overwrite_data,
+                self.ui.table_tc_dependency_path,
+                self.ui.table_tc_dependency_query,
+                self.ui.textbox_tc_dependency_requestbody,
+                self.ui.table_tc_assertion_rule,
+                self.ui.table_robot_file_list,
+                self.ui.text_robot_file,
+                self.ui.text_validate_log,
+            ])
+            # * Render API Tree.
+            self.import_tree_from_file(self.ui.table_api_tree, "./artifacts/api_tree.json")
+            # * Render Test Plan API.
+            self.import_tree_from_file(self.ui.table_test_plan_api_list, "./artifacts/test_plan_api_list.json")
+            # * Render Robot File List.
+            self.import_tree_from_file(self.ui.table_robot_file_list, "./artifacts/robot_file_list.json")
+            # * Re-render avaliable API list.
+            schema_list = glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml")
+            for schema in schema_list:
+                api_doc = GeneralTool.load_schema_file(schema)
+                for uri, path_item in api_doc['paths'].items():
+                    for method, operation in path_item.items():
+                        self.ui.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
+                        self.ui.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
     
     def btn_validate_openapi_doc_clicked(self):
         """ When the button is clicked, will validate the OpenAPI document. """
@@ -507,6 +630,73 @@ class MyWindow(QMainWindow):
             else:
                 return
     
+    def checkBox_dynamic_overwrite_robot_variable_changed(self):
+            """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+            current_text = self.ui.textbox_dynamic_overwrite_data_value.text()
+            if current_text == "":
+                return
+            
+            if self.ui.checkBox_dynamic_overwrite_robot_variable.isChecked():
+                if current_text.startswith("${") and current_text.endswith("}"):
+                    return
+                else:
+                    self.ui.textbox_dynamic_overwrite_data_value.setText("${" + current_text + "}")
+            else:
+                if current_text.startswith("${") and current_text.endswith("}"):
+                    self.ui.textbox_dynamic_overwrite_data_value.setText(current_text[2:-1])
+                else:
+                    return
+                
+    def checkBox_tc_dependency_dynamic_overwrite_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.text()
+        if current_text == "":
+            return
+        
+        if self.ui.checkBox_tc_dependency_dynamic_overwrite_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.setText("${" + current_text + "}")
+        else:
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.setText(current_text[2:-1])
+            else:
+                return
+            
+    def checkBox_tc_dynamic_overwrite_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_tc_dynamic_overwrite_data_value.text()
+        if current_text == "":
+            return
+        
+        if self.ui.checkBox_tc_dynamic_overwrite_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_tc_dynamic_overwrite_data_value.setText("${" + current_text + "}")
+        else:
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_tc_dynamic_overwrite_data_value.setText(current_text[2:-1])
+            else:
+                return
+            
+    def checkBox_dependency_dynamic_overwrite_robot_variable_changed(self):
+        """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
+        current_text = self.ui.textbox_dependency_dynamic_overwrite_data_value.text()
+        if current_text == "":
+            return
+        if self.ui.checkBox_dependency_dynamic_overwrite_robot_variable.isChecked():
+            if current_text.startswith("${") and current_text.endswith("}"):
+                return
+            else:
+                self.ui.textbox_dependency_dynamic_overwrite_data_value.setText("${" + current_text + "}")
+        else:
+            if current_text.startswith("${") and current_text.endswith("}"):
+                self.ui.textbox_dependency_dynamic_overwrite_data_value.setText(current_text[2:-1])
+            else:
+                return
+             
     def action_type_changed(self):
         """ When the action type is changed by the user, the form will be reloaded. """
         self.ui.additional_action.clear()
@@ -1596,6 +1786,128 @@ class MyWindow(QMainWindow):
         GeneralTool.parse_request_body(path_rules, root_item)
         GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_path, level=3)
         
+        
+    def btn_tc_dependency_add_dynamic_overwrite_data_clicked(self):
+        """ Add new dynamic overwrite data. """
+        if len(self.ui.table_tc_dependency_rule.selectedItems()) == 0 or self.ui.table_tc_dependency_rule.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        new_key = self.ui.textbox_tc_dependency_dynamic_overwrite_data_name.text()
+        new_value = self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.text()
+        
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            test_plan = json.load(f)
+            result = GeneralTool.add_key_in_json(
+                test_plan, 
+                ["test_cases", test_case_id ,"test_point", test_point_id, "dependency", dependency_type, dependency_sequence_num, "dynamic_overwrite_data"],
+                new_key,
+                new_value
+            )
+            if result is not False:
+                f.seek(0)
+                json.dump(test_plan, f, indent=4)
+                f.truncate()
+                logging.info(f"Added dependency Dynamic Overwrite Data in {file_path} successfully")
+            else:
+                logging.error(f"Added dependency Dynamic Overwrite Data in {file_path} failed")
+        GeneralTool.clean_ui_content([
+            self.ui.table_tc_dependency_dynamic_overwrite_data,
+            self.ui.checkBox_tc_dependency_dynamic_overwrite_robot_variable,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_value
+            ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_tc_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_dynamic_overwrite_data)
+        
+    def btn_tc_dependency_remove_dynamic_overwrite_data_clicked(self):
+        """ Remove selected dynamic overwrite data. """
+        if len(self.ui.table_tc_dependency_dynamic_overwrite_data.selectedItems()) == 0 or self.ui.table_tc_dependency_dynamic_overwrite_data.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_dependency_dynamic_overwrite_data_name.text()
+        
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            test_plan = json.load(f)
+            result = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["dynamic_overwrite_data"].pop(name)
+            f.seek(0)
+            json.dump(test_plan, f, indent=4)
+            f.truncate()
+            logging.info(f"Dependency dynamic overwrite data {result} is removed from {operation_id}.json")
+            
+        GeneralTool.clean_ui_content([
+            self.ui.table_tc_dependency_dynamic_overwrite_data,
+            self.ui.checkBox_tc_dependency_dynamic_overwrite_robot_variable,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_value
+        ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_tc_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_dynamic_overwrite_data)
+    
+    def btn_tc_dependency_update_dynamic_overwrite_data_clicked(self):
+        """ Update selected dynamic overwrite data. """
+        if len(self.ui.table_tc_dependency_dynamic_overwrite_data.selectedItems()) == 0 or self.ui.table_tc_dependency_dynamic_overwrite_data.selectedItems()[0].parent() is None:
+            return
+        
+        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        test_plan_selected_item_parent = test_plan_selected_item.parent()
+        test_case_id = test_plan_selected_item.text(1).split(".")[0]
+        test_point_id = test_plan_selected_item.text(1).split(".")[1]
+        operation_id = test_plan_selected_item_parent.parent().text(0)
+        dependency_type = self.ui.table_tc_dependency_rule.selectedItems()[0].parent().text(0)
+        dependency_sequence_num = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
+        name = self.ui.textbox_tc_dependency_dynamic_overwrite_data_name.text()
+        value = self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.text()
+        
+        file_path = f"./artifacts/TestPlan/{operation_id}.json"
+        with open(file_path, "r+") as f:
+            test_plan = json.load(f)
+            result = GeneralTool.update_value_in_json(
+                test_plan, 
+                ["test_cases", test_case_id ,"test_point", test_point_id, "dependency", dependency_type, dependency_sequence_num, "dynamic_overwrite_data", name],
+                value
+            )
+            if result is not False:
+                f.seek(0)
+                json.dump(test_plan, f, indent=4)
+                f.truncate()
+                logging.info(f"Update dependency Dynamic Overwrite Data in {file_path} successfully")
+            else:
+                logging.error(f"Update dependency Dynamic Overwrite Data in {file_path} failed")
+                
+        GeneralTool.clean_ui_content([
+            self.ui.table_tc_dependency_dynamic_overwrite_data,
+            self.ui.checkBox_tc_dependency_dynamic_overwrite_robot_variable,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_value
+        ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_tc_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = test_plan["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_dynamic_overwrite_data)
+        
     def table_tc_dependency_path_item_clicked(self):
         selected_item = self.ui.table_tc_dependency_path.selectedItems()[0]
         parent_item = selected_item.parent()
@@ -2033,7 +2345,7 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_query.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["query"], root_item)
             GeneralTool.expand_and_resize_tree(self.ui.table_tc_query, level=2)            
-    
+
     def btn_tc_update_query_clicked(self):
         
         if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
@@ -2138,8 +2450,134 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_path.addTopLevelItem(root_item)
             GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["path"], root_item)
             GeneralTool.expand_and_resize_tree(self.ui.table_tc_path, level=2)
+
+    def btn_tc_add_dynamic_overwrite_data_clicked(self):
+        """ Add dynamic overwrite data to the selected API. """
         
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+            return
         
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
+            name = self.ui.textbox_tc_dynamic_overwrite_data_name.text()
+            value = self.ui.textbox_tc_dynamic_overwrite_data_value.text()
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
+            
+            if not os.path.exists(file_path):
+                with open(file_path, "w") as f:
+                    json.dump({}, f)
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.add_key_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "dynamic_overwrite_data"],
+                    name, 
+                    value
+                    )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to add key `{[name, value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to add key `{[name, value]}`.")
+            GeneralTool.clean_ui_content([
+                self.ui.table_tc_dynamic_overwrite_data,
+                self.ui.textbox_tc_dynamic_overwrite_data_name,
+                self.ui.textbox_tc_dynamic_overwrite_data_value,
+                self.ui.checkBox_tc_dynamic_overwrite_robot_variable
+            ])
+            root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+            self.ui.table_tc_dynamic_overwrite_data.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["dynamic_overwrite_data"], root_item)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dynamic_overwrite_data)
+
+    def btn_tc_remove_dynamic_overwrite_data_clicked(self):
+        """ Remove Dynamic Overwrite Data Field """
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+    
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id = test_id.split(".")[0]
+            use_case_id = test_id.split(".")[1]
+            name = self.ui.textbox_tc_dynamic_overwrite_data_name.text()
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.remove_key_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "dynamic_overwrite_data", name]
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'dynamic_overwrite_data', name]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{['test_cases', test_case_id, 'test_point', use_case_id, 'dynamic_overwrite_data', name]}`.")
+            
+            GeneralTool.clean_ui_content([
+                self.ui.table_tc_dynamic_overwrite_data,
+                self.ui.textbox_tc_dynamic_overwrite_data_name,
+                self.ui.textbox_tc_dynamic_overwrite_data_value,
+                self.ui.checkBox_tc_dynamic_overwrite_robot_variable
+            ])
+            root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+            self.ui.table_tc_dynamic_overwrite_data.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["dynamic_overwrite_data"], root_item)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dynamic_overwrite_data)
+            
+    def btn_tc_update_dynamic_overwrite_data_clicked(self):             
+        
+        if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+            return
+        
+        selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None and parent_item.parent() is not None:
+            operation_id = parent_item.parent().text(0)
+            test_id = selected_item.text(1)
+            test_case_id, use_case_id = test_id.split(".")[0], test_id.split(".")[1]
+            name = self.ui.textbox_tc_dynamic_overwrite_data_name.text()
+            new_value = self.ui.textbox_tc_dynamic_overwrite_data_value.text()
+            file_path = f"./artifacts/TestPlan/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.update_value_in_json(
+                    data, 
+                    ["test_cases", test_case_id ,"test_point", use_case_id, "dynamic_overwrite_data", name],
+                    new_value
+                )
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'dynamic_overwrite_data', name, new_value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to update key `{['test_cases', test_case_id, 'test_point', use_case_id, 'dynamic_overwrite_data', name, new_value]}`.") 
+            
+            GeneralTool.clean_ui_content([
+                self.ui.table_tc_dynamic_overwrite_data,
+                self.ui.textbox_tc_dynamic_overwrite_data_name,
+                self.ui.textbox_tc_dynamic_overwrite_data_value,
+                self.ui.checkBox_tc_dynamic_overwrite_robot_variable
+            ])
+            root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+            self.ui.table_tc_dynamic_overwrite_data.addTopLevelItem(root_item)
+            GeneralTool.parse_request_body(data["test_cases"][test_case_id]["test_point"][use_case_id]["dynamic_overwrite_data"], root_item)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dynamic_overwrite_data)    
+                
     def table_tc_path_item_clicked(self):
 
         selected_item = self.ui.table_tc_path.selectedItems()[0]
@@ -2260,7 +2698,7 @@ class MyWindow(QMainWindow):
         """ Remove Generation Rule Item """
         
         # * If no API or Generation Rule is selected, return directly.
-        if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0:
+        if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0 or len(self.ui.table_api_tree.selectedItems()) == 0:
             return
         
         # * Retrieve the origin API Operation ID.
@@ -2690,6 +3128,113 @@ class MyWindow(QMainWindow):
         path_rule = data[dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rule, root_item)
         GeneralTool.expand_and_resize_tree(self.ui.table_path, level=2)
+
+    def btn_dependency_add_dynamic_overwrite_data_clicked(self):
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        
+        name = self.ui.textbox_dependency_dynamic_overwrite_data_name.text()
+        value = self.ui.textbox_dependency_dynamic_overwrite_data_value.text()
+        
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "dynamic_overwrite_data"]
+            result = GeneralTool.add_key_in_json(data, path, name, value)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([
+            self.ui.table_dependency_dynamic_overwrite_data,
+            self.ui.textbox_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_dependency_dynamic_overwrite_data_value,
+            self.ui.checkBox_dependency_dynamic_overwrite_robot_variable
+        ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = data[dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_dynamic_overwrite_data)
+        
+    def btn_dependency_remove_dynamic_overwrite_data_clicked(self):
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        name = self.ui.textbox_dependency_dynamic_overwrite_data_name.text()
+        
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "dynamic_overwrite_data", name]
+            result = GeneralTool.remove_key_in_json(data, path)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([
+            self.ui.table_dependency_dynamic_overwrite_data,
+            self.ui.textbox_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_dependency_dynamic_overwrite_data_value,
+            self.ui.checkBox_dependency_dynamic_overwrite_robot_variable
+        ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = data[dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_dynamic_overwrite_data)
+    
+    def btn_dependency_update_dynamic_overwrite_data_clicked(self):
+        
+        if len(self.ui.table_dependency_rule.selectedItems()) == 0:
+            return
+        
+        origin_api_operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+        dependency_sequence_num = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+        
+        name = self.ui.textbox_dependency_dynamic_overwrite_data_name.text()
+        value = self.ui.textbox_dependency_dynamic_overwrite_data_value.text()
+        
+        file_path = f"./artifacts/DependencyRule/{origin_api_operation_id}.json"
+        with open(file_path, "r+") as f:
+            data = json.load(f)
+            path = [dependency_type, dependency_sequence_num, "dynamic_overwrite_data", name]
+            result = GeneralTool.update_value_in_json(data, path, value)
+            if result is not False:
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
+                logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{path}`.")
+            else:
+                logging.error(f"Error updating JSON file `{file_path}` to remove key `{path}`.")
+                
+        GeneralTool.clean_ui_content([
+            self.ui.table_dependency_dynamic_overwrite_data,
+            self.ui.textbox_dependency_dynamic_overwrite_data_name,
+            self.ui.textbox_dependency_dynamic_overwrite_data_value,
+            self.ui.checkBox_dependency_dynamic_overwrite_robot_variable
+        ])
+        root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+        self.ui.table_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+        rules = data[dependency_type][dependency_sequence_num]["dynamic_overwrite_data"]
+        GeneralTool.parse_request_body(rules, root_item)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_dynamic_overwrite_data, level=2)        
         
     def table_tc_dependency_item_clicked(self):
         
@@ -2702,6 +3247,7 @@ class MyWindow(QMainWindow):
             self.ui.textbox_tc_path_dependency_name,
             self.ui.textbox_tc_path_dependency_value,
             self.ui.table_tc_dependency_additional_action,
+            self.ui.table_tc_dependency_dynamic_overwrite_data,
         ])
         
         selected_item = self.ui.table_tc_dependency_rule.selectedItems()[0]
@@ -2715,6 +3261,9 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_tc_dependency_type.setEnabled(False)
             self.ui.line_tc_api_search.setEnabled(False)
             
+            if len(self.ui.table_test_plan_api_list.selectedItems()) == 0:
+                GeneralTool.show_error_message("Please select a test case first.", "Error")
+                return
             test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
             test_plan_parent_item = test_plan_selected_item.parent()
             operation_id = test_plan_parent_item.parent().text(0)
@@ -2773,6 +3322,15 @@ class MyWindow(QMainWindow):
                 self.ui.textbox_tc_dependency_requestbody.setPlainText(testdata_str)
             except FileNotFoundError:
                 logging.info(f"Test Data `{testdata_path}` is not exist.")
+                
+            # * Render dynamic overwrite data
+            if 'dynamic_overwrite_data' in data:
+                root_item = QTreeWidgetItem(["Dynamic Overwrite Data"])
+                self.ui.table_tc_dependency_dynamic_overwrite_data.addTopLevelItem(root_item)
+                GeneralTool.parse_request_body(data["dynamic_overwrite_data"], root_item)
+                GeneralTool.expand_and_resize_tree(self.ui.table_tc_dependency_dynamic_overwrite_data)
+            else:
+                logging.info(f"Dynamic Overwrite Data is not exist in the dependency rule `{operation_id}`.")
                 
         else:
             self.ui.comboBox_tc_dependency_type.setEnabled(True)
@@ -2872,7 +3430,7 @@ class MyWindow(QMainWindow):
                 sequence_num = '1'
             
             obj_name, action = GeneralTool._retrieve_obj_and_action(api)
-            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {},}
+            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {}, "dynamic_overwrite_data": {}}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
                 f.seek(0)
@@ -3006,33 +3564,24 @@ class MyWindow(QMainWindow):
     def table_query_item_clicked(self):
         selected_item = self.ui.table_query.selectedItems()[0]
         parent_item = selected_item.parent()
-        
         if parent_item is not None and parent_item.parent() is None:
             self.ui.textbox_query_name.setText(selected_item.text(0))
             self.ui.textbox_query_value.setText(selected_item.child(4).text(1))
         
-    def btn_add_path_clicked(self):
-        if len(self.ui.table_api_tree.selectedItems()) == 0:
+    def btn_add_dynamic_overwrite_data_clicked(self):
+        if len (self.ui.table_api_tree.selectedItems()) == 0:
             return
-        
         selected_item = self.ui.table_api_tree.selectedItems()[0]
         parent_item = selected_item.parent()
         if parent_item is not None and parent_item.parent() is None:
-            name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
-            file_path = f"./artifacts/PathRule/{operation_id}.json"
+            name, value, operation_id = self.ui.textbox_dynamic_overwrite_data_name.text(), self.ui.textbox_dynamic_overwrite_data_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
+            file_path = f"./artifacts/DynamicOverwrite/{operation_id}.json"
             if not os.path.exists(file_path):
                 with open(file_path, "w") as f:
                     json.dump({}, f)
             with open(file_path, "r+") as f:
                 data = json.load(f)
-                new_value = {
-                    "Type": "",
-                    "Format": "",
-                    "Required": "",
-                    "Nullable": "",
-                    "Value": value,
-                }
-                result = GeneralTool.add_key_in_json(data, None, name, new_value)
+                result = GeneralTool.add_key_in_json(data, None, name, value)
                 if result is not False:
                     f.seek(0)
                     json.dump(data, f, indent=4)
@@ -3040,10 +3589,92 @@ class MyWindow(QMainWindow):
                     logging.info(f"Successfully updating JSON file `{file_path}` to add key `{[name, value]}`.")
                 else:
                     logging.error(f"Error updating JSON file `{file_path}` to add key `{[name, value]}`.")
+            GeneralTool.clean_ui_content([self.ui.textbox_dynamic_overwrite_data_name, self.ui.textbox_dynamic_overwrite_data_value, self.ui.checkBox_dynamic_overwrite_robot_variable])
+            GeneralTool.parse_dynamic_overwrite_data(operation_id, self.ui.table_dynamic_overwrite_data)
+            GeneralTool.expand_and_resize_tree(self.ui.table_dynamic_overwrite_data)
+        
+    def btn_update_dynamic_overwrite_data_clicked(self):
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_dynamic_overwrite_data.selectedItems()) == 0:
+            return
+        
+        selected_item = self.ui.table_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None and parent_item.parent() is None:
+            name, value, operation_id = self.ui.textbox_dynamic_overwrite_data_name.text(), self.ui.textbox_dynamic_overwrite_data_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
+            file_path = f"./artifacts/DynamicOverwrite/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.update_value_in_json(data, [name], value)
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to update key `{[name, value]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to update key `{[name, value]}`.")
+        GeneralTool.clean_ui_content([self.ui.textbox_dynamic_overwrite_data_name, self.ui.textbox_dynamic_overwrite_data_value, self.ui.checkBox_dynamic_overwrite_robot_variable])
+        GeneralTool.parse_dynamic_overwrite_data(operation_id, self.ui.table_dynamic_overwrite_data)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dynamic_overwrite_data)
+    
+    def btn_remove_dynamic_overwrite_data_clicked(self):
+        """Remove Dynamic Overwrite Data Item"""
+        
+        if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_dynamic_overwrite_data.selectedItems()) == 0:
+            return
+
+        selected_item = self.ui.table_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None and parent_item.parent() is None:
+            name = selected_item.text(0)
+            operation_id = self.ui.table_api_tree.selectedItems()[0].text(4)
+            file_path = f"./artifacts/DynamicOverwrite/{operation_id}.json"
+            with open(file_path, "r+") as f:
+                data = json.load(f)
+                result = GeneralTool.remove_key_in_json(data, [name])
+                if result is not False:
+                    f.seek(0)
+                    json.dump(data, f, indent=4)
+                    f.truncate()
+                    logging.info(f"Successfully updating JSON file `{file_path}` to remove key `{[name]}`.")
+                else:
+                    logging.error(f"Error updating JSON file `{file_path}` to remove key `{[name]}`.")
+        GeneralTool.clean_ui_content([self.ui.table_dynamic_overwrite_data, self.ui.textbox_dynamic_overwrite_data_value, self.ui.checkBox_dynamic_overwrite_robot_variable])
+        GeneralTool.parse_dynamic_overwrite_data(operation_id, self.ui.table_dynamic_overwrite_data)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dynamic_overwrite_data)
+        
+    # def btn_add_path_clicked(self):
+    #     if len(self.ui.table_api_tree.selectedItems()) == 0:
+    #         return
+        
+    #     selected_item = self.ui.table_api_tree.selectedItems()[0]
+    #     parent_item = selected_item.parent()
+    #     if parent_item is not None and parent_item.parent() is None:
+    #         name, value, operation_id = self.ui.textbox_path_name.text(), self.ui.textbox_path_value.text(), self.ui.table_api_tree.selectedItems()[0].text(4)
+    #         file_path = f"./artifacts/PathRule/{operation_id}.json"
+    #         if not os.path.exists(file_path):
+    #             with open(file_path, "w") as f:
+    #                 json.dump({}, f)
+    #         with open(file_path, "r+") as f:
+    #             data = json.load(f)
+    #             new_value = {
+    #                 "Type": "",
+    #                 "Format": "",
+    #                 "Required": "",
+    #                 "Nullable": "",
+    #                 "Value": value,
+    #             }
+    #             result = GeneralTool.add_key_in_json(data, None, name, new_value)
+    #             if result is not False:
+    #                 f.seek(0)
+    #                 json.dump(data, f, indent=4)
+    #                 f.truncate()
+    #                 logging.info(f"Successfully updating JSON file `{file_path}` to add key `{[name, value]}`.")
+    #             else:
+    #                 logging.error(f"Error updating JSON file `{file_path}` to add key `{[name, value]}`.")
                     
-            GeneralTool.clean_ui_content([self.ui.textbox_path_name, self.ui.textbox_path_value])
-            GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
-            GeneralTool.expand_and_resize_tree(self.ui.table_path)
+    #         GeneralTool.clean_ui_content([self.ui.textbox_path_name, self.ui.textbox_path_value])
+    #         GeneralTool.parse_path_rule(operation_id, self.ui.table_path)
+    #         GeneralTool.expand_and_resize_tree(self.ui.table_path)
         
     def btn_update_path_clicked(self):
         if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_path.selectedItems()) == 0:
@@ -3258,7 +3889,51 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_data_rule_nullable,
             self.ui.textbox_data_rule_regex_pattern
         )
-                 
+        GeneralTool.render_dynamic_overwrite_data(
+            selected_item,
+            self.ui.textbox_dynamic_overwrite_data_name
+        )
+        
+    def table_dynamic_overwrite_data_item_clicked(self):
+        selected_item = self.ui.table_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None:
+            GeneralTool.render_dynamic_overwrite_data(
+                selected_item,
+                self.ui.textbox_dynamic_overwrite_data_name,
+            )
+            self.ui.textbox_dynamic_overwrite_data_value.setText(selected_item.text(1))
+    
+    def table_dependency_dynamic_overwrite_data_item_clicked(self):
+        selected_item = self.ui.table_dependency_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None:
+            GeneralTool.render_dynamic_overwrite_data(
+                selected_item,
+                self.ui.textbox_dependency_dynamic_overwrite_data_name,
+            )
+            self.ui.textbox_dependency_dynamic_overwrite_data_value.setText(selected_item.text(1))
+            
+    def table_tc_dynamic_overwrite_data_item_clicked(self):
+        selected_item = self.ui.table_tc_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None:
+            GeneralTool.render_dynamic_overwrite_data(
+                selected_item,
+                self.ui.textbox_tc_dynamic_overwrite_data_name,
+            )
+            self.ui.textbox_tc_dynamic_overwrite_data_value.setText(selected_item.text(1))
+            
+    def table_tc_dependency_dynamic_overwrite_data_item_clicked(self):
+        selected_item = self.ui.table_tc_dependency_dynamic_overwrite_data.selectedItems()[0]
+        parent_item = selected_item.parent()
+        if parent_item is not None:
+            GeneralTool.render_dynamic_overwrite_data(
+                selected_item,
+                self.ui.textbox_tc_dependency_dynamic_overwrite_data_name,
+            )
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_value.setText(selected_item.text(1))
+                             
     def table_dependency_generation_rule_item_clicked(self):
         """ 
         When the user click the item in the table_dependency_generation_rule.
@@ -3283,7 +3958,11 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_dependency_data_rule_required,
             self.ui.comboBox_dependency_data_rule_nullable,
             self.ui.textbox_dependency_data_rule_regex_pattern,
-        )        
+        )
+        GeneralTool.render_dynamic_overwrite_data(
+            selected_item,
+            self.ui.textbox_dependency_dynamic_overwrite_data_name
+        )     
         
     def table_tc_generation_rule_item_clicked(self):
         """
@@ -3309,7 +3988,11 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_tc_data_rule_required,
             self.ui.comboBox_tc_data_rule_nullable,
             self.ui.textbox_tc_data_rule_regex_pattern,
-        )  
+        )
+        GeneralTool.render_dynamic_overwrite_data(
+            selected_item,
+            self.ui.textbox_tc_dynamic_overwrite_data_name
+        )
         
     def table_tc_dependency_generation_rule_item_clicked(self):
         """
@@ -3335,7 +4018,11 @@ class MyWindow(QMainWindow):
             self.ui.comboBox_tc_dependency_data_rule_required,
             self.ui.comboBox_tc_dependency_data_rule_nullable,
             self.ui.textbox_tc_dependency_data_rule_regex_pattern,
-        )  
+        )
+        GeneralTool.render_dynamic_overwrite_data(
+            selected_item,
+            self.ui.textbox_tc_dependency_dynamic_overwrite_data_name
+        )
         
     def btn_api_table_add_use_case_clicked(self):
         """ This Add Button is used to duplicate an existing first-level API, and also copy over the Generation Rule, Assertion Rule, and Dependency Request Body. """
@@ -3364,7 +4051,7 @@ class MyWindow(QMainWindow):
             
             # * Copy the Generation Rule and Assertion Rule and Dependency Request Body and Path Rule
             operation_id = selected_item.text(4)
-            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]:
+            for folder in ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule", "DynamicOverwrite"]:
                 file_path = f"./artifacts/{folder}/{operation_id}.json"
                 if os.path.exists(file_path):
                     new_file_path = f"./artifacts/{folder}/{new_operation_id}.json"
@@ -3659,6 +4346,12 @@ class MyWindow(QMainWindow):
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have requestBody.')
                     
+                    # * Create the Dynamica Overwrite Rule File
+                    if 'requestBody' in operation:
+                        dynamic_overwrite_rule = {}
+                        with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", "w") as f:
+                            json.dump(dynamic_overwrite_rule, f, indent=4)
+                    
                     # * Create the Assertion Rule File
                     if 'responses' in operation:
                         assertion_rule = GeneralTool.parse_schema_to_assertion_rule(operation['responses'])
@@ -3731,14 +4424,14 @@ class MyWindow(QMainWindow):
         selected_items = self.ui.table_api_tree.selectedItems()
         for item in selected_items:
             if item.parent() is None:
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule", "DynamicOverwrite"]
                 for folder in teardown_folder:  
                     for child_file in glob.glob(f"./artifacts/{folder}/{item.text(0)}*.json"):
                         os.remove(child_file)
                 self.ui.table_api_tree.takeTopLevelItem(self.ui.table_api_tree.indexOfTopLevelItem(item))
             else:
                 file_name = item.text(4)
-                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule"]
+                teardown_folder = ["GenerationRule", "AssertionRule", "PathRule", "DependencyRule", "AdditionalAction", "QueryRule", "DynamicOverwrite"]
                 for folder in teardown_folder:
                     file_path = f"./artifacts/{folder}/" + file_name + ".json"
                     if os.path.exists(file_path):
@@ -3876,6 +4569,7 @@ class MyWindow(QMainWindow):
             "./artifacts/DependencyRule", 
             "./artifacts/AdditionalAction", 
             "./artifacts/QueryRule",
+            "./artifacts/DynamicOverwrite",
             "./schemas",
             ])
         GeneralTool.clean_ui_content([
@@ -3963,7 +4657,7 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_path, self.ui.textbox_tc_path_name, self.ui.textbox_tc_path_value, self.ui.table_tc_dependency_rule, self.ui.table_tc_dependency_generation_rule,
             self.ui.comboBox_tc_dependency_type, self.ui.line_tc_api_search, self.ui.textbox_tc_dependency_return_variable_name, self.ui.textbox_tc_description,
             self.ui.textbox_tc_request_name, self.ui.textbox_tc_response_name, self.ui.table_tc_additional_action, self.ui.table_tc_dependency_additional_action,
-            self.ui.table_tc_query, self.ui.table_tc_dependency_query, self.ui.table_tc_generation_rule
+            self.ui.table_tc_query, self.ui.table_tc_dependency_query, self.ui.table_tc_generation_rule, self.ui.table_tc_dependency_dynamic_overwrite_data, self.ui.table_tc_dynamic_overwrite_data
         ])
         self.ui.comboBox_tc_dependency_type.setEnabled(True)
         self.ui.line_tc_api_search.setEnabled(True)
@@ -4053,6 +4747,10 @@ class MyWindow(QMainWindow):
             GeneralTool.parse_tc_additional_action_rule(test_plan_name, self.ui.table_tc_additional_action, test_case_id, test_point_id)
             GeneralTool.expand_and_resize_tree(self.ui.table_tc_additional_action, level=3)
             
+            # * Render Dynamic Overwrite Data
+            GeneralTool.parse_tc_dynamic_overwrite_data(test_plan_name, self.ui.table_tc_dynamic_overwrite_data, test_case_id, test_point_id)
+            GeneralTool.expand_and_resize_tree(self.ui.table_tc_dynamic_overwrite_data)
+            
     def api_tree_item_clicked(self, item, column):
         """When the api tree item is clicked."""
         # * Clear the table
@@ -4077,6 +4775,9 @@ class MyWindow(QMainWindow):
             self.ui.table_additional_action,
             self.ui.textbox_data_rule_regex_pattern,
             self.ui.table_dependency_additional_action,
+            self.ui.table_dynamic_overwrite_data,
+            self.ui.textbox_dynamic_overwrite_data_name,
+            self.ui.textbox_dynamic_overwrite_data_value,
         ])
         self.ui.comboBox_dependency_type.setEnabled(True)
         self.ui.line_api_search.setEnabled(True)
@@ -4120,7 +4821,8 @@ class MyWindow(QMainWindow):
             
         table_path, table_method = item.text(2), item.text(3)
         logging.debug(f"Table Path: {table_path}, Table Method: {table_method}, Table Column: {column}")
-        
+        if not hasattr(self.ui, 'schema_list') or len(self.ui.schema_list) == 0:
+           self.ui.schema_list = glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml")
         for schema in self.ui.schema_list:
             file_path = schema
             api_doc = GeneralTool.load_schema_file(file_path)   

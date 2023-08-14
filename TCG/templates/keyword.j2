@@ -22,6 +22,14 @@
         {% endfor -%}
         {%- endif %}
         {%- endif %}
+{#- Setup Dynamic Overwrite Data #}
+        {% if 'dynamic_overwrite_data' in setup -%}
+        {% if setup.dynamic_overwrite_data != {} -%}
+        {% for dynamic_overwrite_data_id, dynamic_overwrite_data in setup.dynamic_overwrite_data.items() -%}
+        ...  {{ dynamic_overwrite_data_id }}={{ dynamic_overwrite_data }}
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
 {#- Setup Query #}
         {%- if 'query' in setup -%}
         {% if setup.query != {} -%}
@@ -97,6 +105,14 @@
             {% set value = path -%}
         {% endif -%}
         ...  {{ path_id }}={{ value }}  
+        {% endfor -%}
+        {%- endif %}
+        {%- endif %}
+{#- Teardown Dynamic Overwrite Data #}
+        {% if 'dynamic_overwrite_data' in teardown -%}
+        {% if teardown.dynamic_overwrite_data != {} -%}
+        {% for dynamic_overwrite_data_id, dynamic_overwrite_data in teardown.dynamic_overwrite_data.items() -%}
+        ...  {{ dynamic_overwrite_data_id }}={{ dynamic_overwrite_data }}
         {% endfor -%}
         {%- endif %}
         {%- endif %}
