@@ -6375,51 +6375,6 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-         <widget class="QGroupBox" name="group_test_strategy_2">
-          <property name="geometry">
-           <rect>
-            <x>310</x>
-            <y>160</y>
-            <width>451</width>
-            <height>141</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <family>Segoe UI</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="title">
-           <string>Product Handler</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_8">
-           <item>
-            <widget class="QRadioButton" name="radio_general">
-             <property name="text">
-              <string>General</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="radio_fortihawkeye">
-             <property name="text">
-              <string>FortiHawkEye</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="radio_fortinac">
-             <property name="text">
-              <string>FortiNAC</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
          <widget class="QGroupBox" name="group_test_strategy_3">
           <property name="geometry">
            <rect>
@@ -6469,13 +6424,13 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-         <widget class="QGroupBox" name="group_test_strategy_4">
+         <widget class="QGroupBox" name="option_dynamic_test_data">
           <property name="geometry">
            <rect>
             <x>310</x>
             <y>80</y>
             <width>451</width>
-            <height>61</height>
+            <height>171</height>
            </rect>
           </property>
           <property name="font">
@@ -6525,6 +6480,25 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <family>Segoe UI</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color:red;</string>
+             </property>
+             <property name="text">
+              <string>Note: Activate the 'Dynamic Test Data' option to generate test data dynamically for API requests with a body using field rules and the 'random' library. Deactivate the option to use predefined data instead.</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

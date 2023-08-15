@@ -2,6 +2,7 @@ import time
 
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QFormLayout, QComboBox, QMessageBox, QProgressBar
 from PyQt6.QtCore import QBasicTimer, QThread, pyqtSignal
+
 class CustomForm(QWidget):
     def __init__(self, parent=None):
         super(CustomForm, self).__init__(parent)

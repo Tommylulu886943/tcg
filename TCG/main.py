@@ -114,7 +114,9 @@ class MyWindow(QMainWindow):
         self.ui.dependency_additional_action = QComboBox(self.ui.tab_50)
         self.ui.dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
         self.ui.dependency_form = CustomForm(self.ui.tab_50)
-        self.ui.dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 250))
+        form_layout = self.ui.dependency_form.layout
+        form_layout.setSpacing(10)
         self.ui.dependency_additional_action.currentTextChanged.connect(self.dependency_additional_action_changed)
         self.ui.add_dependency_additional_action = QPushButton("Add Action", self.ui.tab_50)
         self.ui.add_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
@@ -149,16 +151,18 @@ class MyWindow(QMainWindow):
         self.ui.tc_additional_action = QComboBox(self.ui.tab_51)
         self.ui.tc_additional_action.setGeometry(QtCore.QRect(300, 35, 250, 30))
         self.ui.tc_form = CustomForm(self.ui.tab_51)
-        self.ui.tc_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.tc_form.setGeometry(QtCore.QRect(10, 80, 400, 250))
+        form_layout = self.ui.tc_form.layout
+        form_layout.setSpacing(10)
         self.ui.tc_additional_action.currentTextChanged.connect(self.tc_additional_action_changed)
         self.ui.add_tc_additional_action = QPushButton("Add Action", self.ui.tab_51)
-        self.ui.add_tc_additional_action.setGeometry(QtCore.QRect(10, 300, 120, 30))
+        self.ui.add_tc_additional_action.setGeometry(QtCore.QRect(10, 350, 120, 30))
         self.ui.add_tc_additional_action.clicked.connect(self.btn_tc_add_special_action)
         self.ui.remove_tc_additional_action = QPushButton("Remove Action", self.ui.tab_51)
-        self.ui.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 300, 120, 30))
+        self.ui.remove_tc_additional_action.setGeometry(QtCore.QRect(140, 350, 120, 30))
         self.ui.remove_tc_additional_action.clicked.connect(self.btn_tc_remove_special_action)
         self.ui.table_tc_additional_action = QtWidgets.QTreeWidget(parent=self.ui.tab_51)
-        self.ui.table_tc_additional_action.setGeometry(QtCore.QRect(10, 350, 600, 400))
+        self.ui.table_tc_additional_action.setGeometry(QtCore.QRect(10, 400, 600, 400))
         self.ui.table_tc_additional_action.setObjectName("table_tc_additional_action")
         self.ui.table_tc_additional_action.headerItem().setText(0, "Index")
         self.ui.table_tc_additional_action.headerItem().setText(1, "Action Name")
@@ -184,7 +188,9 @@ class MyWindow(QMainWindow):
         self.ui.tc_dependency_additional_action = QComboBox(self.ui.tab_52)
         self.ui.tc_dependency_additional_action.setGeometry(QtCore.QRect(320, 35, 240, 30))
         self.ui.tc_dependency_form = CustomForm(self.ui.tab_52)
-        self.ui.tc_dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 200))
+        self.ui.tc_dependency_form.setGeometry(QtCore.QRect(10, 80, 400, 250))
+        form_layout = self.ui.tc_dependency_form.layout
+        form_layout.setSpacing(10)
         self.ui.tc_dependency_additional_action.currentTextChanged.connect(self.tc_dependency_additional_action_changed)
         self.ui.add_tc_dependency_additional_action = QPushButton("Add Action", self.ui.tab_52)
         self.ui.add_tc_dependency_additional_action.setGeometry(QtCore.QRect(630, 10, 100, 30))
@@ -360,9 +366,21 @@ class MyWindow(QMainWindow):
 
     def closeEvent(self, event):
         """ The close event of the main window and will clean the artifacts. """
-        reply = QtWidgets.QMessageBox.question(self, 'Confirmation', 'Are you sure you want to exit?', 
-                       QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+        msg_box = QMessageBox(self)
+        msg_box.setWindowTitle("Confirmation")
+        msg_box.setText("Are you sure you want to exit?")
+        
+        no_button = msg_box.addButton(QMessageBox.StandardButton.No)
+        yes_button = msg_box.addButton(QMessageBox.StandardButton.Yes)
+        save_button = msg_box.addButton("Save", QMessageBox.ButtonRole.ActionRole)
+        msg_box.setDefaultButton(no_button)
+        msg_box.exec()
+        
+        clicked_button = msg_box.clickedButton()
+        if clicked_button == save_button:
+            self.action_export_triggered()
+            event.accept()
+        elif clicked_button == yes_button:
             GeneralTool.teardown_folder_files([
                 "./artifacts/AdditionalAction",
                 "./artifacts/AssertionRule",
@@ -429,8 +447,10 @@ class MyWindow(QMainWindow):
         # * Select the file
         file_path, _ = QFileDialog.getOpenFileName(self.parent(), "Select File", "", "Config file (*.zip)")
         if file_path:
+            
             # * Decompress the file
             FileOperation.decompress_configs(file_path)
+            
             # * Reload the UI
             GeneralTool.clean_ui_content([
                 self.ui.table_api_tree,
@@ -466,10 +486,16 @@ class MyWindow(QMainWindow):
             ])
             # * Render API Tree.
             self.import_tree_from_file(self.ui.table_api_tree, "./artifacts/api_tree.json")
+            GeneralTool.expand_and_resize_tree(self.ui.table_api_tree, level=2)
+            
             # * Render Test Plan API.
             self.import_tree_from_file(self.ui.table_test_plan_api_list, "./artifacts/test_plan_api_list.json")
+            GeneralTool.expand_and_resize_tree(self.ui.table_test_plan_api_list, level=2)
+            
             # * Render Robot File List.
             self.import_tree_from_file(self.ui.table_robot_file_list, "./artifacts/robot_file_list.json")
+            GeneralTool.expand_and_resize_tree(self.ui.table_robot_file_list)
+            
             # * Re-render avaliable API list.
             schema_list = glob.glob("./schemas/*.json") + glob.glob("./schemas/*.yaml")
             for schema in schema_list:
@@ -1668,8 +1694,11 @@ class MyWindow(QMainWindow):
         
     def btn_generate_test_case_clicked(self):
         
-        GeneralTool.teardown_folder_files(["./artifacts/TestCase/RESTful_API"])  
-        Render.generate_robot_test_case()
+        GeneralTool.teardown_folder_files(["./artifacts/TestCase/RESTful_API"])
+        if self.ui.radio_dynamic_data_yes.isChecked():
+            Render.generate_robot_test_case(dynamic_data=True)
+        else:
+            Render.generate_robot_test_case(dynamic_data=False)
         self.ui.tabTCG.setCurrentIndex(2)
         GeneralTool.clean_ui_content([self.ui.table_robot_file_list, self.ui.text_robot_file])
         GeneralTool.rander_robot_file_list(self.ui.table_robot_file_list)
