@@ -14,3 +14,6 @@ config/*.*
 pyqt6-env/
 tcg/venv/
 venv/
+*.zip
+*.json
+*.yaml
