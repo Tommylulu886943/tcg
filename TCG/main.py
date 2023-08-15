@@ -3774,7 +3774,7 @@ class MyWindow(QMainWindow):
             
             GeneralTool.clean_ui_content([self.ui.textbox_query_name, self.ui.textbox_query_value])
             GeneralTool.parse_query_rule(operation_id, self.ui.table_query)
-            GeneralTool.expand_and_resize_tree(self.ui.table_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
 
     def btn_remove_query_clicked(self):
         if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_query.selectedItems()) == 0:
@@ -3798,8 +3798,8 @@ class MyWindow(QMainWindow):
                     logging.error(f"Error updating JSON file `{file_path}` to remove key `{[name]}`.")
         
             GeneralTool.clean_ui_content([self.ui.textbox_query_name, self.ui.textbox_query_value])
-            GeneralTool.parse_path_rule(operation_id, self.ui.table_query)
-            GeneralTool.expand_and_resize_tree(self.ui.table_path)
+            GeneralTool.parse_query_rule(operation_id, self.ui.table_query)
+            GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
                 
     def btn_remove_path_clicked(self):
         if len(self.ui.table_api_tree.selectedItems()) == 0 or len(self.ui.table_path.selectedItems()) == 0:

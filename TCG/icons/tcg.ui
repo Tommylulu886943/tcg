@@ -340,7 +340,7 @@
                  <item row="0" column="0">
                   <widget class="QTabWidget" name="tabWidget">
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="tab_12">
                     <attribute name="title">
@@ -747,19 +747,6 @@
                     <layout class="QHBoxLayout" name="horizontalLayout_15">
                      <item>
                       <layout class="QGridLayout" name="gridLayout_44">
-                       <item row="1" column="0">
-                        <widget class="QPushButton" name="btn_remove_dynamic_overwrite_data">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Remove</string>
-                         </property>
-                        </widget>
-                       </item>
                        <item row="1" column="2">
                         <widget class="QCheckBox" name="checkBox_dynamic_overwrite_robot_variable">
                          <property name="text">
@@ -777,19 +764,6 @@
                          </property>
                          <property name="text">
                           <string>Value : </string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="0">
-                        <widget class="QPushButton" name="btn_update_dynamic_overwrite_data">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Update</string>
                          </property>
                         </widget>
                        </item>
@@ -875,6 +849,32 @@
                            <string>Value</string>
                           </property>
                          </column>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QPushButton" name="btn_update_dynamic_overwrite_data">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Update</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="0">
+                        <widget class="QPushButton" name="btn_remove_dynamic_overwrite_data">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Remove</string>
+                         </property>
                         </widget>
                        </item>
                       </layout>
@@ -1130,19 +1130,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QPushButton" name="btn_update_path">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Update</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="3">
                   <widget class="QLineEdit" name="textbox_path_value">
                    <property name="maximumSize">
@@ -1179,19 +1166,6 @@
                    </column>
                   </widget>
                  </item>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="btn_remove_path">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Remove</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="0" column="1">
                   <widget class="QLabel" name="label_34">
                    <property name="font">
@@ -1225,6 +1199,32 @@
                   <widget class="QCheckBox" name="checkBox_path_robot_variable">
                    <property name="text">
                     <string>Robot Variable</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="btn_remove_path">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Remove</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="btn_update_path">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Update</string>
                    </property>
                   </widget>
                  </item>
@@ -1294,32 +1294,6 @@
                    </column>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QPushButton" name="btn_update_query">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Update</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="btn_remove_query">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Remove</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="2">
                   <widget class="QCheckBox" name="checkBox_query_robot_variable">
                    <property name="text">
@@ -1356,6 +1330,32 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="btn_remove_query">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Remove</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="btn_update_query">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Update</string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </item>
               </layout>
@@ -1371,7 +1371,7 @@
                   <number>10</number>
                  </property>
                  <item row="0" column="0">
-                  <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,4">
+                  <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0">
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
@@ -1404,8 +1404,8 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="0">
-                    <widget class="QPushButton" name="btn_remove_dependency_rule">
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="label_48">
                      <property name="font">
                       <font>
                        <family>Segoe UI</family>
@@ -1413,7 +1413,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>Remove</string>
+                      <string>API :</string>
                      </property>
                     </widget>
                    </item>
@@ -1436,19 +1436,6 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="2">
-                    <widget class="QLabel" name="label_48">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>API :</string>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="0" column="3">
                     <widget class="QComboBox" name="comboBox_dependency_type">
                      <property name="font">
@@ -1467,19 +1454,6 @@
                        <string>Teardown</string>
                       </property>
                      </item>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QPushButton" name="btn_up_dependency_rule">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Up</string>
-                     </property>
                     </widget>
                    </item>
                    <item row="1" column="1">
@@ -1505,6 +1479,19 @@
                      </property>
                      <property name="text">
                       <string>Type :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="btn_up_dependency_rule">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Up</string>
                      </property>
                     </widget>
                    </item>
@@ -1595,7 +1582,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="0" rowspan="2">
+                   <item row="1" column="0">
                     <widget class="QPushButton" name="btn_update_dependency_rule">
                      <property name="font">
                       <font>
@@ -1605,6 +1592,19 @@
                      </property>
                      <property name="text">
                       <string>Update</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0" rowspan="2">
+                    <widget class="QPushButton" name="btn_remove_dependency_rule">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Remove</string>
                      </property>
                     </widget>
                    </item>
@@ -2107,19 +2107,6 @@
                           <layout class="QHBoxLayout" name="horizontalLayout_8">
                            <item>
                             <layout class="QGridLayout" name="gridLayout_45">
-                             <item row="1" column="0">
-                              <widget class="QPushButton" name="btn_dependency_remove_dynamic_overwrite_data">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Remove</string>
-                               </property>
-                              </widget>
-                             </item>
                              <item row="1" column="2">
                               <widget class="QCheckBox" name="checkBox_dependency_dynamic_overwrite_robot_variable">
                                <property name="text">
@@ -2137,19 +2124,6 @@
                                </property>
                                <property name="text">
                                 <string>Value : </string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item row="2" column="0">
-                              <widget class="QPushButton" name="btn_dependency_update_dynamic_overwrite_data">
-                               <property name="font">
-                                <font>
-                                 <family>Segoe UI</family>
-                                 <pointsize>10</pointsize>
-                                </font>
-                               </property>
-                               <property name="text">
-                                <string>Update</string>
                                </property>
                               </widget>
                              </item>
@@ -2235,6 +2209,32 @@
                                  <string>Value</string>
                                 </property>
                                </column>
+                              </widget>
+                             </item>
+                             <item row="2" column="0">
+                              <widget class="QPushButton" name="btn_dependency_remove_dynamic_overwrite_data">
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Remove</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="1" column="0">
+                              <widget class="QPushButton" name="btn_dependency_update_dynamic_overwrite_data">
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                 <pointsize>10</pointsize>
+                                </font>
+                               </property>
+                               <property name="text">
+                                <string>Update</string>
+                               </property>
                               </widget>
                              </item>
                             </layout>
@@ -2471,19 +2471,6 @@
                     <layout class="QHBoxLayout" name="horizontalLayout">
                      <item>
                       <layout class="QGridLayout" name="gridLayout_17">
-                       <item row="0" column="0">
-                        <widget class="QPushButton" name="btn_remove_dependency_path">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Remove</string>
-                         </property>
-                        </widget>
-                       </item>
                        <item row="0" column="1">
                         <widget class="QLabel" name="label_41">
                          <property name="font">
@@ -2494,19 +2481,6 @@
                          </property>
                          <property name="text">
                           <string>Name : </string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="0">
-                        <widget class="QPushButton" name="btn_update_dependency_path">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Update</string>
                          </property>
                         </widget>
                        </item>
@@ -2570,6 +2544,32 @@
                          </property>
                         </widget>
                        </item>
+                       <item row="1" column="0">
+                        <widget class="QPushButton" name="btn_remove_dependency_path">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Remove</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QPushButton" name="btn_update_dependency_path">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Update</string>
+                         </property>
+                        </widget>
+                       </item>
                       </layout>
                      </item>
                     </layout>
@@ -2591,32 +2591,6 @@
                          </property>
                          <property name="text">
                           <string>Name : </string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="0">
-                        <widget class="QPushButton" name="btn_update_dependency_query">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Update</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="0">
-                        <widget class="QPushButton" name="btn_remove_dependency_query">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Remove</string>
                          </property>
                         </widget>
                        </item>
@@ -2677,6 +2651,32 @@
                         <widget class="QCheckBox" name="checkBox_query_dependency_robot_variable">
                          <property name="text">
                           <string>Robot Variable</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QPushButton" name="btn_update_dependency_query">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Update</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QPushButton" name="btn_remove_dependency_query">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Remove</string>
                          </property>
                         </widget>
                        </item>
@@ -2961,19 +2961,6 @@
                   </widget>
                  </item>
                  <item row="1" column="0" colspan="2">
-                  <widget class="QPushButton" name="btn_remove_assertion_rule">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Remove</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0" colspan="2">
                   <widget class="QPushButton" name="btn_update_assertion_rule">
                    <property name="font">
                     <font>
@@ -2983,6 +2970,19 @@
                    </property>
                    <property name="text">
                     <string>Update</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0" colspan="2">
+                  <widget class="QPushButton" name="btn_remove_assertion_rule">
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Remove</string>
                    </property>
                   </widget>
                  </item>
@@ -3923,19 +3923,6 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="2" column="0">
-                         <widget class="QPushButton" name="btn_tc_update_dynamic_overwrite_data">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Update</string>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="1" column="1">
                          <widget class="QLabel" name="label_126">
                           <property name="font">
@@ -4020,7 +4007,14 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="1" column="0">
+                        <item row="1" column="2">
+                         <widget class="QCheckBox" name="checkBox_tc_dynamic_overwrite_robot_variable">
+                          <property name="text">
+                           <string>Robot Variable</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="0">
                          <widget class="QPushButton" name="btn_tc_remove_dynamic_overwrite_data">
                           <property name="font">
                            <font>
@@ -4033,10 +4027,16 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="1" column="2">
-                         <widget class="QCheckBox" name="checkBox_tc_dynamic_overwrite_robot_variable">
+                        <item row="1" column="0">
+                         <widget class="QPushButton" name="btn_tc_update_dynamic_overwrite_data">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
                           <property name="text">
-                           <string>Robot Variable</string>
+                           <string>Update</string>
                           </property>
                          </widget>
                         </item>
@@ -4273,7 +4273,10 @@
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_11">
                 <item>
-                 <layout class="QGridLayout" name="gridLayout_22">
+                 <layout class="QGridLayout" name="gridLayout_22" columnstretch="1,1,1,8">
+                  <property name="spacing">
+                   <number>10</number>
+                  </property>
                   <item row="2" column="0" colspan="4">
                    <widget class="QTreeWidget" name="table_tc_path">
                     <property name="styleSheet">
@@ -4293,20 +4296,6 @@
                       <string>Value</string>
                      </property>
                     </column>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QPushButton" name="btn_tc_update_path">
-                    <property name="styleSheet">
-                     <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-                    </property>
-                    <property name="text">
-                     <string>Update</string>
-                    </property>
                    </widget>
                   </item>
                   <item row="1" column="3">
@@ -4349,20 +4338,6 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="0" column="0">
-                   <widget class="QPushButton" name="btn_tc_remove_path">
-                    <property name="styleSheet">
-                     <string notr="true">* {
-    font-family: &quot;Segoe UI&quot;;
-    font-size: 10pt;
-    /* 添加其他字体样式属性，如颜色等 */
-}</string>
-                    </property>
-                    <property name="text">
-                     <string>Remove</string>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="0" column="1">
                    <widget class="QLabel" name="label_43">
                     <property name="styleSheet">
@@ -4381,6 +4356,34 @@
                    <widget class="QCheckBox" name="checkBox_tc_path_robot_variable">
                     <property name="text">
                      <string>Robot Variable</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_path">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_path">
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    font-family: &quot;Segoe UI&quot;;
+    font-size: 10pt;
+    /* 添加其他字体样式属性，如颜色等 */
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>Update</string>
                     </property>
                    </widget>
                   </item>
@@ -4450,32 +4453,6 @@
                     </column>
                    </widget>
                   </item>
-                  <item row="1" column="0">
-                   <widget class="QPushButton" name="btn_tc_update_query">
-                    <property name="font">
-                     <font>
-                      <family>Segoe UI</family>
-                      <pointsize>10</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Update</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QPushButton" name="btn_tc_remove_query">
-                    <property name="font">
-                     <font>
-                      <family>Segoe UI</family>
-                      <pointsize>10</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Remove</string>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="1" column="2">
                    <widget class="QCheckBox" name="checkBox_tc_query_robot_variable">
                     <property name="text">
@@ -4509,6 +4486,32 @@
                     </property>
                     <property name="text">
                      <string>Value : </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_query">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_query">
+                    <property name="font">
+                     <font>
+                      <family>Segoe UI</family>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Update</string>
                     </property>
                    </widget>
                   </item>
@@ -4562,19 +4565,6 @@
                         <string>Teardown</string>
                        </property>
                       </item>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Remove</string>
-                      </property>
                      </widget>
                     </item>
                     <item row="6" column="0" colspan="6">
@@ -4722,19 +4712,6 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="0" rowspan="2">
-                     <widget class="QPushButton" name="btn_tc_update_dependency_rule">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>10</pointsize>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Update</string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="2" column="2" rowspan="2" colspan="3">
                      <widget class="QLabel" name="label_45">
                       <property name="font">
@@ -4755,6 +4732,32 @@
                         <family>Segoe UI</family>
                         <pointsize>10</pointsize>
                        </font>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0" rowspan="2">
+                     <widget class="QPushButton" name="btn_tc_remove_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Remove</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QPushButton" name="btn_tc_update_dependency_rule">
+                      <property name="font">
+                       <font>
+                        <family>Segoe UI</family>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update</string>
                       </property>
                      </widget>
                     </item>
@@ -5276,19 +5279,6 @@
                            <layout class="QHBoxLayout" name="horizontalLayout_32">
                             <item>
                              <layout class="QGridLayout" name="gridLayout_47">
-                              <item row="1" column="0">
-                               <widget class="QPushButton" name="btn_tc_dependency_remove_dynamic_overwrite_data">
-                                <property name="font">
-                                 <font>
-                                  <family>Segoe UI</family>
-                                  <pointsize>10</pointsize>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>Remove</string>
-                                </property>
-                               </widget>
-                              </item>
                               <item row="1" column="2">
                                <widget class="QCheckBox" name="checkBox_tc_dependency_dynamic_overwrite_robot_variable">
                                 <property name="text">
@@ -5306,19 +5296,6 @@
                                 </property>
                                 <property name="text">
                                  <string>Value : </string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="0">
-                               <widget class="QPushButton" name="btn_tc_dependency_update_dynamic_overwrite_data">
-                                <property name="font">
-                                 <font>
-                                  <family>Segoe UI</family>
-                                  <pointsize>10</pointsize>
-                                 </font>
-                                </property>
-                                <property name="text">
-                                 <string>Update</string>
                                 </property>
                                </widget>
                               </item>
@@ -5377,7 +5354,7 @@
                                 </property>
                                </widget>
                               </item>
-                              <item row="4" column="0" colspan="5">
+                              <item row="3" column="0" colspan="5">
                                <widget class="QTreeWidget" name="table_tc_dependency_dynamic_overwrite_data">
                                 <property name="sizePolicy">
                                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -5404,6 +5381,32 @@
                                   <string>Value</string>
                                  </property>
                                 </column>
+                               </widget>
+                              </item>
+                              <item row="2" column="0">
+                               <widget class="QPushButton" name="btn_tc_dependency_remove_dynamic_overwrite_data">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Remove</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="0">
+                               <widget class="QPushButton" name="btn_tc_dependency_update_dynamic_overwrite_data">
+                                <property name="font">
+                                 <font>
+                                  <family>Segoe UI</family>
+                                  <pointsize>10</pointsize>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Update</string>
+                                </property>
                                </widget>
                               </item>
                              </layout>
@@ -5668,72 +5671,7 @@
                      <layout class="QHBoxLayout" name="horizontalLayout_14">
                       <item>
                        <layout class="QGridLayout" name="gridLayout_30">
-                        <item row="0" column="0">
-                         <widget class="QPushButton" name="btn_tc_remove_dependency_path">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Remove</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="0" column="1">
-                         <widget class="QLabel" name="label_46">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Name : </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="0" column="3">
-                         <widget class="QLineEdit" name="textbox_tc_path_dependency_name"/>
-                        </item>
-                        <item row="1" column="0">
-                         <widget class="QPushButton" name="btn_tc_update_dependency_path">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Update</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="1" column="3">
-                         <widget class="QLineEdit" name="textbox_tc_path_dependency_value">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="1" column="1">
-                         <widget class="QLabel" name="label_47">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Value : </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="2" column="0" colspan="4">
+                        <item row="3" column="0" colspan="4">
                          <widget class="QTreeWidget" name="table_tc_dependency_path">
                           <property name="font">
                            <font>
@@ -5753,12 +5691,77 @@
                           </column>
                          </widget>
                         </item>
-                        <item row="1" column="2">
+                        <item row="2" column="2">
                          <widget class="QCheckBox" name="checkBox_tc_path_dependency_robot_variable">
                           <property name="text">
                            <string>Robot Variable</string>
                           </property>
                          </widget>
+                        </item>
+                        <item row="2" column="1">
+                         <widget class="QLabel" name="label_47">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Value : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="3">
+                         <widget class="QLineEdit" name="textbox_tc_path_dependency_value">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="2" column="0">
+                         <widget class="QPushButton" name="btn_tc_remove_dependency_path">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Remove</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0" rowspan="2">
+                         <widget class="QPushButton" name="btn_tc_update_dependency_path">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Update</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="1" rowspan="2">
+                         <widget class="QLabel" name="label_46">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Name : </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="3" rowspan="2">
+                         <widget class="QLineEdit" name="textbox_tc_path_dependency_name"/>
                         </item>
                        </layout>
                       </item>
@@ -5771,19 +5774,6 @@
                      <layout class="QHBoxLayout" name="horizontalLayout_27">
                       <item>
                        <layout class="QGridLayout" name="gridLayout_36">
-                        <item row="0" column="0">
-                         <widget class="QPushButton" name="btn_tc_remove_dependency_query">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Remove</string>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="0" column="1">
                          <widget class="QLabel" name="label_58">
                           <property name="font">
@@ -5794,19 +5784,6 @@
                           </property>
                           <property name="text">
                            <string>Name : </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="1" column="0">
-                         <widget class="QPushButton" name="btn_tc_update_dependency_query">
-                          <property name="font">
-                           <font>
-                            <family>Segoe UI</family>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>Update</string>
                           </property>
                          </widget>
                         </item>
@@ -5860,6 +5837,32 @@
                          <widget class="QCheckBox" name="checkBox_tc_query_dependency_robot_variable">
                           <property name="text">
                            <string>Robot Variable</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QPushButton" name="btn_tc_remove_dependency_query">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Remove</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QPushButton" name="btn_tc_update_dependency_query">
+                          <property name="font">
+                           <font>
+                            <family>Segoe UI</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Update</string>
                           </property>
                          </widget>
                         </item>
@@ -5924,20 +5927,6 @@
                    <widget class="QPushButton" name="btn_tc_add_assertion_rule">
                     <property name="text">
                      <string>Add</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QPushButton" name="btn_tc_remove_assertion_rule">
-                    <property name="text">
-                     <string>Remove</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="2" column="0">
-                   <widget class="QPushButton" name="btn_tc_update_assertion_rule">
-                    <property name="text">
-                     <string>Update</string>
                     </property>
                    </widget>
                   </item>
@@ -6073,6 +6062,20 @@
                    <widget class="QLabel" name="label_assertion_type_6">
                     <property name="text">
                      <string>Assertion Method:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QPushButton" name="btn_tc_remove_assertion_rule">
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QPushButton" name="btn_tc_update_assertion_rule">
+                    <property name="text">
+                     <string>Update</string>
                     </property>
                    </widget>
                   </item>
