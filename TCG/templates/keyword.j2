@@ -8,20 +8,14 @@
 {{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Setup
     {% for id, setup in point.dependency.Setup.items() %}
         # Setup - {{ case_id }}.{{ point_id }}.{{ id }}
-        ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}
+        ${req}  {{ '${' }}{{ setup.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ setup.action }}  {{ setup.object }}{% if dynamic_data != false %}
+        ...  dynamic_test_data={{ '${' }}True}{% endif %}{% if product_type == 'FortiOT' %}
+        ...  cookie=JSESSIONID=88e1b76c-cc90-4a07-b3dc-6769fd65c71c{% endif %}
 {#- Setup Path #}
-        {% if 'path' in setup -%}
-        {% if setup.path != {} -%}
-        {% for path_id, path in setup.path.items() -%}
-        {% if 'Value' in path -%}
-            {% set value = path.Value -%}
-        {% else -%}
-            {% set value = path -%}
-        {% endif -%}
-        ...  {{ path_id }}={{ value }}
-        {% endfor -%}
-        {%- endif %}
-        {%- endif %}
+        {%- if 'path' in setup -%}
+        {% if setup.path != {} %}
+        ...  {% for path_id, path in setup.path.items() -%}
+        {% if 'Value' in path -%}{% set value = path.Value -%}{% else -%}{% set value = path -%}{% endif -%}{{ path_id }}={{ value }}  {% endfor -%}{%- endif %}{%- endif %}
 {#- Setup Dynamic Overwrite Data #}
         {% if 'dynamic_overwrite_data' in setup -%}
         {% if setup.dynamic_overwrite_data != {} -%}
@@ -94,20 +88,14 @@
 {{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Teardown
     {% for id, teardown in point.dependency.Teardown.items() %}
         # Teardown - {{ case_id }}.{{ point_id }}.{{ id }}
-        {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}
-{#- Teardown Path #}        
-        {% if 'path' in teardown -%}
-        {% if teardown.path != {} -%}
-        {% for path_id, path in teardown.path.items() -%}
-        {% if 'Value' in path -%}
-            {% set value = path.Value -%}
-        {% else -%}
-            {% set value = path -%}
-        {% endif -%}
-        ...  {{ path_id }}={{ value }}  
-        {% endfor -%}
-        {%- endif %}
-        {%- endif %}
+        {{ '${' }}req{{ id }}}  {{ '${' }}{{ teardown.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ teardown.action }}  {{ teardown.object }}{% if dynamic_data != false %}
+        ...  dynamic_test_data={{ '${' }}True}{% endif %}{% if product_type == 'FortiOT' %}
+        ...  cookie=JSESSIONID=88e1b76c-cc90-4a07-b3dc-6769fd65c71c{% endif %}
+{#- Teardown Path #}
+        {%- if 'path' in teardown -%}
+        {% if teardown.path != {} %}
+        ...  {% for path_id, path in teardown.path.items() -%}
+        {% if 'Value' in path -%}{% set value = path.Value -%}{% else -%}{% set value = path -%}{% endif -%}{{ path_id }}={{ value }}  {% endfor -%}{%- endif %}{%- endif %}
 {#- Teardown Dynamic Overwrite Data #}
         {% if 'dynamic_overwrite_data' in teardown -%}
         {% if teardown.dynamic_overwrite_data != {} -%}

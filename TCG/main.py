@@ -1313,6 +1313,41 @@ class MyWindow(QMainWindow):
                 src_path = os.path.join(os.getcwd(), file)
                 dst_path = os.path.join(testdata_folder_path, os.path.basename(file))
                 shutil.copyfile(src_path, dst_path)
+            
+            if self.ui.radio_dynamic_data_yes.isChecked():
+                test_generation_rule_folder_path = os.path.join(export_folder_path, "TestGenerationRule")
+                os.makedirs(test_generation_rule_folder_path, exist_ok=True)
+                file_list = glob.glob("./artifacts/TestPlan/*.json")
+                for file in file_list:
+                    with open(file, "r") as f:
+                        test_data = json.load(f) 
+                        for tc_i, tc_v in test_data['test_cases'].items():
+                            for tp_i, tp_v in tc_v['test_point'].items():
+                                file_name = f"{tp_v['parameter']['testdata']}.json"
+                                generation_rule = tp_v['parameter']['data_generation_rules']
+                                print(os.path.join(test_generation_rule_folder_path, file_name))
+                                with open(os.path.join(test_generation_rule_folder_path, file_name), "w") as f:
+                                    json.dump(generation_rule, f, indent=4)
+                                    
+                                dependency_setup, dependency_teardown = tp_v['dependency']['Setup'], tp_v['dependency']['Teardown']
+                                if dependency_setup != {}:
+                                    for dp_i, dp_v in dependency_setup.items():
+                                        file_name = f"{tp_v['parameter']['testdata']}_Setup_{dp_i}.json"
+                                        if dp_v['data_generation_rules'] != {}:
+                                            generation_rule = dp_v['data_generation_rules']
+                                        else:
+                                            continue
+                                        with open(os.path.join(test_generation_rule_folder_path, file_name), "w") as f:
+                                            json.dump(generation_rule, f, indent=4)
+                                if dependency_teardown != {}:
+                                    for dp_i, dp_v in dependency_teardown.items():
+                                        file_name = f"{tp_v['parameter']['testdata']}_Teardown_{dp_i}.json"
+                                        if dp_v['data_generation_rules'] != {}:
+                                            generation_rule = dp_v['data_generation_rules']
+                                        else:
+                                            continue
+                                        with open(os.path.join(test_generation_rule_folder_path, file_name), "w") as f:
+                                            json.dump(generation_rule, f, indent=4)
                 
             logging.info(f"Export test cases to {export_folder_path} successfully")
             GeneralTool.show_info_dialog(f"Export test cases to {export_folder_path} successfully")
@@ -1606,6 +1641,7 @@ class MyWindow(QMainWindow):
             self.ui.table_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
             self.ui.table_generation_rule.topLevelItem(0).child(index).setSelected(True)
             self.ui.table_generation_rule.itemClicked.emit(self.ui.table_generation_rule.topLevelItem(0).child(index), 0)
+    
     def btn_tc_clear_dependency_rule_clicked(self):
         """ Clear selected dependency rule and table. """
         GeneralTool.clean_ui_content([
@@ -1695,10 +1731,15 @@ class MyWindow(QMainWindow):
     def btn_generate_test_case_clicked(self):
         
         GeneralTool.teardown_folder_files(["./artifacts/TestCase/RESTful_API"])
+        for product_type in self.ui.option_product_type.findChildren(QtWidgets.QRadioButton):
+            if product_type.isChecked():
+                product_type = product_type.text()
+                logging.info(f"Generate test case for `{product_type}`.")
+                break
         if self.ui.radio_dynamic_data_yes.isChecked():
-            Render.generate_robot_test_case(dynamic_data=True)
+            Render.generate_robot_test_case(dynamic_data=True, product_type=product_type)
         else:
-            Render.generate_robot_test_case(dynamic_data=False)
+            Render.generate_robot_test_case(dynamic_data=False, product_type=product_type)
         self.ui.tabTCG.setCurrentIndex(2)
         GeneralTool.clean_ui_content([self.ui.table_robot_file_list, self.ui.text_robot_file])
         GeneralTool.rander_robot_file_list(self.ui.table_robot_file_list)
@@ -3309,7 +3350,7 @@ class MyWindow(QMainWindow):
             # * Render the Dependency Rule Mangement UI for the update action.
             self.ui.comboBox_tc_dependency_type.setCurrentText(parent_item.text(0))
             self.ui.line_tc_api_search.setText(selected_item.child(0).text(1))
-            self.ui.textbox_tc_dependency_return_variable_name.setText(selected_item.child(1).text(1))
+            self.ui.textbox_tc_dependency_return_variable_name.setText(selected_item.child(2).text(1))
             self.ui.comboBox_tc_dependency_type.setEnabled(False)
             self.ui.line_tc_api_search.setEnabled(False)
             

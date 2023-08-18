@@ -15,7 +15,7 @@ from lib.general_tool import GeneralTool
 class Render:
     
     @classmethod
-    def generate_robot_test_case(cls, dynamic_data: bool = False) -> None:
+    def generate_robot_test_case(cls, dynamic_data: bool = False, product_type: str = 'General') -> None:
         """ Generate robot test case from all test plan files."""
         
         for test_plan_file in glob.glob('./artifacts/TestPlan/*.json'):
@@ -36,11 +36,13 @@ class Render:
 
             with open('./templates/testcase.j2', 'r') as f:
                 test_template = Template(f.read())
-                rendered_script = test_template.render(test_plan, dynamic_data=dynamic_data)
+                rendered_script = test_template.render(
+                    test_plan, dynamic_data=dynamic_data, product_type=product_type)
                 
             with open('./templates/keyword.j2', 'r') as f:
                 local_keyword = Template(f.read())
-                rendered_keyword = local_keyword.render(test_plan, dynamic_data=dynamic_data)
+                rendered_keyword = local_keyword.render(
+                    test_plan, dynamic_data=dynamic_data, product_type=product_type)
                 
             with open(robot_path, "w", encoding="utf-8") as r:
                 r.write(rendered_base)
