@@ -54,8 +54,17 @@
             {% set sender_instance = '' if action['Sender Instance'] == '' else 'sender_instance=' + action['Sender Instance'] -%}
             {% set objects = '' if action.Objects == '' else 'objects=' + action.Objects -%}
             {{ '${' }}{{ action['${Response Name}'] }}}=  Utility.Get ID From Name  {{ name }}  {{ sender_instance }}  {{ objects }}
+        {% elif action['Action Name'] == 'Set Varaible' -%}
+            {% set variable_name = '' if action['${Variable Name}'] == '' else action['${Variable Name}'] -%}
+            {% set data = '' if action['Data'] == '' else action['Data'] -%}
+            {{ '${' }}{{ variable_name}}}=  Set Variable  {{ data }}
+        {% elif action['Action Name'] == 'Set Test Variable' -%}
+            {% set variable_name = '' if action['${Variable Name}'] == '' else action['${Variable Name}'] -%}
+            Set Test Variable  {{ '${' }}{{ variable_name }}}
         {% endif -%}
+            {% if action['Action Name'] != 'Set Varaible' and action['Action Name'] != 'Set Test Variable' -%}
             Set Test Variable  {{ '${' }}{{ action['${Response Name}'] }}}
+            {% endif -%}
             {% if not loop.last -%}{{ empty }}{% endif -%}
         {% endfor %}
     {% for assertion_id, assertion in point.assertion.items() %}
