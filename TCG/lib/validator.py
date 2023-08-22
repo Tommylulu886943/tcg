@@ -42,10 +42,12 @@ class Validator:
                     missing_restrictions.append((operation_id, name, 'array', 'maxItems'))
                     
     @classmethod
-    def parse_missing_restrictions(cls, missing_restrictions : list) -> list:
+    def parse_missing_restrictions(cls, missing_restrictions: list) -> list:
         result = []
+        index = 1
         for item in missing_restrictions:
-            result.append(f"[Bug] API Endpoint: {item[0]}, Field: {item[1]}, Type: {item[2]}, Issue: Missing `{item[3]}` restriction.\n")
+            result.append(f"[Issue {index}]\n API: {item[0]}\n Field: {item[1]}\n Type: {item[2]}\n Issue: Missing '{item[3]}'\n")
+            index += 1
         return result
                            
     @classmethod

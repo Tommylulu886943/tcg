@@ -56,6 +56,8 @@ class MyWindow(QMainWindow):
             },
             "Utility": {
                 "Get ID From Name": ["${Response Name}", "Name", "Sender Instance", "Objects"],
+                "Set Varaible": ["${Variable Name}", "Data"],
+                "Set Test Variable": ["${Variable Name}"] 
             }   
         }
         
@@ -504,7 +506,22 @@ class MyWindow(QMainWindow):
                     for method, operation in path_item.items():
                         self.ui.list_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
                         self.ui.list_tc_dependency_available_api_list.addItem(f"{method.upper()} {uri}")
-    
+                        
+        # * Update Search Completion List
+        all_api_list = []
+        for i in range(self.ui.list_dependency_available_api_list.count()):
+            all_api_list.append(self.ui.list_dependency_available_api_list.item(i).text())
+        model = QStringListModel()
+        model.setStringList(all_api_list)
+        self.ui.search_completer.setModel(model)
+        
+        all_tc_api_list = []
+        for i in range(self.ui.list_tc_dependency_available_api_list.count()):
+            all_tc_api_list.append(self.ui.list_tc_dependency_available_api_list.item(i).text())
+        tc_model = QStringListModel()
+        tc_model.setStringList(all_tc_api_list)
+        self.ui.tc_search_completer.setModel(tc_model)       
+        
     def btn_validate_openapi_doc_clicked(self):
         """ When the button is clicked, will validate the OpenAPI document. """
         result = []
@@ -1665,6 +1682,8 @@ class MyWindow(QMainWindow):
             self.ui.table_dependency_path,
         ])
         self.ui.comboBox_dependency_type.setEnabled(True)
+        self.ui.line_api_search.setEnabled(True)
+        self.ui.line_api_search.setCompleter(self.ui.search_completer)
         self.ui.list_dependency_available_api_list.clearSelection()
         self.ui.table_dependency_rule.clearSelection()
             
@@ -3121,7 +3140,7 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_query.addTopLevelItem(root_item)
         query_rule = data[dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_query, level=3)
     
     def btn_update_dependency_query_clicked(self):
         
@@ -3154,7 +3173,7 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_query.addTopLevelItem(root_item)
         query_rule = data[dependency_type][dependency_sequence_num]["query"]
         GeneralTool.parse_request_body(query_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.ui.table_query, level=3)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_query, level=3)
         
     def btn_remove_dependency_path_clicked(self):
         
@@ -3187,7 +3206,7 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_path.addTopLevelItem(root_item)
         path_rule = data[dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.ui.table_path, level=2)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_path, level=2)
     
     def btn_update_dependency_path_clicked(self):
         
@@ -3220,7 +3239,7 @@ class MyWindow(QMainWindow):
         self.ui.table_dependency_path.addTopLevelItem(root_item)
         path_rule = data[dependency_type][dependency_sequence_num]["path"]
         GeneralTool.parse_request_body(path_rule, root_item)
-        GeneralTool.expand_and_resize_tree(self.ui.table_path, level=2)
+        GeneralTool.expand_and_resize_tree(self.ui.table_dependency_path, level=2)
 
     def btn_dependency_add_dynamic_overwrite_data_clicked(self):
         if len(self.ui.table_dependency_rule.selectedItems()) == 0:
@@ -3451,6 +3470,9 @@ class MyWindow(QMainWindow):
             self.ui.textbox_dependency_return_variable_name.setText(selected_item.child(1).text(1))
             self.ui.comboBox_dependency_type.setEnabled(False)
             self.ui.line_api_search.setEnabled(False)
+            
+            if len(self.ui.table_api_tree.selectedItems()) == 0:
+                return
             
             api_tree_selected_item = self.ui.table_api_tree.selectedItems()[0]
             dependency_type = parent_item.text(0)

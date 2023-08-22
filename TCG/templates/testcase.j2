@@ -12,7 +12,8 @@
         # {{ point.parameter.description }}
         {{ '${' }}{{ point.parameter.request_name }}}  {{ '${' }}{{ point.parameter.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "None" %}
         ...  file_name={{ point.parameter.testdata }}{% if dynamic_data != false %}
-        ...  dynamic_test_data={{ '${' }}True}{% endif -%}{% endif -%}{% if point.path != {} %}
+        ...  dynamic_test_data={{ '${' }}True}{% endif -%}{% endif -%}{% if product_type == 'FortiOT' %}
+        ...  cookie=JSESSIONID=88e1b76c-cc90-4a07-b3dc-6769fd65c71c{% endif %}{% if point.path != {} %}
         ...  {% for path_id, path in point.path.items() -%}{{ path_id }}={{ path }}   {% endfor -%}{% endif %}{% if point.dynamic_overwrite_data != {} %}
         ...  {% for dynamic_overwrite_data_id, dynamic_overwrite_data in point.dynamic_overwrite_data.items() -%}{{ dynamic_overwrite_data_id }}={{ dynamic_overwrite_data }}   {% endfor -%}{% endif %}{% if point.query != {} %}
         {% set start = '...  query_param={' -%}{% set end = '}' -%}{{ start }}{%- for query_id, query in point.query.items() -%}{% if 'Value' in query -%}{% set value = query.Value -%}{% else -%}{% set value = query -%}{%- endif -%}"{{ query_id }}":"{{ value }}"{% if not loop.last -%}, {% endif -%}{% if loop.last -%}{{ end }}{{ jump }}        {% endif -%}

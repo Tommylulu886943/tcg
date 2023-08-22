@@ -64,6 +64,21 @@ class CustomForm(QWidget):
                     edit.setPlaceholderText("The name of the responce variable to store the result")
                 else:
                     edit = QLineEdit()
+            elif action == "Set Varaible":
+                edit = QLineEdit()
+                if field == "${Response Name}":
+                    edit.setPlaceholderText("e.g. profileId")
+                    edit.setToolTip("Enter the new variable name to store the result.")
+                elif field == "Data":
+                    edit.setPlaceholderText("e.g. ${resp['profileId']}")
+                    edit.setToolTip("Enter the data or result to be stored in the variable. Use ${resp['key']} to reference a value from the response.")
+                else:
+                    edit = QLineEdit()
+            elif action == "Set Test Variable":
+                edit = QLineEdit()
+                if field == "${Response Name}":
+                    edit.setPlaceholderText("e.g. profileId")
+                    edit.setToolTip("Enter the new variable name to store the result. It will be used in the test case level, including setup, teardown, and test case.")
             else:
                 edit = QLineEdit()
             if edit:

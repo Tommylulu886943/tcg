@@ -47,8 +47,6 @@
         {% endif -%}
         {{ empty }}
         Set Test Variable  {{ '${' }}{{ setup.response_name }}}
-    {% endfor -%}
-    {% for action_index, setup in point.dependency.Setup.items() %}
     {% for seq_num, action in setup.additional_action.items() %}
         {% if action['Action Name'] == 'API Parser' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
@@ -126,8 +124,6 @@
         ...  file_name={{ teardown.config_name }}
         {%- endif %}
         Set Test Variable  {{ '${' }}{{ teardown.response_name }}}
-    {% endfor %}
-    {% for action_index, teardown in point.dependency.Teardown.items() %}
     {% for seq_num, action in teardown.additional_action.items() %}
         {% if action['Action Name'] == 'API Parser' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}
