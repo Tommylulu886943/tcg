@@ -4271,6 +4271,7 @@ class MyWindow(QMainWindow):
                 else:
                     logging.error(f"Error updating JSON file `{assertion_file_path}` to remove key `{path}`.")
             GeneralTool.remove_table_item_from_ui(self.ui.table_assertion_rule)
+            GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule, level=3)
             self.ui.comboBox_assertion_type.setEnabled(True)
 
     def btn_add_assertion_rule_clicked(self):
@@ -4312,7 +4313,7 @@ class MyWindow(QMainWindow):
         for clean_item in [self.ui.textbox_assertion_rule_expression, self.ui.textbox_assertion_rule_field_expression, self.ui.textbox_assertion_rule_expected_value, self.ui.table_assertion_rule]:
             clean_item.clear()
         GeneralTool.parse_assertion_rule(operation_id, self.ui.table_assertion_rule)
-        GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule)
+        GeneralTool.expand_and_resize_tree(self.ui.table_assertion_rule, level=3)
     
     def btn_update_text_body_clicked(self):
         selected_items = self.ui.table_test_plan_api_list.selectedItems()
