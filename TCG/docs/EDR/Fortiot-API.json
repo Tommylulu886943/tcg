@@ -24,12 +24,12 @@
       "description": "Operations about agent groups"
     },
     {
-      "name": "Agent Installers",
-      "description": "Operations about agent installer"
-    },
-    {
       "name": "Authentication",
       "description": "Operations about authentication"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Operations about dashboard"
     },
     {
       "name": "Events",
@@ -61,6 +61,59 @@
     }
   ],
   "paths": {
+    "/dashboard/events": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "get-event-widget-for-dashboard",
+        "description": "Retrieve event widgets data for the dashboard.",
+        "operationId": "get-event-widget-for-dashboard",
+        "parameters": [
+          {
+            "name": "period",
+            "in": "query",
+            "required": true,
+            "description": "The time period for the event widget (1, 3, 7 days).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetDashboardEventWidgetsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
     "/licensing": {
       "get": {
         "tags": [
@@ -81,7 +134,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -129,7 +182,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -178,7 +231,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -236,7 +289,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -282,7 +335,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -293,7 +347,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -313,7 +368,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -367,7 +422,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -427,7 +482,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -475,7 +530,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -533,7 +588,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -579,7 +634,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -590,7 +646,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -610,7 +667,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -621,7 +678,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": ""
+                    "$ref": "#/components/schemas/GetExfiltrationPreventionPoliciesResponse"
                   }
                 }
               }
@@ -664,7 +721,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -724,7 +781,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -772,7 +829,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -830,7 +887,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -876,7 +933,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -887,7 +945,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -907,7 +966,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -961,7 +1020,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1021,7 +1080,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1069,7 +1128,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1127,7 +1186,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1173,7 +1232,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -1184,7 +1244,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -1204,7 +1265,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1258,7 +1319,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1318,7 +1379,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1370,7 +1431,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -1381,7 +1443,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -1410,7 +1473,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1421,7 +1484,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": ""
+                    "$ref": "#/components/schemas/GetApplicationWhitelistingPoliciesResponse"
                   }
                 }
               }
@@ -1467,7 +1530,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1498,7 +1561,7 @@
         "operationId": "Create-application-whitelisting-policy",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1559,7 +1622,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1568,7 +1631,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": ""
+                  "$ref": "#/components/schemas/GetApplicationWhitelistingPoliciesResponse"
                 }
               }
             }
@@ -1619,7 +1682,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1671,7 +1734,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -1682,7 +1746,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -1711,7 +1776,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1768,7 +1833,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1799,7 +1864,7 @@
         "operationId": "create-file-integrity-policy",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1860,7 +1925,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1920,7 +1985,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -1972,7 +2037,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -1983,7 +2049,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -2002,7 +2069,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2053,7 +2120,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2112,7 +2179,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2157,7 +2224,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2217,7 +2284,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2311,7 +2378,7 @@
         "operationId": "post-qr-code",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2363,7 +2430,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2413,7 +2480,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2465,7 +2532,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2514,7 +2581,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2562,7 +2629,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2616,7 +2683,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2658,7 +2725,7 @@
         "operationId": "list-users",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2715,7 +2782,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2760,7 +2827,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2820,7 +2887,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2887,7 +2954,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -2936,7 +3003,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerPasswordAuth": []
           }
         ],
         "responses": {
@@ -2986,7 +3053,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerTokenAuth": []
           }
         ],
         "responses": {
@@ -3036,7 +3103,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerTokenAuth": []
           }
         ],
         "responses": {
@@ -3099,7 +3166,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerTokenAuth": []
           }
         ],
         "responses": {
@@ -3183,12 +3250,12 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerTokenAuth": []
           }
         ],
         "responses": {
           "200": {
-            "description": "The format is {header}{object}{object}{object}... \n\nThere can be multiple objects after header.\n\nHeader please refer to ConfigHeader\n\nObject can be one of the following schema:\n  \n  LicenseObject\n\n  AgentObject\n  \n  FIMProfileObject\n\n  PolicyObject\n  \n  RuleObject\n\n  AgentGroupObject\n  \n  FIMRuleObject\n\n  ProfileObject\n  \n  ApplicationControlModelObject\n",
+            "description": "The format is {header}{object}{object}{object}... \n\nThere can be multiple objects after header.\n\nHeader please refer to ConfigHeader\n\nObject can be one of the following schema:\n  \n  LicenseObject\n\n  AgentObject\n  \n  FIMProfileObject\n\n  PolicyObject\n  \n  RuleObject\n\n  AgentGroupObject\n  \n  FIMRuleObject\n\n  ProfileObject\n  \n  ApplicationControlModelObject\n  \n  DownloadServerInfoObject\n",
             "content": {
               "*/*": {
                 "schema": {
@@ -3253,6 +3320,20 @@
               "type": "array",
               "items": {
                 "type": "string"
+              }
+            }
+          },
+          {
+            "name": "agentGroupIds",
+            "in": "query",
+            "description": "Specifies the list of agent group ids",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
               }
             }
           },
@@ -3342,7 +3423,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -3353,7 +3435,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -3407,7 +3490,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3464,7 +3547,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3523,7 +3606,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3572,7 +3655,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3632,7 +3715,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3681,7 +3764,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3746,7 +3829,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3802,7 +3885,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -3813,13 +3897,14 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           }
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3876,7 +3961,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3924,7 +4009,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -3935,13 +4021,14 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           }
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -3992,7 +4079,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4042,7 +4129,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4101,7 +4188,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4150,7 +4237,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4210,7 +4297,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4238,45 +4325,6 @@
         "x-codegen-request-body-name": "requestUpdateData"
       }
     },
-    "/agent-installers": {
-      "get": {
-        "tags": [
-          "Agent Installers"
-        ],
-        "summary": "list-agent-installers",
-        "description": "This API call output the available agent installer",
-        "operationId": "get-agent-installers",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAgentInstallersResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {}
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {}
-          }
-        }
-      }
-    },
     "/securities/application-whitelisting": {
       "post": {
         "tags": [
@@ -4298,7 +4346,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4355,7 +4403,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -4366,7 +4415,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -4390,7 +4440,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4447,7 +4497,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4491,7 +4541,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4550,7 +4600,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4610,7 +4660,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4663,7 +4713,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -4674,7 +4725,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -4915,7 +4967,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -4972,7 +5024,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5031,7 +5083,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5081,7 +5133,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5141,7 +5193,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5169,6 +5221,57 @@
         "x-codegen-request-body-name": "updateEventsRequest"
       }
     },
+    "/events/{Id}/graph": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "get-event-data-for-draw-event-graph",
+        "description": "GET the event data for draw event graph",
+        "operationId": "get-event-data-for-draw-event-graph",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "Specifies the ID of the event",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEventGraphResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
     "/events/{Id}/json": {
       "get": {
         "tags": [
@@ -5191,7 +5294,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5256,7 +5359,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5313,7 +5416,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -5324,13 +5428,14 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           }
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5386,7 +5491,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5431,7 +5536,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5491,7 +5596,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5540,7 +5645,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5596,7 +5701,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -5607,7 +5713,8 @@
               "minimum": 0,
               "exclusiveMinimum": false,
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "default": 10
             }
           },
           {
@@ -5715,7 +5822,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5772,7 +5879,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5817,7 +5924,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5877,7 +5984,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -5943,7 +6050,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6002,7 +6109,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6037,7 +6144,7 @@
         "operationId": "export-system",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6092,7 +6199,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6127,7 +6234,7 @@
         "operationId": "get-firmware-information",
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6185,7 +6292,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6239,7 +6346,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "bearerJWTAuth": []
           }
         ],
         "responses": {
@@ -6271,6 +6378,242 @@
           }
         }
       }
+    },
+    "/systems/agent-installers": {
+      "get": {
+        "tags": [
+          "Systems"
+        ],
+        "summary": "list-agent-installers-and-download-server-ip",
+        "description": "This API call output the available agent installer and the download server ip",
+        "operationId": "list-agent-installers-and-download-server-ip",
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAgentInstallersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "No"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Systems"
+        ],
+        "summary": "update-agent-installers-and-download-server-ip",
+        "description": "Update Agent Installers and download server ip",
+        "operationId": "update-agent-installers-and-download-server-ip",
+        "requestBody": {
+          "description": "Update Agent Installers and download server request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentInstallersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Systems"
+        ],
+        "summary": "create-agent-installer",
+        "description": "This API call add a new agent installer",
+        "operationId": "add-agent-installer",
+        "requestBody": {
+          "description": "requestAddData",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostAgentInstallerBodyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAgentInstallerResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "requestUpdateData"
+      },
+      "delete": {
+        "tags": [
+          "Systems"
+        ],
+        "summary": "delete-agent-installers",
+        "description": "This API call deletes agent installers",
+        "operationId": "delete-agent-installers",
+        "parameters": [
+          {
+            "name": "agentInstallerIds",
+            "in": "query",
+            "description": "Specifies the list of agent installer ids",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "204": {
+            "description": "No Content",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/systems/agent-installers/{Id}": {
+      "get": {
+        "tags": [
+          "Systems"
+        ],
+        "summary": "get-agent-installer-by-id",
+        "description": "This API call output the agent installer",
+        "operationId": "get-agent-installer-by-id",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "Agent installer id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerJWTAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentInstallerResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {}
+          },
+          "404": {
+            "description": "No"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -6296,6 +6639,30 @@
           "objectId": {
             "type": "integer",
             "description": "The agent object id",
+            "format": "int64"
+          }
+        }
+      },
+      "GetDashboardEventWidgetsResponse": {
+        "title": "GetDashboardEventWidgetsResponse",
+        "required": [
+          "readCount",
+          "unreadCount"
+        ],
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "The timestamp of the data point."
+          },
+          "readCount": {
+            "type": "integer",
+            "description": "The count of read events for the label.",
+            "format": "int64"
+          },
+          "unreadCount": {
+            "type": "integer",
+            "description": "The count of unread events for the label.",
             "format": "int64"
           }
         }
@@ -6515,7 +6882,7 @@
           },
           "eventTypes": {
             "type": "integer",
-            "description": "The event type of this policy",
+            "description": "Bitmask of event type FILE_EXECUTE_ATTEMPT = (1 << 13); DEVICE_CONTROL_MANAGEMENT = (1 << 21); FIM_FILE = (1 << 25); FIM_REGISTRY = (1 << 26);",
             "format": "int64"
           }
         }
@@ -6732,9 +7099,29 @@
           },
           "eventTypes": {
             "type": "array",
-            "description": "The event types of the FIM rule",
+            "description": "The event types of the FIM rule.\nIf the event category is File, , it can have the following values:\n- FileDelete\n- FileRename\n- FileWrite\n- FileRead\n- FileTimestampsChange\n\nIf the event category is Volume, , it can have the following values:\n- DirectVolumeAccess\n- DirectVolumeWrite\n\nIf the event category is Registry, it can have the following values:\n- CreateKey\n- DeleteKey\n- RenameKey\n- SaveKey\n- ReplaceKey\n- RestoreKey\n- LoadKey\n- CreateValue\n- ReadValue\n- DeleteValue\n- SetValue\n",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "FileDelete",
+                "FileRename",
+                "FileWrite",
+                "FileRead",
+                "DirectVolumeAccess",
+                "DirectVolumeWrite",
+                "FileTimestampsChange",
+                "CreateKey",
+                "DeleteKey",
+                "RenameKey",
+                "SaveKey",
+                "ReplaceKey",
+                "RestoreKey",
+                "LoadKey",
+                "CreateValue",
+                "ReadValue",
+                "DeleteValue",
+                "SetValue"
+              ]
             }
           },
           "sourceAttributes": {
@@ -6767,6 +7154,46 @@
           }
         }
       },
+      "DownloadServerInfoObject": {
+        "title": "DownloadServerInfoObject",
+        "required": [
+          "objectId",
+          "objectType",
+          "command",
+          "ipAddress",
+          "port"
+        ],
+        "type": "object",
+        "properties": {
+          "objectId": {
+            "type": "integer",
+            "description": "The object id",
+            "example": 21474836499,
+            "format": "int64"
+          },
+          "objectType": {
+            "type": "string",
+            "description": "Object Type. The objectType should be DownloadServerInfo.",
+            "example": "DownloadServerInfo"
+          },
+          "command": {
+            "type": "string",
+            "description": "Could be Create, Update, Delete, agent will do the modification to config according to the command",
+            "example": "Update"
+          },
+          "ipAddress": {
+            "type": "string",
+            "description": "The ip address of the download server",
+            "example": "192.168.10.10"
+          },
+          "port": {
+            "type": "integer",
+            "description": "The port of the download server",
+            "example": 8001,
+            "format": "int32"
+          }
+        }
+      },
       "InclusionSourceAttributes": {
         "title": "InclusionSourceAttributes",
         "required": [
@@ -6777,11 +7204,18 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The attribute name"
+            "description": "The attribute name.\n",
+            "enum": [
+              "FileName",
+              "Hash",
+              "Path",
+              "SignerName",
+              "Thumbprint"
+            ]
           },
           "value": {
             "type": "string",
-            "description": "The attribute value"
+            "description": "The attribute value.\n"
           }
         }
       },
@@ -6795,11 +7229,19 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The attribute name"
+            "description": "The attribute name.\n\nThe attribute names \"ValueType\", \"ValueName\", and \"ValueSize\" are meaningful only when the event type is \"CreateValue\", \"ReadValue\", \"DeleteValue\", or \"SetValue\".\n\nIf the event category is 'Volume', the attribute name supports Path.\n\nIf the event category is 'File', the attribute name supports:\n- FileName\n- Path \n\nIf the event category is 'Registry', the attribute name supports:\n- KeyPath\n- ValueType\n- ValueSize\n- ValueName\n\nIf the event category is \"Volume,\" it is required to have the \"Path\" attribute in the inclusion section.\n\nIf the event category is \"File,\" it is required to have at least one of the following attributes in the inclusion section:\n- Path\n- FileName\n\nIf the event category is \"Registry,\" it is required to have the \"Key Path\" attribute in the inclusion section\n",
+            "enum": [
+              "FileName",
+              "Path",
+              "KeyPath",
+              "ValueName",
+              "ValueType",
+              "ValueSize"
+            ]
           },
           "value": {
             "type": "string",
-            "description": "The attribute value"
+            "description": "The value of the \"value\" field depends on the selected \"name\" attribute. \n\nIf the \"name\" is one of the following: \"FileName\", \"Path\", \"KeyPath\", or \"ValueName\", then the value should be a string.\n\nIf the \"identify\" is \"ValueSize,\" the \"value\" field should be a string representation of the integer result. Please ensure that the integer value is converted to a string before populating the \"value\" field. The maximum allowed value for \"ValueSize\" is 4096 bytes.\n\nIf the \"name\" is \"ValueType\", then the \"value\" field should be a string that represents the bitmask result of the selected options. The following string values are available to indicate options and their corresponding bitmask values:\n- \"REG_BINARY\" (bitmask value: 1)\n- \"REG_DWORD\" (bitmask value: 2)\n- \"REG_EXPAND_SZ\" (bitmask value: 4)\n- \"REG_QWORD\" (bitmask value: 8)\n- \"REG_SZ\" (bitmask value: 16)\n- \"REG_MULTI_SZ\" (bitmask value: 32)\n\nThe \"value\" field should be a string representation of the integer result obtained by performing a bitwise OR operation on the selected options' bitmask values.\n\nHere are some examples:\n- If both \"REG_BINARY\" and \"REG_DWORD\" are selected, the \"value\" field  should be \"3\" (1 | 2 = 3).\n- If only \"REG_SZ\" is selected, the \"value\" field should be \"16\".\n\nPlease ensure that the \"value\" field is correctly calculated based on the selected options' bitmask values and represented as a string.\n"
           }
         }
       },
@@ -6813,11 +7255,18 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The attribute name"
+            "description": "The attribute name.\n",
+            "enum": [
+              "FileName",
+              "Hash",
+              "Path",
+              "SignerName",
+              "Thumbprint"
+            ]
           },
           "value": {
             "type": "string",
-            "description": "The attribute value"
+            "description": "The attribute value.\n"
           }
         }
       },
@@ -6831,11 +7280,19 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The attribute name"
+            "description": "The attribute name.\n\nThe attribute names \"ValueType\", \"ValueName\", and \"ValueSize\" are meaningful only when the event type is \"CreateValue\", \"ReadValue\", \"DeleteValue\", or \"SetValue\".\n\nIf the event category is 'Volume', the attribute name supports Path.\n\nIf the event category is 'File', the attribute name supports:\n- FileName\n- Path \n\nIf the event category is 'Registry', the attribute name supports:\n- KeyPath\n- ValueType\n- ValueSize\n- ValueName\n",
+            "enum": [
+              "FileName",
+              "Path",
+              "KeyPath",
+              "ValueName",
+              "ValueType",
+              "ValueSize"
+            ]
           },
           "value": {
             "type": "string",
-            "description": "The attribute value"
+            "description": "The value of the \"value\" field depends on the selected \"name\" attribute. \n\nIf the \"name\" is one of the following: \"FileName\", \"Path\", \"KeyPath\", or \"ValueName\", then the value should be a string.\n\nIf the \"identify\" is \"ValueSize,\" the \"value\" field should be a string representation of the integer result. Please ensure that the integer value is converted to a string before populating the \"value\" field. The maximum allowed value for \"ValueSize\" is 4096 bytes.\n\nIf the \"name\" is \"ValueType\", then the \"value\" field should be a string that represents the bitmask result of the selected options. The following string values are available to indicate options and their corresponding bitmask values:\n- \"REG_BINARY\" (bitmask value: 1)\n- \"REG_DWORD\" (bitmask value: 2)\n- \"REG_EXPAND_SZ\" (bitmask value: 4)\n- \"REG_QWORD\" (bitmask value: 8)\n- \"REG_SZ\" (bitmask value: 16)\n- \"REG_MULTI_SZ\" (bitmask value: 32)\n\nThe \"value\" field should be a string representation of the integer result obtained by performing a bitwise OR operation on the selected options' bitmask values.\n\nHere are some examples:\n- If both \"REG_BINARY\" and \"REG_DWORD\" are selected, the \"value\" field  should be \"3\" (1 | 2 = 3).\n- If only \"REG_SZ\" is selected, the \"value\" field should be \"16\".\n\nPlease ensure that the \"value\" field is correctly calculated based on the selected options' bitmask values and represented as a string.\n"
           }
         }
       },
@@ -6986,6 +7443,10 @@
         "title": "GetAgentInstallersResponse",
         "type": "object",
         "properties": {
+          "downloadServerIp": {
+            "type": "string",
+            "description": "IP address of the download server"
+          },
           "availableAgentInstallers": {
             "type": "array",
             "description": "available agent installers",
@@ -6997,8 +7458,62 @@
       },
       "AgentInstallerResponse": {
         "title": "AgentInstallerResponse",
+        "required": [
+          "agentInstallerId",
+          "osFamily",
+          "version"
+        ],
         "type": "object",
         "properties": {
+          "agentInstallerId": {
+            "type": "integer",
+            "description": "Agent id",
+            "format": "int64"
+          },
+          "osFamily": {
+            "type": "string",
+            "description": "OS"
+          },
+          "version": {
+            "type": "string",
+            "description": "version"
+          }
+        }
+      },
+      "UpdateAgentInstallersRequest": {
+        "title": "UpdateAgentInstallersRequest",
+        "required": [
+          "downloadServerIp"
+        ],
+        "type": "object",
+        "properties": {
+          "downloadServerIp": {
+            "type": "string",
+            "description": "IP address of the download server"
+          },
+          "availableAgentInstallers": {
+            "type": "array",
+            "description": "available agent installers",
+            "items": {
+              "$ref": "#/components/schemas/AgentInstallersRequest"
+            }
+          }
+        }
+      },
+      "AgentInstallersRequest": {
+        "title": "AgentInstallersRequest",
+        "required": [
+          "agentInstallerId",
+          "osFamily",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "agentInstallerId": {
+            "type": "integer",
+            "description": "Agent id",
+            "format": "int64"
+          },
           "osFamily": {
             "type": "string",
             "description": "OS"
@@ -7037,11 +7552,11 @@
       "SetTargetVersionRequest": {
         "title": "SetTargetVersionRequest",
         "required": [
-          "updateVersions"
+          "targetVersions"
         ],
         "type": "object",
         "properties": {
-          "updateVersions": {
+          "targetVersions": {
             "type": "array",
             "description": "List of installer versions that should be applied in the agent\ngroups",
             "items": {
@@ -7080,6 +7595,11 @@
         ],
         "type": "object",
         "properties": {
+          "agentInstallerId": {
+            "type": "integer",
+            "description": "Agent id",
+            "format": "int64"
+          },
           "osFamily": {
             "type": "string",
             "description": "OS",
@@ -7092,6 +7612,43 @@
           "version": {
             "type": "string",
             "description": "version"
+          }
+        }
+      },
+      "PostAgentInstallerBodyRequest": {
+        "title": "PostAgentInstallerBodyRequest",
+        "required": [
+          "osFamily",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "osFamily": {
+            "type": "string",
+            "description": "OS",
+            "enum": [
+              "Windows",
+              "macOS",
+              "Linux"
+            ]
+          },
+          "version": {
+            "type": "string",
+            "description": "version"
+          }
+        }
+      },
+      "PostAgentInstallerResponse": {
+        "title": "PostAgentInstallerResponse",
+        "required": [
+          "agentInstallerId"
+        ],
+        "type": "object",
+        "properties": {
+          "agentInstallerId": {
+            "type": "integer",
+            "description": "Specifies the agent installer ID",
+            "format": "int64"
           }
         }
       },
@@ -7915,7 +8472,7 @@
           },
           "token": {
             "type": "string",
-            "description": "token = Base64(Header).Base64(Payload).Signature\n\nHeader:\n{\n\"typ\":\"JWT\",\n\"alg\":\"HS256\"\n}\n\nPayload:\n{\n\"userid\":111111111,\n\"username\":\"User1\",\n\"exp\":1300819380\n}\n\nSignature:\nHMACSHARE256(Base64(Header)+\".\"+Base64(Payload),secret)\n",
+            "description": "token = \"Base64 encode the following data:{\"agentId\":xxx,\"timestamp\":xxx,\"exp\":xxx}\"\n",
             "example": "xxxxxxxxxxxx"
           }
         }
@@ -8043,7 +8600,7 @@
           },
           "eventType": {
             "type": "integer",
-            "description": "Bitmask of event type FILE_EXECUTE_ATTEMPT        = (1 << 13); DEVICE_CONTROL_MANAGEMENT   = (1 << 21); FIM_FILE                    = (1 << 25);",
+            "description": "Bitmask of event type FILE_EXECUTE_ATTEMPT = (1 << 13); DEVICE_CONTROL_MANAGEMENT = (1 << 21); FIM_FILE = (1 << 25); FIM_REGISTRY = (1 << 26);",
             "format": "int64",
             "example": 33554432
           },
@@ -8155,7 +8712,7 @@
           },
           "eventType": {
             "type": "integer",
-            "description": "Bitmask of event type FILE_EXECUTE_ATTEMPT        = (1 << 13); DEVICE_CONTROL_MANAGEMENT   = (1 << 21); FIM_FILE                    = (1 << 25);",
+            "description": "Bitmask of event type FILE_EXECUTE_ATTEMPT = (1 << 13); DEVICE_CONTROL_MANAGEMENT = (1 << 21); FIM_FILE = (1 << 25); FIM_REGISTRY = (1 << 26);",
             "format": "int64",
             "example": 33554432
           },
@@ -8588,7 +9145,7 @@
         "properties": {
           "policyType": {
             "type": "integer",
-            "description": "Rule index\nExecution Prevention Rules\n1 Application Control\n2 File Integrity Control\n3 Execution Prevention\n4 Exfiltration Prevention\n5 Ransomware Prevention\n6 Device Control",
+            "description": "1 Application Control\n2 File Integrity Control\n3 Execution Prevention\n4 Exfiltration Prevention\n5 Ransomware Prevention\n6 Device Control",
             "format": "int32"
           },
           "policyId": {
@@ -8645,8 +9202,18 @@
       },
       "AgentGroupsResponse": {
         "title": "AgentGroupsResponse",
+        "required": [
+          "agentInstallerId",
+          "osFamily",
+          "version"
+        ],
         "type": "object",
         "properties": {
+          "agentInstallerId": {
+            "type": "integer",
+            "description": "Agent id",
+            "format": "int64"
+          },
           "osFamily": {
             "type": "string",
             "description": "OS"
@@ -8690,6 +9257,13 @@
           "name": {
             "type": "string",
             "description": "Agent group name"
+          },
+          "agents": {
+            "type": "array",
+            "description": "Agents",
+            "items": {
+              "$ref": "#/components/schemas/AgentsResponse"
+            }
           },
           "targetVersions": {
             "type": "array",
@@ -9645,6 +10219,28 @@
           "rule": {
             "type": "string",
             "description": "The description of the rule"
+          },
+          "applications": {
+            "type": "array",
+            "description": "applications",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationListResponse"
+            }
+          }
+        }
+      },
+      "ApplicationListResponse": {
+        "title": "ApplicationListResponse",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Application id",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Application name"
           }
         }
       },
@@ -10310,6 +10906,10 @@
           "firmwareVersion": {
             "type": "string",
             "description": "firmware version"
+          },
+          "upgradeTime": {
+            "type": "string",
+            "description": "Indicating the time of the last firmware upgrade."
           }
         }
       },
@@ -10461,11 +11061,6 @@
             "type": "string",
             "description": "Specifies the path of the main process"
           },
-          "rawDataItems": {
-            "type": "integer",
-            "description": "Indicate the number of raw data items associated with this event.",
-            "format": "int64"
-          },
           "action": {
             "type": "string",
             "description": "A string with one of the following values",
@@ -10502,9 +11097,12 @@
             "type": "string",
             "description": "Specifies the process type, which can be 32 bit or 64 bit"
           },
-          "comment": {
-            "type": "string",
-            "description": "Specifies a user-defined string attached to the event"
+          "comments": {
+            "type": "array",
+            "description": "Specifies a user-defined string and actions (mute/unmute/handle/unhandle) attached to the event",
+            "items": {
+              "$ref": "#/components/schemas/GetEventsCommentsRequest"
+            }
           },
           "mute": {
             "type": "boolean",
@@ -10524,6 +11122,32 @@
           "muteEndTime": {
             "type": "string",
             "description": "Indicates the mute end time"
+          }
+        }
+      },
+      "GetEventsCommentsRequest": {
+        "title": "GetEventsCommentsRequest",
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "Specifies a user-defined string attached to the event"
+          },
+          "mutedBy": {
+            "type": "string",
+            "description": "Specifies the user who muted the event."
+          },
+          "mutedTime": {
+            "type": "string",
+            "description": "Time when the event was muted."
+          },
+          "handledBy": {
+            "type": "string",
+            "description": "Specifies the user who handled the event."
+          },
+          "handledTime": {
+            "type": "string",
+            "description": "Time when the event was handled."
           }
         }
       },
@@ -10564,6 +11188,136 @@
           "macAddresses": {
             "type": "string",
             "description": "MAC addresses"
+          }
+        }
+      },
+      "GetEventGraphResponse": {
+        "title": "GetEventGraphResponse",
+        "required": [
+          "eventId",
+          "eventSequence",
+          "alert"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "integer",
+            "description": "Specifies the event id",
+            "example": 1064491688,
+            "format": "int64"
+          },
+          "eventFlow": {
+            "type": "array",
+            "description": "An array representing the flow of processes in the event.",
+            "items": {
+              "$ref": "#/components/schemas/GetEventGraphEventFlow"
+            }
+          },
+          "alerts": {
+            "type": "array",
+            "description": "An array of alerts associated with the event.",
+            "items": {
+              "$ref": "#/components/schemas/GetEventGraphAlert"
+            }
+          }
+        }
+      },
+      "GetEventGraphEventFlow": {
+        "title": "GetEventGraphEventFlow",
+        "required": [
+          "flowAction",
+          "processName",
+          "nextProcessName",
+          "processId",
+          "nextProcessId"
+        ],
+        "type": "object",
+        "properties": {
+          "flowAction": {
+            "type": "string",
+            "description": "The action performed in the event flow (e.g., FIM FILE WRITE/ DEVICE CONTROL/PRE EXECUTE).",
+            "example": "FIM FILE WRITE"
+          },
+          "processName": {
+            "type": "string",
+            "description": "Name of the current process.",
+            "example": "PowerShell.exe"
+          },
+          "processId": {
+            "type": "integer",
+            "description": "Specifies the process id of the current process",
+            "example": 5776,
+            "format": "int64"
+          },
+          "nextProcessName": {
+            "type": "string",
+            "description": "Name of the next process in the sequence.",
+            "example": "log.txt"
+          },
+          "nextProcessId": {
+            "type": "integer",
+            "description": "Specifies the process id of the next process in the sequence.",
+            "example": 0,
+            "format": "int64"
+          }
+        }
+      },
+      "GetEventGraphAlert": {
+        "title": "GetEventGraphAlert",
+        "required": [
+          "classification",
+          "action",
+          "affectedSequences",
+          "rule"
+        ],
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "The action taken for the event (Block/Log/SimulationBlock).",
+            "enum": [
+              "Block",
+              "SimulationBlock",
+              "Log"
+            ]
+          },
+          "affectedFlowIndices": {
+            "type": "array",
+            "description": "An array of objects representing affected eventFlow indices.",
+            "items": {
+              "$ref": "#/components/schemas/GetEventGraphAffectedFlowIndex"
+            }
+          },
+          "classification": {
+            "type": "string",
+            "description": "The classification of the event (malicious/suspicious/Inconclusive/..).",
+            "enum": [
+              "Malicious",
+              "Suspicious",
+              "Inconclusive",
+              "Likely Safe",
+              "PUP",
+              "Safe"
+            ]
+          },
+          "rule": {
+            "type": "string",
+            "description": "The rule associated with the event.",
+            "example": "Malicious File Detected"
+          }
+        }
+      },
+      "GetEventGraphAffectedFlowIndex": {
+        "title": "GetEventGraphAffectedFlowIndex",
+        "required": [
+          "flowIndex"
+        ],
+        "type": "object",
+        "properties": {
+          "flowIndex": {
+            "type": "integer",
+            "description": "The index of the affected eventFlow.",
+            "format": "int64"
           }
         }
       },
@@ -10713,9 +11467,12 @@
               "Safe"
             ]
           },
-          "comment": {
-            "type": "string",
-            "description": "Specifies a user-defined string attached to the event"
+          "comments": {
+            "type": "array",
+            "description": "Specifies a user-defined string and actions (mute/unmute/handle/unhandle) attached to the event",
+            "items": {
+              "$ref": "#/components/schemas/UpdateEventsCommentsRequest"
+            }
           },
           "mute": {
             "type": "boolean",
@@ -10735,6 +11492,32 @@
           "muteEndTime": {
             "type": "string",
             "description": "Indicates the mute end time"
+          }
+        }
+      },
+      "UpdateEventsCommentsRequest": {
+        "title": "UpdateEventsCommentsRequest",
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "Specifies a user-defined string attached to the event"
+          },
+          "mutedBy": {
+            "type": "string",
+            "description": "Specifies the user who muted the event."
+          },
+          "mutedTime": {
+            "type": "string",
+            "description": "Time when the event was muted."
+          },
+          "handledBy": {
+            "type": "string",
+            "description": "Specifies the user who handled the event."
+          },
+          "handledTime": {
+            "type": "string",
+            "description": "Time when the event was handled."
           }
         }
       },
@@ -11154,6 +11937,7 @@
         "required": [
           "attributes",
           "enabled",
+          "eventCategory",
           "eventTypes",
           "operatingSystems"
         ],
@@ -11175,11 +11959,40 @@
             "description": "Exclusion enabled/disabled status.",
             "example": false
           },
+          "eventCategory": {
+            "type": "string",
+            "description": "The event category. The category can be either File, Registry, or Volume.",
+            "enum": [
+              "File",
+              "Registry",
+              "Volume"
+            ]
+          },
           "eventTypes": {
             "type": "array",
-            "description": "The list of File Integrity Monitoring event types (identifiers) covered\nby this exclusion.",
+            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.\nIf the event category is File, , it can have the following values:\n- FileDelete\n- FileRename\n- FileWrite\n- FileRead\n- FileTimestampsChange\n\nIf the event category is Volume, , it can have the following values:\n- DirectVolumeAccess\n- DirectVolumeWrite\n\nIf the event category is Registry, it can have the following values:\n- CreateKey\n- DeleteKey\n- RenameKey\n- SaveKey\n- ReplaceKey\n- RestoreKey\n- LoadKey\n- CreateValue\n- ReadValue\n- DeleteValue\n- SetValue\n",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "FileDelete",
+                "FileRename",
+                "FileWrite",
+                "FileRead",
+                "DirectVolumeAccess",
+                "DirectVolumeWrite",
+                "FileTimestampsChange",
+                "CreateKey",
+                "DeleteKey",
+                "RenameKey",
+                "SaveKey",
+                "ReplaceKey",
+                "RestoreKey",
+                "LoadKey",
+                "CreateValue",
+                "ReadValue",
+                "DeleteValue",
+                "SetValue"
+              ]
             }
           },
           "operatingSystems": {
@@ -11207,10 +12020,12 @@
           },
           "type": {
             "type": "string",
-            "description": "The attribute type, either Source or Target.",
+            "description": "The attribute type can be either File, Registry, Volume, or Process.",
             "enum": [
-              "Source",
-              "Target"
+              "File",
+              "Volume",
+              "Registry",
+              "Process"
             ]
           },
           "contents": {
@@ -11232,28 +12047,22 @@
         "properties": {
           "identifier": {
             "type": "string",
-            "description": "The attribute name. If the attribute type is \"Source\", the identifier only supports FileName/Hash/Path/Signer.",
+            "description": "The attribute name. \n\nIf the attribute type is 'Process', the identifier supports:\n- FileName\n- Hash\n- Path\n- SignerName\n- Thumbprint\n\nIf the attribute type is 'Volume', the identifier supports Path.\n\nIf the attribute type is 'File', the identifier supports:\n- FileName\n- Path \n\nIf the attribute type is 'Registry', the identifier supports:\n- KeyPath\n- ValueType\n- ValueSize\n- ValueName\n\nIf the attribute type is \"Volume,\" it is required to have the \"Path\" attribute in the inclusion section:\n- \"type\" is \"Volume,\" \"ruleType\" is \"Inclusion,\" and \"identifier\" is \"Path.\"\n\nIf the attribute type is \"File,\" it is required to have at least one of the following attributes in the inclusion section:\n- \"type\" is \"File,\" \"ruleType\" is \"Inclusion,\" and \"identifier\" is \"Path.\"\n- \"type\" is \"File,\" \"ruleType\" is \"Inclusion,\" and \"identifier\" is \"FileName.\"\n\nIf the attribute type is \"Registry,\" it is required to have the \"Key Path\" attribute in the inclusion section:\n- \"type\" is \"Registry,\" \"ruleType\" is \"Inclusion,\" and \"identifier\" is \"KeyPath.\"\n\nThe attribute names \"ValueType\", \"ValueName\", and \"ValueSize\" are meaningful only when the event type is \"CreateValue\", \"ReadValue\", \"DeleteValue\", or \"SetValue\".\n",
             "enum": [
-              "File Name",
+              "FileName",
               "Hash",
               "Path",
-              "Signer",
-              "Key Path",
-              "Value Name",
-              "Value Type",
-              "Value Size",
-              "Remote IP",
-              "Remote Port",
-              "Local Port"
+              "SignerName",
+              "Thumbprint",
+              "KeyPath",
+              "ValueName",
+              "ValueType",
+              "ValueSize"
             ]
           },
           "value": {
             "type": "string",
-            "description": "The attribute value."
-          },
-          "secondaryValue": {
-            "type": "string",
-            "description": "Secondary property identifying the attribute. Used in special\ncases like with the Signer attribute."
+            "description": "The value of the \"value\" field depends on the selected \"identify\" attribute.\n\n\nIf the \"identify\" is one of the following: \"FileName\", \"Hash\", \"Path\", \"SignerName\", \"Thumbprint\", \"KeyPath\", or \"ValueName\", then the value should be a string.\n\nIf the \"identify\" is \"ValueSize,\" the \"value\" field should be a string representation of the integer result. Please ensure that the integer value is converted to a string before populating the \"value\" field. The maximum allowed value for \"ValueSize\" is 4096 bytes.\n\nIf the \"identify\" is \"ValueType\", then the \"value\" field should be a string that represents the bitmask result of the selected options. The following string values are available to indicate options and their corresponding bitmask values:\n- \"REG_BINARY\" (bitmask value: 1)\n- \"REG_DWORD\" (bitmask value: 2)\n- \"REG_EXPAND_SZ\" (bitmask value: 4)\n- \"REG_QWORD\" (bitmask value: 8)\n- \"REG_SZ\" (bitmask value: 16)\n- \"REG_MULTI_SZ\" (bitmask value: 32)\n\nThe \"value\" field should be a string representation of the integer result obtained by performing a bitwise OR operation on the selected options' bitmask values.\n\nHere are some examples:\n- If both \"REG_BINARY\" and \"REG_DWORD\" are selected, the \"value\" field  should be \"3\" (1 | 2 = 3).\n- If only \"REG_SZ\" is selected, the \"value\" field should be \"16\".\n\nPlease ensure that the \"value\" field is correctly calculated based on the selected options' bitmask values and represented as a string.\n"
           }
         }
       },
@@ -11323,6 +12132,7 @@
           "id",
           "ruleName",
           "operatingSystems",
+          "eventCategory",
           "eventTypes",
           "attributes"
         ],
@@ -11341,11 +12151,40 @@
             "type": "string",
             "description": "The rule's enabled operating system."
           },
+          "eventCategory": {
+            "type": "string",
+            "description": "The event category. The category can be either File, Registry, or Volume.",
+            "enum": [
+              "File",
+              "Registry",
+              "Volume"
+            ]
+          },
           "eventTypes": {
             "type": "array",
-            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.",
+            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.\nIf the event category is File, , it can have the following values:\n- FileDelete\n- FileRename\n- FileWrite\n- FileRead\n- FileTimestampsChange\n\nIf the event category is Volume, , it can have the following values:\n- DirectVolumeAccess\n- DirectVolumeWrite\n\nIf the event category is Registry, it can have the following values:\n- CreateKey\n- DeleteKey\n- RenameKey\n- SaveKey\n- ReplaceKey\n- RestoreKey\n- LoadKey\n- CreateValue\n- ReadValue\n- DeleteValue\n- SetValue\n",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "FileDelete",
+                "FileRename",
+                "FileWrite",
+                "FileRead",
+                "DirectVolumeAccess",
+                "DirectVolumeWrite",
+                "FileTimestampsChange",
+                "CreateKey",
+                "DeleteKey",
+                "RenameKey",
+                "SaveKey",
+                "ReplaceKey",
+                "RestoreKey",
+                "LoadKey",
+                "CreateValue",
+                "ReadValue",
+                "DeleteValue",
+                "SetValue"
+              ]
             }
           },
           "attributes": {
@@ -11358,7 +12197,7 @@
         }
       },
       "CreateFileIntegrityProfileRequest": {
-        "title": "FileIntegrityProfileResponse",
+        "title": "CreateFileIntegrityProfileRequest",
         "required": [
           "profileName",
           "enabled",
@@ -11395,10 +12234,11 @@
         }
       },
       "CreateFIMRuleRequest": {
-        "title": "FIMRuleResponse",
+        "title": "CreateFIMRuleRequest",
         "required": [
           "ruleName",
           "operatingSystems",
+          "eventCategory",
           "eventTypes",
           "attributes"
         ],
@@ -11412,11 +12252,40 @@
             "type": "string",
             "description": "The rule's enabled operating system."
           },
+          "eventCategory": {
+            "type": "string",
+            "description": "The event category. The category can be either File, Registry, or Volume.",
+            "enum": [
+              "File",
+              "Registry",
+              "Volume"
+            ]
+          },
           "eventTypes": {
             "type": "array",
-            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.",
+            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.\nIf the event category is File, , it can have the following values:\n- FileDelete\n- FileRename\n- FileWrite\n- FileRead\n- FileTimestampsChange\n\nIf the event category is Volume, , it can have the following values:\n- DirectVolumeAccess\n- DirectVolumeWrite\n\nIf the event category is Registry, it can have the following values:\n- CreateKey\n- DeleteKey\n- RenameKey\n- SaveKey\n- ReplaceKey\n- RestoreKey\n- LoadKey\n- CreateValue\n- ReadValue\n- DeleteValue\n- SetValue",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "FileDelete",
+                "FileRename",
+                "FileWrite",
+                "FileRead",
+                "DirectVolumeAccess",
+                "DirectVolumeWrite",
+                "FileTimestampsChange",
+                "CreateKey",
+                "DeleteKey",
+                "RenameKey",
+                "SaveKey",
+                "ReplaceKey",
+                "RestoreKey",
+                "LoadKey",
+                "CreateValue",
+                "ReadValue",
+                "DeleteValue",
+                "SetValue"
+              ]
             }
           },
           "attributes": {
@@ -11429,7 +12298,7 @@
         }
       },
       "UpdateFileIntegrityProfileRequest": {
-        "title": "FileIntegrityProfileResponse",
+        "title": "UpdateFileIntegrityProfileRequest",
         "required": [
           "profileName",
           "state",
@@ -11466,7 +12335,7 @@
         }
       },
       "UpdateFIMRuleRequest": {
-        "title": "FIMRuleResponse",
+        "title": "UpdateFIMRuleRequest",
         "required": [
           "ruleName",
           "operatingSystems",
@@ -11483,11 +12352,40 @@
             "type": "string",
             "description": "The rule's enabled operating system."
           },
+          "eventCategory": {
+            "type": "string",
+            "description": "The event category. The category can be either File, Registry, or Volume.",
+            "enum": [
+              "File",
+              "Registry",
+              "Volume"
+            ]
+          },
           "eventTypes": {
             "type": "array",
-            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.",
+            "description": "The list of File Integrity event types (identifiers) covered\nby this rule.\nIf the event category is File, , it can have the following values:\n- FileDelete\n- FileRename\n- FileWrite\n- FileRead\n- FileTimestampsChange\n\nIf the event category is Volume, , it can have the following values:\n- DirectVolumeAccess\n- DirectVolumeWrite\n\nIf the event category is Registry, it can have the following values:\n- CreateKey\n- DeleteKey\n- RenameKey\n- SaveKey\n- ReplaceKey\n- RestoreKey\n- LoadKey\n- CreateValue\n- ReadValue\n- DeleteValue\n- SetValue\n",
             "items": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "FileDelete",
+                "FileRename",
+                "FileWrite",
+                "FileRead",
+                "DirectVolumeAccess",
+                "DirectVolumeWrite",
+                "FileTimestampsChange",
+                "CreateKey",
+                "DeleteKey",
+                "RenameKey",
+                "SaveKey",
+                "ReplaceKey",
+                "RestoreKey",
+                "LoadKey",
+                "CreateValue",
+                "ReadValue",
+                "DeleteValue",
+                "SetValue"
+              ]
             }
           },
           "attributes": {
@@ -12142,10 +13040,21 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "bearerJWTAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "token = Base64(Header).Base64(Payload).Signature\n\nHeader:\n{\n\"typ\":\"JWT\",\n\"alg\":\"HS256\"\n}\n\nPayload:\n{\n\"userid\":111111111,\n\"username\":\"User1\",\n\"exp\":1300819380\n}\n\nSignature:\nHMACSHARE256(Base64(Header)+\".\"+Base64(Payload),secret)\n"
+      },
+      "bearerPasswordAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "token = \"Base64 encode the following data: {\"password\": xxxxx}\"\nxxxxx is the registration password.\n"
+      },
+      "bearerTokenAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "token = \"Base64 encode the following data:{\"agentId\":xxx,\"timestamp\":xxx,\"exp\":xxx}\"\n"
       }
     }
   }

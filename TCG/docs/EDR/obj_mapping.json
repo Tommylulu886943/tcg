@@ -1,4 +1,7 @@
 {
+  "Dashboard": {
+    "GET -EVENT-WID-FOR-DASHBOARD": "/dashboard/events"
+  },
   "Licensing": {
     "GET -SYSTEM-LICENSING": "/licensing",
     "PUT UPLOAD-LICENSE": "/licensing"
@@ -41,10 +44,10 @@
     "DELETE _FILE_INTEGRITY_PROFILES": "/securities/file-integrity",
     "GET _A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity/${Id}",
     "PUT UPDATE_A_FILE_INTEGRITY_PROFILE": "/securities/file-integrity/${Id}",
-    "POST APPLICATION-WHITEALLING_1": "/securities/application-whitelisting",
+    "POST CREATE-APPLICATION-WHITEALLING": "/securities/application-whitelisting",
     "GET ALL-APPLICATION-WHITEALLING": "/securities/application-whitelisting",
-    "POST UPLOAD-APPLICATION-WHITEALLING": "/securities/application-whitelisting/csv",
     "DELETE -APPLICATION-WHITEALLING": "/securities/application-whitelisting",
+    "POST UPLOAD-APPLICATION-WHITEALLING": "/securities/application-whitelisting/csv",
     "GET -AN-APPLICATION-WHITEALLING": "/securities/application-whitelisting/${Id}",
     "PUT APPLICATION-WHITEALLING_2": "/securities/application-whitelisting/${Id}"
   },
@@ -91,19 +94,14 @@
     "GET ALL-AN-AGENT-GROUP-INSTALLER-VERSION": "/agent-groups/${Id}/installers",
     "PUT UPDATE-AN-AGENT-GROUP-INSTALLER": "/agent-groups/${Id}/installers"
   },
-  "Agent_Installers": {
-    "GET -AGENT-INSTALLERS": "/agent-installers"
-  },
   "Events": {
     "GET ALL-EVENTS": "/events",
     "DELETE EVENTS": "/events",
     "PATCH EVENTS_1": "/events",
     "GET ALL-AN-EVENT": "/events/${Id}",
     "PATCH UPDATE-AN-EVENT": "/events/${Id}",
-    "GET EXPORT-EVENT-JSON-WITH-ALL-RAW-DATA-ITEMS": "/events/${Id}/json",
-    "GET ALL-RAW-DATA-ITEMS": "/events/${Id}/raw-data-items",
-    "GET EXPORT-RAW-DATA-ITEMS-JSON": "/events/${Id}/raw-data-items/json",
-    "GET EXPORT-A-RAW-DATA-ITEM-JSON": "/events/${Id}/raw-data-items/${rawItemId}/json"
+    "GET -EVENT-DATA-FOR-DRAW-EVENT-GRAPH": "/events/${Id}/graph",
+    "GET EXPORT-EVENT-JSON": "/events/${Id}/json"
   },
   "Logs": {
     "POST LOG-FORWARDING-PROFILE_2": "/logs/forwardings",
@@ -124,6 +122,11 @@
     "PUT UPGRADE-FIRMWARE": "/systems/firmware",
     "GET -FIRMWARE-INFORMATION": "/systems/firmware",
     "PUT UPLOAD-CONTENT": "/systems/contents",
-    "PUT UPDATE-AGENT-CONFIGURATION": "/systems/agents"
+    "PUT UPDATE-AGENT-CONFIGURATION": "/systems/agents",
+    "GET ALL-AGENT-INSTALLERS-AND-DOWNLOAD-SERVER-IP": "/systems/agent-installers",
+    "PUT UPDATE-AGENT-INSTALLERS-AND-DOWNLOAD-SERVER-IP": "/systems/agent-installers",
+    "POST ADD-AGENT-INSTALLER": "/systems/agent-installers",
+    "DELETE -AGENT-INSTALLERS": "/systems/agent-installers",
+    "GET -AGENT-INSTALLER-BY-ID": "/systems/agent-installers/${Id}"
   }
 }
