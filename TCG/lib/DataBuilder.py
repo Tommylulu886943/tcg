@@ -47,7 +47,15 @@ class DataBuilder:
                 
     @classmethod
     def data_builder(cls, generation_rules):
+        """
+        Generates test data based on a set of generation rules.
         
+        Args:
+            generation_rules: a dictionary of generation rules
+        
+        Returns:
+            A dictionary of test data generated from the given generation rules.
+        """        
         result = {}
         if generation_rules is None:
             return result
@@ -55,10 +63,18 @@ class DataBuilder:
             keys = key.split('.')
             info = generation_rules[key]
             rule = generation_rules[key]['rule']
+            enum = rule['Enum']
+            
             if generation_rules[key]['Default'] != "":
                 value = generation_rules[key]['Default']
             elif rule['Regex Pattern'] != "":
                 value = cls.generate_data_from_regex(rule['Regex Pattern'])
+            elif rule['Data Generator'] == 'Random Enumeration Value':
+                value = random.choice(enum)
+                if generation_rules[key]['Type'] == 'string':
+                    value = str(value)
+                elif generation_rules[key]['Type'] == 'integer':
+                    value = int(value)
             elif rule['Data Generator'] == 'Random String (Without Special Characters)':
                 value = cls.generate_random_string(rule['Data Length'])
             elif rule['Data Generator'] == 'Random String':
@@ -94,6 +110,14 @@ class DataBuilder:
         
     @classmethod
     def _create_nested_dict(cls, data, keys, value):
+        """
+        Creates a nested dictionary from a list of keys and a value.
+        
+        Args:
+            data: the dictionary to add the nested dictionary to
+            keys: a list of keys to create the nested dictionary with
+            value: the value to add to the nested dictionary
+        """
         # * if keys is last element
         if len(keys) == 1:
             key = keys[0]

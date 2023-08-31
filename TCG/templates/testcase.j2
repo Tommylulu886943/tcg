@@ -3,13 +3,13 @@
 {%- for case_id, case in test_cases.items() -%}
 {% for point_id, point in case.test_point.items() %}
 {{ test_info.operationId }}_{{ case_id }}_{{ point_id }}
-    [Tags]  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
-    [Documentation]  {{ case.summary }}
+    [Tags]  TCG  RESTful  {{ test_info.method }}  {{ case.test_strategy }}  {{ case.test_type }}  
+    [Documentation]      {{ case.summary }}
+    ...                  {{ point.parameter.description }}
     {% if point.dependency.Setup.items() %}
     [Setup]             {{ test_info.operationId }}_{{ case_id }}_{{ point_id }}_Setup
     {% endif %}
-        # Test - {{ case_id }}.{{ point_id }}
-        # {{ point.parameter.description }}
+        #  Test - {{ case_id }}.{{ point_id }}
         {{ '${' }}{{ point.parameter.request_name }}}  {{ '${' }}{{ point.parameter.response_name }}}=  Run Keyword  ${sender}.send_restful  {{ test_info.action }}  {{ test_info.object }}{% if point.parameter.testdata != "None" %}
         ...  file_name={{ point.parameter.testdata }}{% if dynamic_data != false %}
         ...  dynamic_test_data={{ '${' }}True}{% endif -%}{% endif -%}{% if product_type == 'FortiOT' %}
@@ -23,7 +23,6 @@
 
         ${parsed_resp}=  Parser.api_parser  {{ '${' }}{{ point.parameter.response_name }}}
         Log  ${parsed_resp}
-
         {% for action_index, action in point.additional_action.items() %}
         {% if action['Action Name'] == 'API Parser' -%}
             {% set data_option = '' if action.Data == '' else 'data=' + action.Data -%}

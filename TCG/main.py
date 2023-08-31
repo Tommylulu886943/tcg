@@ -1337,19 +1337,20 @@ class MyWindow(QMainWindow):
                 file_list = glob.glob("./artifacts/TestPlan/*.json")
                 for file in file_list:
                     with open(file, "r") as f:
-                        test_data = json.load(f) 
+                        test_data = json.load(f)
+                        operation_id = os.path.basename(file).split(".")[0]
                         for tc_i, tc_v in test_data['test_cases'].items():
                             for tp_i, tp_v in tc_v['test_point'].items():
-                                file_name = f"{tp_v['parameter']['testdata']}.json"
+                                file_name = f"{operation_id}_{tc_i}_{tp_i}.json"
                                 generation_rule = tp_v['parameter']['data_generation_rules']
-                                print(os.path.join(test_generation_rule_folder_path, file_name))
-                                with open(os.path.join(test_generation_rule_folder_path, file_name), "w") as f:
-                                    json.dump(generation_rule, f, indent=4)
+                                if generation_rule != {}:
+                                    with open(os.path.join(test_generation_rule_folder_path, file_name), "w") as f:
+                                        json.dump(generation_rule, f, indent=4)
                                     
                                 dependency_setup, dependency_teardown = tp_v['dependency']['Setup'], tp_v['dependency']['Teardown']
                                 if dependency_setup != {}:
                                     for dp_i, dp_v in dependency_setup.items():
-                                        file_name = f"{tp_v['parameter']['testdata']}_Setup_{dp_i}.json"
+                                        file_name = f"{operation_id}_{tc_i}_{tp_i}_Setup_{dp_i}.json"
                                         if dp_v['data_generation_rules'] != {}:
                                             generation_rule = dp_v['data_generation_rules']
                                         else:
@@ -1358,7 +1359,7 @@ class MyWindow(QMainWindow):
                                             json.dump(generation_rule, f, indent=4)
                                 if dependency_teardown != {}:
                                     for dp_i, dp_v in dependency_teardown.items():
-                                        file_name = f"{tp_v['parameter']['testdata']}_Teardown_{dp_i}.json"
+                                        file_name = f"{operation_id}_{tc_i}_{tp_i}_Teardown_{dp_i}.json"
                                         if dp_v['data_generation_rules'] != {}:
                                             generation_rule = dp_v['data_generation_rules']
                                         else:
@@ -1394,12 +1395,29 @@ class MyWindow(QMainWindow):
         field_name = selected_item.text(0)
         
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.ui.textbox_tc_data_rule_value.text()
+            default_value = self.ui.comboBox_tc_data_rule_value.currentText()
             data_generator = self.ui.comboBox_tc_data_rule_data_generator.currentText()
             data_length = self.ui.textbox_tc_data_rule_data_length.text()
             required_value = self.ui.comboBox_tc_data_rule_required.currentText()
             nullalbe_value = self.ui.comboBox_tc_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_tc_data_rule_regex_pattern.text()
+
+            if default_value.startswith("[") and default_value.endswith("]"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value.startswith("{") and default_value.endswith("}"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value == "{True}" or default_value == "{False}":
+                default_value = True if default_value == "true" else False
+            elif default_value == "{Null}":
+                default_value = None
             
             with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -1431,7 +1449,7 @@ class MyWindow(QMainWindow):
                 self.ui.table_tc_generation_rule,
                 self.ui.textbox_tc_data_rule_type,
                 self.ui.textbox_tc_data_rule_format,
-                self.ui.textbox_tc_data_rule_value,
+                self.ui.comboBox_tc_data_rule_value,
                 self.ui.comboBox_tc_data_rule_data_generator,
                 self.ui.textbox_tc_data_rule_data_length,
                 self.ui.comboBox_tc_data_rule_required,
@@ -1450,7 +1468,8 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_generation_rule.topLevelItem(0).child(index).setExpanded(True)
             self.ui.table_tc_generation_rule.topLevelItem(0).child(index).child(3).setExpanded(True)
             self.ui.table_tc_generation_rule.topLevelItem(0).child(index).setSelected(True)
-            self.ui.table_tc_generation_rule.itemClicked.emit(self.ui.table_tc_generation_rule.topLevelItem(0).child(index), 0)        
+            self.ui.table_tc_generation_rule.itemClicked.emit(self.ui.table_tc_generation_rule.topLevelItem(0).child(index), 0)  
+                  
     def btn_tc_dependency_update_data_rule_clicked(self):
         if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
             return
@@ -1468,12 +1487,29 @@ class MyWindow(QMainWindow):
         dependency_index = self.ui.table_tc_dependency_rule.selectedItems()[0].text(0)
         
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.ui.textbox_tc_dependency_data_rule_value.text()
+            default_value = self.ui.comboBox_tc_dependency_data_rule_value.currentText()
             data_generator = self.ui.comboBox_tc_dependency_data_rule_data_generator.currentText()
             data_length = self.ui.textbox_tc_dependency_data_rule_data_length.text()
             required_value = self.ui.comboBox_tc_dependency_data_rule_required.currentText()
             nullalbe_value = self.ui.comboBox_tc_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_tc_dependency_data_rule_regex_pattern.text()
+
+            if default_value.startswith("[") and default_value.endswith("]"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value.startswith("{") and default_value.endswith("}"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value == "{True}" or default_value == "{False}":
+                default_value = True if default_value == "true" else False
+            elif default_value == "{Null}":
+                default_value = None
             
             with open(f"./artifacts/TestPlan/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
@@ -1505,7 +1541,7 @@ class MyWindow(QMainWindow):
                 self.ui.table_tc_dependency_generation_rule,
                 self.ui.textbox_tc_dependency_data_rule_type,
                 self.ui.textbox_tc_dependency_data_rule_format,
-                self.ui.textbox_tc_dependency_data_rule_value,
+                self.ui.comboBox_tc_dependency_data_rule_value,
                 self.ui.comboBox_tc_dependency_data_rule_data_generator,
                 self.ui.textbox_tc_dependency_data_rule_data_length,
                 self.ui.comboBox_tc_dependency_data_rule_required,
@@ -1540,13 +1576,30 @@ class MyWindow(QMainWindow):
         dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
 
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.ui.textbox_dependency_data_rule_value.text()
+            default_value = self.ui.comboBox_dependency_data_rule_value.currentText()
             data_generator = self.ui.comboBox_dependency_data_rule_data_generator.currentText()
             data_length = self.ui.textbox_dependency_data_rule_data_length.text()
             required_value = self.ui.comboBox_dependency_data_rule_required.currentText()
             nullalbe_value = self.ui.comboBox_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_dependency_data_rule_regex_pattern.text()
             
+            if default_value.startswith("[") and default_value.endswith("]"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value.startswith("{") and default_value.endswith("}"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value == "{True}" or default_value == "{False}":
+                default_value = True if default_value == "true" else False
+            elif default_value == "{Null}":
+                default_value = None   
+                         
             with open(f"./artifacts/DependencyRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[dependency_type][dependency_index]['data_generation_rules'][field_name]["Default"] = default_value
@@ -1576,7 +1629,7 @@ class MyWindow(QMainWindow):
                 self.ui.table_dependency_generation_rule,
                 self.ui.textbox_dependency_data_rule_type,
                 self.ui.textbox_dependency_data_rule_format,
-                self.ui.textbox_dependency_data_rule_value,
+                self.ui.comboBox_dependency_data_rule_value,
                 self.ui.comboBox_dependency_data_rule_data_generator,
                 self.ui.textbox_dependency_data_rule_data_length,
                 self.ui.comboBox_dependency_data_rule_required,
@@ -1608,13 +1661,30 @@ class MyWindow(QMainWindow):
         operation_id = api_selected_item.text(4)
 
         if parent_item is not None and parent_item.parent() is None:
-            default_value = self.ui.textbox_data_rule_value.text()
+            default_value = self.ui.comboBox_data_rule_value.currentText()
             data_generator = self.ui.comboBox_data_rule_data_generator.currentText()
             data_length = self.ui.textbox_data_rule_data_length.text()
             required_value = self.ui.comboBox_data_rule_required.currentText()
             nullalbe_value = self.ui.comboBox_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_data_rule_regex_pattern.text()
-        
+            
+            if default_value.startswith("[") and default_value.endswith("]"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value.startswith("{") and default_value.endswith("}"):
+                try:
+                    default_value = json.loads(default_value)
+                except json.decoder.JSONDecodeError:
+                    logging.error(f"Invalid JSON format: {default_value}")
+                    return
+            elif default_value == "{True}" or default_value == "{False}":
+                default_value = True if default_value == "true" else False
+            elif default_value == "{Null}":
+                default_value = None
+                
             with open(f"./artifacts/GenerationRule/{operation_id}.json", "r+") as f:
                 g_rule = json.load(f)
                 g_rule[field_name]["Default"] = default_value
@@ -1644,7 +1714,7 @@ class MyWindow(QMainWindow):
                 self.ui.table_generation_rule,
                 self.ui.textbox_data_rule_type,
                 self.ui.textbox_data_rule_format,
-                self.ui.textbox_data_rule_value,
+                self.ui.comboBox_data_rule_value,
                 self.ui.comboBox_data_rule_data_generator,
                 self.ui.textbox_data_rule_data_length,
                 self.ui.comboBox_data_rule_required,
@@ -2205,7 +2275,7 @@ class MyWindow(QMainWindow):
                     "additional_action": {},
                     "path": path_rule if path_rule is not None else {},
                     "query": query_rule if query_rule is not None else {},
-                    "config_name": file_name
+                    "config_name": file_name if generation_rule is not {} else None,
                 }
                 result = GeneralTool.add_key_in_json(
                     test_plan,
@@ -3997,12 +4067,12 @@ class MyWindow(QMainWindow):
             selected_item,
             self.ui.textbox_data_rule_type,
             self.ui.textbox_data_rule_format,
-            self.ui.textbox_data_rule_value,
+            self.ui.comboBox_data_rule_value,
             self.ui.comboBox_data_rule_data_generator,
             self.ui.textbox_data_rule_data_length,
             self.ui.comboBox_data_rule_required,
             self.ui.comboBox_data_rule_nullable,
-            self.ui.textbox_data_rule_regex_pattern
+            self.ui.textbox_data_rule_regex_pattern,
         )
         GeneralTool.render_dynamic_overwrite_data(
             selected_item,
@@ -4067,7 +4137,7 @@ class MyWindow(QMainWindow):
             selected_item,
             self.ui.textbox_dependency_data_rule_type,
             self.ui.textbox_dependency_data_rule_format,
-            self.ui.textbox_dependency_data_rule_value,
+            self.ui.comboBox_dependency_data_rule_value,
             self.ui.comboBox_dependency_data_rule_data_generator,
             self.ui.textbox_dependency_data_rule_data_length,
             self.ui.comboBox_dependency_data_rule_required,
@@ -4097,7 +4167,7 @@ class MyWindow(QMainWindow):
             selected_item,
             self.ui.textbox_tc_data_rule_type,
             self.ui.textbox_tc_data_rule_format,
-            self.ui.textbox_tc_data_rule_value,
+            self.ui.comboBox_tc_data_rule_value,
             self.ui.comboBox_tc_data_rule_data_generator,
             self.ui.textbox_tc_data_rule_data_length,
             self.ui.comboBox_tc_data_rule_required,
@@ -4127,7 +4197,7 @@ class MyWindow(QMainWindow):
             selected_item,
             self.ui.textbox_tc_dependency_data_rule_type,
             self.ui.textbox_tc_dependency_data_rule_format,
-            self.ui.textbox_tc_dependency_data_rule_value,
+            self.ui.comboBox_tc_dependency_data_rule_value,
             self.ui.comboBox_tc_dependency_data_rule_data_generator,
             self.ui.textbox_tc_dependency_data_rule_data_length,
             self.ui.comboBox_tc_dependency_data_rule_required,
@@ -4883,7 +4953,7 @@ class MyWindow(QMainWindow):
             self.ui.textbox_dependency_return_variable_name,
             self.ui.textbox_data_rule_type,
             self.ui.textbox_data_rule_format,
-            self.ui.textbox_data_rule_value,
+            self.ui.comboBox_data_rule_value,
             self.ui.comboBox_data_rule_data_generator,
             self.ui.textbox_data_rule_data_length,
             self.ui.comboBox_data_rule_required,
@@ -4969,6 +5039,8 @@ class MyWindow(QMainWindow):
                             for status_code, response in operation['responses'].items():
                                 if len(status_code) == 3 or status_code == 'default':
                                     # * WARNING: Only support the first content type now.
+                                    if 'content' not in operation['responses'][status_code]:
+                                        continue
                                     if operation['responses'][status_code]['content'] == {}:
                                         continue
                                     first_content_type = next(iter(operation['responses'][status_code]['content']))

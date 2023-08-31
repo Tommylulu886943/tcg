@@ -42,7 +42,7 @@
         {%- endif %}
         {%- endif %}
 {#-  Setup Data Generation Rules #}
-        {%- if setup.data_generation_rules != {} -%}
+        {%- if setup.data_generation_rules != {} and setup.data_generation_rules != None -%}
         ...  file_name={{ setup.config_name }}
         {% endif -%}
         {{ empty }}
@@ -129,7 +129,7 @@
         {%- endif %}
         {%- endif %}
 {#-  Teardown Data Generation Rules #}
-        {%- if teardown.data_generation_rules != {} -%}
+        {%- if teardown.data_generation_rules != {} and teardown.data_generation_rules != None -%}
         ...  file_name={{ teardown.config_name }}
         {%- endif %}
         Set Test Variable  {{ '${' }}{{ teardown.response_name }}}

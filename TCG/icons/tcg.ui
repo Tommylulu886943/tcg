@@ -412,29 +412,6 @@
                             </property>
                            </widget>
                           </item>
-                          <item row="2" column="1">
-                           <widget class="QLineEdit" name="textbox_data_rule_value">
-                            <property name="font">
-                             <font>
-                              <family>Segoe UI</family>
-                              <pointsize>10</pointsize>
-                             </font>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="0" column="1">
-                           <widget class="QLineEdit" name="textbox_data_rule_type">
-                            <property name="enabled">
-                             <bool>false</bool>
-                            </property>
-                            <property name="font">
-                             <font>
-                              <family>Segoe UI</family>
-                              <pointsize>10</pointsize>
-                             </font>
-                            </property>
-                           </widget>
-                          </item>
                           <item row="0" column="0">
                            <widget class="QLabel" name="label_36">
                             <property name="font">
@@ -451,7 +428,20 @@
                             </property>
                            </widget>
                           </item>
-                          <item row="3" column="0" colspan="2">
+                          <item row="0" column="1">
+                           <widget class="QLineEdit" name="textbox_data_rule_type">
+                            <property name="enabled">
+                             <bool>false</bool>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                              <pointsize>10</pointsize>
+                             </font>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="5" column="0" colspan="2">
                            <widget class="QLabel" name="label_12">
                             <property name="font">
                              <font>
@@ -466,6 +456,13 @@
                              <string>NOTE: The final data for the field will be determined by the priority order of the value generation methods. (Default Value &gt; Regex Pattern &gt; Data Generator)</string>
                             </property>
                             <property name="wordWrap">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="2" column="1">
+                           <widget class="QComboBox" name="comboBox_data_rule_value">
+                            <property name="editable">
                              <bool>true</bool>
                             </property>
                            </widget>
@@ -607,6 +604,11 @@
                             <item>
                              <property name="text">
                               <string>Random Number (Float)</string>
+                             </property>
+                            </item>
+                            <item>
+                             <property name="text">
+                              <string>Random Enumeration Value</string>
                              </property>
                             </item>
                             <item>
@@ -1759,16 +1761,6 @@
                                   </property>
                                  </widget>
                                 </item>
-                                <item row="2" column="1">
-                                 <widget class="QLineEdit" name="textbox_dependency_data_rule_value">
-                                  <property name="font">
-                                   <font>
-                                    <family>Segoe UI</family>
-                                    <pointsize>10</pointsize>
-                                   </font>
-                                  </property>
-                                 </widget>
-                                </item>
                                 <item row="0" column="1">
                                  <widget class="QLineEdit" name="textbox_dependency_data_rule_type">
                                   <property name="enabled">
@@ -1826,6 +1818,13 @@
                                    <string>NOTE: The final data for the field will be determined by the priority order of the value generation methods. (Default Value &gt; Regex Pattern &gt; Data Generator)</string>
                                   </property>
                                   <property name="wordWrap">
+                                   <bool>true</bool>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="2" column="1">
+                                 <widget class="QComboBox" name="comboBox_dependency_data_rule_value">
+                                  <property name="editable">
                                    <bool>true</bool>
                                   </property>
                                  </widget>
@@ -1919,6 +1918,11 @@
                                   <item>
                                    <property name="text">
                                     <string>Random Number (Float)</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Random Enumeration Value</string>
                                    </property>
                                   </item>
                                   <item>
@@ -3575,16 +3579,6 @@
                              </property>
                             </widget>
                            </item>
-                           <item row="2" column="1">
-                            <widget class="QLineEdit" name="textbox_tc_data_rule_value">
-                             <property name="font">
-                              <font>
-                               <family>Segoe UI</family>
-                               <pointsize>10</pointsize>
-                              </font>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="1" column="1">
                             <widget class="QLineEdit" name="textbox_tc_data_rule_format">
                              <property name="enabled">
@@ -3629,6 +3623,13 @@
                               <string>NOTE: The final data for the field will be determined by the priority order of the value generation methods. (Default Value &gt; Regex Pattern &gt; Data Generator)</string>
                              </property>
                              <property name="wordWrap">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <widget class="QComboBox" name="comboBox_tc_data_rule_value">
+                             <property name="editable">
                               <bool>true</bool>
                              </property>
                             </widget>
@@ -3770,6 +3771,11 @@
                              <item>
                               <property name="text">
                                <string>Random Number (Float)</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random Enumeration Value</string>
                               </property>
                              </item>
                              <item>
@@ -4960,16 +4966,6 @@
                                    </property>
                                   </widget>
                                  </item>
-                                 <item row="2" column="1">
-                                  <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_value">
-                                   <property name="font">
-                                    <font>
-                                     <family>Segoe UI</family>
-                                     <pointsize>10</pointsize>
-                                    </font>
-                                   </property>
-                                  </widget>
-                                 </item>
                                  <item row="1" column="1">
                                   <widget class="QLineEdit" name="textbox_tc_dependency_data_rule_format">
                                    <property name="enabled">
@@ -4998,6 +4994,13 @@
                                     <string>NOTE: The final data for the field will be determined by the priority order of the value generation methods. (Default Value &gt; Regex Pattern &gt; Data Generator)</string>
                                    </property>
                                    <property name="wordWrap">
+                                    <bool>true</bool>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="2" column="1">
+                                  <widget class="QComboBox" name="comboBox_tc_dependency_data_rule_value">
+                                   <property name="editable">
                                     <bool>true</bool>
                                    </property>
                                   </widget>
@@ -5139,6 +5142,11 @@
                                    <item>
                                     <property name="text">
                                      <string>Random Number (Float)</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random Enumeration Value</string>
                                     </property>
                                    </item>
                                    <item>

@@ -381,7 +381,7 @@ class GeneralTool:
         selected_item: object,
         textbox_type: object, 
         textbox_format: object,
-        textbox_default: object,
+        comboBox_data_rule_value: object,
         combobox_data_generator: object, 
         textbox_range: object, 
         combobox_required: object, 
@@ -396,7 +396,7 @@ class GeneralTool:
             selected_item: The selected item in the Data Generation Rule table.
             textbox_type: The text box for the type field.
             textbox_format: The text box for the format field.
-            textbox_default: The text box for the default field.
+            comboBox_data_rule_value: The text box for the default field.
             combobox_data_generator: The combobox for the data generator field.
             textbox_range: The text box for the range field.
             combobox_required: The combobox for the required field.
@@ -407,7 +407,16 @@ class GeneralTool:
         if parent_item is not None and parent_item.parent() is None: 
             textbox_type.setText(selected_item.child(0).text(1))
             textbox_format.setText(selected_item.child(1).text(1))
-            textbox_default.setText(selected_item.child(2).text(1))
+            
+            comboBox_data_rule_value.clear()
+            comboBox_data_rule_value.addItems(["", "{Ture}", "{False}", "{Null}"])
+            enum_item = []
+            for i in range(selected_item.child(3).child(5).childCount()):
+                child_item = selected_item.child(3).child(5).child(i).text(1)
+                enum_item.append(child_item)
+            comboBox_data_rule_value.addItems(enum_item)
+            comboBox_data_rule_value.setCurrentText(selected_item.child(2).text(1))
+                
             combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
             textbox_range.setText(selected_item.child(3).child(1).text(1))
             combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
@@ -837,20 +846,23 @@ class GeneralTool:
             print(schema["type"])
 
             genType = None
-            if schema["type"] == "string":
+            if "enum" in schema and schema["enum"] != []:
+                genType = "Random Enumeration Value"
+                data_length = ""
+            elif schema["type"] == "string":
                 if 'format' in schema:
                     if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary']:
                         genType = f"Random {schema['format'].upper()}"
                         data_length = ""
                     else:
                         genType = "Random String (Without Special Characters)"
-                        data_length = [4, 30]
+                        data_length = [1, 30]
                 elif 'pattern' in schema:
                     genType = "Random String By Pattern"
                     data_length = ""
                 else:
                     genType = "Random String (Without Special Characters)"
-                    data_length = [4, 30]
+                    data_length = [1, 30]
             elif schema["type"] == "integer":
                 # TODO : Format
                 genType = "Random Integer"
@@ -1320,13 +1332,25 @@ class GeneralTool:
                 parent_item.addChild(child_item)
                 for item in value:
                     if isinstance(item, dict):
-                        child_item.setText(1, 'array[object]')
+                        item_text = QTreeWidgetItem(['', 'object'])
                         if editabled:
-                            cls.parse_request_body(item, child_item, editabled)
+                            item_text.setFlags(item_text.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
+                        child_item.addChild(item_text)
+                        if editabled:
+                            cls.parse_request_body(item, item_text, editabled)
                         else:
-                            cls.parse_request_body(item, child_item)
+                            cls.parse_request_body(item, item_text)
+                    elif isinstance(item, list):
+                        item_text = QTreeWidgetItem(['', 'array'])
+                        if editabled:
+                            item_text.setFlags(item_text.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
+                        child_item.addChild(item_text)
+                        if editabled:
+                            cls.parse_request_body({'item': item}, item_text, editabled)
+                        else:
+                            cls.parse_request_body({'item': item}, item_text)
                     else:
-                        item_text = QTreeWidgetItem([item])
+                        item_text = QTreeWidgetItem(['', str(item)])
                         if editabled:
                             item_text.setFlags(item_text.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
                         child_item.addChild(item_text)
