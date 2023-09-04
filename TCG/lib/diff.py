@@ -7,7 +7,7 @@ from itertools import chain
 from deepdiff import DeepDiff
 from collections import OrderedDict
 
-from lib.refactor import CaseRefactor
+from refactor import CaseRefactor
 
 def parse_key_path(key_path: str) -> list:
     """
@@ -111,9 +111,9 @@ def search_dict(key, value, node):
     
 
 # TODO: Pass the old doc and new doc to the function.
-with open('./docs/HawkEye/monitor_v1.json', 'r') as f:
+with open('../docs/HawkEye/monitor_v1.json', 'r') as f:
     old_doc = json.load(f)
-with open('./docs/HawkEye/monitor_v2.json', 'r') as f:
+with open('../docs/HawkEye/monitor_v2.json', 'r') as f:
     new_doc = json.load(f)
 
 diff = DeepDiff(old_doc, new_doc)
