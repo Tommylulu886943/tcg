@@ -1360,6 +1360,25 @@ class GeneralTool:
                     child_item.setFlags(child_item.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
                 parent_item.addChild(child_item)
                 
+    @classmethod            
+    def parse_api_name_to_op_id(cls, api_name: str, doc: dict) -> str:
+        """
+        Parse the API name to operation ID.
+
+        Args:
+        - api_name (str): The name of the API.
+        - doc (dict): The Swagger/OpenAPI document.
+
+        Returns:
+        - The operation ID.
+        """
+        
+        method = api_name.split()[0].lower()
+        path = api_name.split()[1]
+        op_id = doc['paths'][path][method]['operationId']
+        
+        return op_id   
+                 
     @classmethod
     def retrive_ref_schema_key_type(cls, api_schema):
         request_body = {}

@@ -1,9 +1,24 @@
+import os
 import json
+import glob
+import logging
 import pprint
+from itertools import chain
 from deepdiff import DeepDiff
+from collections import OrderedDict
 
+from lib.refactor import CaseRefactor
 
 def parse_key_path(key_path: str) -> list:
+    """
+    Parse the key path string into a list of keys.
+
+    Args:
+    - key_path (str): The key path string to parse.
+
+    Returns:
+    - A list of keys.
+    """
     
     parsed_path = key_path.replace("root", "")
     parsed_path = parsed_path.replace("']['", ".")
@@ -16,7 +31,16 @@ def parse_key_path(key_path: str) -> list:
     return parsed_path
 
 def search_schema(path_list: list, doc: dict) -> dict | None:
-    "Use the changed key path to search the new schema and return the schema info."
+    """
+    Use the changed key path to search the new schema and return the schema info.
+
+    Args:
+    - path_list (list): The list of keys representing the path to the schema.
+    - doc (dict): The Swagger/OpenAPI document.
+
+    Returns:
+    - A dictionary representing the schema info, or None if the schema is not found.
+    """
     schema = doc
     for path in path_list:
         if path.isdigit():
@@ -26,6 +50,8 @@ def search_schema(path_list: list, doc: dict) -> dict | None:
         else:
             return None
     return schema
+
+
 
 def found_consequence_api(schema_name: str, doc: dict) -> list:
     """
@@ -43,7 +69,7 @@ def found_consequence_api(schema_name: str, doc: dict) -> list:
     for path, value in search_dict('$ref', schema_name, doc):
         print("Start Searching...", path)
         if path[0] == 'paths':
-            consequence_api_list.append(doc[path[0]][path[1]][path[2]]['operationId'])
+            consequence_api_list.append(path[2].upper() + " " + path[1])
         elif path[0] == 'components':
             if path[1] == 'schemas':
                 prefix = "#/components/schemas/"
@@ -85,9 +111,9 @@ def search_dict(key, value, node):
     
 
 # TODO: Pass the old doc and new doc to the function.
-with open('./docs/PetStore/petstore_v1.json', 'r') as f:
+with open('./docs/HawkEye/monitor_v1.json', 'r') as f:
     old_doc = json.load(f)
-with open('./docs/PetStore/petstore_v2.json', 'r') as f:
+with open('./docs/HawkEye/monitor_v2.json', 'r') as f:
     new_doc = json.load(f)
 
 diff = DeepDiff(old_doc, new_doc)
@@ -105,7 +131,8 @@ if 'values_changed' in diff:
         }
         
         if path_list[0] == 'paths':
-            issue['field'] = 'Path: ' + path_list[2].upper() + " " + path_list[1] + " " + path_list[-1]
+            api_name = path_list[2].upper() + " " + path_list[1]
+            issue['field'] = 'Path: ' + api_name + " " + path_list[-1]
             if path_list[3] in ['summary', 'description', 'tags']:
                 issue['severity'] = "INFO"
             elif path_list[3] in ['requestBody', 'responses', 'operationId']:
@@ -119,14 +146,26 @@ if 'values_changed' in diff:
             elif path_list[3] == 'parameters':
                 issue['severity'] = "BREAK"
                 # * Check if parametere is in path or query to determine trigger aciton type.
-                param_info = search_schema(path_list[0:4], new_doc)
+                param_info = search_schema(path_list[0:5], new_doc)
                 if 'in' in param_info:
                     if param_info['in'] == 'path':
                         if path_list[5] == 'name':
                             issue['trigger_action'] = "Update Path Name"
                     elif param_info['in'] == 'query':
+                        issue['affected_api_list'].append(api_name)
                         if path_list[5] == 'name':
                             issue['trigger_action'] = "Update Query Parameter Name"
+                        elif path_list[5] == 'required':
+                            issue['trigger_action'] = "Update Query Parameter Required"
+                        elif path_list[5] == 'schema':
+                            if path_list[6] == 'type':
+                                issue['trigger_action'] = "Update Query Parameter Type"
+                            elif path_list[6] == 'enum':
+                                issue['trigger_action'] = "Update Query Parameter Enum Name"
+                else:
+                    issue['field'] = path_list[0].capitalize() + ": " + path_list[-1]
+                    issue['severity'] = "UN-DEFINED"
+                            
             else:
                 issue['field'] = path_list[0].capitalize() + ": " + path_list[-1]
                 issue['severity'] = "UN-DEFINED"
@@ -311,13 +350,15 @@ pprint.pprint(issue_list, indent=2)
 # Render Issue List on QT GUI
 
 # According to the issue list's trigger action, update the existing test cases.
+# Input: issesList (list)
+# Timing of execution: After the user clicks the : "Update Test Cases" button.
 for issue in issue_list:
     if issue['trigger_action'] == None:
         print(issue['trigger_action'])
         print(f"No trigger action for this '{issue['severity']}' issue '{issue['field']}'. Please update it manually.")
     elif issue['trigger_action'] == 'Update Schema':
         print("Run Update Schema Process...")
-        
-        
-        
-        
+    elif issue['trigger_action'] == 'Update Query Parameter Name':
+        CaseRefactor.update_query_rule_name(issue, new_doc)
+    elif issue['trigger_action'] == 'Update Query Parameter Enum Name':
+        CaseRefactor.update_query_rule_enum_name(issue, new_doc)
