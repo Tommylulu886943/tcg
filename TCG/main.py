@@ -4630,6 +4630,14 @@ class MyWindow(QMainWindow):
     def generate_test_plan(self):
         """ Generate Test Plan """
         
+        # * Check if the object mapping file is imported.
+        if not os.path.exists("config/obj_mapping.json"):
+            logging.error(f"Object Mapping File not found.")
+            error_message = f"The Object Mapping File is not imported."
+            detailed_message = f"Please import the Object Mapping File first."
+            GeneralTool.show_error_dialog(error_message, detailed_message)
+            return   
+             
         selected_items = self.ui.table_api_tree.selectedItems()
         selected_oids = []
         for oid in selected_items: selected_oids.append(oid.text(4))
@@ -4640,14 +4648,6 @@ class MyWindow(QMainWindow):
         self.thread.progress.connect(self.ui.progressBar.setValue)
         self.thread.finished.connect(lambda: UiRender.finish_progress(self.ui.progressBar, "Test Plan Generated Successfully."))
         self.thread.start()
-        
-        # * Check if the object mapping file is imported.
-        if not os.path.exists("config/obj_mapping.json"):
-            logging.error(f"Object Mapping File not found.")
-            error_message = f"The Object Mapping File is not imported."
-            detailed_message = f"Please import the Object Mapping File first."
-            GeneralTool.show_error_dialog(error_message, detailed_message)
-            return
         
         # * Generate TCG Config
         GeneralTool.generate_tcg_config(self.ui.group_test_strategy.findChildren(QCheckBox))
