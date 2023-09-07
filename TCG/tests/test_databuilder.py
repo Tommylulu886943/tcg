@@ -10,7 +10,8 @@ import pytest
 import logging
 from datetime import datetime, timedelta
 
-sys.path.append('C:\\pyqt6\\TCG')
+# Add the parent directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from lib.databuilder import DataBuilder
 
@@ -193,89 +194,203 @@ class TestDataBuilder:
         result = DataBuilder.generate_random_float(f"[{min_value}, {max_value}]")
         assert isinstance(result, float)
         assert 1 <= result <= 10
+
+class Test_CreateNestedDict:
+
+    def test_add_value_to_dictionary_with_single_key(self):
+        """
+        Tests that the method adds a value to a dictionary with a single key
+        """
+        data = {}
+        keys = ['key']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': 'value'}
         
-    def test_create_nested_dict_single_key(self):
+    def test_add_value_to_dictionary_with_multiple_nested_keys(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with a single key and value.
+        Tests that the method adds a value to a dictionary with multiple nested keys
         """
         data = {}
-        keys = ["key"]
-        value = "value"
-        expected_output = {"key": "value"}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        keys = ['key1', 'key2', 'key3']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': {'key2': {'key3': 'value'}}}
 
-    def test_create_nested_dict_single_key_array(self):
+    def test_add_value_to_array_with_single_key(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with a single key and an array value.
+        Tests that the method adds a value to an array with a single key
         """
         data = {}
-        keys = ["key[0]"]
-        value = "value1"
-        expected_output = {"key": ["value1"]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        keys = ['key[0]']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value']}
 
-    def test_create_nested_dict_single_key_array_multiple_values(self):
+    def test_add_value_to_array_with_multiple_nested_keys_fixed(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with a single key and an array value containing multiple values.
+        Tests that the method adds a value to an array with multiple nested keys (fixed)
         """
         data = {}
-        keys = ["key[0]"]
-        value = "value1, value2, value3"
-        expected_output = {"key": ["value1", "value2", "value3"]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        keys = ['key1[0]', 'key2[0]', 'key3[0]']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [{'key2': [{'key3': ['value']}]}]}
 
-    def test_create_nested_dict_single_key_array_multiple_values_numeric(self):
+    def test_overwrite_existing_value_in_dictionary_with_single_key(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with a single key and an array value containing multiple numeric values with whitespace.
+        Tests that the method overwrites an existing value in a dictionary with a single key
         """
-        data = {}
-        keys = ["key[0]"]
-        value = "1, 2, 3"  # With whitespace
-        expected_output = {"key": [1, 2, 3]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
-    
-    def test_create_nested_dict_single_key_array_multiple_values_numeric_without_whitespace(self):
-        """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with a single key and an array value containing multiple numeric values without whitespace.
-        """
-        data = {}
-        keys = ["key[0]"]
-        value = "1,2,3"  # No whitespace
-        expected_output = {"key": [1, 2, 3]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        data = {'key': 'old_value'}
+        keys = ['key']
+        value = 'new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': 'new_value'}
 
-    def test_create_nested_dict_multiple_keys(self):
+    def test_overwrite_existing_value_in_dictionary_with_multiple_nested_keys(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with multiple keys.
+        Tests that the method overwrites an existing value in a dictionary with multiple nested keys
         """
-        data = {}
-        keys = ["key1", "key2"]
-        value = "value"
-        expected_output = {"key1": {"key2": "value"}}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        data = {'key1': {'key2': {'key3': 'old_value'}}}
+        keys = ['key1', 'key2', 'key3']
+        value = 'new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': {'key2': {'key3': 'new_value'}}}
 
-    def test_create_nested_dict_multiple_keys_array(self):
+    def test_overwrite_existing_value_in_array_with_key_ending_with_0(self):
         """
-        Test method to verify the behavior of the `_create_nested_dict` function when creating a nested dictionary with multiple keys and an array value.
+        Tests that the method overwrites an existing value in an array with a key that ends with '[0]'
+        """
+        data = {'key': ['value1', 'value2']}
+        keys = ['key[0]']
+        value = 'new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['new_value']}
+
+    def test_overwrite_value_in_array_with_single_key(self):
+        """
+        Tests that the method overwrites an existing value in an array with a single key
+        """
+        data = {'key': ['value1']}
+        keys = ['key[0]']
+        value = 'value2'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value2']}
+
+    def test_overwrite_existing_value_in_array_with_multiple_nested_keys(self):
+        """
+        Tests that the method overwrites an existing value in an array with multiple nested keys
+        """
+        data = {'key': [{'nested_key': 'old_value'}]}
+        keys = ['key[0]', 'nested_key']
+        value = 'new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': [{'nested_key': 'new_value'}]}
+
+    def test_add_value_to_dictionary_with_single_key(self):
+        """
+        Tests that the method adds a value to a dictionary with a single key
         """
         data = {}
-        keys = ["key1[0]", "key2"]
-        value = "value"
-        expected_output = {"key1": [{"key2": "value"}]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
-        
-    def test_create_nested_dict_list(self):
-        # BUG
+        keys = ['key']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': 'value'}
+
+    def test_add_value_to_empty_array(self):
+        """
+        Tests that the method adds a value to an empty array in a nested dictionary
+        """
         data = {}
-        keys = ["key1[0]"]
-        value = ["value1", "value2"]
-        expected_output = {"key1": ["value1", "value2"]}
-        DataBuilder._create_nested_dict(data, keys, value)
-        assert data == expected_output
+        keys = ['key[0]']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value']}
+
+    def test_add_value_to_array_with_non_zero_index(self):
+        """
+        Tests that the method adds a value to an array with a non-zero index
+        """
+        data = {'key': ['existing_value']}
+        keys = ['key[0]']
+        value = 'new_value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['existing_value', 'new_value']}
+
+    def test_overwrite_existing_value_in_array_with_non_zero_index(self):
+        """
+        Tests that the method overwrites an existing value in an array with a non-zero index
+        """
+        data = {'key': ['value1', 'value2']}
+        keys = ['key[0]']
+        value = 'value1, new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value1', 'new_value']}
+
+    def test_add_value_to_array_with_non_zero_index_and_multiple_nested_keys(self):
+        """
+        Tests that the method adds a value to an array with a non-zero index and multiple nested keys
+        """
+        data = {}
+        keys = ['key[0]', 'nested_key[0]', 'nested_nested_key']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': [{'nested_key': [{'nested_nested_key': 'value'}]}]}
+
+    def test_overwrite_existing_value_in_array_with_non_zero_index_and_multiple_nested_keys(self):
+        """
+        Tests that the method overwrites an existing value in an array with a non-zero index and multiple nested keys
+        """
+        data = {'key': [{'nested_key': ['value1', 'value2']}, {'nested_key': ['value3', 'value4']}]}
+        keys = ['key[0]', 'nested_key[0]']
+        value = 'new_value'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': [{'nested_key': ['new_value']}, {'nested_key': ['value3', 'value4']}]}
+
+    def test_add_multiple_values_to_array_with_single_key(self):
+        """
+        Tests that the method adds multiple values to an array with a single key
+        """
+        data = {}
+        keys = ['key[0]']
+        value = 'value1, value2, value3'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value1', 'value2', 'value3']}
+
+    def test_add_multiple_values_to_array_with_multiple_nested_keys(self):
+        """
+        Tests that the method adds multiple values to an array with multiple nested keys
+        """
+        data = {}
+        keys = ['key1[0]', 'key2[0]' ,'key3']
+        value = 'value1, value2, value3'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [{'key2': [{'key3': 'value1, value2, value3'}]}]}
+
+    def test_add_value_to_array_with_key_not_number(self):
+        """
+        Tests that the method adds a value to an array with a key that is not a number
+        """
+        data = {}
+        keys = ['key[0]']
+        value = 'value'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key': ['value']}
