@@ -224,7 +224,7 @@ class TestStrategy:
                 if test_type == "positive_test":
                     testdata = copy.deepcopy(baseline_data)
                     replace_key = keys.copy()
-                    DataBuilder._create_nested_dict(testdata, replace_key, None)
+                    DataBuilder._create_nested_dict(testdata, replace_key, None, overwrite=True)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
                     testdata_path = f'./artifacts/TestData/{testdata_file}.json'
                     with open(testdata_path, 'w') as f:
@@ -356,7 +356,7 @@ class TestStrategy:
                     for enum_value in enum:       
                         testdata = copy.deepcopy(baseline_data)
                         replace_key = keys.copy()
-                        DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
+                        DataBuilder._create_nested_dict(testdata, replace_key, enum_value, overwrite=True)
                         testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
                         testdata_path = f'./artifacts/TestData/{testdata_file}.json'    
                         with open(testdata_path, 'w') as f:
@@ -382,7 +382,7 @@ class TestStrategy:
                     testdata = copy.deepcopy(baseline_data)
                     replace_key = keys.copy()
                     enum_value = DataBuilder.generate_random_string()
-                    DataBuilder._create_nested_dict(testdata, replace_key, enum_value)
+                    DataBuilder._create_nested_dict(testdata, replace_key, enum_value, overwrite=True)
                     testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
                     testdata_path = f'./artifacts/TestData/{testdata_file}.json'
                     
@@ -680,21 +680,21 @@ class TestStrategy:
             if test_type == 'positive_test':
                 min_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
-                DataBuilder._create_nested_dict(min_testdata, replace_key, min_value)
+                DataBuilder._create_nested_dict(min_testdata, replace_key, min_value, overwrite=True)
                 min_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_1.json"
                 with open(min_testdata_path, 'w') as f:
                     json.dump(min_testdata, f, indent=4)
                     
                 max_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
-                DataBuilder._create_nested_dict(max_testdata, replace_key, max_value)
+                DataBuilder._create_nested_dict(max_testdata, replace_key, max_value, overwrite=True)
                 max_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_2.json"
                 with open(max_testdata_path, 'w') as f:
                     json.dump(max_testdata, f, indent=4)
                     
                 median_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
-                DataBuilder._create_nested_dict(median_testdata, replace_key, mid_value)
+                DataBuilder._create_nested_dict(median_testdata, replace_key, mid_value, overwrite=True)
                 median_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_3.json"
                 with open(median_testdata_path, 'w') as f:
                     json.dump(median_testdata, f, indent=4)
@@ -721,14 +721,14 @@ class TestStrategy:
                 
                 under_min_value_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
-                DataBuilder._create_nested_dict(under_min_value_testdata, replace_key, under_min_value)
+                DataBuilder._create_nested_dict(under_min_value_testdata, replace_key, under_min_value, overwrite=True)
                 under_min_value_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_1.json"
                 with open(under_min_value_testdata_path, 'w') as f:
                     json.dump(under_min_value_testdata, f, indent=4)
                     
                 over_max_value_testdata = copy.deepcopy(baseline_data)
                 replace_key = keys.copy()
-                DataBuilder._create_nested_dict(over_max_value_testdata, replace_key, over_max_value)
+                DataBuilder._create_nested_dict(over_max_value_testdata, replace_key, over_max_value, overwrite=True)
                 over_max_value_testdata_path = f"./artifacts/TestData/{operation_id}_{serial_number}_2.json"
                 with open(over_max_value_testdata_path, 'w') as f:
                     json.dump(over_max_value_testdata, f, indent=4)
