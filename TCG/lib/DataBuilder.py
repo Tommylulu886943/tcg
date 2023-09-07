@@ -107,50 +107,163 @@ class DataBuilder:
                 value = None
             cls._create_nested_dict(result, keys, value)
         return result
-        
+    
     @classmethod
-    def _create_nested_dict(cls, data, keys, value):
+    def _handle_list(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
         """
-        Creates a nested dictionary from a list of keys and a value.
-        
+        Handles the logic for adding a value to a list in the `data` dictionary.
+
         Args:
-            data: the dictionary to add the nested dictionary to
-            keys: a list of keys to create the nested dictionary with
-            value: the value to add to the nested dictionary
+            data (dict): The dictionary to which the value will be added.
+            key (str): The key in the `data` dictionary where the value will be added.
+            value (any): The value to be added to the list.
+            overwrite (bool): Indicates whether to overwrite the existing list or append to it.
+
+        Returns:
+            list: The updated list in the `data` dictionary.
         """
-        # * if keys is last element
+        return value if overwrite else data[key].append(value)
+
+    @classmethod
+    def _handle_dict(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> None:
+        """
+        Handle the logic of adding a value to a dictionary in the `data` dictionary.
+
+        Args:
+            data (dict): The dictionary to which the value will be added.
+            key (str): The key in the `data` dictionary where the value will be added.
+            value (any): The value to be added to the dictionary.
+            overwrite (bool): Indicates whether to overwrite the existing value or append to it.
+
+        Returns:
+            None. The `data` dictionary is updated in-place.
+        """
+        return value if overwrite else data[key].append(value)
+
+    @classmethod
+    def _handle_comma_separated(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> dict:
+        """
+        Handles the logic for adding values to a dictionary in the `data` dictionary when the value is a comma-separated string.
+    
+        Args:
+            data (dict): The dictionary to which the values will be added.
+            key (str): The key in the `data` dictionary where the values will be added.
+            value (str): The comma-separated string of values to be added to the dictionary.
+            overwrite (bool): Indicates whether to overwrite the existing values or append to them.
+    
+        Returns:
+            dict: The updated dictionary with the values added.
+        """
+        for el in value.split(','):
+            el = el.strip()
+            if el.isdigit():
+                if overwrite:
+                    data[key] = [int(x.strip()) for x in value.split(',')]
+                else:
+                    data[key].append(int(el))
+            else:
+                if overwrite:
+                    data[key] = [x.strip() for x in value.split(',')]
+                else:
+                    data[key].append(el)
+        return data[key]
+
+    @classmethod
+    def _handle_digit(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
+        """
+        Handle the logic of adding a value to a dictionary in the `data` dictionary when the value is a digit.
+
+        Args:
+            data (dict): The dictionary to which the value will be added.
+            key (str): The key in the `data` dictionary where the value will be added.
+            value (str): The value to be added to the dictionary.
+            overwrite (bool): Indicates whether to overwrite the existing value or append to it.
+
+        Returns:
+            list: The updated list in the `data` dictionary.
+        """
+        if overwrite:
+            return [int(value)]
+        else:
+            data[key].append(int(value))
+            return data[key]
+
+    @classmethod
+    def _handle_default(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
+        """
+        Add a value to the data dictionary at the specified key if the value is not a list, dictionary, or comma-separated string.
+
+        Args:
+            data (dict): The dictionary to which the value will be added.
+            key (str): The key in the data dictionary where the value will be added.
+            value (any): The value to be added to the dictionary.
+            overwrite (bool): Indicates whether to overwrite the existing value or append to it.
+
+        Returns:
+            list: The updated list in the data dictionary.
+        """
+        if overwrite:
+            return [value]
+        else:
+            data[key].append(value)
+            logging.debug(data)
+            return data[key]
+
+    @classmethod
+    def _create_nested_dict(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> None:
+        """
+        Create a nested dictionary based on a list of keys and a corresponding value.
+
+        Args:
+            cls: The class object.
+            data: The dictionary to which the nested dictionary will be added.
+            keys: A list of keys representing the nested structure of the dictionary.
+            value: The value to be added to the innermost key of the nested dictionary.
+            overwrite: Indicates whether to overwrite existing values or append to them. Defaults to False.
+
+        Returns:
+            None
+
+        Example:
+            data = {}
+            keys = ['key1', 'key2', 'key3']
+            value = 'example value'
+            DataBuilder._create_nested_dict(data, keys, value)
+            print(data)
+            # Output: {'key1': {'key2': {'key3': 'example value'}}}
+        """
+        
+        type_mapping = {
+            'list': cls._handle_list,
+            'dict': cls._handle_dict,
+            'comma_separated': cls._handle_comma_separated,
+            'digit': cls._handle_digit,
+            'default': cls._handle_default,
+        }
+
         if len(keys) == 1:
             key = keys[0]
-           # * if key is array element
             if key.endswith("[0]"):
                 key = key.rstrip("[0]")
-                # * if key not in data, create new array
-                if key not in data:
-                    data[key] = []
-                # * To handle multiple values in one array.
-                # * Ex: "key[0]": "value1, value2, value3" => data[key] = ["value1", "value2", "value3"]
-                logging.debug(f"key: {key}, value: {value}, data: {data}")
+                data.setdefault(key, [])
+                handler = None
                 if isinstance(value, list):
-                    data[key].append(value)
+                    handler = type_mapping['list']
                 elif isinstance(value, dict):
-                    data[key].append(value)
+                    handler = type_mapping['dict']
                 elif ',' in value:
-                    for el in value.split(','):
-                        # * Remove whitespace
-                        el = el.strip()
-                        if el.isdigit():
-                            data[key].append(int(el))
-                        else:
-                            data[key].append(el)
+                    handler = type_mapping['comma_separated']
                 elif value.isdigit():
-                    data[key].append(int(value))
+                    handler = type_mapping['digit']
                 else:
-                    data[key].append(value)
+                    handler = type_mapping['default']
+
+                if handler:
+                    data[key] = handler(data, key, value, overwrite)
             else:
                 data[key] = value
         else:
             key = keys.pop(0)
-            # * if key is array element
             if key.endswith("[0]"):
                 key = key.rstrip("[0]")
                 if key not in data:
@@ -160,7 +273,7 @@ class DataBuilder:
                 if key not in data:
                     data[key] = {}
                 next_data = data[key]
-            cls._create_nested_dict(next_data, keys, value)
+            cls._create_nested_dict(next_data, keys, value, overwrite)
                     
     @classmethod
     def generate_random_float(cls, length_range="[1,10]"):
