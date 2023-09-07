@@ -394,3 +394,91 @@ class Test_CreateNestedDict:
         overwrite = False
         DataBuilder._create_nested_dict(data, keys, value, overwrite)
         assert data == {'key': ['value']}
+        
+    def test_add_value_to_array_with_digits_in_key(self):
+        """
+        Tests that the method adds a value to an array with digits in the key
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '1'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [1]}
+
+    def test_add_value_to_array_with_string_type_digits_in_value(self):
+        """
+        Tests that the method adds a value to an array with string type digits in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '"1"'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': ["1"]}
+        
+    def test_add_value_to_array_with_multiple_digits_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple digits in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '1, 2'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [1, 2]}
+        
+    def test_add_value_to_array_with_multiple_string_type_digits_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple string type digits in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '"1", "2"'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': ["1", "2"]}
+        
+    def test_add_value_to_array_with_floats_in_value(self):
+        """
+        Tests that the method adds a value to an array with floats in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '1.1'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [1.1]}
+        
+    def test_add_value_to_array_with_multiple_floats_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple floats in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '1.1, 2.2'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [1.1, 2.2]}
+        
+    def test_add_value_to_array_with_string_type_floats_in_value(self):
+        """
+        Tests that the method adds a value to an array with string type floats in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '"1.1"'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': ["1.1"]}
+        
+    def test_add_value_to_array_with_multiple_string_type_floats_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple string type floats in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '"1.1", "2.2"'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': ["1.1", "2.2"]}
