@@ -124,9 +124,28 @@ class DataBuilder:
            # * if key is array element
             if key.endswith("[0]"):
                 key = key.rstrip("[0]")
+                # * if key not in data, create new array
                 if key not in data:
-                    data[key] = [{}]
-                data[key][0] = value
+                    data[key] = []
+                # * To handle multiple values in one array.
+                # * Ex: "key[0]": "value1, value2, value3" => data[key] = ["value1", "value2", "value3"]
+                logging.debug(f"key: {key}, value: {value}, data: {data}")
+                if isinstance(value, list):
+                    data[key].append(value)
+                elif isinstance(value, dict):
+                    data[key].append(value)
+                elif ',' in value:
+                    for el in value.split(','):
+                        # * Remove whitespace
+                        el = el.strip()
+                        if el.isdigit():
+                            data[key].append(int(el))
+                        else:
+                            data[key].append(el)
+                elif value.isdigit():
+                    data[key].append(int(value))
+                else:
+                    data[key].append(value)
             else:
                 data[key] = value
         else:
