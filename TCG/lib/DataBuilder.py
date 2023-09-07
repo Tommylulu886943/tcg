@@ -109,7 +109,7 @@ class DataBuilder:
         return result
     
     @classmethod
-    def _handle_list(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
+    def _handle_list(cls, data: dict, key: list, value: str, overwrite: bool = False) -> list:
         """
         Handles the logic for adding a value to a list in the `data` dictionary.
 
@@ -125,7 +125,7 @@ class DataBuilder:
         return value if overwrite else data[key].append(value)
 
     @classmethod
-    def _handle_dict(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> None:
+    def _handle_dict(cls, data: dict, key: list, value: str, overwrite: bool = False) -> None:
         """
         Handle the logic of adding a value to a dictionary in the `data` dictionary.
 
@@ -141,7 +141,7 @@ class DataBuilder:
         return value if overwrite else data[key].append(value)
 
     @classmethod
-    def _handle_comma_separated(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> dict:
+    def _handle_comma_separated(cls, data: dict, key: list, value: str, overwrite: bool = False) -> dict:
         """
         Handles the logic for adding values to a dictionary in the `data` dictionary when the value is a comma-separated string.
     
@@ -169,7 +169,7 @@ class DataBuilder:
         return data[key]
 
     @classmethod
-    def _handle_digit(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
+    def _handle_digit(cls, data: dict, key: list, value: str, overwrite: bool = False) -> list:
         """
         Handle the logic of adding a value to a dictionary in the `data` dictionary when the value is a digit.
 
@@ -189,7 +189,7 @@ class DataBuilder:
             return data[key]
 
     @classmethod
-    def _handle_default(cls, data: dict, keys: list, value: str, overwrite: bool = False) -> list:
+    def _handle_default(cls, data: dict, key: list, value: str, overwrite: bool = False) -> list:
         """
         Add a value to the data dictionary at the specified key if the value is not a list, dictionary, or comma-separated string.
 
