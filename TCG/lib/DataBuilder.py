@@ -156,11 +156,19 @@ class DataBuilder:
         """
         for el in value.split(','):
             el = el.strip()
-            if el.isdigit():
+            if el.startswith('"') and el.endswith('"'):
+                el = el.strip('"')
+                data[key].append(el)
+            elif el.isdigit():
                 if overwrite:
                     data[key] = [int(x.strip()) for x in value.split(',')]
                 else:
                     data[key].append(int(el))
+            elif el.replace('.', '', 1).isdigit():
+                if overwrite:
+                    data[key] = [float(x.strip()) for x in value.split(',')]
+                else:
+                    data[key].append(float(el))
             else:
                 if overwrite:
                     data[key] = [x.strip() for x in value.split(',')]
@@ -187,6 +195,28 @@ class DataBuilder:
         else:
             data[key].append(int(value))
             return data[key]
+        
+    @classmethod
+    def _handle_float(cls, data: dict, key: list, value: str, overwrite: bool = False) -> list:
+        """
+        Handle the logic of adding a value to a dictionary in the `data` dictionary when the value is a float.
+
+        Args:
+            data (dict): The dictionary to which the value will be added.
+            key (str): The key in the `data` dictionary where the value will be added.
+            value (str): The value to be added to the dictionary.
+            overwrite (bool): Indicates whether to overwrite the existing value or append to it.
+
+        Returns:
+            list: The updated list in the `data` dictionary.
+        """
+        if value.startswith('"') and value.endswith('"'):
+            value = value.strip('"')
+        if overwrite:
+            return [float(value)]
+        else:
+            data[key].append(float(value))
+            return data[key]
 
     @classmethod
     def _handle_default(cls, data: dict, key: list, value: str, overwrite: bool = False) -> list:
@@ -202,6 +232,8 @@ class DataBuilder:
         Returns:
             list: The updated list in the data dictionary.
         """
+        if value.startswith('"') and value.endswith('"'):
+            value = value.strip('"')
         if overwrite:
             return [value]
         else:
@@ -238,6 +270,7 @@ class DataBuilder:
             'dict': cls._handle_dict,
             'comma_separated': cls._handle_comma_separated,
             'digit': cls._handle_digit,
+            'float': cls._handle_float,
             'default': cls._handle_default,
         }
 
@@ -255,6 +288,8 @@ class DataBuilder:
                     handler = type_mapping['comma_separated']
                 elif value.isdigit():
                     handler = type_mapping['digit']
+                elif isinstance(value, float) or value.replace('.', '', 1).isdigit():
+                    handler = type_mapping['float']
                 else:
                     handler = type_mapping['default']
 
