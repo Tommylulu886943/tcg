@@ -122,10 +122,18 @@ class DataBuilder:
         Returns:
             list: The updated list in the `data` dictionary.
         """
-        return value if overwrite else data[key].append(value)
+        value = eval(value)
+        if overwrite:
+            data[key] = [value]
+        else:
+            if isinstance(value, list):
+                data[key].append(value)
+            elif isinstance(value, tuple):
+                data[key].extend(value)
+        return data[key]
 
     @classmethod
-    def _handle_dict(cls, data: dict, key: list, value: str, overwrite: bool = False) -> None:
+    def _handle_dict(cls, data: dict, key: list, value: str, overwrite: bool = False) -> dict:
         """
         Handle the logic of adding a value to a dictionary in the `data` dictionary.
 
@@ -136,9 +144,20 @@ class DataBuilder:
             overwrite (bool): Indicates whether to overwrite the existing value or append to it.
 
         Returns:
-            None. The `data` dictionary is updated in-place.
+            dict: The updated dictionary with the value added.
         """
-        return value if overwrite else data[key].append(value)
+        value = eval(value)
+        if overwrite:
+            if isinstance(data[key], dict):
+                data[key] = value
+            elif isinstance(data[key], list):
+                data[key] = [value]
+        else:
+            if isinstance(data[key], dict):
+                data[key].update(value)
+            elif isinstance(data[key], list):
+                data[key].append(value)
+        return data[key]
 
     @classmethod
     def _handle_comma_separated(cls, data: dict, key: list, value: str, overwrite: bool = False) -> dict:
@@ -154,26 +173,37 @@ class DataBuilder:
         Returns:
             dict: The updated dictionary with the values added.
         """
-        for el in value.split(','):
-            el = el.strip()
-            if el.startswith('"') and el.endswith('"'):
-                el = el.strip('"')
-                data[key].append(el)
-            elif el.isdigit():
-                if overwrite:
-                    data[key] = [int(x.strip()) for x in value.split(',')]
-                else:
-                    data[key].append(int(el))
-            elif el.replace('.', '', 1).isdigit():
-                if overwrite:
-                    data[key] = [float(x.strip()) for x in value.split(',')]
-                else:
-                    data[key].append(float(el))
-            else:
-                if overwrite:
-                    data[key] = [x.strip() for x in value.split(',')]
-                else:
+        if value.startswith('[') and value.endswith(']'):
+            value = value.strip('[]')
+            data[key].append([x.strip() for x in value.split('],')])
+        else:
+            for el in value.split(','):
+                el = el.strip()
+                logging.debug(el)
+                if el.startswith('{') and el.endswith('}'):
+                    el = el.strip('{}')
+                    data[key].append(json.loads(el))
+                elif el.startswith('[') and el.endswith(']'):
+                    el = el.strip('[]')
+                    data[key] = [x.strip() for x in el.split(',')]
+                elif el.startswith('"') and el.endswith('"'):
+                    el = el.strip('"')
                     data[key].append(el)
+                elif el.isdigit():
+                    if overwrite:
+                        data[key] = [int(x.strip()) for x in value.split(',')]
+                    else:
+                        data[key].append(int(el))
+                elif el.replace('.', '', 1).isdigit():
+                    if overwrite:
+                        data[key] = [float(x.strip()) for x in value.split(',')]
+                    else:
+                        data[key].append(float(el))
+                else:
+                    if overwrite:
+                        data[key] = [x.strip() for x in value.split(',')]
+                    else:
+                        data[key].append(el)
         return data[key]
 
     @classmethod
@@ -232,8 +262,9 @@ class DataBuilder:
         Returns:
             list: The updated list in the data dictionary.
         """
-        if value.startswith('"') and value.endswith('"'):
-            value = value.strip('"')
+        if type(value) != dict and type(value) != list:
+            if value.startswith('"') and value.endswith('"'):
+                value = value.strip('"')
         if overwrite:
             return [value]
         else:
@@ -273,30 +304,38 @@ class DataBuilder:
             'float': cls._handle_float,
             'default': cls._handle_default,
         }
-
         if len(keys) == 1:
             key = keys[0]
             if key.endswith("[0]"):
                 key = key.rstrip("[0]")
                 data.setdefault(key, [])
                 handler = None
-                if isinstance(value, list):
-                    handler = type_mapping['list']
-                elif isinstance(value, dict):
-                    handler = type_mapping['dict']
-                elif ',' in value:
-                    handler = type_mapping['comma_separated']
-                elif value.isdigit():
-                    handler = type_mapping['digit']
-                elif isinstance(value, float) or value.replace('.', '', 1).isdigit():
-                    handler = type_mapping['float']
-                else:
-                    handler = type_mapping['default']
+                try:
+                    if isinstance(eval(value), list | tuple):
+                        handler = type_mapping['list']
+                    elif isinstance(eval(value), dict):
+                        handler = type_mapping['dict']
+                    elif value.isdigit():
+                        handler = type_mapping['digit']
+                    elif isinstance(eval(value), float):
+                        handler = type_mapping['float']
+                    else:
+                        handler = type_mapping['default']
+                except (NameError, SyntaxError, TypeError):
+                    # * If value just a string, not a list, dict the eval function will raise NameError, so we need to handle it defaultly.
+                    if ',' in value:
+                        handler = type_mapping['comma_separated']
+                    else:
+                        handler = type_mapping['default']
 
                 if handler:
                     data[key] = handler(data, key, value, overwrite)
             else:
-                data[key] = value
+                try:
+                    logging.debug(value)
+                    data[key] = eval(value)
+                except (NameError, SyntaxError, TypeError):
+                    data[key] = value
         else:
             key = keys.pop(0)
             if key.endswith("[0]"):
