@@ -295,6 +295,17 @@ class Test_CreateNestedDict:
         overwrite = True
         DataBuilder._create_nested_dict(data, keys, value, overwrite)
         assert data == {'key': [{'nested_key': 'new_value'}]}
+        
+    def test_overwrite_existing_value_in_array_with_multiple_lists(self):
+        """
+        Tests that the method overwrites an existing value in an array with multiple nested lists
+        """
+        data = {'key': ["old_value"]}
+        keys = ['key[0]']
+        value = '[1, 2]'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)   
+        assert data == {'key': [[1, 2]]}
 
     def test_add_value_to_dictionary_with_single_key(self):
         """
@@ -482,3 +493,232 @@ class Test_CreateNestedDict:
         overwrite = False
         DataBuilder._create_nested_dict(data, keys, value, overwrite)
         assert data == {'key1': ["1.1", "2.2"]}
+        
+    def test_add_value_to_array_with_list_include_integer_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including integer type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[1, 2]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[1, 2]]}
+        
+    def test_add_value_to_array_with_multiple_lists_include_integer_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including integer type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[1, 2], [3, 4]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[1, 2], [3, 4]]}
+        
+    def test_add_value_to_array_with_multiple_lists_in_multiple_values(self):
+        """
+        Tests that the method adds a value to an array with multiple lists in multiple values
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '["1", "2"]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [["1", "2"]]}
+
+    def test_add_value_to_array_with_multiple_lists_include_string_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including string type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '["1", "2"], ["3", "4"]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [["1", "2"], ["3", "4"]]}
+        
+    def test_add_value_to_array_with_list_include_float_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including float type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[1.1, 2.2]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[1.1, 2.2]]}
+        
+    def test_add_value_to_array_with_multiple_lists_include_float_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including float type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[1.1, 2.2], [3.3, 4.4]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[1.1, 2.2], [3.3, 4.4]]}
+        
+    def test_add_value_to_array_with_list_include_float_string_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including string type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '["1.1", "2.2"]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [["1.1", "2.2"]]}
+        
+    def test_add_value_to_array_with_multiple_lists_include_float_string_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including string type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '["1.1", "2.2"], ["3.3", "4.4"]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [["1.1", "2.2"], ["3.3", "4.4"]]}
+        
+    def test_add_value_to_array_with_list_include_list_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including list type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[[1, 2]]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[[1, 2]]]}
+        
+    def test_add_value_to_array_with_multiple_lists_include_list_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including list type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[[1, 2]], [[3, 4]]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[[1, 2]], [[3, 4]]]}
+        
+    def test_add_value_to_array_with_list_include_dict_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including dict type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[{"key": "value"}]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[{"key": "value"}]]}
+        
+    def test_add_value_to_array_with_multiple_lists_include_dict_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with multiple lists including dict type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '[{"key": "value"}], [{"key": "value"}]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [[{"key": "value"}], [{"key": "value"}]]}
+        
+    def test_add_value_to_array_with_list_include_string_type_in_value(self):
+        """
+        Tests that the method adds a value to an array with a list including string type in the value
+        """
+        data = {}
+        keys = ['key1[0]']
+        value = '["1", "2"]'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {'key1': [["1", "2"]]}
+        
+    def test_add_value_to_dict_with_multiple_keys(self):
+        """
+        Tests that the method adds a value to a dictionary with multiple keys
+        """
+        data = {"key1": {"key1": "value1"}}
+        keys = ["key1"]
+        value = '{"key1": "value1", "key2": "value2"}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": {"key1": "value1", "key2": "value2"}}
+        
+    def test_overwrite_value_in_dict_with_single_key(self):
+        """
+        Tests that the method overwrites an existing value in a dictionary with a single key
+        """
+        data = {"key1": {"key2": "value2"}}
+        keys = ["key1"]
+        value = '{"key3": "value3"}'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": {"key3": "value3"}}
+        
+    def test_add_value_to_dict_with_string_type_in_value(self):
+        """
+        Tests adding a dictionary key with a string value to a list field
+        """
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key2": "value2"}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [1, 2, {"key2": "value2"}]}
+        
+    def test_add_dict_key_with_string_integer_value_to_list_field(self):
+        """
+        Tests adding a dictionary key with a string integer value to a list field
+        """        
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key1": 1}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [1, 2, {"key1": 1}]}
+        
+    def test_add_dict_key_with_string_integer_value_to_list_field(self):
+        """
+        Tests adding a dictionary key with a string integer value to a list field
+        """        
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key1": "1"}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [1, 2, {"key1": "1"}]}
+
+    def test_add_dict_key_with_string_float_value_to_list_field(self):
+        """
+        Tests adding a dictionary key with a string float value to a list field
+        """        
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key1": "1.1"}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [1, 2, {"key1": "1.1"}]}
+
+    def test_add_dict_key_with_float_value_to_list_field(self):
+        """
+        Tests adding a dictionary key with a float value to a list field
+        """        
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key1": 1.1}'
+        overwrite = False
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [1, 2, {"key1": 1.1}]}
+        
+    def test_overwrite_dict_value_in_list(self):
+            
+        data = {"key1": [1,2]}
+        keys = ["key1[0]"]
+        value = '{"key2": "value2"}'
+        overwrite = True
+        DataBuilder._create_nested_dict(data, keys, value, overwrite)
+        assert data == {"key1": [{"key2": "value2"}]}
