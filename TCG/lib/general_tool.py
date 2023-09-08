@@ -409,7 +409,9 @@ class GeneralTool:
             textbox_format.setText(selected_item.child(1).text(1))
             
             comboBox_data_rule_value.clear()
-            comboBox_data_rule_value.addItems(["", "{Ture}", "{False}", "{Null}"])
+            comboBox_data_rule_value.addItems(
+                ['', '{Ture}', '{False}', '{Null}', '{"key1": "value1", "key2": "value2"}', '["item1", "item2"]'
+                , '[1,2,3]', '[1.1,2.2,3.3]', '["1","2","3"]'])
             enum_item = []
             for i in range(selected_item.child(3).child(5).childCount()):
                 child_item = selected_item.child(3).child(5).child(i).text(1)

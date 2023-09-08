@@ -1381,16 +1381,17 @@ class MyWindow(QMainWindow):
         self.ui.text_robot_file.setText(content)
         
     def btn_tc_update_data_rule_clicked(self):
-        if len(self.ui.table_tc_generation_rule.selectedItems()) == 0:
+        
+        try:
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item_parent = test_plan_selected_item.parent()
+            test_case_id = test_plan_selected_item.text(1).split(".")[0]
+            test_point_id = test_plan_selected_item.text(1).split(".")[1]
+            operation_id = test_plan_selected_item_parent.parent().text(0)
+            selected_item = self.ui.table_tc_generation_rule.selectedItems()[0]
+        except IndexError:
             return
         
-        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
-        test_plan_selected_item_parent = test_plan_selected_item.parent()
-        test_case_id = test_plan_selected_item.text(1).split(".")[0]
-        test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        operation_id = test_plan_selected_item_parent.parent().text(0)
-                
-        selected_item = self.ui.table_tc_generation_rule.selectedItems()[0]
         parent_item = selected_item.parent()
         field_name = selected_item.text(0)
         
@@ -1402,19 +1403,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_tc_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_tc_data_rule_regex_pattern.text()
 
-            if default_value.startswith("[") and default_value.endswith("]"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value.startswith("{") and default_value.endswith("}"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value == "{True}" or default_value == "{False}":
+            if default_value == "{True}" or default_value == "{False}":
                 default_value = True if default_value == "true" else False
             elif default_value == "{Null}":
                 default_value = None
@@ -1471,14 +1460,15 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_generation_rule.itemClicked.emit(self.ui.table_tc_generation_rule.topLevelItem(0).child(index), 0)  
                   
     def btn_tc_dependency_update_data_rule_clicked(self):
-        if len(self.ui.table_tc_dependency_generation_rule.selectedItems()) == 0:
+
+        try:
+            test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
+            test_plan_selected_item_parent = test_plan_selected_item.parent()
+            test_case_id = test_plan_selected_item.text(1).split(".")[0]
+            test_point_id = test_plan_selected_item.text(1).split(".")[1]
+            operation_id = test_plan_selected_item_parent.parent().text(0)
+        except IndexError:
             return
-        
-        test_plan_selected_item = self.ui.table_test_plan_api_list.selectedItems()[0]
-        test_plan_selected_item_parent = test_plan_selected_item.parent()
-        test_case_id = test_plan_selected_item.text(1).split(".")[0]
-        test_point_id = test_plan_selected_item.text(1).split(".")[1]
-        operation_id = test_plan_selected_item_parent.parent().text(0)
                 
         selected_item = self.ui.table_tc_dependency_generation_rule.selectedItems()[0]
         parent_item = selected_item.parent()
@@ -1494,19 +1484,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_tc_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_tc_dependency_data_rule_regex_pattern.text()
 
-            if default_value.startswith("[") and default_value.endswith("]"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value.startswith("{") and default_value.endswith("}"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value == "{True}" or default_value == "{False}":
+            if default_value == "{True}" or default_value == "{False}":
                 default_value = True if default_value == "true" else False
             elif default_value == "{Null}":
                 default_value = None
@@ -1564,16 +1542,17 @@ class MyWindow(QMainWindow):
             self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index).setSelected(True)
             self.ui.table_tc_dependency_generation_rule.itemClicked.emit(self.ui.table_tc_dependency_generation_rule.topLevelItem(0).child(index), 0)        
     def btn_dependency_update_data_rule_clicked(self):
-        if len(self.ui.table_dependency_generation_rule.selectedItems()) == 0:
+
+        try:
+            selected_item = self.ui.table_dependency_generation_rule.selectedItems()[0]
+            parent_item = selected_item.parent()
+            field_name = selected_item.text(0)
+            api_selected_item = self.ui.table_api_tree.selectedItems()[0]
+            operation_id = api_selected_item.text(4)
+            dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
+            dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
+        except IndexError:
             return
-        
-        selected_item = self.ui.table_dependency_generation_rule.selectedItems()[0]
-        parent_item = selected_item.parent()
-        field_name = selected_item.text(0)
-        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
-        operation_id = api_selected_item.text(4)
-        dependency_type = self.ui.table_dependency_rule.selectedItems()[0].parent().text(0)
-        dependency_index = self.ui.table_dependency_rule.selectedItems()[0].text(0)
 
         if parent_item is not None and parent_item.parent() is None:
             default_value = self.ui.comboBox_dependency_data_rule_value.currentText()
@@ -1583,19 +1562,7 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_dependency_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_dependency_data_rule_regex_pattern.text()
             
-            if default_value.startswith("[") and default_value.endswith("]"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value.startswith("{") and default_value.endswith("}"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value == "{True}" or default_value == "{False}":
+            if default_value == "{True}" or default_value == "{False}":
                 default_value = True if default_value == "true" else False
             elif default_value == "{Null}":
                 default_value = None   
@@ -1651,14 +1618,16 @@ class MyWindow(QMainWindow):
         
     def btn_update_data_rule_clicked(self):
         """ Update the new data rule to the generation rule. """
-        if len(self.ui.table_generation_rule.selectedItems()) == 0:
+
+        try:
+            selected_item = self.ui.table_generation_rule.selectedItems()[0]
+            parent_item = selected_item.parent()
+            field_name = selected_item.text(0)
+            api_selected_item = self.ui.table_api_tree.selectedItems()[0]
+            operation_id = api_selected_item.text(4)
+        except IndexError:
+            logging.debug("No item is selected, skip update data rule")
             return
-        
-        selected_item = self.ui.table_generation_rule.selectedItems()[0]
-        parent_item = selected_item.parent()
-        field_name = selected_item.text(0)
-        api_selected_item = self.ui.table_api_tree.selectedItems()[0]
-        operation_id = api_selected_item.text(4)
 
         if parent_item is not None and parent_item.parent() is None:
             default_value = self.ui.comboBox_data_rule_value.currentText()
@@ -1668,19 +1637,8 @@ class MyWindow(QMainWindow):
             nullalbe_value = self.ui.comboBox_data_rule_nullable.currentText()
             regex_pattern = self.ui.textbox_data_rule_regex_pattern.text()
             
-            if default_value.startswith("[") and default_value.endswith("]"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value.startswith("{") and default_value.endswith("}"):
-                try:
-                    default_value = json.loads(default_value)
-                except json.decoder.JSONDecodeError:
-                    logging.error(f"Invalid JSON format: {default_value}")
-                    return
-            elif default_value == "{True}" or default_value == "{False}":
+
+            if default_value == "{True}" or default_value == "{False}":
                 default_value = True if default_value == "true" else False
             elif default_value == "{Null}":
                 default_value = None
@@ -4629,15 +4587,15 @@ class MyWindow(QMainWindow):
 
     def generate_test_plan(self):
         """ Generate Test Plan """
-        
+
         # * Check if the object mapping file is imported.
         if not os.path.exists("config/obj_mapping.json"):
             logging.error(f"Object Mapping File not found.")
             error_message = f"The Object Mapping File is not imported."
             detailed_message = f"Please import the Object Mapping File first."
             GeneralTool.show_error_dialog(error_message, detailed_message)
-            return   
-             
+            return
+        
         selected_items = self.ui.table_api_tree.selectedItems()
         selected_oids = []
         for oid in selected_items: selected_oids.append(oid.text(4))
@@ -4648,7 +4606,7 @@ class MyWindow(QMainWindow):
         self.thread.progress.connect(self.ui.progressBar.setValue)
         self.thread.finished.connect(lambda: UiRender.finish_progress(self.ui.progressBar, "Test Plan Generated Successfully."))
         self.thread.start()
-        
+
         # * Generate TCG Config
         GeneralTool.generate_tcg_config(self.ui.group_test_strategy.findChildren(QCheckBox))
         with open(f"config/tcg_config.json", "r") as f:
