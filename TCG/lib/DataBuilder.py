@@ -489,7 +489,8 @@ class DataBuilder:
     
     @classmethod
     def generate_random_password(cls):
-        return ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(random.randint(8, 16)))
+        allowed_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+{}[]:;\"'<>,.?/-"
+        return ''.join(random.choice(allowed_characters) for _ in range(random.randint(8, 16)))
     
     @classmethod
     def generate_random_int32(cls):

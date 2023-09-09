@@ -66,10 +66,9 @@ class TestDataBuilder:
         """
         Test method to verify the behavior of the `generate_random_password` function when generating a random password.
         """
-        expected_result = re.compile(r"[a-zA-Z0-9_.+-]+")
         result = DataBuilder.generate_random_password()
-        assert expected_result.match(result)
-        
+        assert re.match(r'^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;\"\'<>,.?\/\\-]{8,}$', result)
+    
     def test_generate_random_datetime_default_range(self):
         """
         Test method to verify the behavior of the `generate_random_datetime` function when generating a random datetime within the default range.
