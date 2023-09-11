@@ -1,0 +1,40 @@
+QTreeWidget#table_generation_rule,
+QTreeWidget#table_api_tree {
+    border: 1px solid gray;
+    background-color: #F8F8F8;
+    alternate-background-color: #E1E1E1;
+    /* 這會使選中項的背景色全範圍顯示 */
+    show-decoration-selected: 1;  
+}
+
+/* 設定樹的標題欄樣式 */
+QTreeWidget#table_generation_rule::header,
+QTreeWidget#table_api_tree::header {
+    background-color: #3A3939;
+    color: white;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+/* 設定項目行樣式 */
+QTreeWidget#table_generation_rule::item,
+QTreeWidget#table_api_tree::item {
+    /* 高度 */
+    height: 20px;
+    /* 底邊線 */
+    /* border-bottom: 1px solid #d9d9d9;   */
+}
+
+/* 設定項目被選中時的樣式 */
+QTreeWidget#table_generation_rule::item:selected,
+QTreeWidget#table_api_tree::item:selected {
+    background-color: #57f0a3;
+    color: white;
+}
+
+/* 設定項目獲得焦點但未被選中時的樣式 */
+/* QTreeWidget#table_generation_rule::item:hover,
+QTreeWidget#table_api_tree::item:hover {
+    background-color: #EEEEEE;
+} */

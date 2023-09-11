@@ -11,7 +11,7 @@ from json.decoder import JSONDecodeError
 
 from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic, QtWebEngineWidgets
-from PyQt6.QtCore import QStringListModel, QBasicTimer, QThread, pyqtSignal
+from PyQt6.QtCore import QStringListModel, QBasicTimer, QThread, pyqtSignal, QFile, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMessageBox, QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QCompleter, QFileDialog, QComboBox, QPushButton, QHeaderView, QProgressBar
 
@@ -36,6 +36,14 @@ class MyWindow(QMainWindow):
         # * Load the UI Page
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
+        try:
+            file = QFile("./icons/style.css")
+            file.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text)
+            stream = QTextStream(file)
+            app.setStyleSheet(stream.readAll())
+        except Exception as e:
+            pass
 
         # * Set Icon
         self.ui.btn_import_openapi_doc.setIcon(QIcon("./icons/new.png"))
