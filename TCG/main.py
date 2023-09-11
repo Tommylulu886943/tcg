@@ -220,7 +220,6 @@ class MyWindow(QMainWindow):
         self.ui.btn_api_table_add_use_case.clicked.connect(self.btn_api_table_add_use_case_clicked)
         self.ui.btn_constraint_rule_apply.clicked.connect(self.btn_constraint_rule_apply_clicked)
         self.ui.btn_constraint_rule_clear.clicked.connect(self.btn_constraint_rule_clear_clicked)
-        # self.ui.btn_add_path.clicked.connect(self.btn_add_path_clicked)
         self.ui.btn_remove_query.clicked.connect(self.btn_remove_query_clicked)
         self.ui.btn_update_query.clicked.connect(self.btn_update_query_clicked)
         self.ui.btn_remove_path.clicked.connect(self.btn_remove_path_clicked)
@@ -343,6 +342,9 @@ class MyWindow(QMainWindow):
         self.ui.checkBox_dependency_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_dependency_dynamic_overwrite_robot_variable_changed)
         self.ui.checkBox_tc_dynamic_overwrite_robot_variable.stateChanged.connect(self.checkBox_tc_dynamic_overwrite_robot_variable_changed)
         
+        # * Expand Event
+        self.ui.table_validate_log.itemExpanded.connect(lambda: self.table_item_expanded(self.ui.table_validate_log))
+        
         # * QAction Event
         self.ui.actionExport.triggered.connect(self.action_export_triggered)
         self.ui.actionImport.triggered.connect(self.action_import_triggered)
@@ -365,6 +367,9 @@ class MyWindow(QMainWindow):
         self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
         self.ui.web_page_layout.addWidget(self.ui.web_view)
         self.ui.tabTCG.insertTab(5, self.ui.web_page, "Converter")
+        
+    def table_item_expanded(self, item):
+        item.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
     def closeEvent(self, event):
         """ The close event of the main window and will clean the artifacts. """
@@ -484,7 +489,7 @@ class MyWindow(QMainWindow):
                 self.ui.table_tc_assertion_rule,
                 self.ui.table_robot_file_list,
                 self.ui.text_robot_file,
-                self.ui.text_validate_log,
+                self.ui.table_validate_log,
             ])
             # * Render API Tree.
             self.import_tree_from_file(self.ui.table_api_tree, "./artifacts/api_tree.json")
@@ -530,6 +535,7 @@ class MyWindow(QMainWindow):
             GeneralTool.show_info_dialog(f"Please import the OpenAPI document first.")
             return
         
+        merged_issue_report = {}
         for schema in schema_list:
             try:
                 if schema.endswith(".json"):
@@ -555,11 +561,42 @@ class MyWindow(QMainWindow):
                 error_message = f"Parsing the OpenAPI document failed: {schema}"
                 detailed_message = f"Parsing the OpenAPI document failed: {schema}\n{e}"
                 GeneralTool.show_error_dialog(error_message, detailed_message)
-            result.extend(Validator.validate_schema_restrictions(data))
-            
-        self.ui.text_validate_log.clear()
-        for item in result:
-            self.ui.text_validate_log.append(item)
+            result = Validator.validate_schema_restrictions(data)
+            merged_issue_report = {**merged_issue_report, **result}
+        
+        # # * Save the validation result to the log.
+        # with open("./artifacts/validate_result.json", "w", encoding="utf-8") as file:
+        #     json.dump(merged_issue_report, file, ensure_ascii=False, indent=4)
+        
+        # * Render the validation result to the UI with selected view.
+        self.ui.table_validate_log.clear()
+        logging.debug(merged_issue_report)
+        if self.ui.option_validator_by_issue_type.isChecked():
+            self.ui.table_validate_log.setColumnCount(3)
+            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Data Type"])
+            issue_type_dict = {}
+            for issue, report in merged_issue_report.items():
+                if report['Issue'] not in issue_type_dict:
+                    issue_type_dict[report['Issue']] = QTreeWidgetItem([report['Issue']])
+                    self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Issue']])
+                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Type']])
+                issue_type_dict[report['Issue']].addChild(sub_item)
+        elif self.ui.option_validator_by_data_type.isChecked():
+            self.ui.table_validate_log.setColumnCount(3)
+            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Issue Type"])
+            data_type_dict = {}
+            for issue, report in merged_issue_report.items():
+                if report['Type'] not in data_type_dict:
+                    data_type_dict[report['Type']] = QTreeWidgetItem([report['Type']])
+                    self.ui.table_validate_log.addTopLevelItem(data_type_dict[report['Type']])
+                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Issue']])
+                data_type_dict[report['Type']].addChild(sub_item)
+        elif self.ui.option_validator_by_severity.isChecked():
+            # TODO
+            pass
+        
+        # * Resize the column width.
+        GeneralTool.expand_and_resize_tree(self.ui.table_validate_log, level=1)
         
     def checkBox_path_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
