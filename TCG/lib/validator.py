@@ -12,13 +12,18 @@ class Validator:
         if schema.get('type') == 'object':
             properties = schema.get('properties', {})
             for prop_name, prop_schema in properties.items():
+                logging.debug(prop_name)
+                logging.debug(prop_schema)
+                logging.debug(f"1")
                 if prop_schema.get('$ref'):
+                    logging.debug(f"2")
                     ref_path = prop_schema.get('$ref').split('/')
                     ref_schema = spec
                     for path in ref_path[1:]:
                         ref_schema = ref_schema.get(path, {})
                     cls.validate_object_schema(ref_schema, operation_id, prop_name, missing_restrictions)
                 else:
+                    logging.debug("3")
                     cls.validate_object_schema(prop_schema, operation_id, prop_name, missing_restrictions)
         else:
             if schema.get('readOnly'):
@@ -60,7 +65,7 @@ class Validator:
                     # * WARNING: Only support the first content type now.
                     first_content_type = next(iter(operation['requestBody']['content']))
                     request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                    request_body_schema = GeneralTool.retrive_ref_schema(schema, request_body_schema)
+                    request_body_schema = GeneralTool.retrieve_ref_schema(schema, request_body_schema)
                     cls.validate_object_schema(request_body_schema, operation_id, "", missing_restrictions)
                     result = cls.parse_missing_restrictions(missing_restrictions)
         return result

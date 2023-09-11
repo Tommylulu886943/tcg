@@ -4483,7 +4483,7 @@ class MyWindow(QMainWindow):
                         # * WARNING: Only support the first content type now.
                         first_content_type = next(iter(operation['requestBody']['content']))
                         request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                        request_body_schema = GeneralTool().retrive_ref_schema(api_doc, request_body_schema)
+                        request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
                         generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
                         with open(f"./artifacts/GenerationRule/{operation_id}.json", "w") as f:
                             json.dump(generation_rule, f, indent=4)
@@ -4978,7 +4978,7 @@ class MyWindow(QMainWindow):
                             # * WARNING: Only support the first content type now.
                             first_content_type = next(iter(operation['requestBody']['content']))
                             request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                            request_body_schema = GeneralTool().retrive_ref_schema(api_doc, request_body_schema)                                
+                            request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)                                
                             root_item = QTreeWidgetItem(["Request Body"])
                             self.ui.table_schema.addTopLevelItem(root_item)
                             GeneralTool.parse_request_body(request_body_schema, root_item, editabled=True)
@@ -5003,7 +5003,7 @@ class MyWindow(QMainWindow):
                                         continue
                                     first_content_type = next(iter(operation['responses'][status_code]['content']))
                                     response_body_schema = response['content'][first_content_type]['schema']
-                                    response_body_schema = GeneralTool().retrive_ref_schema(api_doc, response_body_schema)
+                                    response_body_schema = GeneralTool().retrieve_ref_schema(api_doc, response_body_schema)
                                     sub_root_item = QTreeWidgetItem([status_code])
                                     root_item.addChild(sub_root_item)
                                     GeneralTool.parse_request_body(response_body_schema, sub_root_item, editabled=False)
