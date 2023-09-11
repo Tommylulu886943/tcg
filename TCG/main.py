@@ -344,6 +344,7 @@ class MyWindow(QMainWindow):
         
         # * Expand Event
         self.ui.table_validate_log.itemExpanded.connect(lambda: self.table_item_expanded(self.ui.table_validate_log))
+        self.ui.table_schema.itemExpanded.connect(lambda: self.table_item_expanded(self.ui.table_schema))
         
         # * QAction Event
         self.ui.actionExport.triggered.connect(self.action_export_triggered)
@@ -576,24 +577,21 @@ class MyWindow(QMainWindow):
             self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Data Type"])
             issue_type_dict = {}
             for issue, report in merged_issue_report.items():
-                if report['Issue'] not in issue_type_dict:
-                    issue_type_dict[report['Issue']] = QTreeWidgetItem([report['Issue']])
-                    self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Issue']])
+                if report['Description'] not in issue_type_dict:
+                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description']])
+                    self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Description']])
                 sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Type']])
-                issue_type_dict[report['Issue']].addChild(sub_item)
+                issue_type_dict[report['Description']].addChild(sub_item)
         elif self.ui.option_validator_by_data_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Issue Type"])
+            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Description"])
             data_type_dict = {}
             for issue, report in merged_issue_report.items():
                 if report['Type'] not in data_type_dict:
                     data_type_dict[report['Type']] = QTreeWidgetItem([report['Type']])
                     self.ui.table_validate_log.addTopLevelItem(data_type_dict[report['Type']])
-                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Issue']])
+                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Description']])
                 data_type_dict[report['Type']].addChild(sub_item)
-        elif self.ui.option_validator_by_severity.isChecked():
-            # TODO
-            pass
         
         # * Resize the column width.
         GeneralTool.expand_and_resize_tree(self.ui.table_validate_log, level=1)
@@ -4516,16 +4514,20 @@ class MyWindow(QMainWindow):
                     operation_id = operation['operationId']
                     
                     # * Create the Generation Rule File
-                    if 'requestBody' in operation:
-                        # * WARNING: Only support the first content type now.
-                        first_content_type = next(iter(operation['requestBody']['content']))
-                        request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                        request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
-                        generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
-                        with open(f"./artifacts/GenerationRule/{operation_id}.json", "w") as f:
-                            json.dump(generation_rule, f, indent=4)
-                    else:
-                        logging.debug(f'This API "{method} {uri}"  does not have requestBody.')
+                    try:
+                        if 'requestBody' in operation:
+                            # * WARNING: Only support the first content type now.
+                            first_content_type = next(iter(operation['requestBody']['content']))
+                            request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
+                            request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
+                            generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
+                            with open(f"./artifacts/GenerationRule/{operation_id}.json", "w") as f:
+                                json.dump(generation_rule, f, indent=4)
+                        else:
+                            logging.debug(f'This API "{method} {uri}" does not have requestBody.')
+                    except KeyError:
+                        logging.error(f"Can not find any content type in the request body of API `{method} {uri}`.")
+                        
                     
                     # * Create the Dynamica Overwrite Rule File
                     if 'requestBody' in operation:

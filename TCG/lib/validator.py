@@ -6,6 +6,8 @@ from lib.general_tool import GeneralTool
 
 class Validator:
     
+    issue_index = 1
+    
     @classmethod
     def validate_object_schema(cls, schema : dict, operation_id : str, name : str, missing_restrictions : list) -> None:
         # * If the schema is a reference, retrieve the reference schema.
@@ -40,19 +42,25 @@ class Validator:
                     missing_restrictions.append((operation_id, name, 'array', 'minItems'))
                 if not schema.get('maxItems'):
                     missing_restrictions.append((operation_id, name, 'array', 'maxItems'))
+    
+    @classmethod          
+    def _add_no_content_type_issue(cls, operation_id, missing_restrictions):
+        return missing_restrictions.append((operation_id, "", "", "No content type"))
                     
     @classmethod
     def parse_missing_restrictions(cls, missing_restrictions: list) -> dict:
         result = {}
-        for index, item in enumerate(missing_restrictions, start=1):
-            result[f"Issue {index}"] = {
+        for item in missing_restrictions:
+            result[f"Issue {cls.issue_index}"] = {
                 "API": item[0],
                 "Field": item[1],
                 "Type": item[2],
-                "Issue": f"Missing '{item[3]}'"
+                "Description": item[3]
             }
+            cls.issue_index += 1
         return result
-                           
+    
+
     @classmethod
     def validate_schema_restrictions(cls, schema: dict) -> dict:
         missing_restrictions = []
@@ -60,10 +68,13 @@ class Validator:
             for method, operation in path_item.items():
                 operation_id = operation['operationId']
                 if 'requestBody' in operation:
-                    # * WARNING: Only support the first content type now.
-                    first_content_type = next(iter(operation['requestBody']['content']))
-                    request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                    request_body_schema = GeneralTool.retrieve_ref_schema(schema, request_body_schema)
-                    cls.validate_object_schema(request_body_schema, operation_id, "", missing_restrictions)
+                    try:
+                        # * WARNING: Only support the first content type now.
+                        first_content_type = next(iter(operation['requestBody']['content']))
+                        request_body_schema = GeneralTool.retrieve_ref_schema(schema, operation['requestBody']['content'][first_content_type]['schema'])
+                        cls.validate_object_schema(request_body_schema, operation_id, "", missing_restrictions)
+                    except KeyError:
+                        # * If no any content type, add an issue.
+                        cls._add_no_content_type_issue(operation_id, missing_restrictions)
                     result = cls.parse_missing_restrictions(missing_restrictions)
-        return result
+                    return result
