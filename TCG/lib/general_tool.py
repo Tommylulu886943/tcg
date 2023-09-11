@@ -359,7 +359,7 @@ class GeneralTool:
                                 # * WARNING: Only support the first content type now.
                                 first_content_type = next(iter(operation['requestBody']['content']))
                                 request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                                request_body_schema = cls.retrive_ref_schema(api_doc, request_body_schema)
+                                request_body_schema = cls.retrieve_ref_schema(api_doc, request_body_schema)
                                 generation_rule = cls.parse_schema_to_generation_rule(request_body_schema)
                                 
                             # * Create the Path Rule File
@@ -845,10 +845,10 @@ class GeneralTool:
                     new_path = "[0]"
                 fields.update(cls.parse_schema_to_generation_rule(schema["items"], new_path))
         else:
-            print(schema["type"])
-
             genType = None
-            if "enum" in schema and schema["enum"] != []:
+            if "ERROR" in schema:
+                return {}
+            elif "enum" in schema and schema["enum"] != []:
                 genType = "Random Enumeration Value"
                 data_length = ""
             elif schema["type"] == "string":
@@ -915,7 +915,6 @@ class GeneralTool:
             enum = []
             if "enum" in schema: enum = schema["enum"]
             
-            logging.debug(f"Type: {schema}")
             fields[path] = {
                 "Type": schema["type"],
                 "Format": data_format,
@@ -1382,7 +1381,7 @@ class GeneralTool:
         return op_id   
                  
     @classmethod
-    def retrive_ref_schema_key_type(cls, api_schema):
+    def retrieve_ref_schema_key_type(cls, api_schema):
         request_body = {}
         for key, value in api_schema['properties'].items():
             if value['type'] == 'string':
@@ -1392,21 +1391,21 @@ class GeneralTool:
             elif value['type'] == 'boolean':
                 request_body[key] = 'boolean'
             elif value['type'] == 'object':
-                request_body[key] = cls.retrive_ref_schema_key_type(value)
+                request_body[key] = cls.retrieve_ref_schema_key_type(value)
             elif value['type'] == 'array':
                 if value['items']['type'] == 'object':
-                    request_body[key] = [cls.retrive_ref_schema_key_type(value['items'])]
+                    request_body[key] = [cls.retrieve_ref_schema_key_type(value['items'])]
                 else:
                     request_body[key] = [value['items']['type']]
         return request_body
     
     @classmethod
-    def retrive_ref_schema(cls, api_doc, schema):
-        """Retrive all referenced schema in api doc.
+    def retrieve_ref_schema(cls, api_doc, schema):
+        """Retrieve all referenced schema in api doc.
 
         Args:
             api_doc: The api doc.
-            schema: The schema to be retrived.
+            schema: The schema to be retrieved.
 
         Returns:
             The schema with all referenced schema resolved.
@@ -1415,16 +1414,25 @@ class GeneralTool:
             return schema
         
         if '$ref' in schema:
-            ref_path = schema['$ref'].split('/')[1:]
-            resolved_schema = api_doc['components']['schemas'][ref_path[-1]]
-            return cls.retrive_ref_schema(api_doc, resolved_schema)
+            try:
+                ref_path = schema['$ref'].split('/')[1:]
+                resolved_schema = api_doc['components']['schemas'][ref_path[-1]]
+            except IndexError as e:
+                error_message = f"ref path is empty. Please check the API doc."
+                logging.warning(error_message)
+                return {"ERROR": error_message}
+            except KeyError as e:
+                error_message = f"This API reference path can not be found in the API doc. Please check the API doc."
+                logging.error(error_message)
+                return {"ERROR": error_message}
+            return cls.retrieve_ref_schema(api_doc, resolved_schema)
 
         resolved_schema = {}
         for key, value in schema.items():
             if isinstance(value, dict):
-                resolved_schema[key] = cls.retrive_ref_schema(api_doc, value)
+                resolved_schema[key] = cls.retrieve_ref_schema(api_doc, value)
             elif isinstance(value, list):
-                resolved_schema[key] = [cls.retrive_ref_schema(api_doc, item) for item in value]
+                resolved_schema[key] = [cls.retrieve_ref_schema(api_doc, item) for item in value]
             else:
                 resolved_schema[key] = value
         return resolved_schema
