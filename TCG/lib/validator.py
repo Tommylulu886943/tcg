@@ -12,18 +12,13 @@ class Validator:
         if schema.get('type') == 'object':
             properties = schema.get('properties', {})
             for prop_name, prop_schema in properties.items():
-                logging.debug(prop_name)
-                logging.debug(prop_schema)
-                logging.debug(f"1")
                 if prop_schema.get('$ref'):
-                    logging.debug(f"2")
                     ref_path = prop_schema.get('$ref').split('/')
                     ref_schema = spec
                     for path in ref_path[1:]:
                         ref_schema = ref_schema.get(path, {})
                     cls.validate_object_schema(ref_schema, operation_id, prop_name, missing_restrictions)
                 else:
-                    logging.debug("3")
                     cls.validate_object_schema(prop_schema, operation_id, prop_name, missing_restrictions)
         else:
             if schema.get('readOnly'):
@@ -47,12 +42,15 @@ class Validator:
                     missing_restrictions.append((operation_id, name, 'array', 'maxItems'))
                     
     @classmethod
-    def parse_missing_restrictions(cls, missing_restrictions: list) -> list:
-        result = []
-        index = 1
-        for item in missing_restrictions:
-            result.append(f"[Issue {index}]\n API: {item[0]}\n Field: {item[1]}\n Type: {item[2]}\n Issue: Missing '{item[3]}'\n")
-            index += 1
+    def parse_missing_restrictions(cls, missing_restrictions: list) -> dict:
+        result = {}
+        for index, item in enumerate(missing_restrictions, start=1):
+            result[f"Issue {index}"] = {
+                "API": item[0],
+                "Field": item[1],
+                "Type": item[2],
+                "Issue": f"Missing '{item[3]}'"
+            }
         return result
                            
     @classmethod
