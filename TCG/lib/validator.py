@@ -27,6 +27,9 @@ class Validator:
                 return
             elif schema.get('format'):
                 return
+            elif schema.get('enum'):
+                # * if the schema includes enum, it is not necessary to verify the restrictions.
+                return
             elif schema.get('type') == 'string':
                 if not schema.get('minLength'):
                     missing_restrictions.append((operation_id, name, 'string', 'minLength'))
@@ -78,3 +81,5 @@ class Validator:
                         cls._add_no_content_type_issue(operation_id, missing_restrictions)
                     result = cls.parse_missing_restrictions(missing_restrictions)
                     return result
+                
+                # TODO - Add response body validation
