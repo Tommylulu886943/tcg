@@ -571,27 +571,26 @@ class MyWindow(QMainWindow):
         
         # * Render the validation result to the UI with selected view.
         self.ui.table_validate_log.clear()
-        logging.debug(merged_issue_report)
         if self.ui.option_validator_by_issue_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Data Type"])
+            self.ui.table_validate_log.setHeaderLabels(["API", "Path", "Data Type"])
             issue_type_dict = {}
             for issue, report in merged_issue_report.items():
                 if report['Description'] not in issue_type_dict:
                     issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description']])
                     self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Description']])
-                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Type']])
+                sub_item = QTreeWidgetItem([report['API'], report['Path'], report['Data Type']])
                 issue_type_dict[report['Description']].addChild(sub_item)
         elif self.ui.option_validator_by_data_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Field", "Description"])
+            self.ui.table_validate_log.setHeaderLabels(["API", "Path", "Description"])
             data_type_dict = {}
             for issue, report in merged_issue_report.items():
-                if report['Type'] not in data_type_dict:
-                    data_type_dict[report['Type']] = QTreeWidgetItem([report['Type']])
-                    self.ui.table_validate_log.addTopLevelItem(data_type_dict[report['Type']])
-                sub_item = QTreeWidgetItem([report['API'], report['Field'], report['Description']])
-                data_type_dict[report['Type']].addChild(sub_item)
+                if report['Data Type'] not in data_type_dict:
+                    data_type_dict[report['Data Type']] = QTreeWidgetItem([report['Data Type']])
+                    self.ui.table_validate_log.addTopLevelItem(data_type_dict[report['Data Type']])
+                sub_item = QTreeWidgetItem([report['API'], report['Path'], report['Description']])
+                data_type_dict[report['Data Type']].addChild(sub_item)
         
         # * Resize the column width.
         GeneralTool.expand_and_resize_tree(self.ui.table_validate_log, level=1)
