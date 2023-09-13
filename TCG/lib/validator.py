@@ -7,7 +7,7 @@ class Validator:
     issue_index = 1
     
     @classmethod
-    def validate_object_schema(cls, schema : dict, operation_id : str, missing_restrictions : list, path: str = "") -> None:
+    def validate_object_schema(cls, schema : dict, operation_id : str, issue_list : list, path: str = "") -> None:
         # * If the schema is a reference, retrieve the reference schema.
         if schema.get('type') == 'object':
             properties = schema.get('properties', {})
@@ -17,9 +17,9 @@ class Validator:
                     ref_schema = spec
                     for path in ref_path[1:]:
                         ref_schema = ref_schema.get(path, {})
-                    cls.validate_object_schema(ref_schema, operation_id, missing_restrictions, path + "." + prop_name)
+                    cls.validate_object_schema(ref_schema, operation_id, issue_list, path + "." + prop_name)
                 else:
-                    cls.validate_object_schema(prop_schema, operation_id, missing_restrictions, path + "." + prop_name)
+                    cls.validate_object_schema(prop_schema, operation_id, issue_list, path + "." + prop_name)
         else:
             if schema.get('readOnly'):
                 return
@@ -30,67 +30,88 @@ class Validator:
                 return
             elif schema.get('type') == 'string':
                 if not schema.get('minLength'):
-                    missing_restrictions.append((operation_id, path, 'string', 'minLength'))
+                    issue_list.append((operation_id, path, 'string', 'String minLength is not specified.', "WARNING", ""))
                 if not schema.get('maxLength'):
-                    missing_restrictions.append((operation_id, path, 'string', 'maxLength'))
+                    issue_list.append((operation_id, path, 'string', 'String maxLength is not specified.', "WARNING", ""))
             elif schema.get('type') == 'integer' or schema.get('type') == 'number':
                 if not schema.get('minimum'):
-                    missing_restrictions.append((operation_id, path, schema.get('type'), 'minimum'))
+                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number minimum range is not specified.', "WARNING", ""))
                 if not schema.get('maximum'):
-                    missing_restrictions.append((operation_id, path, schema.get('type'), 'maximum'))
+                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number maximum range is not specified.', "WARNING", ""))
             elif schema.get('type') == 'array':
                 if not schema.get('minItems'):
-                    missing_restrictions.append((operation_id, path, 'array', 'minItems'))
+                    issue_list.append((operation_id, path, 'array', 'Array minItems is not specified.', "WARNING", ""))
                 if not schema.get('maxItems'):
-                    missing_restrictions.append((operation_id, path, 'array', 'maxItems'))
+                    issue_list.append((operation_id, path, 'array', 'Array maxItems is not specified.', "WARNING", ""))
 
     @classmethod          
-    def _add_no_content_type_issue(cls, operation_id, missing_restrictions):
-        return missing_restrictions.append((operation_id, "", "", "No content type"))
+    def validate_no_content_type(cls, operation_id, issue_list, path):
+        return issue_list.append((operation_id, path, "None", "No content type", "ERROR", "The content type is not specified."))
                     
     @classmethod
-    def parse_missing_restrictions(cls, missing_restrictions: list) -> dict:
+    def parse_issue_list(cls, issue_list: list) -> dict:
         result = {}
-        for item in missing_restrictions:
+        for item in issue_list:
             result[f"Issue {cls.issue_index}"] = {
                 "API": item[0],
                 "Path": item[1],
                 "Data Type": item[2],
-                "Description": item[3]
+                "Description": item[3],
+                "Severity": item[4],
+                "Details": item[5]
             }
             cls.issue_index += 1
         return result
     
+    @classmethod
+    def validate_op_id_is_unique(cls, schema: dict, issue_list: list) -> None:
+        op_id_list = []
+        recorded_op_id_list = []
+        for uri, path_item in schema['paths'].items():
+            for method, operation in path_item.items():
+                op_id_list.append(operation['operationId'])
+                    
+        # Check if operation id appears more than twice
+        for op_id in op_id_list:
+            if op_id_list.count(op_id) > 1:
+                paths = []
+                for uri, path_item in schema['paths'].items():
+                    for method, operation in path_item.items():
+                        if operation['operationId'] == op_id:
+                            paths.append(f"{method.upper()} {uri}")
+                if op_id not in recorded_op_id_list:
+                    issue_list.append((op_id, "", "None", "Operation id is not unique", "ERROR", f"The operation id duplicates in {paths}"))
+                    recorded_op_id_list.append(op_id)
 
     @classmethod
     def validate_schema_restrictions(cls, schema: dict) -> dict:
-        missing_restrictions = []
+        issue_list = []
+        
+        # Validate the operation id is unique.
+        cls.validate_op_id_is_unique(schema, issue_list)
+        
+        # Validate the restrictions of the schema.
         for uri, path_item in schema['paths'].items():
             for method, operation in path_item.items():
-                operation_id = operation['operationId']
-                logging.debug(f"URI: {uri}")
-                logging.debug(f"Method: {method}")
-                logging.debug(f"Operation: {operation}")
+                operation_id = operation['operationId']          
                 if 'requestBody' in operation:
-                    try:
-                        # * WARNING: Only support the first content type now.
-                        first_content_type = next(iter(operation['requestBody']['content']))
-                        request_body_schema = GeneralTool.retrieve_ref_schema(schema, operation['requestBody']['content'][first_content_type]['schema'])
-                        cls.validate_object_schema(request_body_schema, operation_id, missing_restrictions)
-                    except KeyError:
-                        # * If no any content type, add an issue.
-                        cls._add_no_content_type_issue(operation_id, missing_restrictions)
+                    if 'content' in operation['requestBody']:
+                        if operation['requestBody']['content'] == {}:
+                            cls.validate_no_content_type(operation_id, issue_list, "requestBody")
+                        else:
+                            first_content_type = next(iter(operation['requestBody']['content']))
+                            request_body_schema = GeneralTool.retrieve_ref_schema(schema, operation['requestBody']['content'][first_content_type]['schema'])
+                            cls.validate_object_schema(request_body_schema, operation_id, issue_list, "requestBody")
+                
                 if 'responses' in operation:
                     for status_code, response in operation['responses'].items():
                         if 'content' in response:
-                            try:
-                                # * WARNING: Only support the first content type now.
+                            if response['content'] == {}:
+                                cls.validate_no_content_type(operation_id, issue_list, f"responses.{status_code}")
+                            else:
                                 first_content_type = next(iter(response['content']))
                                 response_schema = GeneralTool.retrieve_ref_schema(schema, response['content'][first_content_type]['schema'])
-                                cls.validate_object_schema(response_schema, operation_id, missing_restrictions)
-                            except KeyError:
-                                # * If no any content type, add an issue.
-                                cls._add_no_content_type_issue(operation_id, missing_restrictions)
+                                cls.validate_object_schema(response_schema, operation_id, issue_list, f"responses.{status_code}")
 
-        result = cls.parse_missing_restrictions(missing_restrictions)
+        result = cls.parse_issue_list(issue_list)
         return result
