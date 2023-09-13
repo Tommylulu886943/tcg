@@ -573,14 +573,18 @@ class MyWindow(QMainWindow):
         self.ui.table_validate_log.clear()
         if self.ui.option_validator_by_issue_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Path", "Data Type"])
+            self.ui.table_validate_log.setHeaderLabels(["API", "Severity", "Path", "Data Type"])
             issue_type_dict = {}
             for issue, report in merged_issue_report.items():
                 if report['Description'] not in issue_type_dict:
-                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description']])
+                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description'], report['Severity'], "", report['Data Type']])
                     self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Description']])
-                sub_item = QTreeWidgetItem([report['API'], report['Path'], report['Data Type']])
+                sub_item = QTreeWidgetItem([report['API'], "", report['Path']])
                 issue_type_dict[report['Description']].addChild(sub_item)
+                if report['Details'] != "":
+                    detail_item = QTreeWidgetItem([report['Details']])
+                    sub_item.addChild(detail_item)
+                
         elif self.ui.option_validator_by_data_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
             self.ui.table_validate_log.setHeaderLabels(["API", "Path", "Description"])
@@ -592,6 +596,20 @@ class MyWindow(QMainWindow):
                 sub_item = QTreeWidgetItem([report['API'], report['Path'], report['Description']])
                 data_type_dict[report['Data Type']].addChild(sub_item)
         
+        elif self.ui.option_validator_by_severity.isChecked():
+            self.ui.table_validate_log.setColumnCount(3)
+            self.ui.table_validate_log.setHeaderLabels(["API", "Severity", "Path", "Description"])
+            severity_dict = {}
+            for issue, report in merged_issue_report.items():
+                if report['Severity'] not in severity_dict:
+                    severity_dict[report['Severity']] = QTreeWidgetItem([report['Severity']])
+                    self.ui.table_validate_log.addTopLevelItem(severity_dict[report['Severity']])
+                sub_item = QTreeWidgetItem([report['API'], "", report['Path'], report['Description']])
+                severity_dict[report['Severity']].addChild(sub_item)
+                if report['Details'] != "":
+                    detail_item = QTreeWidgetItem([report['Details']])
+                    sub_item.addChild(detail_item)
+                    
         # * Resize the column width.
         GeneralTool.expand_and_resize_tree(self.ui.table_validate_log, level=1)
         
@@ -4668,28 +4686,36 @@ class MyWindow(QMainWindow):
                 api_item = schema_item.child(api_i)
                 target_operation_id = api_item.text(4)
                 for uri, path_item in schema['paths'].items():
-                        for method, operation in path_item.items():
-                            operation_id = operation['operationId']
-                            # * if the selected operation is None or the selected operation is in the selected operation list.
-                            if operation_id == target_operation_id and (selected_oids == [] or target_operation_id in selected_oids):
-                                    if api_item.childCount() == 0:
-                                        test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
-                                        testdata = DataBuilder.init_test_data(operation_id)
-                                        dependency_testdata = DataBuilder.init_dependency_test_data(operation_id)
-                                        GeneralTool.generate_test_cases(
-                                            tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
-                                        )
-                                    elif api_item.childCount() > 0:
-                                        for use_case_i in range(api_item.childCount()):
-                                            use_case_item = api_item.child(use_case_i)
-                                            use_case_operation_id = use_case_item.text(4)
-                                            test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
-                                            testdata = DataBuilder.init_test_data(use_case_operation_id)
-                                            dependency_testdata = DataBuilder.init_dependency_test_data(use_case_operation_id)
-                                            GeneralTool.generate_test_cases(
-                                                tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
-                                            )
-                                    self.ui.tabTCG.setCurrentIndex(1)
+                    for method, operation in path_item.items():
+                        operation_id = operation['operationId']
+                        # * if the selected operation is None or the selected operation is in the selected operation list.
+                        if operation_id == target_operation_id and (selected_oids == [] or target_operation_id in selected_oids):
+                            if api_item.childCount() == 0:
+                                try:
+                                    test_plan_path = TestStrategy.init_test_plan(uri, method, operation_id)
+                                except Exception as e:
+                                    logging.error(f"Error initializing test plan for `{operation_id}`.")
+                                    continue
+                                testdata = DataBuilder.init_test_data(operation_id)
+                                dependency_testdata = DataBuilder.init_dependency_test_data(operation_id)
+                                GeneralTool.generate_test_cases(
+                                    tcg_config, TestStrategy, operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
+                                )
+                            elif api_item.childCount() > 0:
+                                for use_case_i in range(api_item.childCount()):
+                                    use_case_item = api_item.child(use_case_i)
+                                    use_case_operation_id = use_case_item.text(4)
+                                    try:
+                                        test_plan_path = TestStrategy.init_test_plan(uri, method, use_case_operation_id)
+                                    except Exception as e:
+                                        logging.error(f"Error initializing test plan for `{use_case_operation_id}`.")
+                                        continue
+                                    testdata = DataBuilder.init_test_data(use_case_operation_id)
+                                    dependency_testdata = DataBuilder.init_dependency_test_data(use_case_operation_id)
+                                    GeneralTool.generate_test_cases(
+                                        tcg_config, TestStrategy, use_case_operation_id, uri, method, operation, test_plan_path, serial_number, testdata, dependency_testdata, test_count
+                                    )
+                            self.ui.tabTCG.setCurrentIndex(1)
                                     
         self.ui.progressBar.setValue(70)
         # * Render Test Plan to Table
