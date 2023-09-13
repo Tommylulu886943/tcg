@@ -24,9 +24,12 @@ class TestStrategy:
 
         Returns:
             The path of the test plan .json file.
-        """  
-        logging.debug(f'Init Test Plan URI: {uri}, Method: {method}, OperationId: {operationId}')
-        obj_name , action_name = GeneralTool._retrieve_obj_and_action(method + " " + uri)
+        """
+        try:
+            obj_name, action_name = GeneralTool._retrieve_obj_and_action(method + " " + uri)
+        except Exception as e:
+            logging.error(f'Cannot retrieve obj_name and action_name from uri: {uri}, method: {method}')
+            raise e
         basic_test_plan = {
             'test_info': {
                 'summary': method + ' ' + uri,

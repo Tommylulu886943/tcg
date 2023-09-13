@@ -137,9 +137,11 @@ class GeneralTool:
                 method = action.split(' ')[0].lower()
                 if uri == expected_uri and method == expected_method:
                     return obj_name, action
-        GeneralTool.show_error_dialog(
-            f"API {expected_method} {expected_uri} Not Found on the Object Mapping File.",
-            f"Please check the API name or add the API to the Object Mapping File.")
+        else:
+            GeneralTool.show_error_dialog(
+                f"API {expected_method} {expected_uri} Not Found on the Object Mapping File.",
+                f"Please check the API name or add the API to the Object Mapping File.")
+            raise Exception(f"API {expected_method} {expected_uri} Not Found on the Object Mapping File.")
     
     @classmethod
     def show_error_dialog(cls, error_message: str, detailed_message: str) -> None:
