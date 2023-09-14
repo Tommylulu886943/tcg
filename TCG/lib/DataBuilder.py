@@ -10,6 +10,8 @@ import pytest
 import logging
 from datetime import datetime, timedelta
 
+from lib.general_tool import GeneralTool
+
 DEBUG = False
 
 class DataBuilder:
@@ -24,7 +26,7 @@ class DataBuilder:
             # * if generation rule not found, because this operation no request body, ex: GET, DELETE.
             logging.warning(f"Generation rule for {operation_id} not found. This operation no request body, so no test data is generated.")
             return None
-        result = cls.data_builder(generation_rules)
+        result = cls.data_builder(generation_rules, operation_id)
         return result
     
     @classmethod
@@ -40,18 +42,19 @@ class DataBuilder:
         for action_type in ['Setup', 'Teardown']:
             for index, action in dependency_data[action_type].items():
                 if 'data_generation_rules' in action and action['data_generation_rules'] != {}:
-                    result[action_type][index] = cls.data_builder(action['data_generation_rules'])
+                    result[action_type][index] = cls.data_builder(action['data_generation_rules'], operation_id)
                 else:
                     logging.info(f"Data Generation Rules not found in {action_type} action {index}.")
         return result
                 
     @classmethod
-    def data_builder(cls, generation_rules):
+    def data_builder(cls, generation_rules, operation_id):
         """
         Generates test data based on a set of generation rules.
         
         Args:
             generation_rules: a dictionary of generation rules
+            operation_id: the operation id of the API
         
         Returns:
             A dictionary of test data generated from the given generation rules.
@@ -70,11 +73,21 @@ class DataBuilder:
             elif rule['Regex Pattern'] != "":
                 value = cls.generate_data_from_regex(rule['Regex Pattern'])
             elif rule['Data Generator'] == 'Random Enumeration Value':
-                value = random.choice(enum)
-                if generation_rules[key]['Type'] == 'string':
-                    value = str(value)
-                elif generation_rules[key]['Type'] == 'integer':
-                    value = int(value)
+                try:
+                    value = random.choice(enum)
+                    if generation_rules[key]['Type'] == 'string':
+                        value = str(value)
+                    elif generation_rules[key]['Type'] == 'integer':
+                        value = int(value)
+                    elif generation_rules[key]['Type'] == 'number':
+                        value = float(value)
+                    elif generation_rules[key]['Type'] == 'boolean':
+                        value = bool(value)
+                except IndexError:
+                    GeneralTool.show_error_dialog(
+                        f"The API `{operation_id}` field `{key}` has no enumeration value.", 
+                        f"Please update the selected generation rule. Do not use `Random Enumeration Value` generator if the API has no enumeration value. Use 'None' to be the default value instead.")
+                    value = "None"
             elif rule['Data Generator'] == 'Random String (Without Special Characters)':
                 value = cls.generate_random_string(rule['Data Length'])
             elif rule['Data Generator'] == 'Random String':
@@ -240,8 +253,9 @@ class DataBuilder:
         Returns:
             list: The updated list in the `data` dictionary.
         """
-        if value.startswith('"') and value.endswith('"'):
-            value = value.strip('"')
+        if type(value) == str:
+            if value.startswith('"') and value.endswith('"'):
+                value = value.strip('"')
         if overwrite:
             return [float(value)]
         else:
@@ -262,7 +276,7 @@ class DataBuilder:
         Returns:
             list: The updated list in the data dictionary.
         """
-        if type(value) != dict and type(value) != list:
+        if type(value) == str:
             if value.startswith('"') and value.endswith('"'):
                 value = value.strip('"')
         if overwrite:
@@ -317,13 +331,17 @@ class DataBuilder:
                         handler = type_mapping['dict']
                     elif value.isdigit():
                         handler = type_mapping['digit']
-                    elif isinstance(eval(value), float):
-                        handler = type_mapping['float']
                     else:
                         handler = type_mapping['default']
                 except (NameError, SyntaxError, TypeError):
                     # * If value just a string, not a list, dict the eval function will raise NameError, so we need to handle it defaultly.
-                    if ',' in value:
+                    if type(value) == int:
+                        handler = type_mapping['digit']
+                    elif type(value) == float:
+                        handler = type_mapping['float']
+                    elif type(value) == bool:
+                        handler = type_mapping['default']
+                    elif ',' in value:
                         handler = type_mapping['comma_separated']
                     else:
                         handler = type_mapping['default']
