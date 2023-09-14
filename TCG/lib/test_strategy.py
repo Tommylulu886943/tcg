@@ -222,7 +222,72 @@ class TestStrategy:
             nullable = rule['Nullable']
             
             if nullable == False:
-                continue
+                # if no default value is specified, the default value is set to reject the null value.
+                if test_type == "negative_test":
+                    testdata = copy.deepcopy(baseline_data)
+                    replace_key = keys.copy()
+                    DataBuilder._create_nested_dict(testdata, replace_key, None, overwrite=True)
+                    testdata_file = f'{operation_id}_{serial_number}_{test_point_number}'
+                    testdata_path = f'./artifacts/TestData/{testdata_file}.json'
+                    with open(testdata_path, 'w') as f:
+                        json.dump(testdata, f, indent=4)
+                        
+                    test_point_list = {}
+                    test_point_list[str(test_point_number)] = {
+                        'key': key,
+                        'null_value': None,
+                        'config_name': testdata_file,
+                        'prop_type': generation_rules[key]['Type'],
+                    }
+                    
+                    with open(f"./templates/TestStrategy/negative_parameter_nullable_test.j2", 'r') as f:
+                        test_temp = f.read()
+                    test_temp = Template(test_temp)
+                    rendered_template = test_temp.render(test_point_list[str(test_point_number)])
+                    parsed_json = json.loads(rendered_template)
+                    
+                    for i in range(1, len(parsed_json['test_point']) + 1):
+                        i = str(i)
+                        
+                        # * Add Data Generation Rule to test plan.
+                        if os.path.exists(f"./artifacts/GenerationRule/{operation_id}.json"):
+                            with open(f"./artifacts/GenerationRule/{operation_id}.json", 'r') as f:
+                                g_rule = json.load(f)
+                                parsed_json['test_point'][i]['parameter']['data_generation_rules'] = g_rule
+                        else:
+                            parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
+                            
+                        # * Add dependency rule to test plan.
+                        d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                        parsed_json['test_point'][i]['dependency'] = d_rule
+                        
+                        # * Add path rule value to test plan.
+                        if os.path.exists(f"./artifacts/PathRule/{operation_id}.json"):
+                            for key, path_item in path_rule.items():
+                                parsed_json['test_point'][i]['path'][key] = path_item['Value']
+                                
+                        # * Add query rule value to test plan.
+                        if os.path.exists(f"./artifacts/QueryRule/{operation_id}.json"):
+                            for key, query_item in query_rule.items():
+                                parsed_json['test_point'][i]['query'][key] = query_item['Value']
+                                
+                        # * Add assertion rule value to test plan.
+                        parsed_json['test_point'][i]['assertion'] = assertion_rule
+                        
+                        # * Add additional action to test plan.
+                        parsed_json['test_point'][i]['additional_action'] = additional_action
+
+                        # * Add dynamic overwrite rule to test plan.
+                        parsed_json['test_point'][i]['dynamic_overwrite_data'] = dynamic_overwrite_rule
+                        
+                        with open(test_plan_path, 'r', encoding='utf-8') as f:
+                            existing_test_plan = json.load(f)
+                        existing_test_plan['test_cases'][serial_number] = parsed_json
+                        
+                        with open(test_plan_path, 'w', encoding='utf-8') as f:
+                            json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)  
+                        test_point_number += 1
+                serial_number += 1
             else:
                 if test_type == "positive_test":
                     testdata = copy.deepcopy(baseline_data)
@@ -244,7 +309,7 @@ class TestStrategy:
                     with open(f"./templates/TestStrategy/positive_parameter_nullable_test.j2", 'r') as f:
                         test_temp = f.read()
                     test_temp = Template(test_temp)
-                    rendered_template = test_temp.render(test_point_list=test_point_list)
+                    rendered_template = test_temp.render(test_point_list[str(test_point_number)])
                     
                     parsed_json = json.loads(rendered_template)
                     for i in range(1, len(parsed_json['test_point']) + 1):
@@ -259,7 +324,8 @@ class TestStrategy:
                             parsed_json['test_point'][i]['parameter']['data_generation_rules'] = {}
                             
                         # * Add dependency rule to test plan.
-                        d_rule = GeneralTool.generate_dependency_test_data_file(copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
+                        d_rule = GeneralTool.generate_dependency_test_data_file(
+                            copy.deepcopy(dependency_testdata), operation_id, serial_number, i)   
                         parsed_json['test_point'][i]['dependency'] = d_rule
                         
                         # * Add path rule value to test plan.

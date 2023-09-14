@@ -1,0 +1,23 @@
+{
+    "summary": "{{ key }} request body parameter null value test",
+    "test_strategy": "null_value_test",
+    "test_type": "negative_test",
+    "test_point": {
+        "1": {
+            "parameter": {
+                "name": "{{ key }}",
+                "description": "`{{ prop_type }}` parameter with null value",
+                "request_name": "req",
+                "response_name": "resp",                
+                "prop_type": "{{ prop_type }}",
+                "value": "{{ null_value }}",
+                "testdata": "{{ config_name }}"
+            },
+            "dependency": {},
+            "path": {},
+            "query": {},
+            "assertion": {},
+            "dynamic_overwrite_data": {}
+        }
+    }
+}
