@@ -2266,7 +2266,7 @@ class MyWindow(QMainWindow):
                 dependency_rules = test_plan['test_cases'][test_case_id]['test_point'][test_point_id]['dependency'][dependency_type]
                 sequence_num = str(max((int(k) for k in dependency_rules.keys()), default=0) + 1)
                 generation_rule, path_rule, query_rule = GeneralTool.generate_dependency_data_generation_and_path_and_query_rule(api)
-                test_data = DataBuilder.data_builder(generation_rule)
+                test_data = DataBuilder.data_builder(generation_rule, operation_id)
                 obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
                 path = f"./artifacts/TestData/Dependency_TestData/{file_name}"
@@ -3117,7 +3117,7 @@ class MyWindow(QMainWindow):
         with open(file_path, "r+") as f:
             data = json.load(f)
             generation_rule = data["test_cases"][test_case_id]["test_point"][test_point_id]["dependency"][dependency_type][dependency_sequence_num]["data_generation_rules"]
-            testdata = DataBuilder.data_builder(generation_rule)
+            testdata = DataBuilder.data_builder(generation_rule, operation_id)
             
         # * Render the dependency request body. 
         testdata_path = f"./artifacts/TestData/Dependency_TestData/{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{dependency_sequence_num}.json"
@@ -3147,7 +3147,7 @@ class MyWindow(QMainWindow):
         with open(file_path, "r+") as f:
             data = json.load(f)
             generation_rule = data["test_cases"][test_case_id]["test_point"][test_point_id]["parameter"]["data_generation_rules"]
-            testdata = DataBuilder.data_builder(generation_rule)
+            testdata = DataBuilder.data_builder(generation_rule, operation_id)
             
         # * Render the request body. 
         testdata_path = f"./artifacts/TestData/{operation_id}_{test_case_id}_{test_point_id}.json"
@@ -4509,27 +4509,60 @@ class MyWindow(QMainWindow):
                     logging.error(f"Error updating JSON file `./artifacts/DependencyRule/{original_operation_id}.json` to add key `{[dependency_type, sequence_num, 'query']}`.")
         
     def _create_generation_rule_and_assertion_files(self):
-        """ Create Generation Rule and Assertion Files """
+        """ Create Generation Rule and Assertion Files 
+        
+        This function creates Generation Rule, Dynamic Overwrite Rule, Assertion Rule, Path Rule and Query Rule files for each API operation in the given API doc.
+        If an operation id is not found in the API doc, the import will fail. Please check and fix the API doc errors before importing.
+        
+        """
         for schema in self.ui.schema_list:
             api_doc = GeneralTool.load_schema_file(schema)
-            # * Check if the API doc version is not 3.0.0 or above.
             if 'swagger' in api_doc:
-                error_message = f"OpenAPI version is not 3.0.0 or above."
-                detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
-                GeneralTool.show_error_dialog(error_message, detailed_message)
+                GeneralTool.show_error_dialog(
+                    f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")
                 return False
-            elif 'openapi' in api_doc:
-                if api_doc['openapi'] < '3.0.0':
-                    logging.error(f"OpenAPI version is not 3.0.0 or above.")
-                    error_message = f"OpenAPI version is not 3.0.0 or above."
-                    detailed_message = f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc."
-                    GeneralTool.show_error_dialog(error_message, detailed_message)  
-                    return False
-                       
+            elif 'openapi' in api_doc and api_doc['openapi'] < '3.0.0':
+                GeneralTool.show_error_dialog(
+                    f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")  
+                return False
+                
+            # * Record the operation id list to check if the operation not found.
+            recorded_op_id_list = []
+            excluded_op_id_list = []
             for uri, path_item in api_doc['paths'].items():
                 for method, operation in path_item.items():
-                    operation_id = operation['operationId']
+                    try:
+                        recorded_op_id_list.append(operation['operationId'])
+                    except KeyError:
+                        GeneralTool.show_error_dialog(
+                            f"Operation id is not found.", f"Operation id is not found in {method.upper()} {uri}. The import will fail. Please check and fix the API doc errors before importing.")
+                        continue
+                                      
+            for uri, path_item in api_doc['paths'].items():
+                for method, operation in path_item.items():
+                    try:
+                        op_id = operation['operationId']
+                    except KeyError:
+                        continue
                     
+                    # * Validate the operation id is not empty and unique.
+                    if op_id is None or op_id == "":
+                        GeneralTool.show_error_dialog(
+                            f'Found empty operation id in {method.upper()} {uri}.',
+                            f'Import this API failed. Please use Doc Validator to check this error sin detail.'
+                        )
+                        excluded_op_id_list.append(op_id)
+                        continue
+             
+                    if op_id in recorded_op_id_list:
+                        if recorded_op_id_list.count(op_id) > 1:
+                            GeneralTool.show_error_dialog(
+                                f'Found duplicated operation id in {method.upper()} {uri}.',
+                                f'Import this API failed. Please use Doc Validator to check this error in detail.'
+                            )
+                            excluded_op_id_list.append(op_id)
+                            continue
+               
                     # * Create the Generation Rule File
                     try:
                         if 'requestBody' in operation:
@@ -4538,24 +4571,23 @@ class MyWindow(QMainWindow):
                             request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
                             request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
                             generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
-                            with open(f"./artifacts/GenerationRule/{operation_id}.json", "w") as f:
+                            with open(f"./artifacts/GenerationRule/{op_id}.json", "w") as f:
                                 json.dump(generation_rule, f, indent=4)
                         else:
                             logging.debug(f'This API "{method} {uri}" does not have requestBody.')
                     except KeyError:
                         logging.error(f"Can not find any content type in the request body of API `{method} {uri}`.")
-                        
-                    
+                          
                     # * Create the Dynamica Overwrite Rule File
                     if 'requestBody' in operation:
                         dynamic_overwrite_rule = {}
-                        with open(f"./artifacts/DynamicOverwrite/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/DynamicOverwrite/{op_id}.json", "w") as f:
                             json.dump(dynamic_overwrite_rule, f, indent=4)
                     
                     # * Create the Assertion Rule File
                     if 'responses' in operation:
                         assertion_rule = GeneralTool.parse_schema_to_assertion_rule(operation['responses'])
-                        with open(f"./artifacts/AssertionRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/AssertionRule/{op_id}.json", "w") as f:
                             json.dump(assertion_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have responses.')
@@ -4563,7 +4595,7 @@ class MyWindow(QMainWindow):
                     # * Create the Path Rule File
                     if 'parameters' in operation:
                         path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
-                        with open(f"./artifacts/PathRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/PathRule/{op_id}.json", "w") as f:
                             json.dump(path_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
@@ -4571,16 +4603,17 @@ class MyWindow(QMainWindow):
                     # * Create the Query Rule File
                     if 'parameters' in operation:
                         query_rule = GeneralTool.parse_schema_to_query_rule(operation['parameters'])
-                        with open(f"./artifacts/QueryRule/{operation_id}.json", "w") as f:
+                        with open(f"./artifacts/QueryRule/{op_id}.json", "w") as f:
                             json.dump(query_rule, f, indent=4)
                     else:
                         logging.debug(f'This API "{method} {uri}"  does not have parameters.')
                         
                     # * Create the Dependency Rule File
-                    dependency_rule = GeneralTool.init_dependency_rule(operation_id)
+                    dependency_rule = GeneralTool.init_dependency_rule(op_id)
                     
                     # * Create the Additional Action Rule File
-                    additional_action_rule = GeneralTool.init_additional_action_rule(operation_id)    
+                    additional_action_rule = GeneralTool.init_additional_action_rule(op_id)    
+        return excluded_op_id_list
          
     def btn_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
@@ -4802,20 +4835,26 @@ class MyWindow(QMainWindow):
             logging.warning(f"Import OpenAPI Doc `{file_name}` is the same as the existing one.")
         
         self.ui.schema_list = response[0]
+        
+        result = self._create_generation_rule_and_assertion_files()
+        excluded_op_id_list = []
+        if result == False:
+            # Un-support OpenAPI version
+            self.ui.table_api_tree.clear()
+            return
+        elif type(result) == list:
+            excluded_op_id_list = result
+        
         index = 1
         for schema in self.ui.schema_list:
             file_path = schema
             file_name, file_ext = os.path.splitext(os.path.basename(file_path))
             api_doc = GeneralTool.load_schema_file(file_path)
-            index = self._render_api_tree(api_doc, index, file_name)
+            index = self._render_api_tree(api_doc, index, file_name, excluded_op_id_list)
             # * If the index is None, it means the API Doc is not in the correct format, return directly.
             if index == None:
                 self.ui.table_api_tree.clear()
                 return
-        result = self._create_generation_rule_and_assertion_files()
-        if result == False:
-            self.ui.table_api_tree.clear()
-            return
         GeneralTool.expand_and_resize_tree(self.ui.table_api_tree)
         
         # * Update Search Completion List
@@ -4833,13 +4872,15 @@ class MyWindow(QMainWindow):
         tc_model.setStringList(all_tc_api_list)
         self.ui.tc_search_completer.setModel(tc_model)     
                      
-    def _render_api_tree(self, api_doc, index, file_name):
+    def _render_api_tree(self, api_doc, index, file_name, excluded_op_id_list):
         """ Render API Tree """
         toplevel_length = self.ui.table_api_tree.topLevelItemCount()
         self.ui.table_api_tree.addTopLevelItem(QtWidgets.QTreeWidgetItem([file_name]))
         try:
             for uri, path_item in api_doc['paths'].items():
                 for method, operation in path_item.items():
+                    if operation['operationId'] in excluded_op_id_list:
+                        continue
                     self.ui.table_api_tree.topLevelItem(toplevel_length).addChild(
                         QtWidgets.QTreeWidgetItem(["", str(index), uri, method.upper(), operation['operationId']])
                     )
