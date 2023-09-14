@@ -14,6 +14,8 @@ class Validator:
             for prop_name, prop_schema in properties.items():
                 if prop_schema.get('$ref'):
                     ref_path = prop_schema.get('$ref').split('/')
+                    if ref_path == "":
+                        issue_list.append((operation_id, path, 'object', 'Reference path is not specified.', "MAJOR", ""))
                     ref_schema = spec
                     for path in ref_path[1:]:
                         ref_schema = ref_schema.get(path, {})
@@ -105,6 +107,11 @@ class Validator:
                         else:
                             first_content_type = next(iter(operation['requestBody']['content']))
                             request_body_schema = GeneralTool.retrieve_ref_schema(schema, operation['requestBody']['content'][first_content_type]['schema'])
+                            if "ERROR" in request_body_schema:
+                                if request_body_schema['ERROR'] == "This API reference path can not be found in the API doc. Please check the API doc.": 
+                                    issue_list.append((operation_id, "", "None", "Reference path is not found", "MAJOR", f"requestBody.{first_content_type}"))
+                                elif request_body_schema['ERROR'] == "ref path is empty. Please check the API doc.":
+                                    issue_list.append((operation_id, "", "None", "Reference variable is empty", "MAJOR", f"requestBody.{first_content_type}"))
                             cls.validate_object_schema(request_body_schema, operation_id, issue_list, "requestBody")
                 
                 if 'responses' in operation:
@@ -115,6 +122,11 @@ class Validator:
                             else:
                                 first_content_type = next(iter(response['content']))
                                 response_schema = GeneralTool.retrieve_ref_schema(schema, response['content'][first_content_type]['schema'])
+                                if "ERROR" in response_schema:
+                                    if response_schema['ERROR'] == "This API reference path can not be found in the API doc. Please check the API doc.": 
+                                        issue_list.append((operation_id, "", "None", "Reference path is not found", "MAJOR", f"responses.{status_code}.{first_content_type}"))
+                                    elif response_schema['ERROR'] == "ref path is empty. Please check the API doc.":
+                                        issue_list.append((operation_id, "", "None", "Reference variable is empty", "MAJOR", f"responses.{status_code}.{first_content_type}"))
                                 cls.validate_object_schema(response_schema, operation_id, issue_list, f"responses.{status_code}")
 
         result = cls.parse_issue_list(issue_list)
