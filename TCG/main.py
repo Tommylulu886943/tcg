@@ -4515,105 +4515,109 @@ class MyWindow(QMainWindow):
         If an operation id is not found in the API doc, the import will fail. Please check and fix the API doc errors before importing.
         
         """
-        for schema in self.ui.schema_list:
-            api_doc = GeneralTool.load_schema_file(schema)
-            if 'swagger' in api_doc:
-                GeneralTool.show_error_dialog(
-                    f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")
-                return False
-            elif 'openapi' in api_doc and api_doc['openapi'] < '3.0.0':
-                GeneralTool.show_error_dialog(
-                    f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")  
-                return False
-                
-            # * Record the operation id list to check if the operation not found.
-            recorded_op_id_list = []
-            excluded_op_id_list = []
-            for uri, path_item in api_doc['paths'].items():
-                for method, operation in path_item.items():
-                    try:
-                        recorded_op_id_list.append(operation['operationId'])
-                    except KeyError:
-                        GeneralTool.show_error_dialog(
-                            f"Operation id is not found.", f"Operation id is not found in {method.upper()} {uri}. The import will fail. Please check and fix the API doc errors before importing.")
-                        continue
-                                      
-            for uri, path_item in api_doc['paths'].items():
-                for method, operation in path_item.items():
-                    try:
-                        op_id = operation['operationId']
-                    except KeyError:
-                        continue
+        if len(self.ui.schema_list) != 0:
+            for schema in self.ui.schema_list:
+                api_doc = GeneralTool.load_schema_file(schema)
+                if 'swagger' in api_doc:
+                    GeneralTool.show_error_dialog(
+                        f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")
+                    return False
+                elif 'openapi' in api_doc and api_doc['openapi'] < '3.0.0':
+                    GeneralTool.show_error_dialog(
+                        f"OpenAPI version is not 3.0.0 or above.", f"{schema} is not OpenAPI 3.0.0 or above. Please check the version of the API doc.")  
+                    return False
                     
-                    # * Validate the operation id is not empty and unique.
-                    if op_id is None or op_id == "":
-                        GeneralTool.show_error_dialog(
-                            f'Found empty operation id in {method.upper()} {uri}.',
-                            f'Import this API failed. Please use Doc Validator to check this error sin detail.'
-                        )
-                        excluded_op_id_list.append(op_id)
-                        continue
-             
-                    if op_id in recorded_op_id_list:
-                        if recorded_op_id_list.count(op_id) > 1:
+                # * Record the operation id list to check if the operation not found.
+                recorded_op_id_list = []
+                excluded_op_id_list = []
+                for uri, path_item in api_doc['paths'].items():
+                    for method, operation in path_item.items():
+                        try:
+                            recorded_op_id_list.append(operation['operationId'])
+                        except KeyError:
                             GeneralTool.show_error_dialog(
-                                f'Found duplicated operation id in {method.upper()} {uri}.',
-                                f'Import this API failed. Please use Doc Validator to check this error in detail.'
+                                f"Operation id is not found.", f"Operation id is not found in {method.upper()} {uri}. The import will fail. Please check and fix the API doc errors before importing.")
+                            continue
+                                        
+                for uri, path_item in api_doc['paths'].items():
+                    for method, operation in path_item.items():
+                        try:
+                            op_id = operation['operationId']
+                        except KeyError:
+                            continue
+                        
+                        # * Validate the operation id is not empty and unique.
+                        if op_id is None or op_id == "":
+                            GeneralTool.show_error_dialog(
+                                f'Found empty operation id in {method.upper()} {uri}.',
+                                f'Import this API failed. Please use Doc Validator to check this error sin detail.'
                             )
                             excluded_op_id_list.append(op_id)
                             continue
-               
-                    # * Create the Generation Rule File
-                    try:
+                
+                        if op_id in recorded_op_id_list:
+                            if recorded_op_id_list.count(op_id) > 1:
+                                GeneralTool.show_error_dialog(
+                                    f'Found duplicated operation id in {method.upper()} {uri}.',
+                                    f'Import this API failed. Please use Doc Validator to check this error in detail.'
+                                )
+                                excluded_op_id_list.append(op_id)
+                                continue
+                
+                        # * Create the Generation Rule File
+                        try:
+                            if 'requestBody' in operation:
+                                # * WARNING: Only support the first content type now.
+                                first_content_type = next(iter(operation['requestBody']['content']))
+                                request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
+                                request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
+                                generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
+                                with open(f"./artifacts/GenerationRule/{op_id}.json", "w") as f:
+                                    json.dump(generation_rule, f, indent=4)
+                            else:
+                                logging.debug(f'This API "{method} {uri}" does not have requestBody.')
+                        except KeyError:
+                            logging.error(f"Can not find any content type in the request body of API `{method} {uri}`.")
+                            
+                        # * Create the Dynamica Overwrite Rule File
                         if 'requestBody' in operation:
-                            # * WARNING: Only support the first content type now.
-                            first_content_type = next(iter(operation['requestBody']['content']))
-                            request_body_schema = operation['requestBody']['content'][first_content_type]['schema']
-                            request_body_schema = GeneralTool().retrieve_ref_schema(api_doc, request_body_schema)
-                            generation_rule = GeneralTool().parse_schema_to_generation_rule(request_body_schema)              
-                            with open(f"./artifacts/GenerationRule/{op_id}.json", "w") as f:
-                                json.dump(generation_rule, f, indent=4)
+                            dynamic_overwrite_rule = {}
+                            with open(f"./artifacts/DynamicOverwrite/{op_id}.json", "w") as f:
+                                json.dump(dynamic_overwrite_rule, f, indent=4)
+                        
+                        # * Create the Assertion Rule File
+                        if 'responses' in operation:
+                            assertion_rule = GeneralTool.parse_schema_to_assertion_rule(operation['responses'])
+                            with open(f"./artifacts/AssertionRule/{op_id}.json", "w") as f:
+                                json.dump(assertion_rule, f, indent=4)
                         else:
-                            logging.debug(f'This API "{method} {uri}" does not have requestBody.')
-                    except KeyError:
-                        logging.error(f"Can not find any content type in the request body of API `{method} {uri}`.")
-                          
-                    # * Create the Dynamica Overwrite Rule File
-                    if 'requestBody' in operation:
-                        dynamic_overwrite_rule = {}
-                        with open(f"./artifacts/DynamicOverwrite/{op_id}.json", "w") as f:
-                            json.dump(dynamic_overwrite_rule, f, indent=4)
-                    
-                    # * Create the Assertion Rule File
-                    if 'responses' in operation:
-                        assertion_rule = GeneralTool.parse_schema_to_assertion_rule(operation['responses'])
-                        with open(f"./artifacts/AssertionRule/{op_id}.json", "w") as f:
-                            json.dump(assertion_rule, f, indent=4)
-                    else:
-                        logging.debug(f'This API "{method} {uri}"  does not have responses.')
+                            logging.debug(f'This API "{method} {uri}"  does not have responses.')
+                            
+                        # * Create the Path Rule File
+                        if 'parameters' in operation:
+                            path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
+                            with open(f"./artifacts/PathRule/{op_id}.json", "w") as f:
+                                json.dump(path_rule, f, indent=4)
+                        else:
+                            logging.debug(f'This API "{method} {uri}"  does not have parameters.')
+                            
+                        # * Create the Query Rule File
+                        if 'parameters' in operation:
+                            query_rule = GeneralTool.parse_schema_to_query_rule(operation['parameters'])
+                            with open(f"./artifacts/QueryRule/{op_id}.json", "w") as f:
+                                json.dump(query_rule, f, indent=4)
+                        else:
+                            logging.debug(f'This API "{method} {uri}"  does not have parameters.')
+                            
+                        # * Create the Dependency Rule File
+                        dependency_rule = GeneralTool.init_dependency_rule(op_id)
                         
-                    # * Create the Path Rule File
-                    if 'parameters' in operation:
-                        path_rule = GeneralTool.parse_schema_to_path_rule(operation['parameters'])
-                        with open(f"./artifacts/PathRule/{op_id}.json", "w") as f:
-                            json.dump(path_rule, f, indent=4)
-                    else:
-                        logging.debug(f'This API "{method} {uri}"  does not have parameters.')
-                        
-                    # * Create the Query Rule File
-                    if 'parameters' in operation:
-                        query_rule = GeneralTool.parse_schema_to_query_rule(operation['parameters'])
-                        with open(f"./artifacts/QueryRule/{op_id}.json", "w") as f:
-                            json.dump(query_rule, f, indent=4)
-                    else:
-                        logging.debug(f'This API "{method} {uri}"  does not have parameters.')
-                        
-                    # * Create the Dependency Rule File
-                    dependency_rule = GeneralTool.init_dependency_rule(op_id)
-                    
-                    # * Create the Additional Action Rule File
-                    additional_action_rule = GeneralTool.init_additional_action_rule(op_id)    
-        return excluded_op_id_list
+                        # * Create the Additional Action Rule File
+                        additional_action_rule = GeneralTool.init_additional_action_rule(op_id)    
+            return excluded_op_id_list
+        else:
+            # if user cancel the import, return False
+            return False
          
     def btn_generation_rule_remove_clicked(self):
         """ Remove Generation Rule Item """
@@ -4915,15 +4919,12 @@ class MyWindow(QMainWindow):
         parent = item.parent()
         if parent is None:
             test_plan_name = item.text(0)                                                                                           
-            logging.debug(f"Test Plan Name: {test_plan_name}")
         elif parent.parent() is None:
             test_plan_name = parent.text(0)
             test_id, test_strategy, test_type = item.text(1), item.text(2), item.text(3)
-            logging.debug(f"Test Case Index: {test_id}")
         else:
             test_plan_name = parent.parent().text(0)
             test_id, test_strategy, test_type, test_point = item.text(1), parent.text(2), parent.text(3), item.text(4)
-            logging.debug(f"Test Point Index: {test_id}")
             with open(f"./artifacts/TestPlan/{test_plan_name}.json", "r") as f:
                 test_plan = json.load(f)
             test_case_id = test_id.split(".")[0]
