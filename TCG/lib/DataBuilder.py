@@ -192,7 +192,6 @@ class DataBuilder:
         else:
             for el in value.split(','):
                 el = el.strip()
-                logging.debug(el)
                 if el.startswith('{') and el.endswith('}'):
                     el = el.strip('{}')
                     data[key].append(json.loads(el))
@@ -283,7 +282,6 @@ class DataBuilder:
             return [value]
         else:
             data[key].append(value)
-            logging.debug(data)
             return data[key]
 
     @classmethod
@@ -341,6 +339,10 @@ class DataBuilder:
                         handler = type_mapping['float']
                     elif type(value) == bool:
                         handler = type_mapping['default']
+                    elif type(value) == None:
+                        handler = type_mapping['default']
+                    elif isinstance(value, type(None)):
+                        handler = type_mapping['default']   
                     elif ',' in value:
                         handler = type_mapping['comma_separated']
                     else:
@@ -350,7 +352,6 @@ class DataBuilder:
                     data[key] = handler(data, key, value, overwrite)
             else:
                 try:
-                    logging.debug(value)
                     data[key] = eval(value)
                 except (NameError, SyntaxError, TypeError):
                     data[key] = value
