@@ -9,6 +9,8 @@ from PyQt6 import QtCore
 from PyQt6 import QtWidgets, uic
 from PyQt6.QtWidgets import QApplication, QMainWindow, QGroupBox, QCheckBox, QTreeWidget, QTreeWidgetItem, QLineEdit, QListWidget, QPlainTextEdit, QMessageBox, QTextBrowser, QTableWidget, QTableWidgetItem, QComboBox, QHeaderView, QAbstractItemView, QFileDialog
 
+DEBUG = False
+
 class GeneralTool:
     
     
@@ -373,7 +375,9 @@ class GeneralTool:
                             query_rule = None
                             if "parameters" in operation:
                                 query_rule = cls.parse_schema_to_query_rule(operation['parameters'])
-                            logging.debug(f"Query Rule: {query_rule}")
+                                
+                            if DEBUG:
+                                logging.debug(f"Query Rule: {query_rule}")
                             
                             return generation_rule, path_rule, query_rule
                         
