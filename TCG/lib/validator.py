@@ -30,23 +30,23 @@ class Validator:
                 return
             elif schema.get('type') == 'string':
                 if not schema.get('minLength'):
-                    issue_list.append((operation_id, path, 'string', 'String minLength is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, 'string', 'String minLength is not specified.', "MINOR", ""))
                 if not schema.get('maxLength'):
-                    issue_list.append((operation_id, path, 'string', 'String maxLength is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, 'string', 'String maxLength is not specified.', "MINOR", ""))
             elif schema.get('type') == 'integer' or schema.get('type') == 'number':
                 if not schema.get('minimum'):
-                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number minimum range is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number minimum range is not specified.', "MINOR", ""))
                 if not schema.get('maximum'):
-                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number maximum range is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number maximum range is not specified.', "MINOR", ""))
             elif schema.get('type') == 'array':
                 if not schema.get('minItems'):
-                    issue_list.append((operation_id, path, 'array', 'Array minItems is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, 'array', 'Array minItems is not specified.', "MINOR", ""))
                 if not schema.get('maxItems'):
-                    issue_list.append((operation_id, path, 'array', 'Array maxItems is not specified.', "WARNING", ""))
+                    issue_list.append((operation_id, path, 'array', 'Array maxItems is not specified.', "MINOR", ""))
 
     @classmethod          
     def validate_no_content_type(cls, operation_id, issue_list, path):
-        return issue_list.append((operation_id, path, "None", "No content type", "ERROR", "The content type is not specified."))
+        return issue_list.append((operation_id, path, "none", "No content type", "MAJOR", "The content type is not specified."))
                     
     @classmethod
     def parse_issue_list(cls, issue_list: list) -> dict:
@@ -64,14 +64,18 @@ class Validator:
         return result
     
     @classmethod
-    def validate_op_id_is_unique(cls, schema: dict, issue_list: list) -> None:
+    def validate_op_id_is_unique_and_not_empty(cls, schema: dict, issue_list: list) -> None:
         op_id_list = []
         recorded_op_id_list = []
         for uri, path_item in schema['paths'].items():
             for method, operation in path_item.items():
-                op_id_list.append(operation['operationId'])
-                    
-        # Check if operation id appears more than twice
+                op_id = operation['operationId']
+                if op_id is None or op_id == "":
+                    issue_list.append((op_id, "", "None", "Operation id is not specified", "MAJOR", f"{method.upper()} {uri}"))
+                else:
+                    op_id_list.append(op_id)
+                           
+        # * Check if operation id appears more than twice
         for op_id in op_id_list:
             if op_id_list.count(op_id) > 1:
                 paths = []
@@ -80,7 +84,7 @@ class Validator:
                         if operation['operationId'] == op_id:
                             paths.append(f"{method.upper()} {uri}")
                 if op_id not in recorded_op_id_list:
-                    issue_list.append((op_id, "", "None", "Operation id is not unique", "ERROR", f"The operation id duplicates in {paths}"))
+                    issue_list.append((op_id, "", "None", "Operation id is not unique", "MAJOR", f"The operation id duplicates in {paths}"))
                     recorded_op_id_list.append(op_id)
 
     @classmethod
@@ -88,7 +92,7 @@ class Validator:
         issue_list = []
         
         # Validate the operation id is unique.
-        cls.validate_op_id_is_unique(schema, issue_list)
+        cls.validate_op_id_is_unique_and_not_empty(schema, issue_list)
         
         # Validate the restrictions of the schema.
         for uri, path_item in schema['paths'].items():
