@@ -1374,14 +1374,15 @@ class MyWindow(QMainWindow):
                 src_path = os.path.join(os.getcwd(), file)
                 dst_path = os.path.join(tcg_folder_path, os.path.basename(file))
                 shutil.copyfile(src_path, dst_path)
-                
-            testdata_folder_path = os.path.join(export_folder_path, "TestData")
-            os.makedirs(testdata_folder_path, exist_ok=True)
-            file_list = glob.glob("./artifacts/TestData/*.json") + glob.glob("./artifacts/TestData/Dependency_TestData/*.json")
-            for file in file_list:
-                src_path = os.path.join(os.getcwd(), file)
-                dst_path = os.path.join(testdata_folder_path, os.path.basename(file))
-                shutil.copyfile(src_path, dst_path)
+
+            if not self.ui.radio_dynamic_data_yes.isChecked():
+                testdata_folder_path = os.path.join(export_folder_path, "TestData")
+                os.makedirs(testdata_folder_path, exist_ok=True)
+                file_list = glob.glob("./artifacts/TestData/*.json") + glob.glob("./artifacts/TestData/Dependency_TestData/*.json")
+                for file in file_list:
+                    src_path = os.path.join(os.getcwd(), file)
+                    dst_path = os.path.join(testdata_folder_path, os.path.basename(file))
+                    shutil.copyfile(src_path, dst_path)
             
             if self.ui.radio_dynamic_data_yes.isChecked():
                 test_generation_rule_folder_path = os.path.join(export_folder_path, "TestGenerationRule")
