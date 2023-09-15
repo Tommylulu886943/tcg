@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2286</width>
+    <width>2010</width>
     <height>1191</height>
    </rect>
   </property>
@@ -6602,8 +6602,14 @@ p, li { white-space: pre-wrap; }
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
-            <item row="2" column="0">
-             <widget class="QTreeWidget" name="table_validate_log"/>
+            <item row="3" column="0">
+             <widget class="QTreeWidget" name="table_validate_log">
+              <column>
+               <property name="text">
+                <string notr="true">1</string>
+               </property>
+              </column>
+             </widget>
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="btn_validate_openapi_doc">
@@ -6612,7 +6618,7 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="2" column="0">
              <widget class="QGroupBox" name="option_validator_view">
               <property name="font">
                <font>
@@ -6675,6 +6681,13 @@ p, li { white-space: pre-wrap; }
               </layout>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="btn_export_issue_report">
+              <property name="text">
+               <string>Export Issue Report</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -6697,7 +6710,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2286</width>
+     <width>2010</width>
      <height>21</height>
     </rect>
    </property>

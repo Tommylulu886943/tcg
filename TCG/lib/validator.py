@@ -54,7 +54,7 @@ class Validator:
     def parse_issue_list(cls, issue_list: list) -> dict:
         result = {}
         for item in issue_list:
-            result[f"Issue {cls.issue_index}"] = {
+            result[cls.issue_index] = {
                 "API": item[0],
                 "Path": item[1],
                 "Data Type": item[2],

@@ -270,6 +270,7 @@ class MyWindow(QMainWindow):
         self.ui.btn_tc_dependency_update_data_rule.clicked.connect(self.btn_tc_dependency_update_data_rule_clicked)
         self.ui.btn_tc_update_data_rule.clicked.connect(self.btn_tc_update_data_rule_clicked)
         self.ui.btn_validate_openapi_doc.clicked.connect(self.btn_validate_openapi_doc_clicked)
+        self.ui.btn_export_issue_report.clicked.connect(self.btn_export_issue_report_clicked)
         self.ui.btn_add_dynamic_overwrite_data.clicked.connect(self.btn_add_dynamic_overwrite_data_clicked)
         self.ui.btn_remove_dynamic_overwrite_data.clicked.connect(self.btn_remove_dynamic_overwrite_data_clicked)
         self.ui.btn_update_dynamic_overwrite_data.clicked.connect(self.btn_update_dynamic_overwrite_data_clicked)
@@ -565,21 +566,21 @@ class MyWindow(QMainWindow):
             result = Validator.validate_schema_restrictions(data)
             merged_issue_report = {**merged_issue_report, **result}
         
-        # # * Save the validation result to the log.
-        # with open("./artifacts/validate_result.json", "w", encoding="utf-8") as file:
-        #     json.dump(merged_issue_report, file, ensure_ascii=False, indent=4)
+        # * Save the validation result to the log.
+        with open("./artifacts/issue_report.json", "w", encoding="utf-8") as file:
+            json.dump(merged_issue_report, file, ensure_ascii=False, indent=4)
         
         # * Render the validation result to the UI with selected view.
         self.ui.table_validate_log.clear()
         if self.ui.option_validator_by_issue_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Severity", "Path", "Data Type"])
+            self.ui.table_validate_log.setHeaderLabels(["Issue Type", "ID", "API", "Severity", "Path", "Data Type"])
             issue_type_dict = {}
-            for issue, report in merged_issue_report.items():
+            for index, report in merged_issue_report.items():
                 if report['Description'] not in issue_type_dict:
-                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description'], report['Severity'], "", report['Data Type']])
+                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description'], "", "", report['Severity'], "", report['Data Type']])
                     self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Description']])
-                sub_item = QTreeWidgetItem([report['API'], "", report['Path']])
+                sub_item = QTreeWidgetItem(["", str(index), report['API'], "", report['Path']])
                 issue_type_dict[report['Description']].addChild(sub_item)
                 if report['Details'] != "":
                     detail_item = QTreeWidgetItem([report['Details']])
@@ -587,24 +588,24 @@ class MyWindow(QMainWindow):
                 
         elif self.ui.option_validator_by_data_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Path", "Description"])
+            self.ui.table_validate_log.setHeaderLabels(["Data Type", "ID", "API", "Severity", "Path", "Description"])
             data_type_dict = {}
-            for issue, report in merged_issue_report.items():
+            for index, report in merged_issue_report.items():
                 if report['Data Type'] not in data_type_dict:
                     data_type_dict[report['Data Type']] = QTreeWidgetItem([report['Data Type']])
                     self.ui.table_validate_log.addTopLevelItem(data_type_dict[report['Data Type']])
-                sub_item = QTreeWidgetItem([report['API'], report['Path'], report['Description']])
+                sub_item = QTreeWidgetItem(["", str(index), report['API'], report['Severity'], report['Path'], report['Description']])
                 data_type_dict[report['Data Type']].addChild(sub_item)
         
         elif self.ui.option_validator_by_severity.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["API", "Severity", "Path", "Description"])
+            self.ui.table_validate_log.setHeaderLabels(["Severity", "ID", "API", "Path", "Description"])
             severity_dict = {}
-            for issue, report in merged_issue_report.items():
+            for index, report in merged_issue_report.items():
                 if report['Severity'] not in severity_dict:
                     severity_dict[report['Severity']] = QTreeWidgetItem([report['Severity']])
                     self.ui.table_validate_log.addTopLevelItem(severity_dict[report['Severity']])
-                sub_item = QTreeWidgetItem([report['API'], "", report['Path'], report['Description']])
+                sub_item = QTreeWidgetItem(["", str(index), report['API'], report['Path'], report['Description']])
                 severity_dict[report['Severity']].addChild(sub_item)
                 if report['Details'] != "":
                     detail_item = QTreeWidgetItem([report['Details']])
@@ -612,7 +613,73 @@ class MyWindow(QMainWindow):
                     
         # * Resize the column width.
         GeneralTool.expand_and_resize_tree(self.ui.table_validate_log, level=1)
-        
+    
+    def btn_export_issue_report_clicked(self):
+        """ When the button is clicked, will export the issue report. """
+        try:
+            with open("./artifacts/issue_report.json", "r", encoding="utf-8") as file:
+                issue_report = json.load(file)
+        except FileNotFoundError:
+            GeneralTool.show_info_dialog(f"Please validate the OpenAPI document first.")
+            return     
+              
+        export_folder_path = QFileDialog.getExistingDirectory(
+            self, "Select Folder to Export", os.path.expanduser("~"))
+        if export_folder_path:
+            with open(os.path.join(export_folder_path, "issue_report.md"), 'w') as f:
+                # * Export issue report as markdown.
+                current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                f.write("# Issue Report - " + current_time + "\n\n")
+                
+                if self.ui.option_validator_by_issue_type.isChecked():
+                    issue_type_dict = {}
+                    for index, issue in issue_report.items():
+                        if issue['Description'] not in issue_type_dict:
+                            issue_type_dict[issue['Description']] = []
+                        issue_type_dict[issue['Description']].append({str(index): issue})
+
+                    for issue_type, issue_list in issue_type_dict.items():
+                        f.write("## " + issue_type + "\n\n")
+                        f.write("| ID | API | Severity | Path | Data Type | Details |\n")
+                        f.write("| --- | --- | --- | --- | --- | --- |\n")
+                        for issue in issue_list:
+                            for index, issue_info in issue.items():
+                                f.write(
+                                    f"| {index} | {issue_info['API']} | {issue_info['Severity']} | {issue_info['Path']} | {issue_info['Data Type']} | {issue_info['Details']} |\n")
+                        f.write("\n")
+                elif self.ui.option_validator_by_data_type.isChecked():
+                    data_type_dict = {}
+                    for index, issue in issue_report.items():
+                        if issue['Data Type'] not in data_type_dict:
+                            data_type_dict[issue['Data Type']] = []
+                        data_type_dict[issue['Data Type']].append({str(index): issue})
+    
+                    for data_type, issue_list in data_type_dict.items():
+                        f.write("## " + data_type + "\n\n")
+                        f.write("| ID | API | Path | Description | Details |\n")
+                        f.write("| --- | --- | --- | --- | --- |\n")
+                        for issue in issue_list:
+                            for index, issue_info in issue.items():
+                                f.write(
+                                    f"| {index} | {issue_info['API']} | {issue_info['Path']} | {issue_info['Description']} | {issue_info['Details']} |\n")
+                        f.write("\n")
+                elif self.ui.option_validator_by_severity.isChecked():
+                    severity_dict = {}
+                    for index, issue in issue_report.items():
+                        if issue['Severity'] not in severity_dict:
+                            severity_dict[issue['Severity']] = []
+                        severity_dict[issue['Severity']].append({str(index): issue})
+    
+                    for severity, issue_list in severity_dict.items():
+                        f.write("## " + severity + "\n\n")
+                        f.write("| ID | API | Path | Description | Details |\n")
+                        f.write("| --- | --- | --- | --- | --- |\n")
+                        for issue in issue_list:
+                            for index, issue_info in issue.items():
+                                f.write(f"| {index} | {issue_info['API']} | {issue_info['Path']} | {issue_info['Description']} | {issue_info['Details']} |\n")
+                        f.write("\n")
+            GeneralTool.show_info_dialog(f"Exported to {export_folder_path}.")
+            
     def checkBox_path_robot_variable_changed(self):
         """ When the checkbox is changed, the value of the textbox will be changed to the robot variable. """
         current_text = self.ui.textbox_path_value.text()
