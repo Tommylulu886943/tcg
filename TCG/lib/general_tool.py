@@ -15,6 +15,34 @@ class GeneralTool:
     
     
     @classmethod
+    def obtain_assertion_type(cls, key: str) -> str:
+        """
+        To obtain the assertion type from the key.
+
+        Args:
+            key (str): The key of the assertion rule.
+
+        Returns:
+            str: The assertion type.
+        """
+
+        if key.startswith("2"):
+            return "positive"
+        else:
+            return "negative"
+        
+    @classmethod
+    def calculate_dict_key_index(cls, data):
+        """
+        Calculate the index of the key in the dict.
+        """
+        
+        if data:
+            return str(max([int(key) for key in data.keys()]) + 1)
+        else:
+            return str(1)
+    
+    @classmethod
     def render_test_plan_files(cls, table_test_plan_api_list: object) -> None:
         cls.clean_ui_content([table_test_plan_api_list])
         for test_plan in glob.glob("./artifacts/TestPlan/*.json"):
