@@ -79,3 +79,61 @@ class CaseRefactor:
         """
         # Currently, Query does not render enums, so no implementation is needed.
         pass
+    
+    def add_assertion_rule(self, issue: dict, doc: dict) -> None:
+        """
+        Adds a new assertion rule for a given issue and document.
+
+        Args:
+            issue (dict): The openapi doc issue that needs to be updated.
+            doc (dict): The openapi doc.
+            
+        # TODO : Need to test this method.
+        """
+        api_name = issue['affected_api_list'][0]
+        op_id = GeneralTool.parse_api_name_to_op_id(api_name, doc)
+        assertion_path = f"../artifacts/AssertionRule/{op_id}.json"
+        try:
+            with open(assertion_path, 'r+') as f:
+                rule = json.loads(f.read())
+                assertion_type = GeneralTool.obtain_assertion_type(issue['field'])
+                seq_num = GeneralTool.calculate_dict_key_index(rule[assertion_type])
+                rule[assertion_type][seq_num] = {
+                    "source": "Status Code",
+                    "field_expression": "",
+                    "filter_expression": "",
+                    "assertion_method": "Should Be Equal",
+                    "expected_value": issue['field'],
+                }
+                f.seek(0)
+                f.write(json.dumps(rule, indent=4))
+                f.truncate()
+        except FileNotFoundError:
+            logging.error(f"Cannot find '{assertion_path}'. Please update it manually.")
+            
+    def remove_assertion_rule(self, issue: dict, doc: dict) -> None:
+        """
+        Removes an assertion rule for a given issue and document.
+
+        Args:
+            issue (dict): The openapi doc issue that needs to be updated.
+            doc (dict): The openapi doc.
+            
+        #TODO: Need unit test for this method.
+        """
+        api_name = issue['affected_api_list'][0]
+        op_id = GeneralTool.parse_api_name_to_op_id(api_name, doc)
+        assertion_path = f"../artifacts/AssertionRule/{op_id}.json"
+        try:
+            with open(assertion_path, 'r+') as f:
+                rule = json.loads(f.read())
+                assertion_type = GeneralTool.obtain_assertion_type(issue['field'])
+                for k, v in rule[assertion_type].items():
+                    if v['expected_value'] == issue['field']:
+                        del rule[assertion_type][k]
+                f.seek(0)
+                f.write(json.dumps(rule, indent=4))
+                f.truncate()
+        except FileNotFoundError:
+            logging.error(f"Cannot find '{assertion_path}'. Please update it manually.")
+
