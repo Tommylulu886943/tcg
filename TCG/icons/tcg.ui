@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>2010</width>
-    <height>1191</height>
+    <height>1188</height>
    </rect>
   </property>
   <property name="baseSize">
@@ -6686,6 +6686,125 @@ p, li { white-space: pre-wrap; }
               <property name="text">
                <string>Export Issue Report</string>
               </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_29">
+         <attribute name="title">
+          <string>Diff</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_49">
+          <item row="3" column="0">
+           <layout class="QGridLayout" name="gridLayout_50" rowstretch="0,0">
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Diff / Change Report</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_52">
+               <item row="0" column="0">
+                <layout class="QGridLayout" name="gridLayout_51">
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="btn_import_new_openapi_doc">
+                   <property name="text">
+                    <string>Import New OpenAPI Doc</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="btn_export_change_report">
+                   <property name="text">
+                    <string>Export All Test Cases</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>Test Case Updater</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_34">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_53">
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="btn_import_new_openapi_doc_2">
+                   <property name="text">
+                    <string>Update Test Cases</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QTreeWidget" name="change_table">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>550</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ContiguousSelection</enum>
+              </property>
+              <column>
+               <property name="text">
+                <string>Severity</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Path</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Old Value</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>New Value</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Trigger Action</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Affected APIs</string>
+               </property>
+              </column>
              </widget>
             </item>
            </layout>
