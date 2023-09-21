@@ -6817,7 +6817,7 @@ p, li { white-space: pre-wrap; }
                  <item row="1" column="0">
                   <widget class="QPushButton" name="btn_export_change_report">
                    <property name="text">
-                    <string>Export All Test Cases</string>
+                    <string>Export Change Report</string>
                    </property>
                   </widget>
                  </item>

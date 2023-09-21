@@ -283,6 +283,7 @@ class MyWindow(QMainWindow):
         self.ui.btn_tc_dependency_add_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_add_dynamic_overwrite_data_clicked)
         self.ui.btn_tc_dependency_remove_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_remove_dynamic_overwrite_data_clicked)
         self.ui.btn_tc_dependency_update_dynamic_overwrite_data.clicked.connect(self.btn_tc_dependency_update_dynamic_overwrite_data_clicked)
+        self.ui.btn_import_new_openapi_doc.clicked.connect(self.btn_import_new_openapi_doc_clicked)
         
         # * Table's Item Click Event
         self.ui.table_api_tree.itemClicked.connect(self.api_tree_item_clicked)
@@ -369,6 +370,27 @@ class MyWindow(QMainWindow):
         self.ui.web_view.load(QtCore.QUrl("https://editor.swagger.io/"))
         self.ui.web_page_layout.addWidget(self.ui.web_view)
         self.ui.tabTCG.insertTab(5, self.ui.web_page, "Converter")
+        
+    def btn_import_new_openapi_doc_clicked(self):
+        """ When the button is clicked, will import the new OpenAPI document. """
+        file_filter = "OpenAPI Document (*.yaml *.yml *.json)"
+        response = QtWidgets.QFileDialog.getOpenFileNames(
+            parent=self.ui.tab, caption="Open File", directory=os.getcwd(), filter=file_filter)
+
+        if response[0]:
+            try:
+                for file_path in response[0]:
+                    file_name = os.path.basename(file_path)
+                    if not os.path.exists("./config/diff/"):
+                        os.mkdir("./config/diff/")
+                    shutil.copy(file_path, f"./config/diff/{file_name}")
+                GeneralTool.show_info_dialog("Import New OpenAPI Document Successfully.")
+            except shutil.SameFileError as e:
+                logging.warning(f"Import New OpenAPI Document Failed. {e}")
+                
+        # * Diff the OpenAPI Document
+        # * Render the Diff
+
         
     def table_item_expanded(self, item):
         item.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)

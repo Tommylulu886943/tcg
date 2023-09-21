@@ -4024,7 +4024,7 @@ class Ui_MainWindow(object):
         self.tabTCG.setTabText(self.tabTCG.indexOf(self.tab_24), _translate("MainWindow", "Validator"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Diff / Change Report"))
         self.btn_import_new_openapi_doc.setText(_translate("MainWindow", "Import New OpenAPI Doc"))
-        self.btn_export_change_report.setText(_translate("MainWindow", "Export All Test Cases"))
+        self.btn_export_change_report.setText(_translate("MainWindow", "Export Change Report"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Test Case Updater"))
         self.btn_import_new_openapi_doc_2.setText(_translate("MainWindow", "Update Test Cases"))
         self.change_table.headerItem().setText(0, _translate("MainWindow", "Severity"))
