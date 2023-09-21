@@ -618,6 +618,11 @@
                             </item>
                             <item>
                              <property name="text">
+                              <string>Random DATE</string>
+                             </property>
+                            </item>
+                            <item>
+                             <property name="text">
                               <string>Random EMAIL</string>
                              </property>
                             </item>
@@ -654,6 +659,11 @@
                             <item>
                              <property name="text">
                               <string>Random BINARY</string>
+                             </property>
+                            </item>
+                            <item>
+                             <property name="text">
+                              <string>Random BYTE</string>
                              </property>
                             </item>
                            </widget>
@@ -1947,6 +1957,11 @@
                                   </item>
                                   <item>
                                    <property name="text">
+                                    <string>Random DATE</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
                                     <string>Random EMAIL</string>
                                    </property>
                                   </item>
@@ -1983,6 +1998,11 @@
                                   <item>
                                    <property name="text">
                                     <string>Random BINARY</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Random BYTE</string>
                                    </property>
                                   </item>
                                  </widget>
@@ -3815,6 +3835,11 @@
                              </item>
                              <item>
                               <property name="text">
+                               <string>Random DATE</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
                                <string>Random EMAIL</string>
                               </property>
                              </item>
@@ -3851,6 +3876,11 @@
                              <item>
                               <property name="text">
                                <string>Random BINARY</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random BYTE</string>
                               </property>
                              </item>
                             </widget>
@@ -5201,6 +5231,11 @@
                                    </item>
                                    <item>
                                     <property name="text">
+                                     <string>Random DATE</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
                                      <string>Random EMAIL</string>
                                     </property>
                                    </item>
@@ -5237,6 +5272,11 @@
                                    <item>
                                     <property name="text">
                                      <string>Random BINARY</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random BYTE</string>
                                     </property>
                                    </item>
                                   </widget>

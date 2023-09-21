@@ -116,6 +116,10 @@ class DataBuilder:
                 value = cls.generate_random_int32()
             elif rule['Data Generator'] == 'Random BINARY':
                 value = cls.generate_random_binary()
+            elif rule['Data Generator'] == 'Random BYTE':
+                value = cls.generate_random_byte()
+            elif rule['Data Generator'] == 'Random DATE':
+                value = cls.generate_random_date()
             else:
                 value = None
             cls._create_nested_dict(result, keys, value)
@@ -529,6 +533,14 @@ class DataBuilder:
         return str(''.join(random.choice(['0', '1']) for _ in range(random.randint(8, 16))))
     
     @classmethod
+    def generate_random_byte(cls):
+        return str(''.join(random.choice(string.ascii_letters + string.digits) for _ in range(random.randint(8, 16))))
+    
+    @classmethod
+    def generate_random_date(cls):
+        return datetime.now().strftime("%Y-%m-%d")
+    
+    @classmethod
     def generate_random_datetime(cls, start_year=1900, end_year=datetime.now().year):
         # * Random datetime between `start_year` and `end_year`
         start_date = datetime(start_year, 1, 1)
@@ -550,10 +562,8 @@ class DataBuilder:
         # * Return RFC3339 datetime format
         return random_datetime.isoformat()
 
-
 class DataAnalyzer:
     
     @classmethod
     def is_binary_string(cls, s):
         return bool(re.match('^[01]*$', s))
-        

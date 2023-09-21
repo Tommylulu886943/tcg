@@ -921,7 +921,7 @@ class GeneralTool:
                 data_length = ""
             elif schema["type"] == "string":
                 if 'format' in schema:
-                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary']:
+                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary', 'byte']:
                         genType = f"Random {schema['format'].upper()}"
                         data_length = ""
                     else:
@@ -934,9 +934,16 @@ class GeneralTool:
                     genType = "Random String (Without Special Characters)"
                     data_length = [1, 30]
             elif schema["type"] == "integer":
-                # TODO : Format
-                genType = "Random Integer"
-                data_length = [1, 100]
+                if 'format' in schema:
+                    if schema['format'] in ['int64', 'int32']:
+                        genType = f"Random {schema['format'].upper()}"
+                        data_length = ""
+                    else:
+                        genType = "Random Integer"
+                        data_length = [1, 100]
+                else:
+                    genType = "Random Integer"
+                    data_length = [1, 100]
             elif schema["type"] == "number":
                 genType = "Random Number (Float)"
                 data_length = [1, 100]
