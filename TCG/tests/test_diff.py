@@ -6,7 +6,8 @@ import logging
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from lib.databuilder import DataBuilder
-from lib.diff import DiffFinder
+from lib.diff import DiffFinder, DiffAnalyzer
+from lib.refactor import CaseRefactor
 
 class TestSearchSchema:
 
@@ -210,7 +211,6 @@ class TestSearchSchema:
 
         # Call the method and assert the output
         assert diff_finder.search_schema(path_list, doc) is None
-
 class TestFoundConsequenceApi:
 
     # Search for a schema that is used in a single API path.
@@ -311,4 +311,476 @@ class TestFoundConsequenceApi:
         }
         expected_result = ["GET /users", "POST /posts"]
         result = DiffFinder.found_consequence_api("#/components/schemas/User", doc)
-        assert result == expected_result
+        assert result == expected_result     
+class TestDiffTEST:
+    
+    def test_func_test(self):
+        # Import the old and new documents
+        old_doc = {
+            "paths": {
+                "/users": {
+                    "get": {
+                        "operationId": "getUsers",
+                        "responses": {
+                            "200": {
+                                "content": {}
+                            }
+                        },
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "User": {
+                        "type": "object",
+                        "properties": {
+                            "list": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "integer"
+                                        },
+                                        "age": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+
+                            },
+                            "age": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        new_doc = {
+            "paths": {
+                "/users": {
+                    "get": {
+                        "operationId": "getUsers",
+                        "responses": {
+                            "200": {
+                                "content": {}
+                            }
+                        },
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "User": {
+                        "type": "object",
+                        "properties": {
+                            "list": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "age": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            },
+                            "age": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Execute the Run Diff
+        issue_list = DiffAnalyzer.analyze_api_diff(old_doc, new_doc)
+        logging.debug(f"issue_list: {issue_list}")
+        CaseRefactor.update_test_cases(issue_list, new_doc)
+        
+class TestFoundReferenceApiAndRefType:
+
+    # Test with a schema name that is not used in any API or other schema.
+    def test_schema_name_not_used(self):
+        # Arrange
+        schema_name = "Schema2"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/Schema1"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == []
+
+    # Test with an empty schema name.
+    def test_empty_schema_name(self):
+        # Arrange
+        schema_name = ""
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/Schema1"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == []
+
+    # Test with an empty document.
+    def test_empty_document(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {}
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == []
+        
+    def test_valid_schema_name_in_request_body(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "post": {
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Schema1"
+                                    }
+                                }
+                            }
+                        },
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == ["POST /api1 Request"]
+        
+    # Test with a valid schema name and a valid document.
+    def test_valid_schema_name_in_response_body(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/Schema1"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+        # Assert
+        assert result == ["GET /api1 Response"]
+        
+    def test_valid_schema_name_in_parameters_query(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "parameters": [
+                            {
+                                "name": "query1",
+                                "in": "query",
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schema1"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == ["GET /api1 Query"]
+
+
+    def test_valid_schema_name_in_parameters_path(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1/{path1}": {
+                    "get": {
+                        "parameters": [
+                            {
+                                "name": "path1",
+                                "in": "path",
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schema1"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == ["GET /api1/{path1} Path"]
+
+    def test_valid_schema_name_in_parameters_cookie(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "parameters": [
+                            {
+                                "name": "cookie1",
+                                "in": "cookie",
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schema1"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == ["GET /api1 Cookie"]
+
+    def test_valid_schema_name_in_parameters_header(self):
+        # Arrange
+        schema_name = "Schema1"
+        doc = {
+            "paths": {
+                "/api1": {
+                    "get": {
+                        "parameters": [
+                            {
+                                "name": "header1",
+                                "in": "header",
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schema1"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            },
+            "components": {
+                "schemas": {
+                    "Schema1": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Act
+        result = DiffFinder.found_reference_api_and_ref_type(schema_name, doc)
+
+        # Assert
+        assert result == ["GET /api1 Header"]
+
