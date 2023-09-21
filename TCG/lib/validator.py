@@ -15,7 +15,7 @@ class Validator:
                 if prop_schema.get('$ref'):
                     ref_path = prop_schema.get('$ref').split('/')
                     if ref_path == "":
-                        issue_list.append((operation_id, path, 'object', 'Reference path is not specified.', "MAJOR", ""))
+                        issue_list.append((operation_id, path, 'Object', 'Reference path is not specified.', "MAJOR", ""))
                     ref_schema = spec
                     for path in ref_path[1:]:
                         ref_schema = ref_schema.get(path, {})
@@ -32,23 +32,26 @@ class Validator:
                 return
             elif schema.get('type') == 'string':
                 if not schema.get('minLength'):
-                    issue_list.append((operation_id, path, 'string', 'String minLength is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, 'String', 'String minLength is not specified.', "MINOR", ""))
                 if not schema.get('maxLength'):
-                    issue_list.append((operation_id, path, 'string', 'String maxLength is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, 'String', 'String maxLength is not specified.', "MINOR", ""))
             elif schema.get('type') == 'integer' or schema.get('type') == 'number':
                 if not schema.get('minimum'):
-                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number minimum range is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, schema.get('type').upper(), 'Integer/Number minimum range is not specified.', "MINOR", ""))
                 if not schema.get('maximum'):
-                    issue_list.append((operation_id, path, schema.get('type'), 'Integer/Number maximum range is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, schema.get('type').upper(), 'Integer/Number maximum range is not specified.', "MINOR", ""))
             elif schema.get('type') == 'array':
                 if not schema.get('minItems'):
-                    issue_list.append((operation_id, path, 'array', 'Array minItems is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, 'Array', 'Array minItems is not specified.', "MINOR", ""))
                 if not schema.get('maxItems'):
-                    issue_list.append((operation_id, path, 'array', 'Array maxItems is not specified.', "MINOR", ""))
+                    issue_list.append((operation_id, path, 'Array', 'Array maxItems is not specified.', "MINOR", ""))
+            
+            if not schema.get('nullable'):
+                issue_list.append((operation_id, path, "Any", 'Nullable is not specified.', "MINOR", ""))
 
     @classmethod          
     def validate_no_content_type(cls, operation_id, issue_list, path):
-        return issue_list.append((operation_id, path, "none", "No content type", "MAJOR", "The content type is not specified."))
+        return issue_list.append((operation_id, path, "None", "No content type", "MAJOR", "The content type is not specified."))
                     
     @classmethod
     def parse_issue_list(cls, issue_list: list) -> dict:
