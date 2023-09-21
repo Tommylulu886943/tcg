@@ -641,6 +641,21 @@
                               <string>Random UUID</string>
                              </property>
                             </item>
+                            <item>
+                             <property name="text">
+                              <string>Random INT32</string>
+                             </property>
+                            </item>
+                            <item>
+                             <property name="text">
+                              <string>Random INT64</string>
+                             </property>
+                            </item>
+                            <item>
+                             <property name="text">
+                              <string>Random BINARY</string>
+                             </property>
+                            </item>
                            </widget>
                           </item>
                           <item row="2" column="2">
@@ -1953,6 +1968,21 @@
                                   <item>
                                    <property name="text">
                                     <string>Random UUID</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Random INT32</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Random INT64</string>
+                                   </property>
+                                  </item>
+                                  <item>
+                                   <property name="text">
+                                    <string>Random BINARY</string>
                                    </property>
                                   </item>
                                  </widget>
@@ -3808,6 +3838,21 @@
                                <string>Random UUID</string>
                               </property>
                              </item>
+                             <item>
+                              <property name="text">
+                               <string>Random INT32</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random INT64</string>
+                              </property>
+                             </item>
+                             <item>
+                              <property name="text">
+                               <string>Random BINARY</string>
+                              </property>
+                             </item>
                             </widget>
                            </item>
                            <item row="2" column="2">
@@ -5177,6 +5222,21 @@
                                    <item>
                                     <property name="text">
                                      <string>Random UUID</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random INT32</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random INT64</string>
+                                    </property>
+                                   </item>
+                                   <item>
+                                    <property name="text">
+                                     <string>Random BINARY</string>
                                     </property>
                                    </item>
                                   </widget>
