@@ -28,7 +28,8 @@ class Validator:
             elif schema.get('format'):
                 return
             elif schema.get('enum'):
-                # * if the schema includes enum, it is not necessary to verify the restrictions.
+                if schema.get('enum') == []:
+                    issue_list.append((operation_id, path, 'Enum', 'Enum List is empty.', "MAJOR", ""))
                 return
             elif schema.get('type') == 'string':
                 if not schema.get('minLength'):
