@@ -3229,7 +3229,7 @@ class MyWindow(QMainWindow):
             testdata = json.load(f)
         testdata_str = json.dumps(testdata, indent=4)
         self.ui.text_body.setPlainText(testdata_str)
-        self.ui.tabWidget_testPlan.setCurrentIndex(1)
+        self.ui.tabWidget_testPlan.setCurrentIndex(0)
         
     def table_dependency_path_item_clicked(self):
         
