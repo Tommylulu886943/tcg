@@ -410,6 +410,8 @@ class DataBuilder:
             return ""
         else:
             s = ''.join(random.choices(alphabet, k=length))
+            while s.isdigit():
+                s = ''.join(random.choices(alphabet, k=length))
             return s
         
     @classmethod
