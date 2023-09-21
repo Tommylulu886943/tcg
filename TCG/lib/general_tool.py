@@ -479,20 +479,18 @@ class GeneralTool:
                 ['', '{Ture}', '{False}', '{Null}', '{"key1": "value1", "key2": "value2"}', '["item1", "item2"]'
                 , '[1,2,3]', '[1.1,2.2,3.3]', '["1","2","3"]'])
             enum_item = []
+            comboBox_data_rule_value.setCurrentText(selected_item.child(2).text(1))
+            combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
+            textbox_range.setText(selected_item.child(3).child(1).text(1))
+            combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
+            combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1))
+            textbox_regex_pattern.setText(selected_item.child(3).child(4).text(1))
             try:
                 for i in range(selected_item.child(3).child(5).childCount()):
                     child_item = selected_item.child(3).child(5).child(i).text(1)
                     enum_item.append(child_item)
                 comboBox_data_rule_value.addItems(enum_item)
-                comboBox_data_rule_value.setCurrentText(selected_item.child(2).text(1))
-                    
-                combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
-                textbox_range.setText(selected_item.child(3).child(1).text(1))
-                combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
-                combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1))
-                textbox_regex_pattern.setText(selected_item.child(3).child(4).text(1))
             except AttributeError:
-                logging.warning("This enum item is not exist.")
                 pass
                 
     @classmethod
