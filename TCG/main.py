@@ -2336,6 +2336,10 @@ class MyWindow(QMainWindow):
                 generation_rule, path_rule, query_rule = GeneralTool.generate_dependency_data_generation_and_path_and_query_rule(api)
                 test_data = DataBuilder.data_builder(generation_rule, operation_id)
                 obj_name, uri_name = GeneralTool._retrieve_obj_and_action(api)
+                if obj_name is None or uri_name is None:
+                    logging.error(f"Cannot retrieve obj_name and uri_name from API: {api}")
+                    return
+
                 file_name = f"{operation_id}_{test_case_id}_{test_point_id}_{dependency_type}_{sequence_num}.json"
                 path = f"./artifacts/TestData/Dependency_TestData/{file_name}"
                 if not os.path.exists(path):
@@ -3693,6 +3697,9 @@ class MyWindow(QMainWindow):
                 sequence_num = '1'
             
             obj_name, action = GeneralTool._retrieve_obj_and_action(api)
+            if obj_name is None or action is None:
+                logging.error(f"Cannot retrieve object name and action from API `{api}`.")
+                return
             new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {}, "dynamic_overwrite_data": {}}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
