@@ -3,7 +3,7 @@ import logging
 import glob
 from collections import OrderedDict
 from itertools import chain
-from general_tool import GeneralTool
+from lib.general_tool import GeneralTool
 
 class CaseRefactor:
     """
@@ -136,4 +136,44 @@ class CaseRefactor:
                 f.truncate()
         except FileNotFoundError:
             logging.error(f"Cannot find '{assertion_path}'. Please update it manually.")
+            
+    def update_schema_rule(self, issue: dict, doc: dict) -> None:
+        """
+        Updates the schema rule for a given issue and document.
+
+        Args:
+            issue (dict): The openapi doc issue that needs to be updated.
+            doc (dict): The openapi doc.
+        """
+    
+        # 做法：先找到issue所在的api，然后找到对应的response，然后找到对应的schema，然后找到对应的field，然后更新。
+        # 先按照影響的 API 來找 request 再找 response 再找 schema 再找 field 再更新
+        # 1. 找到影響的 API
+        for api in issue['affected_api_list']:
+            # 轉換 api name 成 op id
+            op_id = GeneralTool.parse_api_name_to_op_id(api_name, doc)
+            # 2. 找到 request (有可能沒有 request，所以要先判斷有沒有 request)
+            try:
+                with open(f"../artifacts/GenerationRule/{op_id}.json", 'r+') as f:
+                    rule = json.loads(f.read())
+                    for k, v in rule.items():
+                        if k == issue['field']:
+                            rule[k] = issue['new_value']
+                    f.seek(0)
+                    f.write(json.dumps(rule, indent=4))
+                    f.truncate()
+            except FileNotFoundError:
+                logging.error(f"This API '{api}' does not have request.")
+            # 3. 找到 response
+            #TODO: 目前沒有支持測試 response 的測試策略，所以先不處理 response 的情況。
+            # 4. 找到 schema
+            schema = GeneralTool.find_schema(response)
+            # 5. 找到 field
+            field = GeneralTool.find_field(schema, issue['field'])
+            # 6. 更新 field
+            field['name'] = issue['new_value']
+
+        
+        
+
 
