@@ -66,7 +66,7 @@ class DataBuilder:
             keys = key.split('.')
             info = generation_rules[key]
             rule = generation_rules[key]['rule']
-            enum = rule['Enum']
+            enum = rule['Enum'] if 'Enum' in rule else []
             
             if generation_rules[key]['Default'] != "":
                 value = generation_rules[key]['Default']

@@ -415,7 +415,7 @@ class TestStrategy:
             keys = key.split('.')
             info = generation_rules[key]
             rule = generation_rules[key]['rule']
-            enum = rule['Enum']
+            enum = rule['Enum'] if 'Enum' in rule else []
             
             if enum == []:
                 continue
