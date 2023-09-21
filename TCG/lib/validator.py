@@ -113,6 +113,9 @@ class Validator:
                                 elif request_body_schema['ERROR'] == "ref path is empty. Please check the API doc.":
                                     issue_list.append((operation_id, "", "None", "Reference variable is empty", "MAJOR", f"requestBody.{first_content_type}"))
                             cls.validate_object_schema(request_body_schema, operation_id, issue_list, "requestBody")
+                else:
+                    if method == 'post' or method == 'put' or method == 'patch':
+                        issue_list.append((operation_id, "", "None", "Request body is not specified", "MAJOR", f"requestBody"))
                 
                 if 'responses' in operation:
                     for status_code, response in operation['responses'].items():
@@ -129,5 +132,5 @@ class Validator:
                                         issue_list.append((operation_id, "", "None", "Reference variable is empty", "MAJOR", f"responses.{status_code}.{first_content_type}"))
                                 cls.validate_object_schema(response_schema, operation_id, issue_list, f"responses.{status_code}")
 
-        result = cls.parse_issue_list(issue_list)
+        result = cls.parse_issue_list(issue_list) 
         return result
