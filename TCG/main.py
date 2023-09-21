@@ -574,13 +574,13 @@ class MyWindow(QMainWindow):
         self.ui.table_validate_log.clear()
         if self.ui.option_validator_by_issue_type.isChecked():
             self.ui.table_validate_log.setColumnCount(3)
-            self.ui.table_validate_log.setHeaderLabels(["Issue Type", "ID", "API", "Severity", "Path", "Data Type"])
+            self.ui.table_validate_log.setHeaderLabels(["Issue Type", "Severity", "Data Type", "ID", "API", "Path"])
             issue_type_dict = {}
             for index, report in merged_issue_report.items():
                 if report['Description'] not in issue_type_dict:
-                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description'], "", "", report['Severity'], "", report['Data Type']])
+                    issue_type_dict[report['Description']] = QTreeWidgetItem([report['Description'], report['Severity'], report['Data Type'], "", "", ""])
                     self.ui.table_validate_log.addTopLevelItem(issue_type_dict[report['Description']])
-                sub_item = QTreeWidgetItem(["", str(index), report['API'], "", report['Path']])
+                sub_item = QTreeWidgetItem(["", "", "", str(index), report['API'], report['Path']])
                 issue_type_dict[report['Description']].addChild(sub_item)
                 if report['Details'] != "":
                     detail_item = QTreeWidgetItem([report['Details']])
