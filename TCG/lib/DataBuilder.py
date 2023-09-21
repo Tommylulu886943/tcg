@@ -352,7 +352,10 @@ class DataBuilder:
                     data[key] = handler(data, key, value, overwrite)
             else:
                 try:
-                    data[key] = eval(value)
+                    if DataAnalyzer.is_binary_string(value):
+                        data[key] = value
+                    else:
+                        data[key] = eval(str(value))
                 except (NameError, SyntaxError, TypeError):
                     data[key] = value
         else:
@@ -523,7 +526,7 @@ class DataBuilder:
     
     @classmethod
     def generate_random_binary(cls):
-        return ''.join(random.choice(['0', '1']) for _ in range(random.randint(8, 16)))
+        return str(''.join(random.choice(['0', '1']) for _ in range(random.randint(8, 16))))
     
     @classmethod
     def generate_random_datetime(cls, start_year=1900, end_year=datetime.now().year):
@@ -546,3 +549,11 @@ class DataBuilder:
 
         # * Return RFC3339 datetime format
         return random_datetime.isoformat()
+
+
+class DataAnalyzer:
+    
+    @classmethod
+    def is_binary_string(cls, s):
+        return bool(re.match('^[01]*$', s))
+        
