@@ -13,6 +13,34 @@ DEBUG = False
 
 class GeneralTool:
     
+    @classmethod
+    def parse_field_path_to_key(cls, key_path: list) -> str:
+        """
+        Parse the field path to the key.
+        Ex: # ['components', 'schemas', 'User', 'name', 'properties', 'dnsServer', 'domains', 'type'] -> dnsServer.domains[0].type
+        """
+        
+        key = ''
+        key_path = key_path[:-1]
+        logging.debug(f"Key Path: {key_path}")
+        key_path = key_path[4:]
+        logging.debug(f"Key Path: {key_path}")
+        for i in range(len(key_path)):
+            if key_path[i] == 'items' or key_path[i] == 'properties':
+                continue
+            else:
+                if i == len(key_path) - 1:
+                    key += key_path[i]
+                else:
+                    key += key_path[i] + '.'
+                if i != len(key_path) - 1 and key_path[i + 1] == 'items':
+                    if i == len(key_path) - 1:
+                        key += '[0]'
+                    else:
+                        key += '[0].'
+                elif i == len(key_path) - 1 and key_path[i] != 'properties':
+                    continue
+        return key, key_path[-1]
     
     @classmethod
     def obtain_assertion_type(cls, key: str) -> str:
@@ -152,8 +180,12 @@ class GeneralTool:
     def _retrieve_obj_and_action(cls, api: str) -> str:
         """ Use the OpenAPI notation to retrieve the object name and action name from obj_mapping. """
         
-        with open('./config/obj_mapping.json', 'r') as f:
-            obj_mapping = json.load(f)
+        try:
+            with open('./config/obj_mapping.json', 'r') as f:
+                obj_mapping = json.load(f)
+        except FileNotFoundError:
+            cls.show_error_dialog("Object Mapping File Not Found.", "Please import the Object Mapping File first.")
+            return None, None
             
         expected_method = api.split(" ")[0].lower()
         expected_uri = api.split(" ")[1]
@@ -447,18 +479,22 @@ class GeneralTool:
                 ['', '{Ture}', '{False}', '{Null}', '{"key1": "value1", "key2": "value2"}', '["item1", "item2"]'
                 , '[1,2,3]', '[1.1,2.2,3.3]', '["1","2","3"]'])
             enum_item = []
-            for i in range(selected_item.child(3).child(5).childCount()):
-                child_item = selected_item.child(3).child(5).child(i).text(1)
-                enum_item.append(child_item)
-            comboBox_data_rule_value.addItems(enum_item)
-            comboBox_data_rule_value.setCurrentText(selected_item.child(2).text(1))
+            try:
+                for i in range(selected_item.child(3).child(5).childCount()):
+                    child_item = selected_item.child(3).child(5).child(i).text(1)
+                    enum_item.append(child_item)
+                comboBox_data_rule_value.addItems(enum_item)
+                comboBox_data_rule_value.setCurrentText(selected_item.child(2).text(1))
+                    
+                combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
+                textbox_range.setText(selected_item.child(3).child(1).text(1))
+                combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
+                combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1))
+                textbox_regex_pattern.setText(selected_item.child(3).child(4).text(1))
+            except AttributeError:
+                logging.warning("This enum item is not exist.")
+                pass
                 
-            combobox_data_generator.setCurrentText(selected_item.child(3).child(0).text(1))
-            textbox_range.setText(selected_item.child(3).child(1).text(1))
-            combobox_required.setCurrentText(selected_item.child(3).child(2).text(1))
-            combobox_nullable.setCurrentText(selected_item.child(3).child(3).text(1))
-            textbox_regex_pattern.setText(selected_item.child(3).child(4).text(1))
-            
     @classmethod
     def render_constraint_rule(
         cls,
@@ -962,6 +998,8 @@ class GeneralTool:
                     "Enum": enum,
                 }
             }
+            if fields[path]['rule']['Enum'] == []:
+                del fields[path]['rule']['Enum']
             
             included_field = [
                 "minLength","maxLength", "minItems", "maxItems", "minimum", "maximum",
