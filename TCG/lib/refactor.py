@@ -150,7 +150,6 @@ class CaseRefactor:
         # 先按照影響的 API 來找 request 再找 response 再找 schema 再找 field 再更新
         # 1. 找到影響的 API
         for api in issue['affected_api_list']:
-            # 轉換 api name 成 op id
             op_id = GeneralTool.parse_api_name_to_op_id(api_name, doc)
             # 2. 找到 request (有可能沒有 request，所以要先判斷有沒有 request)
             try:
