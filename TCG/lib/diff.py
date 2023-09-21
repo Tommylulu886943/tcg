@@ -66,7 +66,7 @@ class DiffFinder:
         schema = doc
         for path in path_list:
             try:
-                if path.isdigit():
+                if str(path).isdigit():
                     schema = schema[int(path)]  
                 elif path in schema:
                     schema = schema[path]
@@ -80,6 +80,46 @@ class DiffFinder:
             except IndexError:
                 return None
         return schema
+        
+    @classmethod
+    def found_reference_api_and_ref_type(cls, schema_name: str, doc: dict) -> list:
+        """
+        Find all APIs that use a given schema name, as well as other schemas that reference it.
+
+        Args:
+        - schema_name (str): The name of the schema to search for.
+        - doc (dict): A dictionary representing the OpenAPI document.
+
+        Returns:
+        - A list of strings representing the paths of the APIs that use the given schema name, as well as the paths of other schemas that reference it.
+        """
+        PREFIX_SCHEMA = "#/components/schemas/"
+        
+        reference_api_list = []
+        for path, value in cls.search_dict('$ref', PREFIX_SCHEMA + schema_name, doc):
+            if path[0] == 'paths':
+                if path[3] == 'requestBody':
+                    new_schema_name = f"{path[2].upper()} {path[1]} Request"
+                    reference_api_list.append(new_schema_name)
+                if path[3] == 'responses':
+                    new_schema_name = f"{path[2].upper()} {path[1]} Response"
+                    reference_api_list.append(new_schema_name)
+                if path[3] == 'parameters':
+                    param_info = DiffFinder.search_schema(path[0:5], doc)
+                    if 'in' in param_info:
+                        if param_info['in'] == 'path':
+                            new_schema_name = f"{path[2].upper()} {path[1]} Path"
+                            reference_api_list.append(new_schema_name)
+                        if param_info['in'] == 'query':
+                            new_schema_name = f"{path[2].upper()} {path[1]} Query"
+                            reference_api_list.append(new_schema_name)
+                        if param_info['in'] == 'header':
+                            new_schema_name = f"{path[2].upper()} {path[1]} Header"
+                            reference_api_list.append(new_schema_name)
+                        if param_info['in'] == 'cookie':
+                            new_schema_name = f"{path[2].upper()} {path[1]} Cookie"
+                            reference_api_list.append(new_schema_name)
+        return reference_api_list
 
     @classmethod
     def found_consequence_api(cls, schema_name: str, doc: dict) -> list:
@@ -146,21 +186,23 @@ class DiffAnalyzer:
     A class that provides methods for handling different types of diffs.
 
     Methods:
-        analyze_diff(diff: dict) -> list:
+        analyze_api_diff(diff: dict) -> list:
             Analyze the diff dictionary and generate a list of issues.
     """
 
     @classmethod
-    def analyze_diff(cls, diff: dict) -> list:
+    def analyze_api_diff(cls, old_doc: dict, new_doc: dict) -> list:
         """
         Analyze the diff dictionary and generate a list of issues.
 
         Args:
-            diff (dict): A dictionary representing the difference between two objects.
+            old_doc (dict): The old Swagger/OpenAPI document.
+            new_doc (dict): The new Swagger/OpenAPI document.
 
         Returns:
             list: A list of issues found in the difference between the two objects.
         """
+        diff = DeepDiff(old_doc, new_doc)
         issue_list = []
         handlers = {
             'values_changed': cls._value_change_handler,
@@ -177,14 +219,13 @@ class DiffAnalyzer:
         }
         for handler_name, handler_func in handlers.items():
             if handler_name in diff:
-                issue_list.extend(handler_func(diff))
+                issue_list.extend(handler_func(diff, new_doc))
             else:
-                logging.debug(f"No handler for '{handler_name}' found. Skipping...")
                 continue
         return issue_list
     
     @classmethod
-    def _value_change_handler(cls, diff):
+    def _value_change_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['values_changed'].items():  
             path_list = DiffFinder.parse_key_path(key)
@@ -236,7 +277,7 @@ class DiffAnalyzer:
                     issue['field'] = path_list[0].capitalize() + ": " + path_list[-1]
                     issue['severity'] = "UN-DEFINED"
             elif path_list[0] == 'components' and path_list[1] == 'schemas':
-                issue['field'] = "Components: " + path_list[-1]
+                issue['field'] = path_list[-1]
                 issue['severity'] = "BREAK"
                 issue['trigger_action'] = "Update Schema"
 
@@ -251,7 +292,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _iterable_item_added_handler(self, diff):
+    def _iterable_item_added_handler(self, diff, new_doc):
         for key, value in diff['iterable_item_added'].items():
             path_list = DiffFinder.parse_key_path(key)
             issue = {
@@ -263,7 +304,7 @@ class DiffAnalyzer:
             issue_list.append(issue)
 
     @classmethod
-    def _iterable_item_removed_handler(self, diff):
+    def _iterable_item_removed_handler(self, diff, new_doc):
         for key, value in diff['iterable_item_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
             issue = {
@@ -275,7 +316,7 @@ class DiffAnalyzer:
             issue_list.append(issue)
 
     @classmethod
-    def _dictionary_item_added_handler(cls, diff):
+    def _dictionary_item_added_handler(cls, diff, new_doc):
         issue_list = []
         for key in diff['dictionary_item_added']:
             path_list = DiffFinder.parse_key_path(key)
@@ -308,10 +349,19 @@ class DiffAnalyzer:
                         'new_value': new_value,
                         'trigger_action': "Add New Query Parameter",
                     }
+                else:
+                    issue = {
+                        'path': key,
+                        'field': path_list[0].capitalize() + ': ' + path_list[-1],
+                        'severity': 'UN-DEFINED',
+                        'old_value': None,
+                        'new_value': new_value,
+                        'trigger_action': None,
+                    }
             elif path_list[0] == 'components' and path_list[1] == 'schemas':
                 issue = {
                     'path': key,
-                    'field': 'Components: ' + path_list[-1],
+                    'field': path_list[-1],
                     'severity': 'WARNING',
                     'old_value': None,
                     'new_value': new_value,
@@ -330,7 +380,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _dictionary_item_removed_handler(cls, diff):
+    def _dictionary_item_removed_handler(cls, diff, new_doc):
         issue_list = []
         for key in diff['dictionary_item_removed']:
             path_list = DiffFinder.parse_key_path(key)
@@ -347,7 +397,7 @@ class DiffAnalyzer:
             elif path_list[0] == 'components' and path_list[1] == 'schemas':
                 issue = {
                     'path': key,
-                    'field': 'Components: ' + path_list[-1],
+                    'field': path_list[-1],
                     'severity': 'BREAK',
                     'old_value': old_value,
                     'new_value': None,
@@ -366,7 +416,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _type_changes_handler(cls, diff):
+    def _type_changes_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['type_changes'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -382,7 +432,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _set_item_added_handler(cls, diff):
+    def _set_item_added_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['set_item_added'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -396,7 +446,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _set_item_removed_handler(cls, diff):
+    def _set_item_removed_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['set_item_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -410,7 +460,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_added_handler(cls, diff):
+    def _attribute_added_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['attribute_added'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -426,7 +476,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_removed_handler(cls, diff):
+    def _attribute_removed_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['attribute_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -442,7 +492,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_changed_handler(cls, diff):
+    def _attribute_changed_handler(cls, diff, new_doc):
         issue_list = []
         for key, value in diff['attribute_changed'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -458,38 +508,3 @@ class DiffAnalyzer:
         return issue_list
             
 
-def update_test_cases(issue_list: list, new_doc: dict) -> None:
-    """
-    Update the existing test cases according to the issue list's trigger action.
-    """
-    for issue in issue_list:
-        if issue['trigger_action'] == None:
-            print(issue['trigger_action'])
-            print(f"No trigger action for this '{issue['severity']}' issue '{issue['field']}'. Please update it manually.")
-        elif issue['trigger_action'] == 'Update Schema':
-            print("Run Update Schema Process...")
-        elif issue['trigger_action'] == 'Update Query Parameter Name':
-            CaseRefactor.update_query_rule_name(issue, new_doc)
-        elif issue['trigger_action'] == 'Update Query Parameter Enum Name':
-            CaseRefactor.update_query_rule_enum_name(issue, new_doc)
-        elif issue['trigger_action'] == 'Add New Fields':
-            CaseRefactor
-
-    
-
-# TODO: Pass the old doc and new doc to the function.
-with open('../docs/HawkEye/test/monitor.json', 'r') as f:
-    old_doc = json.load(f)
-with open('../docs/HawkEye/test/monitor_resp_body_type_from_string_to_integer_id.json', 'r') as f:
-    new_doc = json.load(f)
-
-diff = DeepDiff(old_doc, new_doc)
-print(diff)
-issue_list = DiffAnalyzer.analyze_diff(diff)
-pprint.pprint(issue_list, indent=2)
-update_test_cases(issue_list, new_doc)
-
-# Render Issue List on QT GUI
-# According to the issue list's trigger action, update the existing test cases.
-# Input: issesList (list)
-# Timing of execution: After the user clicks the : "Update Test Cases" button.
