@@ -896,6 +896,27 @@ class GeneralTool:
                 if "readOnly" in prop_schema and prop_schema["readOnly"] == True:
                     continue
                 fields.update(cls.parse_schema_to_generation_rule(prop_schema, new_path))
+                
+                # Detect the required list.
+                if "required" in schema and prop_name in schema["required"]:
+                    try:
+                        fields[new_path]['rule']['Required'] = True
+                    except KeyError:
+                        # If the field is an object, the field name will be the key of the object.
+                        for fields_key in fields.keys():
+                            if fields_key.startswith(new_path):
+                                sub_field_name = fields_key.split('.')[-1]
+                                if 'required' in schema['properties'][prop_name]:
+                                    if sub_field_name in schema['properties'][prop_name]['required']:
+                                        fields[fields_key]['rule']['Required'] = True
+                                    else:
+                                        fields[fields_key]['rule']['Required'] = False
+                                elif 'properties' in schema['properties'][prop_name] and 'required' in schema['properties'][prop_name]['properties'][sub_field_name]:
+                                    if sub_field_name in schema['properties'][prop_name]['properties'][sub_field_name]['required']:
+                                        fields[fields_key]['rule']['Required'] = True
+                                    else:
+                                        fields[fields_key]['rule']['Required'] = False
+
         elif "items" in schema:
             if "properties" in schema["items"]:
                 for prop_name, prop_schema in schema["items"]["properties"].items():
@@ -906,6 +927,25 @@ class GeneralTool:
                     if "readOnly" in prop_schema and prop_schema["readOnly"] == True:
                         continue
                     fields.update(cls.parse_schema_to_generation_rule(prop_schema, new_path))
+                    # * Detect the required list.
+                    if "required" in schema["items"] and prop_name in schema["items"]["required"]:
+                            try:
+                                fields[new_path]['rule']['Required'] = True
+                            except KeyError:
+                                # * if the field is an object, the field name will be the key of the object.
+                                for fields_key in fields.keys():
+                                    if fields_key.startswith(new_path):
+                                        sub_field_name = fields_key.split('.')[-1]
+                                        if 'required' in schema['properties'][prop_name]:
+                                            if sub_field_name in schema['properties'][prop_name]['required']:
+                                                fields[fields_key]['rule']['Required'] = True
+                                            else:
+                                                fields[fields_key]['rule']['Required'] = False
+                                        elif 'properties' in schema['properties'][prop_name] and 'required' in schema['properties'][prop_name]['properties'][sub_field_name]:
+                                            if sub_field_name in schema['properties'][prop_name]['properties'][sub_field_name]['required']:
+                                                fields[fields_key]['rule']['Required'] = True
+                                            else:
+                                                fields[fields_key]['rule']['Required'] = False
             else:
                 if path:
                     new_path = path + "[0]"
