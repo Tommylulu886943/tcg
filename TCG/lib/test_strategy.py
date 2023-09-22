@@ -637,8 +637,6 @@ class TestStrategy:
                     
                     with open(test_plan_path, 'w', encoding='utf-8') as f:
                         json.dump(existing_test_plan, f, ensure_ascii=False, sort_keys=False, indent=4)
-                    
-                    test_point_number += 1
             serial_number += 1          
         return serial_number
     
