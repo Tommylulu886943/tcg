@@ -80,6 +80,35 @@ class DiffFinder:
             except IndexError:
                 return None
         return schema
+    
+    @classmethod
+    def search_dict(cls, key, value, node):
+        """
+        Recursively search for items in a dictionary that match the given key and value, and return their path and value.
+
+        Args:
+        - key (any): The key to search for.
+        - value (any): The value to search for.
+        - node (dict or list): The dictionary or list to search in.
+
+        Yields:
+        - Tuple[List, any]: A tuple containing the path and value of the matching item.
+        """
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if k == key and v == value:
+                    yield [k], v
+                elif isinstance(v, dict):
+                    for path, val in cls.search_dict(key, value, v):
+                        yield [k] + path, val
+                elif isinstance(v, list):
+                    for i, item in enumerate(v):
+                        for path, val in cls.search_dict(key, value, item):
+                            yield [k, i] + path, val
+        elif isinstance(node, list):
+            for i, item in enumerate(node):
+                for path, val in cls.search_dict(key, value, item):
+                    yield [i] + path, val
         
     @classmethod
     def found_reference_api_and_ref_type(cls, schema_name: str, doc: dict) -> list:
@@ -150,35 +179,6 @@ class DiffFinder:
                     new_schema_name = REQUEST_BODIES_PREFIX + path[2]
                     consequence_api_list.extend(cls.found_consequence_api(new_schema_name, doc))
         return consequence_api_list
-
-    @classmethod
-    def search_dict(cls, key, value, node):
-        """
-        Recursively search for items in a dictionary that match the given key and value, and return their path and value.
-
-        Args:
-        - key (any): The key to search for.
-        - value (any): The value to search for.
-        - node (dict or list): The dictionary or list to search in.
-
-        Yields:
-        - Tuple[List, any]: A tuple containing the path and value of the matching item.
-        """
-        if isinstance(node, dict):
-            for k, v in node.items():
-                if k == key and v == value:
-                    yield [k], v
-                elif isinstance(v, dict):
-                    for path, val in cls.search_dict(key, value, v):
-                        yield [k] + path, val
-                elif isinstance(v, list):
-                    for i, item in enumerate(v):
-                        for path, val in cls.search_dict(key, value, item):
-                            yield [k, i] + path, val
-        elif isinstance(node, list):
-            for i, item in enumerate(node):
-                for path, val in cls.search_dict(key, value, item):
-                    yield [i] + path, val
   
 class DiffAnalyzer:
     """
@@ -219,13 +219,13 @@ class DiffAnalyzer:
         }
         for handler_name, handler_func in handlers.items():
             if handler_name in diff:
-                issue_list.extend(handler_func(diff, new_doc))
+                issue_list.extend(handler_func(diff, new_doc, old_doc))
             else:
                 continue
         return issue_list
     
     @classmethod
-    def _value_change_handler(cls, diff, new_doc):
+    def _value_change_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['values_changed'].items():  
             path_list = DiffFinder.parse_key_path(key)
@@ -292,7 +292,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _iterable_item_added_handler(self, diff, new_doc):
+    def _iterable_item_added_handler(self, diff, new_doc, old_doc):
         for key, value in diff['iterable_item_added'].items():
             path_list = DiffFinder.parse_key_path(key)
             issue = {
@@ -304,7 +304,7 @@ class DiffAnalyzer:
             issue_list.append(issue)
 
     @classmethod
-    def _iterable_item_removed_handler(self, diff, new_doc):
+    def _iterable_item_removed_handler(self, diff, new_doc, old_doc):
         for key, value in diff['iterable_item_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
             issue = {
@@ -316,7 +316,7 @@ class DiffAnalyzer:
             issue_list.append(issue)
 
     @classmethod
-    def _dictionary_item_added_handler(cls, diff, new_doc):
+    def _dictionary_item_added_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key in diff['dictionary_item_added']:
             path_list = DiffFinder.parse_key_path(key)
@@ -380,21 +380,24 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _dictionary_item_removed_handler(cls, diff, new_doc):
+    def _dictionary_item_removed_handler(cls, diff, new_doc, old_doc):
         issue_list = []
+        
         for key in diff['dictionary_item_removed']:
             path_list = DiffFinder.parse_key_path(key)
             old_value = DiffFinder.search_schema(path_list, old_doc)
             if path_list[0] == 'paths':
                 issue = {
                     'path': key,
-                    'field': path_list[0].capitalize() + ': ' + path_list[-1],
+                    'field': path_list[-1],
                     'severity': 'BREAK',
                     'old_value': old_value,
                     'new_value': None,
                     'trigger_action': "Remove Field",
                 }
             elif path_list[0] == 'components' and path_list[1] == 'schemas':
+                PREFIX = '#/components/schemas/'
+                schema_name = PREFIX + path_list[2]
                 issue = {
                     'path': key,
                     'field': path_list[-1],
@@ -402,21 +405,23 @@ class DiffAnalyzer:
                     'old_value': old_value,
                     'new_value': None,
                     'trigger_action': "Remove Schema",
+                    'affected_api_list': DiffFinder.found_consequence_api(schema_name, new_doc)
                 }
             else:
                 issue = {
                     'path': key,
-                    'field': path_list[0].capitalize() + ': ' + path_list[-1],
+                    'field': path_list[-1],
                     'severity': 'UN-DEFINED',
                     'old_value': old_value,
                     'new_value': None,
                     'trigger_action': None,
                 }
             issue_list.append(issue)
+            
         return issue_list
 
     @classmethod
-    def _type_changes_handler(cls, diff, new_doc):
+    def _type_changes_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['type_changes'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -432,7 +437,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _set_item_added_handler(cls, diff, new_doc):
+    def _set_item_added_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['set_item_added'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -446,7 +451,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _set_item_removed_handler(cls, diff, new_doc):
+    def _set_item_removed_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['set_item_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -460,7 +465,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_added_handler(cls, diff, new_doc):
+    def _attribute_added_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['attribute_added'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -476,7 +481,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_removed_handler(cls, diff, new_doc):
+    def _attribute_removed_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['attribute_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
@@ -492,7 +497,7 @@ class DiffAnalyzer:
         return issue_list
 
     @classmethod
-    def _attribute_changed_handler(cls, diff, new_doc):
+    def _attribute_changed_handler(cls, diff, new_doc, old_doc):
         issue_list = []
         for key, value in diff['attribute_changed'].items():
             path_list = DiffFinder.parse_key_path(key)
