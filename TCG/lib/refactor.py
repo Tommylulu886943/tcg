@@ -24,11 +24,11 @@ class CaseRefactor:
         """
         for issue in issue_list:
             if issue['trigger_action'] == None:
-                print(issue['trigger_action'])
-                print(f"No trigger action for this '{issue['severity']}' issue '{issue['field']}'. Please update it manually.")
+                logging.debug(f"No trigger action for this '{issue['severity']}' issue '{issue['field']}'. Please update it manually.")
             elif issue['trigger_action'] == 'Update Schema':
-                print("Run Update Schema Process...")
                 cls.update_schema_rule(issue, new_doc)
+            elif issue['trigger_action'] == 'Remove Schema':
+                cls.remove_schema_rule(issue, new_doc)
             elif issue['trigger_action'] == 'Update Query Parameter Name':
                 cls.update_query_rule_name(issue, new_doc)
             elif issue['trigger_action'] == 'Update Query Parameter Enum Name':
@@ -157,6 +157,8 @@ class CaseRefactor:
         for api in issue['affected_api_list']:
             # * Find the schema name.
             path = DiffFinder.parse_key_path(issue['path'])
+            # * To get the field other propertiesm=, we need to remove the last element of the path.
+            schema = GeneralTool.get_value_by_path(doc, path[:-1])
             # * Determine the reference API and reference type. request, response, or parameter (in path or query)
             action_list = DiffFinder.found_reference_api_and_ref_type(path[2], doc)
             op_id = GeneralTool.parse_api_name_to_op_id(api, doc)
@@ -164,8 +166,7 @@ class CaseRefactor:
             for action in action_list:
                 action_type = action.split(' ')[-1]
                 if action_type == 'Request':
-                    logging.debug("Run Update Schema Request Process...")
-                    cls._update_request_body_with_new_schema(op_id, issue, path)
+                    cls.update_request_body_with_new_schema(op_id, issue, path, schema)
                 elif action_type == 'Response':
                     logging.debug("For now, we do not support updating response field. Please update it manually.")
                     pass
@@ -179,25 +180,120 @@ class CaseRefactor:
                 elif action_type == 'Cookie':
                     logging.info(f"For now, we do not support updating cookie field. Please update it manually.")
                     pass
+    @classmethod       
+    def remove_schema_rule(cls, issue: dict, doc: dict) -> None:
+        """
+        Removes the schema rule for a given issue and document.
 
+        Args:
+            issue: _description_
+            doc: _description_
+        """
+        from lib.diff import DiffFinder
+        logging.debug(f"issue: {issue}")
+        for api in issue['affected_api_list']:
+            # * Find the schema name.
+            path = DiffFinder.parse_key_path(issue['path'])
+            # * To get the field other propertiesm=, we need to remove the last element of the path.
+            schema = GeneralTool.get_value_by_path(doc, path[:-1])
+            # * Determine the reference API and reference type. request, response, or parameter (in path or query)
+            action_list = DiffFinder.found_reference_api_and_ref_type(path[2], doc)
+            op_id = GeneralTool.parse_api_name_to_op_id(api, doc)
+            
+            for action in action_list:
+                action_type = action.split(' ')[-1]
+                if action_type == 'Request':
+                    cls.remove_request_body_with_new_schema(op_id, issue, path, schema)
+                elif action_type == 'Response':
+                    logging.debug("For now, we do not support updating response field. Please update it manually.")
+                    pass
+                elif action_type == 'Path':
+                    pass
+                elif action_type == 'Query':
+                    pass
+                elif action_type == 'Header':
+                    logging.info(f"For now, we do not support updating header field. Please update it manually.")
+                    pass
+                elif action_type == 'Cookie':
+                    logging.info(f"For now, we do not support updating cookie field. Please update it manually.")
+                    pass
+                
     @classmethod
-    def _update_request_body_with_new_schema(cls, op_id: str ,issue: dict, path: list) -> None:
+    def remove_request_body_with_new_schema(
+        cls, op_id: str, issue: dict, path: list, schema: dict) -> None:
+        """
+        Removes the request body with new schema for a given issue and document.
+
+        Args:
+            op_id: The operation id of the affected API.
+            issue: The openapi doc issue that needs to be updated.
+            path: The path of the issue.
+            schema: The schema that needs to be updated.
+        """
+
+        key, field = GeneralTool.parse_field_path_to_key(path)
+        try:
+            for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
+                logging.debug(f"Updating '{issue['field']}' for '{key}' in '{file_path}'.")
+                with open(file_path, 'r+') as f:
+                    rule = json.loads(f.read())
+                    
+                    if key in rule:
+                        # should_update_list = [
+                        #     'type', 'format', 'required', 'enum', 'default', 'example', 'minLength', 'maxLength', 
+                        #     'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minItems', 
+                        #     'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
+                        #     'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
+                        # ]
+                        logging.debug(f"KEY: {key}")
+                        logging.debug(f"RULE: {rule}")
+                        # if issue['field'] in should_update_list:
+                        r = GeneralTool.remove_key_in_json(rule, [key])
+                        logging.debug(f"RULE1: {r}")
+                        logging.debug(f"RULE2: {rule}")
+                    else:
+                        continue
+                    f.seek(0)
+                    f.write(json.dumps(rule, indent=4))
+                    f.truncate()
+        except FileNotFoundError:
+            pass
+            logging.error(f"This API '{op_id}' does not have request.")
+            
+    @classmethod
+    def update_request_body_with_new_schema(
+        cls, op_id: str, issue: dict, path: list, schema: dict) -> None:
         """
         Updates the request body with new schema for a given issue and document.
 
         Args:
+            op_id: The operation id of the affected API.
             issue (dict): The openapi doc issue that needs to be updated.
             doc (dict): The openapi doc.
+            schema (dict): The schema that needs to be updated.
         """       
-        key, field = GeneralTool.parse_field_path_to_key(path)
+        key, field = GeneralTool.parse_field_path_to_key(path)     
         try:
-            with open(f"../artifacts/GenerationRule/{op_id}.json", 'r+') as f:
-                rule = json.loads(f.read())
-                logging.debug(f"rule: {rule[key]}")
-                
-                # f.seek(0)
-                # f.write(json.dumps(rule, indent=4))
-                # f.truncate()
+            for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
+                logging.debug(f"Updating '{issue['field']}' for '{key}' in '{file_path}'.")
+                with open(file_path, 'r+') as f:
+                    rule = json.loads(f.read())
+                    
+                    if key in rule:
+                        should_update_list = [
+                            'type', 'format', 'required', 'enum', 'default', 'example', 'minLength', 'maxLength', 
+                            'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minItems', 
+                            'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
+                            'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
+                        ]
+                        if issue['field'] in should_update_list:
+                            GeneralTool.updated_generation_rule_by_type(rule, key, schema)
+                    else:
+                        continue
+                        
+                    f.seek(0)
+                    f.write(json.dumps(rule, indent=4))
+                    f.truncate()  
         except FileNotFoundError:
             pass
             logging.error(f"This API '{op_id}' does not have request.")
