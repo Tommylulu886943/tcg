@@ -19,27 +19,29 @@ class GeneralTool:
         Parse the field path to the key.
         Ex: # ['components', 'schemas', 'User', 'name', 'properties', 'dnsServer', 'domains', 'type'] -> dnsServer.domains[0].type
         """
-        
+        if key_path == []:
+            return '', ''      
+          
         key = ''
-        key_path = key_path[:-1]
-        logging.debug(f"Key Path: {key_path}")
-        key_path = key_path[4:]
-        logging.debug(f"Key Path: {key_path}")
-        for i in range(len(key_path)):
-            if key_path[i] == 'items' or key_path[i] == 'properties':
+        if key_path[0] == 'components' and key_path[1] == 'schemas':
+            key_path = key_path[3:]
+        elif key_path[0] == 'paths':
+            if key_path[3] == 'requestBody':
+                key_path = key_path[5:]
+
+        for element in key_path:
+            if element == 'items' or element == 'properties':
                 continue
             else:
-                if i == len(key_path) - 1:
-                    key += key_path[i]
+                if element != key_path[-1]:
+                    key += element + '.'
                 else:
-                    key += key_path[i] + '.'
-                if i != len(key_path) - 1 and key_path[i + 1] == 'items':
-                    if i == len(key_path) - 1:
-                        key += '[0]'
-                    else:
-                        key += '[0].'
-                elif i == len(key_path) - 1 and key_path[i] != 'properties':
+                    key += element
+                if element != key_path[-1] and key_path[key_path.index(element) + 1] == 'items':
+                    key += '[0].'
+                elif element == key_path[-1] and element != 'properties':
                     continue
+        
         return key, key_path[-1]
     
     @classmethod
@@ -879,6 +881,11 @@ class GeneralTool:
                 }
                 query_rule[parameter['name']] = fields
         return query_rule
+    
+    @classmethod
+    def updated_generation_rule_by_type(cls, rule: dict, path: str, schema: dict):
+
+        cls.set_generation_rule_by_schema(schema, rule, path)
 
     @classmethod
     def parse_schema_to_generation_rule(cls, schema: dict, path: str = "") -> dict:
@@ -953,106 +960,111 @@ class GeneralTool:
                     new_path = "[0]"
                 fields.update(cls.parse_schema_to_generation_rule(schema["items"], new_path))
         else:
-            genType = None
-            if "ERROR" in schema:
-                return {}
-            elif "enum" in schema and schema["enum"] != []:
-                genType = "Random Enumeration Value"
-                data_length = ""
-            elif schema["type"] == "string":
-                if 'format' in schema:
-                    if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary', 'byte']:
-                        genType = f"Random {schema['format'].upper()}"
-                        data_length = ""
-                    else:
-                        genType = "Random String (Without Special Characters)"
-                        data_length = [1, 30]
-                elif 'pattern' in schema:
-                    genType = "Random String By Pattern"
+            cls.set_generation_rule_by_schema(schema, fields, path)
+        return fields
+    
+    @classmethod
+    def set_generation_rule_by_schema(cls, schema, fields, path):
+        genType = None
+        if "ERROR" in schema:
+            return {}
+        elif "enum" in schema and schema["enum"] != []:
+            genType = "Random Enumeration Value"
+            data_length = ""
+        elif schema["type"] == "string":
+            if 'format' in schema:
+                if schema['format'] in ['email', 'ipv4', 'ipv6', 'hostname', 'uuid', 'date-time', 'date', 'uri', 'int64', 'int32', 'binary', 'byte']:
+                    genType = f"Random {schema['format'].upper()}"
                     data_length = ""
                 else:
                     genType = "Random String (Without Special Characters)"
                     data_length = [1, 30]
-            elif schema["type"] == "integer":
-                if 'format' in schema:
-                    if schema['format'] in ['int64', 'int32']:
-                        genType = f"Random {schema['format'].upper()}"
-                        data_length = ""
-                    else:
-                        genType = "Random Integer"
-                        data_length = [1, 100]
+            elif 'pattern' in schema:
+                genType = "Random String By Pattern"
+                data_length = ""
+            else:
+                genType = "Random String (Without Special Characters)"
+                data_length = [1, 30]
+        elif schema["type"] == "integer":
+            if 'format' in schema:
+                if schema['format'] in ['int64', 'int32']:
+                    genType = f"Random {schema['format'].upper()}"
+                    data_length = ""
                 else:
                     genType = "Random Integer"
                     data_length = [1, 100]
-            elif schema["type"] == "number":
-                genType = "Random Number (Float)"
+            else:
+                genType = "Random Integer"
                 data_length = [1, 100]
-            elif schema["type"] == "boolean":
-                genType = "Random Boolean"
-                data_length = ""
-            elif schema["type"] == "object":
-                logging.warning(f"This field is an empty object: {path}")
-                return {}
+        elif schema["type"] == "number":
+            genType = "Random Number (Float)"
+            data_length = [1, 100]
+        elif schema["type"] == "boolean":
+            genType = "Random Boolean"
+            data_length = ""
+        elif schema["type"] == "object":
+            logging.warning(f"This field is an empty object: {path}")
+            return {}
+        
+        length_condition = ["minLength", "maxLength", "minimum", "maximum"]
+        if any(key in schema for key in length_condition):
+            if genType == "Random String (Without Special Characters)":
+                if "minLength" in schema:
+                    data_length[0] = schema["minLength"]
+                if "maxLength" in schema:
+                    data_length[1] = schema["maxLength"]
+            elif genType == "Random Integer":
+                if "minimum" in schema:
+                    data_length[0] = schema["minimum"]
+                if "maximum" in schema:
+                    data_length[1] = schema["maximum"]
+            elif genType == "Random Number (Float)":
+                if "minimum" in schema:
+                    data_length[0] = schema["minimum"]
+                if "maximum" in schema:
+                    data_length[1] = schema["maximum"]
+                            
+        nullable = False
+        if "nullable" in schema: nullable = schema["nullable"]
+        
+        required = False
+        if "required" in schema: required = schema["required"]
+        
+        regex_pattern = ""
+        if "pattern" in schema: regex_pattern = schema["pattern"]
+                    
+        default = ""
+        if "default" in schema: default = schema["default"]
             
-            length_condition = ["minLength", "maxLength", "minimum", "maximum"]
-            if any(key in schema for key in length_condition):
-                if genType == "Random String (Without Special Characters)":
-                    if "minLength" in schema:
-                        data_length[0] = schema["minLength"]
-                    if "maxLength" in schema:
-                        data_length[1] = schema["maxLength"]
-                elif genType == "Random Integer":
-                    if "minimum" in schema:
-                        data_length[0] = schema["minimum"]
-                    if "maximum" in schema:
-                        data_length[1] = schema["maximum"]
-                elif genType == "Random Number (Float)":
-                    if "minimum" in schema:
-                        data_length[0] = schema["minimum"]
-                    if "maximum" in schema:
-                        data_length[1] = schema["maximum"]
-                                   
-            nullable = False
-            if "nullable" in schema: nullable = schema["nullable"]
-            
-            required = False
-            if "required" in schema: required = schema["required"]
-            
-            regex_pattern = ""
-            if "pattern" in schema: regex_pattern = schema["pattern"]
-                        
-            default = ""
-            if "default" in schema: default = schema["default"]
-                
-            data_format = ""
-            if "format" in schema: data_format = schema["format"]
-            
-            enum = []
-            if "enum" in schema: enum = schema["enum"]
-            
-            fields[path] = {
-                "Type": schema["type"],
-                "Format": data_format,
-                "Default": default,
-                "rule": {
-                    "Data Generator": genType,
-                    "Data Length": str(data_length),
-                    "Required": required,
-                    "Nullable": nullable,
-                    "Regex Pattern": regex_pattern,
-                    "Enum": enum,
-                }
+        data_format = ""
+        if "format" in schema: data_format = schema["format"]
+        
+        enum = []
+        if "enum" in schema: enum = schema["enum"]
+        
+        fields[path] = {
+            "Type": schema["type"],
+            "Format": data_format,
+            "Default": default,
+            "rule": {
+                "Data Generator": genType,
+                "Data Length": str(data_length),
+                "Required": required,
+                "Nullable": nullable,
+                "Regex Pattern": regex_pattern,
+                "Enum": enum,
             }
-            if fields[path]['rule']['Enum'] == []:
-                del fields[path]['rule']['Enum']
-            
-            included_field = [
-                "minLength","maxLength", "minItems", "maxItems", "minimum", "maximum",
-                "uniqueItems", "exclusiveMinimum", "exclusiveMaximum",]
-            for key in included_field:
-                if key in schema:
-                    fields[path]['rule'][key] = schema[key]
-        return fields
+        }
+        if fields[path]['rule']['Enum'] == []:
+            del fields[path]['rule']['Enum']
+        
+        included_field = [
+            "minLength","maxLength", "minItems", "maxItems", "minimum", "maximum",
+            "uniqueItems", "exclusiveMinimum", "exclusiveMaximum",]
+        for key in included_field:
+            if key in schema:
+                fields[path]['rule'][key] = schema[key]
+        return fields  
     
     @classmethod
     def parse_additional_action_rule(cls, operation_id: str, additional_action_rule_table: object) -> None:
@@ -1554,3 +1566,16 @@ class GeneralTool:
                 resolved_schema[key] = value
         return resolved_schema
     
+    @classmethod
+    def get_value_by_path(cls, dict_data, path):
+        """
+        Get the value of a dictionary by the path.
+        """
+        
+        current_dict = dict_data
+        for key in path:
+            if key in current_dict:
+                current_dict = current_dict[key]
+            else:
+                return None
+        return current_dict
