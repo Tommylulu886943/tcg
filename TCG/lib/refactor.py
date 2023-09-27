@@ -3,7 +3,10 @@ import logging
 import glob
 from collections import OrderedDict
 from itertools import chain
+
 from lib.general_tool import GeneralTool
+
+DEBUG = True
 
 class CaseRefactor:
     """
@@ -203,7 +206,7 @@ class CaseRefactor:
             for action in action_list:
                 action_type = action.split(' ')[-1]
                 if action_type == 'Request':
-                    cls.remove_request_body_with_new_schema(op_id, issue, path, schema)
+                    cls.remove_request_body_with_new_schema(op_id, path)
                 elif action_type == 'Response':
                     logging.debug("For now, we do not support updating response field. Please update it manually.")
                     pass
@@ -219,22 +222,18 @@ class CaseRefactor:
                     pass
                 
     @classmethod
-    def remove_request_body_with_new_schema(
-        cls, op_id: str, issue: dict, path: list, schema: dict) -> None:
+    def remove_request_body_with_new_schema(cls, op_id: str, path: list) -> None:
         """
         Removes the request body with new schema for a given issue and document.
 
         Args:
             op_id: The operation id of the affected API.
-            issue: The openapi doc issue that needs to be updated.
             path: The path of the issue.
-            schema: The schema that needs to be updated.
         """
 
         key, field = GeneralTool.parse_field_path_to_key(path)
         try:
             for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
-                logging.debug(f"Updating '{issue['field']}' for '{key}' in '{file_path}'.")
                 with open(file_path, 'r+') as f:
                     rule = json.loads(f.read())
                     
@@ -245,17 +244,20 @@ class CaseRefactor:
                         #     'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
                         #     'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
                         # ]
-                        logging.debug(f"KEY: {key}")
-                        logging.debug(f"RULE: {rule}")
+
                         # if issue['field'] in should_update_list:
                         r = GeneralTool.remove_key_in_json(rule, [key])
-                        logging.debug(f"RULE1: {r}")
-                        logging.debug(f"RULE2: {rule}")
+                        if DEBUG:
+                            logging.debug(f"KEY: {key}")
+                            logging.debug(f"Before Rule: {rule}")                          
+                            logging.debug(f"After Rule: {rule}")                        
                     else:
+                        logging.debug(f"The key '{key}' is not in the rule. Skip it.")
                         continue
                     f.seek(0)
                     f.write(json.dumps(rule, indent=4))
                     f.truncate()
+                    f.close()
         except FileNotFoundError:
             pass
             logging.error(f"This API '{op_id}' does not have request.")
@@ -297,5 +299,3 @@ class CaseRefactor:
         except FileNotFoundError:
             pass
             logging.error(f"This API '{op_id}' does not have request.")
-
-
