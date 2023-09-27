@@ -1212,6 +1212,8 @@ class GeneralTool:
                         del dependency_rule[section][key]['query']
                     if 'dynamic_overwrite_data' in dependency_rule[section][key]:
                         del dependency_rule[section][key]['dynamic_overwrite_data']
+                    if 'operation_id' in dependency_rule[section][key]:
+                        del dependency_rule[section][key]['operation_id']
                                                                                      
             setup_list, teardown_list = dependency_rule['Setup'], dependency_rule['Teardown']
             setup_item, teardown_item = QTreeWidgetItem(["Setup"]), QTreeWidgetItem(["Teardown"])
