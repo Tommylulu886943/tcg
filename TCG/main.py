@@ -3722,7 +3722,7 @@ class MyWindow(QMainWindow):
             if obj_name is None or action is None:
                 logging.error(f"Cannot retrieve object name and action from API `{api}`.")
                 return
-            new_value = {"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {}, "dynamic_overwrite_data": {}}
+            new_value = {"operation_id": operation_id,"object": obj_name, "action": action, "api": api, "response_name": return_name, "additional_action": {}, "dynamic_overwrite_data": {}}
             result = GeneralTool.add_key_in_json(data, [dependency_type], sequence_num, new_value)
             if result is not False:
                 f.seek(0)
