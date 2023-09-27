@@ -283,7 +283,6 @@ class TestRemoveRequestBodyWithNewSchema:
 
         # Assert that the opened file object is truncated and closed
         open_mock.return_value.truncate.assert_called_once()
-        open_mock.return_value.close.assert_called_once()
 
     def test_path_not_found(self, mocker):
         """

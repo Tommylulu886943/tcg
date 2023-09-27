@@ -230,37 +230,23 @@ class CaseRefactor:
             op_id: The operation id of the affected API.
             path: The path of the issue.
         """
-
         key, field = GeneralTool.parse_field_path_to_key(path)
-        try:
-            for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
-                with open(file_path, 'r+') as f:
-                    rule = json.loads(f.read())
-                    
-                    if key in rule:
-                        # should_update_list = [
-                        #     'type', 'format', 'required', 'enum', 'default', 'example', 'minLength', 'maxLength', 
-                        #     'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minItems', 
-                        #     'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
-                        #     'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
-                        # ]
-
-                        # if issue['field'] in should_update_list:
-                        r = GeneralTool.remove_key_in_json(rule, [key])
-                        if DEBUG:
-                            logging.debug(f"KEY: {key}")
-                            logging.debug(f"Before Rule: {rule}")                          
-                            logging.debug(f"After Rule: {rule}")                        
-                    else:
-                        logging.debug(f"The key '{key}' is not in the rule. Skip it.")
-                        continue
-                    f.seek(0)
-                    f.write(json.dumps(rule, indent=4))
-                    f.truncate()
-                    f.close()
-        except FileNotFoundError:
-            pass
-            logging.error(f"This API '{op_id}' does not have request.")
+        for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
+            with open(file_path, 'r+') as f:
+                rule = json.load(f)
+                
+                if key in rule:
+                    GeneralTool.remove_key_in_json(rule, [key])
+                    if DEBUG:
+                        logging.debug(f"KEY: {key}")
+                        logging.debug(f"Before Rule: {rule}")                          
+                        logging.debug(f"After Rule: {rule}")                        
+                else:
+                    logging.debug(f"The key '{key}' is not in the rule. Skip it.")
+                    continue
+                f.seek(0)
+                f.write(json.dumps(rule, indent=4))
+                f.truncate()
             
     @classmethod
     def update_request_body_with_new_schema(
@@ -275,27 +261,22 @@ class CaseRefactor:
             schema (dict): The schema that needs to be updated.
         """       
         key, field = GeneralTool.parse_field_path_to_key(path)     
-        try:
-            for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
-                logging.debug(f"Updating '{issue['field']}' for '{key}' in '{file_path}'.")
-                with open(file_path, 'r+') as f:
-                    rule = json.loads(f.read())
-                    
-                    if key in rule:
-                        should_update_list = [
-                            'type', 'format', 'required', 'enum', 'default', 'example', 'minLength', 'maxLength', 
-                            'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minItems', 
-                            'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
-                            'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
-                        ]
-                        if issue['field'] in should_update_list:
-                            GeneralTool.updated_generation_rule_by_type(rule, key, schema)
-                    else:
-                        continue
-                        
-                    f.seek(0)
-                    f.write(json.dumps(rule, indent=4))
-                    f.truncate()  
-        except FileNotFoundError:
-            pass
-            logging.error(f"This API '{op_id}' does not have request.")
+        for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
+            logging.debug(f"Updating '{issue['field']}' for '{key}' in '{file_path}'.")
+            with open(file_path, 'r+') as f:
+                rule = json.load(f)
+                if key in rule:
+                    should_update_list = [
+                        'type', 'format', 'required', 'enum', 'default', 'example', 'minLength', 'maxLength', 
+                        'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minItems', 
+                        'maxItems', 'uniqueItems', 'minProperties', 'maxProperties', 'pattern', 'items', 'properties',
+                        'additionalProperties', 'allOf', 'anyOf', 'oneOf', 'not'
+                    ]
+                    if issue['field'] in should_update_list:
+                        GeneralTool.updated_generation_rule_by_type(rule, key, schema)
+                else:
+                    logging.debug(f"The key '{key}' is not in the rule. Skip it.")
+                    continue 
+                f.seek(0)
+                f.write(json.dumps(rule, indent=4))
+                f.truncate()
