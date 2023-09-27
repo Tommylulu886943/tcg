@@ -189,8 +189,8 @@ class CaseRefactor:
         Removes the schema rule for a given issue and document.
 
         Args:
-            issue: _description_
-            doc: _description_
+            issue: The openapi doc issue that needs to be updated.
+            doc: The openapi doc.
         """
         from lib.diff import DiffFinder
         logging.debug(f"issue: {issue}")
@@ -206,47 +206,93 @@ class CaseRefactor:
             for action in action_list:
                 action_type = action.split(' ')[-1]
                 if action_type == 'Request':
-                    cls.remove_request_body_with_new_schema(op_id, path)
+                    cls.remove_rule_from_generation_rule(op_id, path, 'request_body')
+                    cls.remove_rule_from_dependency_rule(op_id, path, 'request_body')
                 elif action_type == 'Response':
                     logging.debug("For now, we do not support updating response field. Please update it manually.")
                     pass
                 elif action_type == 'Path':
-                    pass
+                    cls.remove_rule_from_generation_rule(op_id, path, 'path')
+                    cls.remove_rule_from_dependency_rule(op_id, path, 'path')
                 elif action_type == 'Query':
-                    pass
+                    cls.remove_rule_from_generation_rule(op_id, path, 'query')
+                    cls.remove_rule_from_dependency_rule(op_id, path, 'query')
                 elif action_type == 'Header':
                     logging.info(f"For now, we do not support updating header field. Please update it manually.")
                     pass
                 elif action_type == 'Cookie':
                     logging.info(f"For now, we do not support updating cookie field. Please update it manually.")
                     pass
-                
-    @classmethod
-    def remove_request_body_with_new_schema(cls, op_id: str, path: list) -> None:
-        """
-        Removes the request body with new schema for a given issue and document.
 
-        Args:
-            op_id: The operation id of the affected API.
-            path: The path of the issue.
+    @classmethod
+    def remove_rule_from_generation_rule(cls, op_id: str, path: list, rule_type: str) -> None:
         """
+        Remove the specified path rule from generation rule.
+        
+        Args:
+            op_id (str): The operation ID of the rule to be removed.
+            path (list): The path of the rule to be removed.
+            rule_type (str): The type of the rule to be removed. Example: path, query.
+        """
+        original_rule_type = rule_type
+        rule_folder = {
+            'path': 'PathRule',
+            'query': 'QueryRule',
+            'request_body': 'GenerationRule'
+        }.get(rule_type, None)
+        
+        if rule_folder is None:
+            raise ValueError(f"Invalid rule_type: {original_rule_type}")
+        
         key, field = GeneralTool.parse_field_path_to_key(path)
-        for file_path in glob.glob(f"../artifacts/GenerationRule/{op_id}*.json"):
+        for file_path in glob.glob(f"../artifacts/{rule_folder}/{op_id}*.json"):
             with open(file_path, 'r+') as f:
                 rule = json.load(f)
-                
+                modified = False
                 if key in rule:
                     GeneralTool.remove_key_in_json(rule, [key])
-                    if DEBUG:
-                        logging.debug(f"KEY: {key}")
-                        logging.debug(f"Before Rule: {rule}")                          
-                        logging.debug(f"After Rule: {rule}")                        
-                else:
-                    logging.debug(f"The key '{key}' is not in the rule. Skip it.")
-                    continue
-                f.seek(0)
-                f.write(json.dumps(rule, indent=4))
-                f.truncate()
+                    f.seek(0)
+                    f.write(json.dumps(rule, indent=4))
+                    f.truncate()
+
+    @classmethod
+    def remove_rule_from_dependency_rule(cls, op_id: str, path: list, rule_type: str) -> None:
+        """
+        Removes the specified path rule from dependency rule.
+
+        Args:
+            op_id: The operation ID of the rule to be removed.
+            path: The path of the rule to be removed.
+            rule_type: The type of the rule to be removed. Example: path, query, request_body.
+        """
+        original_rule_type = rule_type
+        rule_type = {
+            'path': 'path',
+            'query': 'query',
+            'request_body': 'data_generation_rules'
+        }.get(rule_type, None)
+
+        if rule_type is None:
+            raise ValueError(f"Invalid rule_type: {original_rule_type}")
+        
+        key, field = GeneralTool.parse_field_path_to_key(path)
+        for file_path in glob.glob(f"../artifacts/DependencyRule/*.json"):
+            with open(file_path, 'r+') as f:
+                rule = json.load(f)
+                modified = False
+                for k, v in chain(rule['Setup'].items(), rule['Teardown'].items()):
+                    if v['operation_id'] == op_id:
+                        try:
+                            if key in v[rule_type]:
+                                GeneralTool.remove_key_in_json(v[rule_type], [key])
+                                modified = True
+                        except KeyError:
+                            logging.debug(f"Invalid rule type: {rule_type} in file {file_path} for operation {op_id}.")
+                            continue
+                if modified:
+                    f.seek(0)
+                    f.write(json.dumps(rule, indent=4))
+                    f.truncate()
             
     @classmethod
     def update_request_body_with_new_schema(
