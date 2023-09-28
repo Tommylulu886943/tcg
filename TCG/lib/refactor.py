@@ -36,6 +36,13 @@ class CaseRefactor:
                 cls.update_query_rule_name(issue, new_doc)
             elif issue['trigger_action'] == 'Update Query Parameter Enum Name':
                 cls.update_query_rule_enum_name(issue, new_doc)
+            elif issue['trigger_action'] == 'Add Assertion':
+                # TODO
+                cls.add_assertion_rule(issue, new_doc)
+            elif issue['trigger_action'] == 'Remove Assertion':
+                # TODO
+                cls.remove_assertion_rule(issue, new_doc)
+            
 
     @classmethod
     def update_query_rule_name(cls, issue: dict, new_doc: dict) -> None:
@@ -183,6 +190,36 @@ class CaseRefactor:
                 elif action_type == 'Cookie':
                     logging.info(f"For now, we do not support updating cookie field. Please update it manually.")
                     pass
+                
+    @classmethod
+    def remove_assertion_rule(cls, issue: dict, doc: dict) -> None:
+        """
+        Removes an assertion rule for a given issue and document.
+
+        Args:
+            issue (dict): The openapi doc issue that needs to be updated.
+            doc (dict): The openapi doc.
+            
+        """
+        logging.debug(f"issue: {issue}")
+        logging.debug(f"doc: {doc}")
+        pass
+        # api_name = issue['affected_api_list'][0]
+        # op_id = GeneralTool.parse_api_name_to_op_id(api_name, doc)
+        # assertion_path = f"../artifacts/AssertionRule/{op_id}.json"
+        # try:
+        #     with open(assertion_path, 'r+') as f:
+        #         rule = json.loads(f.read())
+        #         assertion_type = GeneralTool.obtain_assertion_type(issue['field'])
+        #         for k, v in rule[assertion_type].items():
+        #             if v['expected_value'] == issue['field']:
+        #                 del rule[assertion_type][k]
+        #         f.seek(0)
+        #         f.write(json.dumps(rule, indent=4))
+        #         f.truncate()
+        # except FileNotFoundError:
+        #     logging.error(f"Cannot find '{assertion_path}'. Please update it manually.")
+                
     @classmethod       
     def remove_schema_rule(cls, issue: dict, doc: dict) -> None:
         """
