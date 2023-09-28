@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import json
 
 # Add the parent directory to the system path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -674,4 +675,527 @@ class TestFoundReferenceApiAndRefType:
 
         # Assert
         assert result == ["GET /api1 Header"]
+          
+class TestDiffAnalyzer:
+    # syntax: test_<path>_<changed_field>_changed
+    
+    def test_request_add_a_field(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "age": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == "Add New Field to Request Body"
+    
+    def test_request_remove_enum_value(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "enum": ["a", "b"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "enum": ["a"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        expected_result = "Remove Request Body Enum Value"
+        
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == expected_result
+        
+    
+    def test_response_add_a_status_code(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                            },
+                            "400": {
+                                "description": "Bad Request"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        expected_result = "Add Assertion for Expected Status Code"
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        logging.debug(result)
+        # Assert
+        assert result[0]['trigger_action'] == expected_result
 
+    def test_response_remove_a_status_code(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {}
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+
+        # Assert
+        assert result[0]['trigger_action'] == "Remove Assertion for Expected Status Code"
+        assert result[0]['summary'] == f"The response status code {result[0]['field']} is removed. If updated, it will remove the assertion for expected status code."
+        
+    def test_response_remove_a_status_code(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success"
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {}
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        formatted_json_str = json.dumps(result, indent=4, ensure_ascii=False)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == "Remove Assertion for Expected Status Code"    
+
+    def test_response_remove_a_field(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        formatted_json_str = json.dumps(result, indent=4, ensure_ascii=False)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == None
+
+    def test_response_remove_a_field_attribute_format(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "email"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        formatted_json_str = json.dumps(result, indent=4, ensure_ascii=False)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == None
+        
+    def test_response_remove_a_field_attribute_enum_element(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "enum": ["a", "b"]
+    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "enum": ["a"]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        formatted_json_str = json.dumps(result, indent=4, ensure_ascii=False)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == None
+
+    def test_response_remove_a_field_attribute_enum(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "enum": ["a", "b"]
+    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        formatted_json_str = json.dumps(result, indent=4, ensure_ascii=False)
+        logging.debug(json.dumps(result, indent=4, ensure_ascii=False))
+        # Assert
+        assert result[0]['trigger_action'] == None
+
+
+    def test_response_add_a_field(self):
+        # Arrange
+        old_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        new_schema = {
+            "paths": {
+                "/user": {
+                    "get": {
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "age": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+        expected_result = None
+        
+        # Act
+        result = DiffAnalyzer.analyze_api_diff(old_schema, new_schema)
+        logging.debug(result)
+        # Assert
+        assert result[0]['trigger_action'] == expected_result
