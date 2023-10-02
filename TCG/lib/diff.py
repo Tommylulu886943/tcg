@@ -303,32 +303,64 @@ class DiffAnalyzer:
     @classmethod
     def _iterable_item_added_handler(self, diff, new_doc, old_doc):
         issue_list = []
+
         for key, value in diff['iterable_item_added'].items():
             path_list = DiffFinder.parse_key_path(key)
+            
             issue = {
                 'path': key,
                 'summary': None,
-                'old_value': value['old_value'],
-                'new_value': value['new_value'],
+                'old_value': None,
+                'new_value': value,
                 'trigger_action': None,
                 'affected_api_list': [],
                 'field': path_list[-1],
                 'severity': "UN-DEFINED"
             }
+            
             if path_list[0] == 'paths':
-                if path_list[-1] == 'enum':
-                    issue['severity'] = "BREAK"
-                    issue['trigger_action'] = "Add New Enum"
-                    issue['summary'] = f"The enum {issue['new_value']} is added"
+                if path_list[3] == 'requestBody':
+                    if path_list[-2] == 'enum':
+                        issue['severity'] = "BREAK"
+                        issue['trigger_action'] = "Add Request Body Enum Value"
+                        issue['summary'] = f"The `{issue['new_value']}` enum value is added to the `{path_list[2].upper()} {path_list[1]}` API request body."
+                    elif path_list[-2] == 'required':
+                        issue['severity'] = "BREAK"
+                        issue['trigger_action'] = "Add Request Body Required Attribute"
+                        issue['summary'] = f"The `{issue['new_value']} field is now required in the `{path_list[2].upper()} {path_list[1]}` API request body."
+                elif path_list[3] == 'responses':
+                    if path_list[-2] == 'enum':
+                        issue['severity'] = "INFO"
+                        issue['trigger_action'] = None
+                        issue['summary'] = f"The `{path_list[-3]}` field's enum value `{issue['new_value']}` is added to the `{path_list[2].upper()} {path_list[1]}` `{path_list[4]}` API response body."
+                    elif path_list[-2] == 'required':
+                        issue['severity'] = "INFO"
+                        issue['trigger_action'] = None
+                        issue['summary'] = f"The `{issue['new_value']} field is now required in the `{path_list[2].upper()} {path_list[1]}` `{path_list[4]}` API response body."
                     
             issue_list.append(issue)
         return issue_list
 
     @classmethod
-    def _iterable_item_removed_handler(self, diff, new_doc, old_doc):
+    def _iterable_item_removed_handler(self, diff: dict, new_doc: dict, old_doc: dict) -> list:
+        """
+        Handles the removal of items from an iterable in the diff dictionary.
+    
+        Args:
+            diff (dict): The diff dictionary that contains the differences between the old and new OpenAPI documents.
+            new_doc (dict): The new OpenAPI document.
+            old_doc (dict): The old OpenAPI document.
+        
+        Returns:
+            list: A list of dictionaries representing the issues found in the removed items of the iterable.
+                  Each dictionary contains information such as the path, summary, old value, new value, trigger action,
+                  affected API list, field, and severity.
+        """
         issue_list = []
+    
         for key, value in diff['iterable_item_removed'].items():
             path_list = DiffFinder.parse_key_path(key)
+        
             issue = {
                 'path': key,
                 'summary': None,
@@ -339,21 +371,29 @@ class DiffAnalyzer:
                 'field': path_list[-1],
                 'severity': "UN-DEFINED"
             }
-            logging.debug(f"Path List: {path_list}")
-            logging.debug(f"Iterable Item Removed: {issue}")
+        
             if path_list[0] == 'paths':
                 if path_list[3] == 'requestBody':
                     if path_list[-2] == 'enum':
                         issue['severity'] = "BREAK"
                         issue['trigger_action'] = "Remove Request Body Enum Value"
-                        issue['summary'] = f"The enum {issue['old_value']} is removed."
+                        issue['summary'] = f"The `{issue['old_value']}` enum value is removed from the `{path_list[2].upper()} {path_list[1]}` API request body."
+                    elif path_list[-2] == 'required':
+                        issue['severity'] = "BREAK"
+                        issue['trigger_action'] = "Remove Request Body Required Attribute"
+                        issue['summary'] = f"The `{issue['old_value']} field is no longer required in the `{path_list[2].upper()} {path_list[1]}` API request body."
                 elif path_list[3] == 'responses':
                     if path_list[-2] == 'enum':
-                        issue['severity'] = "BREAK"
+                        issue['severity'] = "INFO"
                         issue['trigger_action'] = None
-                        issue['summary'] = f"The enum {issue['old_value']} is removed."
+                        issue['summary'] = f"The `{path_list[-3]}` field's enum value `{issue['old_value']}` is removed from the `{path_list[2].upper()} {path_list[1]}` `{path_list[4]}` API response body."
+                    elif path_list[-2] == 'required':
+                        issue['severity'] = "INFO"
+                        issue['trigger_action'] = None
+                        issue['summary'] = f"The `{issue['old_value']} field is no longer required in the `{path_list[2].upper()} {path_list[1]}` `{path_list[4]}` API response body."
                                 
             issue_list.append(issue)
+    
         return issue_list
 
     @classmethod
@@ -371,7 +411,7 @@ class DiffAnalyzer:
                 'new_value': new_value,
                 'trigger_action': None,
                 'affected_api_list': [],
-                'field': path_list[-1],
+                'field': path_list[-2],
                 'severity': "UN-DEFINED"
             }
             
@@ -382,19 +422,19 @@ class DiffAnalyzer:
                         issue['trigger_action'] = None
                         issue['summary'] = f"The description of the request body is added."
                     elif path_list[6] == 'schema':
-                        if issue['field'] == 'enum':
+                        if path_list[-1] == 'enum':
                             issue['severity'] = 'BREAK'
                             issue['trigger_action'] = "Apply New Enum to Request Body"
                             issue['summary'] = f"The new enum {new_value} is added to the '{path_list[4]}' request body."
-                        elif issue['field'] == 'format':
+                        elif path_list[-1] == 'format':
                             issue['severity'] = 'BREAK'
                             issue['trigger_action'] = "Apply New Format to Request Body"
                             issue['summary'] = f"The new format {new_value} is added to the '{path_list[4]}' request body."
-                        elif issue['field'] == 'required':
+                        elif path_list[-1] == 'required':
                             issue['severity'] = 'BREAK'
                             issue['trigger_action'] = "Apply New Required Attribute to Request Body"
                             issue['summary'] = f"The new required attribute {new_value} is added to the '{path_list[4]}' request body."
-                        elif issue['field'] == 'default':
+                        elif path_list[-1] == 'default':
                             issue['severity'] = 'WARNING'
                             issue['trigger_action'] = "Apply New Default Value to Request Body"
                             issue['summary'] = f"The new default value {new_value} is added to the '{path_list[4]}' request body."
@@ -403,23 +443,19 @@ class DiffAnalyzer:
                             issue['trigger_action'] = f"Add New Field to Request Body"
                             issue['summary'] = f"The '{path_list[5]}' request body {path} is added."
                 elif path_list[3] == 'responses':
-                    issue = {
-                        'path': key,
-                        'field': path_list[-1],
-                        'summary': None,
-                        'severity': 'BREAK',
-                        'old_value': None,
-                        'new_value': new_value,
-                        'trigger_action': "Add New Response",
-                    }
-                    if issue['field'][0] in ['2', '4', '5'] or issue['field'] == 'default':
+                    if path_list[-1][0] in ['2', '4', '5'] or path_list[-1] == 'default':
                         issue['severity'] = 'BREAK'
                         issue['trigger_action'] = "Add Assertion for Expected Status Code"
-                        issue['summary'] = f"The response status code {issue['field']} is added. If updated, it will add the assertion for expected status code."
-                    elif issue['field'][0] in ['1', '3']:
+                        issue['summary'] = f"The response status code {path_list[-1]} is added. If updated, it will add the assertion for expected status code."
+                    elif path_list[-1][0] in ['1', '3']:
                         issue['severity'] = 'INFO'
                         issue['trigger_action'] = None
-                        issue['summary'] = f"The response status code {issue['field']} is added."
+                        issue['summary'] = f"The response status code {path_list[-1]} is added."
+                    elif len(path_list) >= 8 and path_list[7] == 'schema':
+                        if path_list[-1] == 'required':
+                            issue['severity'] = 'INFO'
+                            issue['trigger_action'] = None
+                            issue['summary'] = f"The required attribute of the '{path_list[4]}' response {path} is added."
  
                 elif path_list[3] == 'parameters':
                     issue = {
